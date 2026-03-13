@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TPM 課 - 戰力調度與 AI 決策系統</title>
+    <title>TPM 戰力總部 | 資源排配系統 V2.6</title>
     <style>
         :root {
             --bg-color: #FEF9E7; 
@@ -17,8 +17,9 @@
             --accent-green: #10B981;
             --accent-blue: #3B82F6;
             --accent-orange: #F59E0B;
-            --shadow-soft: 0 10px 25px -5px rgba(0,0,0,0.05);
-            --radius-main: 20px;
+            --shadow-premium: 0 10px 30px -5px rgba(0,0,0,0.05);
+            --radius-lg: 24px;
+            --radius-md: 14px;
         }
 
         * { box-sizing: border-box; font-family: "Microsoft JhengHei", "Segoe UI", sans-serif; color: var(--text-main); }
@@ -29,128 +30,150 @@
             width: 260px; background-color: var(--sidebar-color); border-right: 1px solid var(--border-light);
             display: flex; flex-direction: column; padding: 30px 20px; flex-shrink: 0;
         }
-        .logo { font-size: 1.5rem; font-weight: 900; margin-bottom: 30px; border-bottom: 2px solid var(--text-main); padding-bottom: 15px; letter-spacing: 2px; text-align: center; }
+        .logo { font-size: 1.5rem; font-weight: 900; margin-bottom: 30px; border-bottom: 2px solid var(--text-main); padding-bottom: 15px; letter-spacing: 1px; text-align: center; }
         
-        /* 回首頁按鈕樣式 */
         .home-link {
             display: flex; align-items: center; gap: 12px; padding: 14px 20px; margin-bottom: 25px;
-            background: rgba(255,255,255,0.5); border-radius: 14px; text-decoration: none;
-            font-weight: 800; color: var(--text-main); border: 1.5px solid rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.4); border-radius: 16px; text-decoration: none;
+            font-weight: 800; color: var(--text-main); transition: all 0.3s ease;
+            border: 1px solid transparent;
         }
-        .home-link:hover { background: var(--card-white); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .home-link:hover { background: var(--card-white); border-color: var(--text-main); transform: translateY(-2px); }
 
         nav ul { list-style: none; padding: 0; margin: 0; }
         nav li {
-            padding: 16px 20px; margin-bottom: 12px; border-radius: 14px; 
+            padding: 16px 20px; margin-bottom: 10px; border-radius: 14px; 
             cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             font-weight: 700; display: flex; align-items: center; gap: 12px;
         }
-        nav li:hover { background-color: rgba(253, 224, 71, 0.4); transform: translateX(5px); }
-        nav li.active { background-color: var(--active-yellow) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        nav li:hover { background-color: rgba(253, 224, 71, 0.3); transform: translateX(5px); }
+        nav li.active { background-color: var(--active-yellow) !important; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
         /* 主要內容區 */
         main { flex: 1; padding: 40px; overflow-y: auto; scroll-behavior: smooth; }
-        .view-content { display: none; animation: slideUp 0.5s ease-out; max-width: 1300px; margin: 0 auto; }
+        .view-content { display: none; animation: fadeIn 0.5s ease-out; max-width: 1400px; margin: 0 auto; }
         .view-content.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 { font-size: 2.2rem; margin: 0 0 30px 0; font-weight: 900; letter-spacing: -0.5px; }
+        h1 { font-size: 2.2rem; margin: 0 0 35px 0; font-weight: 900; letter-spacing: -1px; }
 
         /* Dashboard 卡片 */
-        .stats-row { display: flex; gap: 24px; margin-bottom: 40px; }
+        .stats-row { display: flex; gap: 20px; margin-bottom: 35px; }
         .stat-card { 
-            flex: 1; background: var(--card-white); padding: 30px; 
-            border-radius: var(--radius-main); border: 1.5px solid var(--border-light);
-            box-shadow: var(--shadow-soft); text-align: center;
+            flex: 1; background: var(--card-white); padding: 25px; 
+            border-radius: var(--radius-lg); border: 1.5px solid var(--border-light);
+            box-shadow: var(--shadow-premium); text-align: center;
         }
-        .stat-label { font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); margin-bottom: 10px; letter-spacing: 1px; }
-        .stat-val { font-size: 3.2rem; font-weight: 900; line-height: 1; }
+        .stat-label { font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); margin-bottom: 8px; letter-spacing: 1px; }
+        .stat-val { font-size: 2.8rem; font-weight: 900; line-height: 1; }
 
-        .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .widget-card { background: var(--card-white); padding: 30px; border-radius: 28px; border: 1.5px solid var(--border-light); box-shadow: var(--shadow-soft); }
-        .widget-card h3 { margin: 0 0 25px 0; font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 12px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .widget-card { background: var(--card-white); padding: 25px; border-radius: 24px; border: 1.5px solid var(--border-light); box-shadow: var(--shadow-premium); }
+        .widget-card h3 { margin: 0 0 20px 0; font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
-        /* 專案分配看板佈局 */
-        .member-pool { 
-            background: #FFFDF0; border: 2.5px dashed #CBD5E1; border-radius: 28px; 
-            padding: 35px; margin-bottom: 50px; 
+        /* 條形圖 */
+        .bar-wrapper { margin-bottom: 18px; }
+        .bar-info { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; }
+        .bar-container { background: #F1F5F9; height: 10px; border-radius: 5px; overflow: hidden; }
+        .bar-fill { height: 100%; transition: width 1s ease; }
+
+        /* 專案分配看板 */
+        .pool-container-box { 
+            background: #FFFDF0; border: 2.5px dashed #CBD5E1; border-radius: 32px; 
+            padding: 40px; margin-bottom: 60px; 
         }
-        .pool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px; justify-items: center; }
+        .pool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 20px; justify-items: center; }
 
-        .year-label { font-size: 1.8rem; font-weight: 900; margin-bottom: 30px; border-left: 12px solid var(--text-main); padding-left: 25px; }
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        .year-header { font-size: 2rem; font-weight: 900; margin-bottom: 35px; border-left: 12px solid var(--text-main); padding-left: 25px; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 35px; }
 
         .project-box { 
-            background: #FCF8E3; border: 1.5px solid var(--border-light); border-radius: 28px; 
-            min-height: 260px; display: flex; flex-direction: column; overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02); transition: transform 0.3s;
+            background: #FCF8E3; border: 1.5px solid var(--border-light); border-radius: 30px; 
+            min-height: 280px; display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02); transition: transform 0.3s;
         }
-        .project-title { padding: 20px 25px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; color: white; }
-        .drop-zone { flex: 1; padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; align-content: flex-start; justify-items: center; }
+        .project-box:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
+        .project-title { padding: 22px 28px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; color: white; font-size: 1.15rem; }
+        .scale-tag { font-size: 0.7rem; padding: 4px 12px; background: rgba(0,0,0,0.2); border-radius: 15px; font-weight: 800; }
+        .drop-zone { flex: 1; padding: 25px; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 18px; align-content: flex-start; justify-items: center; }
 
-        /* 成員卡片 */
+        /* 成員卡片設計 */
         .member-card {
-            background: var(--card-white); border: 2px solid #000; padding: 15px;
-            border-radius: 18px; cursor: grab; font-size: 1rem; font-weight: 800;
+            background: var(--card-white); border: 2.5px solid #000; padding: 15px;
+            border-radius: 20px; cursor: grab; font-size: 1.05rem; font-weight: 800;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            width: 120px; height: 90px; gap: 10px;
+            width: 125px; height: 95px; gap: 12px;
             box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center;
             position: relative;
         }
-        .member-card:hover { transform: translateY(-6px); box-shadow: 10px 12px 0px rgba(0,0,0,0.12); border-color: var(--accent-blue); }
+        .member-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 10px 12px 0px rgba(0,0,0,0.12); border-color: var(--accent-blue); }
         .unassign-btn {
-            position: absolute; top: -10px; right: -10px; width: 26px; height: 26px;
+            position: absolute; top: -12px; right: -12px; width: 28px; height: 28px;
             background: var(--accent-red); color: #fff; border-radius: 50%; font-size: 12px;
             display: none; align-items: center; justify-content: center; cursor: pointer;
-            border: 2.5px solid #fff; font-weight: 900;
+            border: 3px solid #fff; font-weight: 900; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .project-box .member-card:hover .unassign-btn { display: flex; }
         .load-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
-        /* 成員檔案：圖鑑化 */
-        .member-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 25px; margin-top: 20px; }
-        .member-identity-card {
-            background: var(--card-white); border: 1.5px solid var(--border-light); 
-            padding: 30px; border-radius: 28px; display: flex; flex-direction: column;
-            transition: all 0.4s ease; box-shadow: var(--shadow-soft);
+        /* 成員檔案：精簡網格圖鑑 (New Optimized Aesthetics) */
+        .member-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+        .id-card {
+            background: var(--card-white); border: 1.2px solid var(--border-light); 
+            padding: 22px; border-radius: 22px; display: flex; flex-direction: column;
+            transition: all 0.3s ease; box-shadow: var(--shadow-premium);
         }
-        .member-identity-card:hover { transform: translateY(-8px); border-color: var(--active-yellow); box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
-        .avatar-circle { width: 65px; height: 65px; background: #F8FAFC; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5rem; border: 2px solid var(--border-light); color: var(--text-secondary); }
+        .id-card:hover { transform: translateY(-5px); border-color: var(--active-yellow); box-shadow: 0 15px 30px rgba(0,0,0,0.06); }
+        .id-header { display: flex; align-items: center; gap: 15px; margin-bottom: 18px; }
+        .avatar { width: 55px; height: 55px; background: #F8FAFC; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.4rem; border: 2px solid var(--border-light); }
+        .id-info h4 { margin: 0; font-size: 1.2rem; font-weight: 900; }
+        .id-info span { font-size: 0.75rem; color: var(--text-secondary); font-weight: 700; }
 
-        /* Modal */
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-top: 1px solid #F1F5F9; padding-top: 15px; }
+        .metric-label { font-size: 0.65rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 2px; }
+        .metric-val { font-size: 0.9rem; font-weight: 800; }
+
+        /* Modal：高端重製 */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center;
-            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.7); z-index: 3000; justify-content: center; align-items: center;
+            backdrop-filter: blur(10px);
         }
-        .modal-content { background: var(--card-white); border-radius: 35px; width: 950px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 40px 100px rgba(0,0,0,0.4); border: 1.5px solid #000; }
-        .modal-header { padding: 30px 40px; background: #FFF; border-bottom: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center; }
+        .modal-content { 
+            background: var(--card-white); border-radius: 40px; width: 980px; 
+            max-height: 88vh; overflow: hidden; display: flex; flex-direction: column;
+            box-shadow: 0 50px 120px rgba(0,0,0,0.4); border: 2px solid #000;
+        }
+        .modal-header { padding: 35px 45px; border-bottom: 1.5px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title-area h2 { margin: 0; font-size: 2.2rem; font-weight: 900; letter-spacing: -1px; }
         .modal-body { display: flex; flex: 1; overflow: hidden; }
-        .modal-nav { width: 220px; border-right: 1.5px solid #F1F5F9; padding: 25px; background: #FAFAFA; }
-        .modal-pane { flex: 1; padding: 40px; overflow-y: auto; }
-        .nav-item { padding: 16px 20px; border-radius: 15px; cursor: pointer; font-weight: 800; color: var(--text-secondary); transition: 0.3s; margin-bottom: 10px; }
-        .nav-item.active { background: var(--active-yellow); color: var(--text-main); }
+        .modal-side { width: 240px; border-right: 1.5px solid #F1F5F9; padding: 30px; background: #FAFAFA; }
+        .modal-pane { flex: 1; padding: 45px; overflow-y: auto; }
+        .pane-tab { padding: 18px 22px; border-radius: 18px; cursor: pointer; font-weight: 800; color: var(--text-secondary); margin-bottom: 12px; transition: 0.3s; }
+        .pane-tab.active { background: var(--active-yellow); color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-        .btn { padding: 14px 28px; background: #000; color: #fff; border: none; border-radius: 15px; cursor: pointer; font-weight: 900; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px; }
-        .btn-close { background: #F1F5F9; color: #000; padding: 10px 20px; }
+        /* 系統設定 */
+        .settings-card { background: white; border: 1.5px solid var(--border-light); padding: 40px; border-radius: 32px; box-shadow: var(--shadow-premium); margin-bottom: 35px; }
+        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        label { font-size: 0.95rem; font-weight: 800; color: #475569; margin-bottom: 12px; display: block; }
+        input, select { width: 100%; padding: 15px 20px; border: 2.5px solid #F1F5F9; border-radius: 16px; font-size: 1.05rem; font-weight: 600; background: #F8FAFC; transition: 0.2s; }
+        input:focus { border-color: var(--active-yellow); outline: none; background: #fff; box-shadow: 0 0 0 6px rgba(253, 224, 71, 0.25); }
 
-        .drag-over { background: #FEF3C7 !important; border: 3px solid var(--accent-blue) !important; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+        .btn { padding: 15px 30px; background: #000; color: #fff; border: none; border-radius: 18px; cursor: pointer; font-weight: 900; font-size: 1rem; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+        .btn-danger { background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; }
+        .btn-danger:hover { background: #ef4444; color: #fff; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 20px; border: 4px solid transparent; background-clip: content-box; }
     </style>
 </head>
 <body>
 
     <aside>
         <div class="logo">TPM 戰力總部</div>
-        
-        <!-- 新增：返回首頁連結 -->
-        <a href="index.html" class="home-link">
-            <span>🏠</span> 回到總部首頁
-        </a>
-
+        <a href="index.html" class="home-link"><span>🏠</span> 回到總部首頁</a>
         <nav>
             <ul>
                 <li id="nav-dashboard-overview" onclick="switchView('dashboard-overview')">📊 數據總覽</li>
@@ -160,31 +183,40 @@
                 <li id="nav-settings" onclick="switchView('settings')">⚙️ 系統設定</li>
             </ul>
         </nav>
-        <div id="admin-hint" style="margin-top: auto; padding: 25px; background: #fff; border-radius: 20px; font-size: 0.85rem; border: 1.5px solid #e2e8f0; line-height: 1.6;">
-            <b>管理員診斷：</b><br>
-            目前高負載專案 <span id="hint-large-proj" style="color:var(--accent-red); font-weight:900;">0</span> 個。
+        <div id="admin-hint" style="margin-top: auto; padding: 25px; background: #fff; border-radius: 24px; font-size: 0.85rem; border: 1.5px solid #e2e8f0; line-height: 1.7;">
+            <b>戰力診斷：</b><br>
+            當前高壓型大型專案 <span id="hint-large-proj" style="color:var(--accent-red); font-weight:900;">0</span> 個。
         </div>
-        <div style="margin-top: 20px; text-align: center; font-size: 0.7rem; color: var(--text-secondary); opacity: 0.7; font-weight: 800;">
-            V2.1 | © 2026 | Created by: Daniel Shih
+        <div style="margin-top: 25px; text-align: center; font-size: 0.75rem; color: var(--text-secondary); opacity: 0.7; font-weight: 800;">
+            V2.6 | @2026 | Created by: Daniel Shih
         </div>
     </aside>
 
     <main>
-        <!-- 視圖：數據總覽 -->
+        <!-- 視圖：數據總覽 (優化重佈局) -->
         <div id="dashboard-overview" class="view-content active">
             <header><h1>📊 課務戰情中心</h1></header>
             <div class="stats-row">
                 <div class="stat-card"><div class="stat-label">課內總編制</div><div class="stat-val" id="stat-total">0</div></div>
-                <div class="stat-card"><div class="stat-label">正在進行專案</div><div class="stat-val" id="stat-projs">0</div></div>
+                <div class="stat-card"><div class="stat-label">活躍專案數</div><div class="stat-val" id="stat-projs">0</div></div>
                 <div class="stat-card" style="background: #FFF1F2;"><div class="stat-label" style="color: #E11D48;">戰力超負荷</div><div class="stat-val" id="stat-over" style="color: #E11D48;">0</div></div>
             </div>
             <div class="dashboard-grid">
-                <div class="widget-card"><h3>🔥 成員戰力負荷排行</h3><div id="load-heatmap"></div></div>
-                <div class="widget-card"><h3>✅ 全體任務達成率</h3><div id="task-progress-summary"></div></div>
-                <div class="widget-card" style="grid-column: span 2; background: #F0F9FF;">
-                    <h3>🤖 Gemini AI 資源診斷幕僚</h3>
-                    <div id="ai-insight-text" style="font-size: 1.1rem; color: #0369A1; min-height: 80px; font-weight: 600;">等待管理者授權診斷...</div>
-                    <button class="btn" style="width:100%; margin-top: 20px;" onclick="getAiInsight()">開始戰略診斷</button>
+                <!-- 第一欄：戰力排行 -->
+                <div class="widget-card">
+                    <h3>🔥 成員戰力負荷排行</h3>
+                    <div id="load-heatmap"></div>
+                </div>
+                <!-- 第二欄：任務達成率 -->
+                <div class="widget-card">
+                    <h3>✅ 專案執行進度概覽</h3>
+                    <div id="task-progress-summary"></div>
+                </div>
+                <!-- 第三欄：AI 診斷 (現在佔據右側一整欄，比例更美觀) -->
+                <div class="widget-card" style="background: #F0F9FF; border-color: #BAE6FD;">
+                    <h3>🤖 Gemini AI 資源診斷</h3>
+                    <div id="ai-insight-text" style="font-size: 0.95rem; color: #0369A1; min-height: 150px; font-weight: 600; line-height: 1.8;">正在等待管理者授權診斷分析...</div>
+                    <button class="btn" style="width:100%; margin-top: 20px; padding: 12px;" onclick="getAiInsight()">啟動深度戰略診斷</button>
                 </div>
             </div>
         </div>
@@ -192,14 +224,14 @@
         <!-- 專案分配看板 -->
         <div id="dashboard" class="view-content">
             <header><h1>專案人力調度</h1></header>
-            <div class="member-pool">
-                <div style="margin-bottom: 30px; font-weight: 900; font-size: 1.4rem; text-align: center;">📦 人才資源庫 (Common Pool)</div>
+            <div class="pool-container-box">
+                <div style="margin-bottom: 35px; font-weight: 900; font-size: 1.5rem; text-align: center; letter-spacing: 1px;">📦 人才資源庫 (Common Pool)</div>
                 <div class="pool-grid" id="pool-container"></div>
             </div>
             <div id="year-rows-container"></div>
         </div>
 
-        <!-- 成員檔案 -->
+        <!-- 成員檔案 (大師級美化與精簡) -->
         <div id="members" class="view-content">
             <header><h1>👥 成員戰力圖鑑</h1></header>
             <div id="member-gallery-list" class="member-gallery"></div>
@@ -208,7 +240,7 @@
         <!-- 歷史結案 -->
         <div id="history" class="view-content">
             <header><h1>📜 歷史結案歸檔</h1></header>
-            <div id="history-container" class="project-grid"></div>
+            <div id="history-container" class="project-grid" style="margin-top:20px;"></div>
         </div>
 
         <!-- 系統設定 -->
@@ -216,24 +248,29 @@
             <header><h1>⚙️ 系統核心設定</h1></header>
             <div class="settings-container">
                 <div class="settings-section-card">
-                    <h3>Gemini AI 金鑰</h3>
-                    <input type="password" id="api-key-input" placeholder="貼入你的 API Key..." style="margin-bottom:20px;">
-                    <button class="btn" onclick="saveApiKey()">儲存設定</button>
+                    <h3>Gemini AI 核心金鑰</h3>
+                    <input type="password" id="api-key-input" placeholder="貼入您的 API Key...">
+                    <button class="btn" style="margin-top:20px;" onclick="saveApiKey()">確認金鑰並啟用</button>
                 </div>
                 <div class="settings-grid">
                     <div class="settings-section-card">
-                        <h3>人員新增</h3>
-                        <label>姓名</label><input type="text" id="add-mem-name">
-                        <label style="margin-top:15px; display:block;">入職年份</label><input type="number" id="add-mem-year" value="2024">
-                        <button class="btn" style="width:100%; margin-top:25px;" onclick="addNewMember()">確認加入</button>
+                        <h3>人員新增與編制</h3>
+                        <label>成員姓名</label><input type="text" id="add-mem-name">
+                        <label style="margin-top:15px;">入職年份</label><input type="number" id="add-mem-year" value="2024">
+                        <button class="btn" style="width:100%; margin-top:25px;" onclick="addNewMember()">確認加入資源庫</button>
                     </div>
                     <div class="settings-section-card">
-                        <h3>專案建立</h3>
-                        <label>代號</label><input type="text" id="add-proj-name">
-                        <label style="margin-top:15px; display:block;">規模</label>
-                        <select id="add-proj-scale"><option value="large">大型</option><option value="medium" selected>中型</option><option value="small">小型</option></select>
-                        <button class="btn" style="width:100%; margin-top:25px;" onclick="addNewProject()">發布專案</button>
+                        <h3>新專案建立發布</h3>
+                        <label>專案代號</label><input type="text" id="add-proj-name">
+                        <label style="margin-top:15px;">專案複雜度</label>
+                        <select id="add-proj-scale"><option value="large">大型專案 (🔴)</option><option value="medium" selected>中型專案 (🔵)</option><option value="small">小型專案 (⚪)</option></select>
+                        <button class="btn" style="width:100%; margin-top:25px;" onclick="addNewProject()">正式建立專案</button>
                     </div>
+                </div>
+                <div class="settings-section-card">
+                    <h3>戰力類別權重定義</h3>
+                    <div id="module-settings-list"></div>
+                    <button class="btn btn-secondary" style="margin-top:25px;" onclick="addModuleSetting()">+ 新增類別</button>
                 </div>
             </div>
         </div>
@@ -243,37 +280,49 @@
     <div id="member-detail-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title-area"><h2 id="modal-title">成員詳情</h2><div id="modal-subtitle"></div></div>
-                <button class="btn btn-close" onclick="closeModal()">✕ 關閉</button>
+                <div class="modal-title-area"><h2 id="modal-title">成員詳情</h2><div id="modal-subtitle" style="font-weight:700; color:var(--text-secondary); font-size:0.95rem;"></div></div>
+                <button class="btn btn-close" onclick="closeModal()">✕ 關閉視窗</button>
             </div>
             <div class="modal-body">
-                <div class="modal-nav">
-                    <div class="nav-item active" id="tab-work" onclick="switchTab('work')">戰力組成</div>
-                    <div class="nav-item" id="tab-checklist" onclick="switchTab('checklist')">執行任務</div>
+                <div class="modal-side">
+                    <div class="pane-tab active" id="tab-work" onclick="switchTab('work')">戰力組成</div>
+                    <div class="pane-tab" id="tab-checklist" onclick="switchTab('checklist')">任務細節</div>
+                    <div class="pane-tab" id="tab-profile" onclick="switchTab('profile')">基本資料編輯</div>
                 </div>
                 <div class="modal-pane">
                     <div id="modal-work-view">
                         <div id="modal-assigned-list"></div>
-                        <div style="font-weight: 800; color: var(--text-secondary); margin: 30px 0 15px 0;">+ 調整全域權重</div>
-                        <div id="modal-module-selector" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                        <div style="font-weight: 900; color: var(--text-secondary); margin: 35px 0 15px 0; text-transform:uppercase; font-size:0.8rem; letter-spacing:1px;">+ 調整全域權重分配</div>
+                        <div id="modal-module-selector" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
                     </div>
                     <div id="modal-checklist-view" style="display:none">
-                        <div style="background:#F8FAFC; padding:25px; border-radius:25px; margin-bottom:30px; border: 1.5px solid var(--border-light);">
+                        <div style="background:#F8FAFC; padding:25px; border-radius:25px; margin-bottom:35px; border: 1.5px solid var(--border-light);">
                             <div style="display:flex; gap:15px; align-items:flex-end;">
-                                <div style="flex:1"><label style="font-size:0.75rem; font-weight:800; color:var(--text-secondary);">任務描述</label><input type="text" id="new-task-input" style="margin-top:5px;"></div>
-                                <div style="width:160px"><label style="font-size:0.75rem; font-weight:800; color:var(--text-secondary);">歸屬專案</label><select id="new-task-project" style="margin-top:5px;"></select></div>
-                                <button class="btn" onclick="addChecklistItem()" style="height:56px;">新增</button>
+                                <div style="flex:1"><label style="font-size:0.8rem; font-weight:900;">任務內容描述</label><input type="text" id="new-task-input" style="margin-top:8px;"></div>
+                                <div style="width:180px"><label style="font-size:0.8rem; font-weight:900;">歸屬專案</label><select id="new-task-project" style="margin-top:8px;"></select></div>
+                                <button class="btn" onclick="addChecklistItem()" style="height:58px;">新增任務</button>
                             </div>
                         </div>
                         <div id="active-tasks-list"></div>
                         <div id="active-tasks-pagination" style="display:flex; justify-content:center; align-items:center; gap:20px; margin-top:30px;"></div>
-                        <div id="completed-tasks-container" style="margin-top: 40px; border-top: 2px dashed #E2E8F0; padding-top: 25px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                                <span style="font-weight: 900; color: #94A3B8;">歷史任務記錄</span>
-                                <span style="font-size: 0.8rem; color: var(--accent-blue); cursor: pointer; font-weight:800;" onclick="clearDoneTasks()">清理歷史</span>
+                        <div id="completed-tasks-container" style="margin-top: 40px; border-top: 2px dashed #E2E8F0; padding-top: 30px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span style="font-weight: 900; color: #94A3B8; font-size: 1rem;">歷史完成記錄</span>
+                                <span style="font-size: 0.85rem; color: var(--accent-blue); cursor: pointer; font-weight:900;" onclick="clearDoneTasks()">清理所有已完成</span>
                             </div>
                             <div id="completed-tasks-list"></div>
-                            <div id="history-expand-btn" style="text-align:center; background:#F1F5F9; padding:15px; border-radius:15px; cursor:pointer; font-weight:800; color:var(--accent-blue); margin-top:20px;" onclick="toggleHistoryFull()">展開完整歷史紀錄</div>
+                            <div id="history-expand-btn" style="text-align:center; background:#F1F5F9; padding:15px; border-radius:18px; cursor:pointer; font-weight:900; color:var(--accent-blue); margin-top:20px;" onclick="toggleHistoryFull()">展開完整歷史紀錄</div>
+                        </div>
+                    </div>
+                    <div id="modal-profile-view" style="display:none">
+                        <div style="background:white; padding:30px; border-radius:24px; border:1px solid #eee;">
+                            <label>成員全名</label><input type="text" id="edit-mem-name">
+                            <label style="margin-top:20px; display:block;">入職年份</label><input type="number" id="edit-mem-year">
+                            <label style="margin-top:20px; display:block;">生日 (MM-DD)</label><input type="text" id="edit-mem-bday">
+                            <div style="margin-top:35px; display:flex; gap:15px;">
+                                <button class="btn" style="flex:1" onclick="saveProfileEdit()">儲存並更新</button>
+                                <button class="btn btn-danger" onclick="deleteMemberAction()">永久移除成員</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -291,9 +340,10 @@
         let activeProjects = [{ id:'ksh5', name:'KSH5', year:'P27', color:'#EAB308', scale: 'large' },{ id:'ask5', name:'ASK5', year:'P27', color:'#3B82F6', scale: 'medium' }];
         let historyProjects = [];
         let moduleLibrary = [{id:'mod1', name:'架構設計', weight:30}, {id:'mod2', name:'專案調度', weight:20}, {id:'mod3', name:'核心開發', weight:40}];
+        
         let currentEditingId = null; let activeTaskPage = 1; let showFullHistory = false; const TASKS_PER_PAGE = 7;
 
-        function init() { renderDashboard(); updateInsightDashboard(); switchView('dashboard-overview'); }
+        function init() { renderDashboard(); updateInsightDashboard(); renderSettings(); switchView('dashboard-overview'); }
 
         function switchView(viewId) {
             document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
@@ -321,12 +371,12 @@
             document.getElementById('stat-over').innerText = overCount;
             document.getElementById('hint-large-proj').innerText = activeProjects.filter(p=>p.scale==='large').length;
             const progress = totalT > 0 ? Math.round((doneT/totalT)*100) : 0;
-            document.getElementById('task-progress-summary').innerHTML = `<div style="text-align:center; padding:30px;"><div style="font-size:5rem; font-weight:900; color:var(--accent-green); line-height:1;">${progress}%</div><div style="color:var(--text-secondary); font-weight:800; margin-top:20px; font-size:1.1rem;">全課執行進度</div></div>`;
+            document.getElementById('task-progress-summary').innerHTML = `<div style="text-align:center; padding:15px;"><div style="font-size:4rem; font-weight:900; color:var(--accent-green); line-height:1;">${progress}%</div><div style="color:var(--text-secondary); font-weight:800; margin-top:15px; font-size:1rem;">全體目標達成率</div></div>`;
         }
 
         async function getAiInsight() {
             if(!geminiApiKey) return alert("請輸入 API Key");
-            const box = document.getElementById('ai-insight-text'); box.innerText = "Gemini AI 正根據專案規模與人力負載進行深度建模...";
+            const box = document.getElementById('ai-insight-text'); box.innerText = "Gemini AI 正根據專案規模與人力負荷進行深度建模分析...";
             const prompt = `分析 TPM 數據：成員分配 ${JSON.stringify(members.map(m=>({name:m.name, load:m.workload.reduce((s,w)=>s+w.weight,0), projCount: m.assignedProjects.length})))}。專案規模 ${JSON.stringify(activeProjects.map(p=>({name:p.name, scale:p.scale})))}。請給出三點調度與過勞預警建議。`;
             try {
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiApiKey}`, {
@@ -336,23 +386,24 @@
             } catch(e) { box.innerText = "連線失敗"; }
         }
 
+        // 成員檔案：極簡圖鑑渲染
         function renderMemberGallery() {
             const container = document.getElementById('member-gallery-list');
             container.innerHTML = members.map(m => {
                 const load = m.workload.reduce((s,w)=>s+w.weight,0);
                 const color = load > 100 ? 'var(--accent-red)' : (load > 75 ? 'var(--accent-orange)' : 'var(--accent-green)');
                 return `
-                <div class="member-identity-card">
-                    <div class="card-header">
-                        <div class="avatar-circle">${m.name.charAt(0)}</div>
-                        <div class="identity-info"><h4>${m.name}</h4><span>入職: ${m.joinYear} 年</span></div>
-                        <div style="margin-left:auto; text-align:right;"><div style="font-size:1.2rem; font-weight:900; color:${color}">${load}%</div><div style="font-size:0.6rem; font-weight:800; color:var(--text-secondary);">LOAD</div></div>
+                <div class="id-card">
+                    <div class="id-header">
+                        <div class="avatar">${m.name.charAt(0)}</div>
+                        <div class="id-info"><h4>${m.name}</h4><span>入職: ${m.joinYear} 年</span></div>
+                        <div style="margin-left:auto; text-align:right;"><div style="font-size:1.1rem; font-weight:900; color:${color}">${load}%</div></div>
                     </div>
                     <div class="metrics-grid">
                         <div class="metric-item"><span class="metric-label">參與專案</span><span class="metric-val">${m.assignedProjects.length} 案</span></div>
                         <div class="metric-item"><span class="metric-label">執行中任務</span><span class="metric-val">${m.tasks.filter(t=>!t.done).length} 項</span></div>
                     </div>
-                    <button class="btn" style="width:100%; margin-top:25px; background:#F8FAFC; color:#000; border:1px solid #E2E8F0;" onclick="openModal('${m.id}')">管理戰力</button>
+                    <button class="btn" style="width:100%; margin-top:20px; background:#F8FAFC; color:#000; border:1px solid #E2E8F0; font-size:0.85rem; padding:8px 0;" onclick="openModal('${m.id}')">管理戰力檔案</button>
                 </div>`;
             }).join('');
         }
@@ -365,7 +416,7 @@
                 const grid = document.createElement('div'); grid.className = 'project-grid';
                 activeProjects.filter(p => p.year === yr).forEach(p => {
                     const st = p.scale === 'large' ? '🔴 大' : (p.scale === 'medium' ? '🔵 中' : '⚪ 小');
-                    grid.innerHTML += `<div class="project-box"><div class="project-title" style="background:${p.color}"><span>${p.name} <small class="project-scale-tag">${st}</small></span><span style="cursor:pointer;" onclick="archiveProject('${p.id}')">➜</span></div><div class="drop-zone" id="proj-${p.id}" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>`;
+                    grid.innerHTML += `<div class="project-box"><div class="project-title" style="background:${p.color}"><span>${p.name} <small class="project-scale-tag">${st}</small></span><span style="cursor:pointer; font-size:1.4rem;" onclick="archiveProject('${p.id}')">➜</span></div><div class="drop-zone" id="proj-${p.id}" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>`;
                 });
                 row.appendChild(grid); container.appendChild(row);
             });
@@ -414,10 +465,16 @@
             const m = members.find(mem => mem.id === id);
             document.getElementById('modal-title').innerText = m.name;
             document.getElementById('modal-subtitle').innerText = `目前負責 ${m.assignedProjects.length} 項專案 | 入職 ${m.joinYear} 年度`;
+            
+            document.getElementById('edit-mem-name').value = m.name;
+            document.getElementById('edit-mem-year').value = m.joinYear;
+            document.getElementById('edit-mem-bday').value = m.birthday || '';
+            
             const sel = document.getElementById('new-task-project');
-            sel.innerHTML = `<option value="general">一般/個人任務</option>` + m.assignedProjects.map(pid => {
+            sel.innerHTML = `<option value="general">一般/個人任務區</option>` + m.assignedProjects.map(pid => {
                 const p = activeProjects.find(ap => ap.id === pid); return p ? `<option value="${p.id}">${p.name}</option>` : '';
             }).join('');
+            
             renderWorkContent(m); renderChecklist(m); switchTab('work');
             document.getElementById('member-detail-modal').style.display = 'flex';
         }
@@ -427,14 +484,14 @@
             const doneT = (m.tasks || []).filter(t => t.done).sort((a,b)=> b.date - a.date);
             const list = document.getElementById('active-tasks-list'); list.innerHTML = '';
             const pageTasks = actT.slice((activeTaskPage-1)*TASKS_PER_PAGE, activeTaskPage*TASKS_PER_PAGE);
-            if(pageTasks.length === 0) list.innerHTML = `<div style="text-align:center; opacity:0.4; padding:30px; font-weight:700;">暫無任務</div>`;
+            if(pageTasks.length === 0) list.innerHTML = `<div style="text-align:center; opacity:0.4; padding:30px; font-weight:700;">暫無任務。</div>`;
             else {
                 const grouped = pageTasks.reduce((acc, t) => {
                     const key = t.project || 'general'; if(!acc[key]) acc[key] = []; acc[key].push(t); return acc;
                 }, {});
                 Object.keys(grouped).forEach(k => {
                     const label = activeProjects.find(p=>p.id===k)?.name || '一般任務區';
-                    list.innerHTML += `<div style="font-size:0.75rem; font-weight:800; color:#94A3B8; margin:15px 0 8px 5px;">${label}</div>`;
+                    list.innerHTML += `<div style="font-size:0.75rem; font-weight:900; color:#94A3B8; margin:15px 0 8px 5px; text-transform:uppercase;">${label}</div>`;
                     grouped[k].forEach(t => list.innerHTML += createTaskHTML(t, m.tasks.indexOf(t)));
                 });
             }
@@ -471,7 +528,7 @@
             renderChecklist(m); updateInsightDashboard();
         }
         function clearDoneTasks() {
-            if(!confirm("確定清理已完成歷史？")) return;
+            if(!confirm("確定清理歷史？")) return;
             const m = members.find(mem => mem.id === currentEditingId); m.tasks = m.tasks.filter(t => !t.done);
             renderChecklist(m); updateInsightDashboard();
         }
@@ -480,13 +537,13 @@
             const total = m.workload.reduce((s,w)=>s+w.weight,0);
             document.getElementById('modal-assigned-list').innerHTML = `
                 <div style="background:#F8FAFC; padding:40px; border-radius:30px; border:2.5px solid #E2E8F0; text-align:center;">
-                    <div style="font-size:0.9rem; font-weight:900; color:var(--text-secondary); text-transform:uppercase;">全域戰力負荷</div>
-                    <div style="font-size:4rem; font-weight:900; margin:10px 0; line-height:1;">${total}%</div>
+                    <div style="font-size:0.9rem; font-weight:900; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1.5px;">全域戰力負荷佔比</div>
+                    <div style="font-size:4.5rem; font-weight:900; margin:15px 0; line-height:1;">${total}%</div>
                     <div style="margin-top:25px; display:grid; gap:12px;">
-                    ${m.workload.map((w,i)=>`<div style="display:flex; justify-content:space-between; align-items:center; padding:15px 20px; border-radius:15px; background:#fff; border:1px solid #E2E8F0;"><span style="font-weight:800;">${w.name} (${w.weight}%)</span><span style="color:var(--accent-red); cursor:pointer; font-weight:900;" onclick="removeWork(${i})">移除</span></div>`).join('')}
+                    ${m.workload.map((w,i)=>`<div style="display:flex; justify-content:space-between; align-items:center; padding:18px 25px; border-radius:18px; background:#fff; border:1px solid #E2E8F0;"><span style="font-weight:800; color:#334155;">${w.name} (${w.weight}%)</span><span style="color:var(--accent-red); cursor:pointer; font-weight:900;" onclick="removeWork(${i})">移除</span></div>`).join('')}
                     </div>
                 </div>`;
-            document.getElementById('modal-module-selector').innerHTML = moduleLibrary.map(lib => `<button class="btn btn-close" style="font-size:0.85rem;" onclick="addWork('${lib.id}')">+ ${lib.name}</button>`).join('');
+            document.getElementById('modal-module-selector').innerHTML = moduleLibrary.map(lib => `<button class="btn btn-close" style="font-size:0.9rem;" onclick="addWork('${lib.id}')">+ ${lib.name}</button>`).join('');
         }
 
         function addWork(libid) {
@@ -498,8 +555,21 @@
             renderWorkContent(m); refreshPositions(); updateInsightDashboard();
         }
         function closeModal() { document.getElementById('member-detail-modal').style.display = 'none'; }
-        function saveApiKey() { geminiApiKey = document.getElementById('api-key-input').value; alert("AI 金鑰儲存成功。"); }
+        function saveApiKey() { geminiApiKey = document.getElementById('api-key-input').value; alert("金鑰授權成功。"); }
         
+        function saveProfileEdit() {
+            const m = members.find(mem => mem.id === currentEditingId);
+            m.name = document.getElementById('edit-mem-name').value;
+            m.joinYear = parseInt(document.getElementById('edit-mem-year').value);
+            m.birthday = document.getElementById('edit-mem-bday').value;
+            renderMemberGallery(); renderDashboard(); closeModal();
+        }
+        function deleteMemberAction() {
+            if(!confirm("確定永久移除此成員？此操作無法撤回。")) return;
+            members = members.filter(m => m.id !== currentEditingId);
+            renderMemberGallery(); renderDashboard(); updateInsightDashboard(); closeModal();
+        }
+
         function archiveProject(id) {
             if(!confirm("確定結案此專案？")) return;
             const idx = activeProjects.findIndex(p=>p.id===id); const p = activeProjects.splice(idx,1)[0];
@@ -508,7 +578,7 @@
             renderDashboard(); updateInsightDashboard();
         }
         function renderHistory() {
-            document.getElementById('history-container').innerHTML = historyProjects.map(p => `<div class="project-box" style="filter:grayscale(1); opacity:0.6;"><div class="project-title" style="background:#64748B"><span>${p.name}</span></div><div style="padding:25px; font-weight:900; text-align:center;">已封存於：${p.date}</div></div>`).join('') || '<p style="text-align:center; width:100%; opacity:0.4;">尚無結案記錄。</p>';
+            document.getElementById('history-container').innerHTML = historyProjects.map(p => `<div class="project-box" style="filter:grayscale(1); opacity:0.6;"><div class="project-title" style="background:#64748B"><span>${p.name}</span></div><div style="padding:30px; font-weight:900; text-align:center;">已封存於：${p.date}</div></div>`).join('') || '<p style="text-align:center; width:100%; opacity:0.4;">尚無結案記錄。</p>';
         }
         function addNewMember() {
             const n = document.getElementById('add-mem-name').value; if(!n) return;
@@ -523,15 +593,16 @@
         function renderSettings() {
             const list = document.getElementById('module-settings-list'); if(!list) return;
             list.innerHTML = moduleLibrary.map((m,i)=>`
-                <div style="display:grid; grid-template-columns: 1fr 120px 60px; gap:15px; margin-bottom:15px;"><input type="text" value="${m.name}" onchange="moduleLibrary[${i}].name=this.value"><input type="number" value="${m.weight}" onchange="moduleLibrary[${i}].weight=parseInt(this.value)"><button class="btn btn-close" style="color:red" onclick="moduleLibrary.splice(${i},1);renderSettings()">✕</button></div>`).join('');
+                <div style="display:grid; grid-template-columns: 1fr 120px 60px; gap:15px; margin-bottom:15px;"><input type="text" value="${m.name}" onchange="moduleLibrary[${i}].name=this.value" placeholder="類別"><input type="number" value="${m.weight}" onchange="moduleLibrary[${i}].weight=parseInt(this.value)" placeholder="權重"><button class="btn btn-danger" style="padding:0; display:flex; align-items:center; justify-content:center;" onclick="moduleLibrary.splice(${i},1);renderSettings()">✕</button></div>`).join('');
         }
         function addModuleSetting() { moduleLibrary.push({id:'mod'+Date.now(), name:'新類別', weight:10}); renderSettings(); }
 
         function switchTab(t) {
             document.getElementById('modal-work-view').style.display = t === 'work' ? 'block' : 'none';
             document.getElementById('modal-checklist-view').style.display = t === 'checklist' ? 'block' : 'none';
-            document.getElementById('tab-work').classList.toggle('active', t === 'work');
-            document.getElementById('tab-checklist').classList.toggle('active', t === 'checklist');
+            document.getElementById('modal-profile-view').style.display = t === 'profile' ? 'block' : 'none';
+            document.querySelectorAll('.pane-tab').forEach(p => p.classList.remove('active'));
+            document.getElementById('tab-' + t).classList.add('active');
         }
         window.onload = init;
     </script>
