@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPM 戰力總部 | 數位管理入口</title>
+    <style>
+        :root {
+            --bg-color: #FEF9E7; 
+            --card-white: #FFFFFF;
+            --active-yellow: #FDE047;
+            --text-main: #1A1A1A;
+            --text-secondary: #64748B;
+            --border-light: #E2E8F0;
+            --shadow-premium: 0 20px 40px rgba(0,0,0,0.04);
+            --radius-lg: 32px;
+        }
+
+        * { box-sizing: border-box; font-family: "Microsoft JhengHei", "Segoe UI", sans-serif; color: var(--text-main); }
+        
+        body { 
+            background-color: var(--bg-color); 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 60px 20px;
+            transition: background 0.3s ease;
+        }
+
+        .bg-watermark {
+            position: fixed;
+            top: -50px;
+            right: -20px;
+            font-size: 20rem;
+            font-weight: 900;
+            color: #FDF2D0;
+            z-index: -1;
+            opacity: 0.5;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .lang-switcher {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            z-index: 100;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--text-main);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo-mark {
+            font-size: 1.2rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hub-card {
+            background: var(--card-white);
+            border: 1.5px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 50px 35px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: var(--shadow-premium);
+            position: relative;
+        }
+
+        .hub-card.active { border: 2px solid var(--text-main); }
+        .hub-card.active:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+            border-color: var(--active-yellow);
+        }
+
+        .hub-card.locked {
+            background: rgba(255,255,255,0.5);
+            border-style: dashed;
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        .icon-box {
+            width: 85px;
+            height: 85px;
+            background: #F8FAFC;
+            border-radius: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            font-size: 2.8rem;
+            transition: 0.3s;
+        }
+
+        .active .icon-box { background: var(--active-yellow); }
+
+        .hub-card h3 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin: 0 0 15px 0;
+        }
+
+        .hub-card p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            padding: 5px 14px;
+            border-radius: 12px;
+            background: #F1F5F9;
+            color: #64748B;
+        }
+
+        .active .status-badge { background: var(--text-main); color: white; }
+
+        footer {
+            margin-top: auto;
+            padding: 60px 0;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.4rem; }
+            .hub-grid { grid-template-columns: 1fr; }
+            .lang-switcher { top: 20px; right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-watermark">TPM</div>
+
+    <div class="lang-switcher">
+        <button class="lang-btn active" onclick="setLang('tw')">中文</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+
+    <header>
+        <div class="logo-mark" data-i18n="logo-mark">System Management</div>
+        <h1 data-i18n="main-title">TPM 數位決策總部</h1>
+        <div class="subtitle" data-i18n="subtitle">Daniel Shih | 2026 年度高效管理套件</div>
+    </header>
+
+    <div class="hub-grid">
+        <!-- 1. 人力資源排配 (連結到 resource_allocation.html) -->
+        <a href="resource_allocation.html" class="hub-card active">
+            <div class="status-badge" data-i18n="status-online">Online</div>
+            <div class="icon-box">📊</div>
+            <h3 data-i18n="card1-title">人力資源排配</h3>
+            <p data-i18n="card1-desc">戰力負載監控、專案人力佈署與細節任務追蹤系統。</p>
+        </a>
+
+        <!-- 其餘預留功能 -->
+        <div class="hub-card locked">
+            <div class="status-badge" data-i18n="status-upcoming">Upcoming</div>
+            <div class="icon-box">🤖</div>
+            <h3 data-i18n="card2-title">AI 教材訓練</h3>
+            <p data-i18n="card2-desc">整合 LLM 知識庫，自動化生成 TPM 標準作業程序與訓練內容。</p>
+        </div>
+
+        <div class="hub-card locked">
+            <div class="status-badge" data-i18n="status-reserved">Reserved</div>
+            <div class="icon-box">🛡️</div>
+            <h3 data-i18n="card3-title">風險智慧預警</h3>
+            <p data-i18n="card3-desc">利用數據模型預測專案瓶頸，自動標記延遲風險與資源缺口。</p>
+        </div>
+
+        <div class="hub-card locked">
+            <div class="status-badge" data-i18n="status-reserved">Reserved</div>
+            <div class="icon-box">📈</div>
+            <h3 data-i18n="card4-title">績效戰力分析</h3>
+            <p data-i18n="card4-desc">量化團隊產出價值，分析資源投入回報率與戰力成長曲線。</p>
+        </div>
+
+        <div class="hub-card locked">
+            <div class="status-badge" data-i18n="status-reserved">Reserved</div>
+            <div class="icon-box">📚</div>
+            <h3 data-i18n="card5-title">技術文檔中心</h3>
+            <p data-i18n="card5-desc">集中管理歷史專案架構文件、經驗教訓與結案心得存檔。</p>
+        </div>
+
+        <div class="hub-card locked">
+            <div class="status-badge" data-i18n="status-reserved">Reserved</div>
+            <div class="icon-box">⚡</div>
+            <h3 data-i18n="card6-title">效能自動化工具</h3>
+            <p data-i18n="card6-desc">日常繁瑣管理流程自動化腳本與跨部門協作溝通模板。</p>
+        </div>
+    </div>
+
+    <footer>
+        <span data-i18n="footer-text">V2.1 | © 2026 | Created by: Daniel Shih</span>
+    </footer>
+
+    <script>
+        const translations = {
+            tw: {
+                "logo-mark": "System Management",
+                "main-title": "TPM 數位決策總部",
+                "subtitle": "Daniel Shih | 2026 年度高效管理套件",
+                "status-online": "Online",
+                "status-upcoming": "Upcoming",
+                "status-reserved": "Reserved",
+                "card1-title": "人力資源排配",
+                "card1-desc": "戰力負載監控、專案人力佈署與細節任務追蹤系統。",
+                "card2-title": "AI 教材訓練",
+                "card2-desc": "整合 LLM 知識庫，自動化生成 TPM 標準作業程序與訓練內容。",
+                "card3-title": "風險智慧預警",
+                "card3-desc": "利用數據模型預測專案瓶頸，自動標記延遲風險與資源缺口。",
+                "card4-title": "績效戰力分析",
+                "card4-desc": "量化團隊產出價值，分析資源投入回報率與戰力成長曲線。",
+                "card5-title": "技術文檔中心",
+                "card5-desc": "集中管理歷史專案架構文件、經驗教訓與結案心得存檔。",
+                "card6-title": "效能自動化工具",
+                "card6-desc": "日常繁瑣管理流程自動化腳本與跨部門協作溝通模板。",
+                "footer-text": "V2.1 | © 2026 | Created by: Daniel Shih"
+            },
+            en: {
+                "logo-mark": "System Management",
+                "main-title": "TPM Digital Hub",
+                "subtitle": "Daniel Shih | 2026 Management Suite",
+                "status-online": "Online",
+                "status-upcoming": "Upcoming",
+                "status-reserved": "Reserved",
+                "card1-title": "Resource Allocation",
+                "card1-desc": "Workload monitoring, project deployment, and task tracking system.",
+                "card2-title": "AI Training Hub",
+                "card2-desc": "LLM-powered SOP generation and automated onboarding content.",
+                "card3-title": "Risk Intelligence",
+                "card3-desc": "Predict project bottlenecks and automatically tag potential risks.",
+                "card4-title": "Performance Analytics",
+                "card4-desc": "Quantify team value, ROI analysis, and talent growth tracking.",
+                "card5-title": "Tech Archive",
+                "card5-desc": "Centralized repository for project architecture and lessons learned.",
+                "card6-title": "Process Automation",
+                "card6-desc": "Automated scripts for routine tasks and collaboration templates.",
+                "footer-text": "V2.1 | © 2026 | Created by: Daniel Shih"
+            }
+        };
+
+        function setLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.toLowerCase().includes(lang === 'tw' ? '中文' : 'en')) {
+                    btn.classList.add('active');
+                }
+            });
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+            
+            localStorage.setItem('tpm-lang-pref', lang);
+        }
+
+        window.onload = () => {
+            const savedLang = localStorage.getItem('tpm-lang-pref') || 'tw';
+            setLang(savedLang);
+        };
+    </script>
+</body>
+</html>
