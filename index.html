@@ -3,48 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TPM 戰術指揮總部 | 數位管理入口</title>
+    <title>System TPM 公會總部 | System TPM Guild</title>
     <style>
         :root {
-            /* 保留 Daniel 最愛的 Premium Stationary 配色 */
             --bg-color: #FEF9E7; 
             --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
             --active-yellow: #FDE047;
             --text-main: #1A1A1A;
             --text-secondary: #475569;
-            --border-heavy: #1A1A1A; /* 改為硬派高對比純黑線 */
-            --shadow-tactical: 5px 5px 0px #1A1A1A; /* 塊狀硬陰影 */
-            --radius-sm: 8px; /* 銳化圓角，去除可愛感 */
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 6px 6px 0px #1A1A1A;
+            --radius-sm: 12px;
         }
         
         * { 
             box-sizing: border-box; 
-            /* 更換為全球多語系兼容字體堆疊（支援越南文） */
-            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; 
+            font-family: "Segoe UI", "Inter", "Noto Sans TC", "Noto Sans", sans-serif; 
             color: var(--text-main); 
         }
         
         body { 
             background-color: var(--bg-color); 
-            /* 注入微弱的戰術科技點狀網格背景 */
-            background-image: radial-gradient(var(--sidebar-cream) 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
+            background-image: radial-gradient(var(--sidebar-cream) 2px, transparent 2px);
+            background-size: 32px 32px;
             margin: 0; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
+            justify-content: flex-start;
+            width: 100vw;
             min-height: 100vh; 
-            padding: 60px 20px; 
+            padding: 40px; 
+            overflow-x: hidden;
+        }
+
+        .page-container {
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .bg-watermark { 
             position: fixed; 
             bottom: 20px; 
             right: 20px; 
-            font-size: 12rem; 
+            font-size: 10rem; 
             font-weight: 900; 
-            color: rgba(253, 242, 208, 0.6); 
+            color: rgba(253, 242, 208, 0.5); 
             z-index: -1; 
             user-select: none; 
             font-family: monospace;
@@ -56,20 +64,20 @@
             right: 40px; 
             display: flex; 
             background: var(--card-white); 
-            border: 2px solid var(--border-heavy); 
+            border: 3px solid var(--border-heavy); 
             border-radius: var(--radius-sm);
-            box-shadow: 2px 2px 0px var(--border-heavy);
+            box-shadow: 3px 3px 0px var(--border-heavy);
             padding: 2px; 
             z-index: 100; 
         }
 
         .lang-btn { 
-            padding: 6px 14px; 
-            border-radius: 4px; 
+            padding: 8px 16px; 
+            border-radius: 6px; 
             border: none; 
             background: transparent; 
             cursor: pointer; 
-            font-size: 0.75rem; 
+            font-size: 0.8rem; 
             font-weight: 900; 
             color: var(--text-secondary); 
         }
@@ -79,38 +87,43 @@
             color: white; 
         }
 
-        header { text-align: center; margin-bottom: 70px; }
+        header { 
+            text-align: center; 
+            margin-bottom: 60px; 
+            width: 100%;
+        }
+
         .logo-mark { 
-            font-size: 0.85rem; 
+            font-size: 0.9rem; 
             font-weight: 900; 
-            letter-spacing: 6px; 
+            letter-spacing: 5px; 
             text-transform: uppercase; 
             margin-bottom: 12px; 
             color: var(--text-secondary); 
             font-family: monospace;
         }
-        h1 { font-size: 2.8rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
-        .subtitle { font-size: 1rem; color: var(--text-secondary); font-weight: 700; margin-top: 12px; }
+
+        h1 { font-size: 3.2rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
+        .subtitle { font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; margin-top: 15px; }
 
         .hub-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 35px; 
+            gap: 30px; 
             width: 100%; 
-            max-width: 1150px; 
+            padding: 10px 0;
         }
 
-        /* 核心重構：戰術矩陣卡片 */
         .hub-card { 
             background: var(--card-white); 
-            border: 2px solid var(--border-heavy); 
+            border: 3px solid var(--border-heavy); 
             border-radius: var(--radius-sm); 
-            padding: 45px 30px; 
+            padding: 40px 30px; 
             text-decoration: none; 
-            transition: all 0.2s ease; 
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); 
             display: flex; 
             flex-direction: column; 
-            align-items: flex-start; /* 改為靠左對齊，更具備儀表板公文感 */
+            align-items: flex-start; 
             text-align: left; 
             box-shadow: var(--shadow-tactical); 
             position: relative; 
@@ -118,33 +131,31 @@
 
         .hub-card.active:hover { 
             transform: translate(-4px, -4px); 
-            box-shadow: 9px 9px 0px var(--text-main); 
-            background-color: #FFFDF4;
+            box-shadow: 10px 10px 0px var(--text-main); 
+            background-color: #FFFDF2;
         }
 
-        /* 權限控制隱藏類別 */
         .restricted-card {
-            display: none; /* 預設隱藏，只有暗號能解鎖 */
+            display: none; 
         }
 
         .hub-card.locked { 
-            background: repeating-linear-gradient(45deg, #fcfcfc, #fcfcfc 10px, #f5f5f5 10px, #f5f5f5 20px);
-            opacity: 0.6; 
+            background: repeating-linear-gradient(45deg, #FFFDF9, #FFFDF9 10px, #FDF2D0 10px, #FDF2D0 20px);
+            opacity: 0.5; 
             cursor: not-allowed; 
         }
 
-        /* 取代可愛 Emoji 的戰術幾何圖示框 */
         .icon-box { 
-            width: 50px; 
-            height: 50px; 
+            width: 55px; 
+            height: 55px; 
             background: var(--bg-color); 
-            border: 2px solid var(--border-heavy);
+            border: 3px solid var(--border-heavy);
             border-radius: var(--radius-sm);
             display: flex; 
             align-items: center; 
             justify-content: center; 
             margin-bottom: 25px; 
-            font-size: 1.5rem; 
+            font-size: 1.8rem; 
         }
         
         .hub-card.active .icon-box {
@@ -152,126 +163,151 @@
         }
 
         .hub-card h3 { font-size: 1.4rem; font-weight: 900; margin: 0 0 12px 0; letter-spacing: -0.5px; }
-        .hub-card p { font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; margin: 0; line-height: 1.6; }
+        .hub-card p { font-size: 0.95rem; color: var(--text-secondary); font-weight: 600; margin: 0; line-height: 1.6; }
 
-        /* 狀態標籤重構為軍事/代碼風格 */
         .status-badge { 
             position: absolute; 
             top: 25px; 
             right: 25px; 
-            font-size: 0.7rem; 
+            font-size: 0.75rem; 
             font-weight: 900; 
-            padding: 4px 10px; 
-            border-radius: 4px; 
-            border: 1.5px solid var(--border-heavy);
+            padding: 4px 12px; 
+            border-radius: 6px; 
+            border: 2px solid var(--border-heavy);
             font-family: monospace;
             background: #FFF;
         }
         .active .status-badge { background: var(--text-main); color: white; }
 
-        footer { margin-top: auto; padding: 80px 0 20px 0; text-align: center; font-size: 0.8rem; font-weight: 800; color: var(--text-secondary); font-family: monospace; }
+        footer { margin-top: auto; padding: 80px 0 20px 0; text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); font-family: monospace; }
     </style>
 </head>
 <body>
-    <div class="bg-watermark">TPM.HQ</div>
+    <div class="bg-watermark">TPM.GUILD</div>
     
-    <div class="lang-switcher">
-        <button class="lang-btn active" onclick="setLang('tw')">TW</button>
-        <button class="lang-btn" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" onclick="setLang('vn')">VN</button>
+    <div class="page-container">
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLang('tw')">TW</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" onclick="setLang('vn')">VN</button>
+        </div>
+        
+        <header>
+            <div class="logo-mark" data-i18n="logo-mark">GUILD HQ / LEVEL 2026</div>
+            <h1 data-i18n="main-title">System TPM 公會總部</h1>
+            <div class="subtitle" data-i18n="subtitle">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
+        </header>
+
+        <div class="hub-grid">
+            <a href="resource_allocation.html" class="hub-card active restricted-card" id="card-allocation">
+                <div class="status-badge" data-i18n="status-master">【公會長特權】</div>
+                <div class="icon-box">🏰</div>
+                <h3 data-i18n="card1-title">公會長戰略調度室</h3>
+                <p data-i18n="card1-desc">內部高級權限：即時指派冒險者任務、戰力負載監控與全域資源排配模組。</p>
+            </a>
+
+            <a href="talent_tree.html" class="hub-card active">
+                <div class="status-badge" data-i18n="status-open">【 全員開放 】</div>
+                <div class="icon-box">📜</div>
+                <h3 data-i18n="card2-title">冒險者手冊 / 初心者寶典</h3>
+                <p data-i18n="card2-desc">公會核心通識：標準作業程序（SOP）、跨部門協作指南與核心基礎修煉手冊。</p>
+            </a>
+
+            <div class="hub-card locked restricted-card" id="card-risk">
+                <div class="status-badge" data-i18n="status-secured">【高級機密】</div>
+                <div class="icon-box">🔮</div>
+                <h3 data-i18n="card3-title">魔力黑點預警眼</h3>
+                <p data-i18n="card3-desc">利用數據模型觀測任務瓶頸，自動標記高危延遲風險與核心資源缺口。</p>
+            </div>
+
+            <div class="hub-card locked">
+                <div class="status-badge" data-i18n="status-staging">【 試煉場 】</div>
+                <div class="icon-box">⚔️</div>
+                <h3 data-i18n="card4-title">階級晉升試煉</h3>
+                <p data-i18n="card4-desc">細節章節專屬考核：挑戰守關 Boss，檢驗修煉成果並晉升冒險者序列位階。</p>
+            </div>
+
+            <div class="hub-card locked">
+                <div class="status-badge" data-i18n="status-staging">【 隨機地下城 】</div>
+                <div class="icon-box">🛡️</div>
+                <h3 data-i18n="card5-title">隨機副本挑戰</h3>
+                <p data-i18n="card5-desc">動態隨機題庫：隨機抽取公會核心案例進行突襲考核，強化實戰應變力。</p>
+            </div>
+
+            <div class="hub-card locked">
+                <div class="status-badge" data-i18n="status-staging">【 賢者之石 】</div>
+                <div class="icon-box">🤖</div>
+                <h3 data-i18n="card6-title">AI 教材訓練中心</h3>
+                <p data-i18n="card6-desc">整合大語言模型（LLM）知識庫，自動化輔助生成標準化作業程序教材。</p>
+            </div>
+
+            <a href="archive.html" class="hub-card active">
+                <div class="status-badge" data-i18n="status-open">【 大圖書館 】</div>
+                <div class="icon-box">📚</div>
+                <h3 data-i18n="card7-title">大圖書館文檔庫</h3>
+                <p data-i18n="card7-desc">集中收錄公會歷史戰役架構文件、經驗教訓（Lessons Learned）與結案心得卷軸。</p>
+            </a>
+
+            <a href="talent_tree.html" class="hub-card active">
+                <div class="status-badge" data-i18n="status-open">【 修煉星盤 】</div>
+                <div class="icon-box">🌿</div>
+                <h3 data-i18n="card8-title">冒險者天賦樹</h3>
+                <p data-i18n="card8-desc">視覺化圖表呈現：清晰追蹤每位成員已解鎖之核心技能點與未完修修煉課程。</p>
+            </a>
+        </div>
+
+        <footer><span data-i18n="footer-text">GUILD.REVISION: V4.0 | @2026 | OPERATOR: DANIEL SHIH</span></footer>
     </div>
-    
-    <header>
-        <div class="logo-mark" data-i18n="logo-mark">SYS.OPERATIONS / LEVEL 2026</div>
-        <h1 data-i18n="main-title">TPM 數位決策總部</h1>
-        <div class="subtitle" data-i18n="subtitle">Daniel Shih | 年度高效管理與團隊修煉套件</div>
-    </header>
-
-    <div class="hub-grid">
-        <a href="resource_allocation.html" class="hub-card active restricted-card" id="card-allocation">
-            <div class="status-badge" data-i18n="status-online">[ ONLINE ]</div>
-            <div class="icon-box">📊</div>
-            <h3 data-i18n="card1-title">人力資源排配系統</h3>
-            <p data-i18n="card1-desc">內部決策模組：戰力負載動態監控、資源池排配與細節任務追蹤。</p>
-        </a>
-
-        <a href="training_dungeon.html" class="hub-card active">
-            <div class="status-badge" data-i18n="status-online">[ OPEN ]</div>
-            <div class="icon-box">⚔️</div>
-            <h3 data-i18n="card2-title">戰術修煉場</h3>
-            <p data-i18n="card2-desc">團隊知識資產化：標準作業程序（SOP）導引與冒險者闖關修煉地城。</p>
-        </a>
-
-        <div class="hub-card locked restricted-card" id="card-risk">
-            <div class="status-badge" data-i18n="status-reserved">[ SECURED ]</div>
-            <div class="icon-box">🛡️</div>
-            <h3 data-i18n="card3-title">風險智慧預警</h3>
-            <p data-i18n="card3-desc">利用數據模型預測專案瓶頸，自動標記延遲風險與資源缺口。</p>
-        </div>
-
-        <div class="hub-card locked">
-            <div class="status-badge" data-i18n="status-reserved">[ STAGING ]</div>
-            <div class="icon-box">📈</div>
-            <h3 data-i18n="card4-title">績效戰力分析</h3>
-            <p data-i18n="card4-desc">量化團隊產出價值，分析資源投入回報率與戰力成長曲線。</p>
-        </div>
-
-        <a href="archive.html" class="hub-card active">
-            <div class="status-badge" data-i18n="status-online">[ ARCHIVE ]</div>
-            <div class="icon-box">📚</div>
-            <h3 data-i18n="card5-title">技術文檔中心</h3>
-            <p data-i18n="card5-desc">集中管理歷史專案架構文件、經驗教訓與結案心得存檔。</p>
-        </a>
-
-        <div class="hub-card locked">
-            <div class="status-badge" data-i18n="status-reserved">[ STAGING ]</div>
-            <div class="icon-box">⚡</div>
-            <h3 data-i18n="card6-title">效能自動化工具</h3>
-            <p data-i18n="card6-desc">日常繁瑣流程自動化腳本與跨部門協作溝通戰術模板。</p>
-        </div>
-    </div>
-
-    <footer><span data-i18n="footer-text">SYS.REVISION: V3.5 | @2026 | OPERATOR: DANIEL SHIH</span></footer>
 
     <script>
-        // 三語系對照字典（包含越南文預留空間）
         const translations = {
             tw: {
-                "logo-mark": "SYS.OPERATIONS / LEVEL 2026", "main-title": "TPM 數位決策總部", "subtitle": "Daniel Shih | 年度高效管理與團隊修煉套件",
-                "status-online": "[ ONLINE ]", "status-reserved": "[ SECURED ]", "status-upcoming": "[ STAGING ]",
-                "card1-title": "人力資源排配系統", "card1-desc": "內部決策模組：戰力負載動態監控、資源池排配與細節任務追蹤。",
-                "card2-title": "戰術修煉場", "card2-desc": "團隊知識資產化：標準作業程序（SOP）導引與冒險者闖關修煉地城。",
-                "card3-title": "風險智慧預警", "card3-desc": "利用數據模型預測專案瓶頸，自動標記延遲風險與資源缺口。",
-                "card4-title": "績效戰力分析", "card4-desc": "量化團隊產出價值，分析資源投入回報率與戰力成長曲線。",
-                "card5-title": "技術文檔中心", "card5-desc": "集中管理歷史專案架構文件、經驗教訓與結案心得存檔。",
-                "card6-title": "效能自動化工具", "card6-desc": "日常繁瑣流程自動化腳本與跨部門協作溝通戰術模板。",
-                "footer-text": "SYS.REVISION: V3.5 | @2026 | OPERATOR: DANIEL SHIH"
+                "logo-mark": "GUILD HQ / LEVEL 2026", 
+                "main-title": "System TPM 公會總部", 
+                "subtitle": "Daniel Shih | 2026 年度高效管理與團隊修煉套件",
+                "status-master": "【公會長特權】", "status-open": "【 全員開放 】", "status-secured": "【高級機密】", "status-staging": "【 封印中 】",
+                "card1-title": "公會長戰略調度室", "card1-desc": "內部高級權限：即時指派冒險者任務、戰力負載監控與全域資源排配模組。",
+                "card2-title": "冒險者手冊 / 初心者寶典", "card2-desc": "公會核心通識：標準作業程序（SOP）、跨部門協作指南與核心基礎修煉手冊。",
+                "card3-title": "魔力黑點預警眼", "card3-desc": "利用數據模型觀測任務瓶頸，自動標記高危延遲風險與核心資源缺口。",
+                "card4-title": "階級晉升試煉", "card4-desc": "細節章節專屬考核：挑戰守關 Boss，檢驗修煉成果並晉升冒險者序列位階。",
+                "card5-title": "隨機副本挑戰", "card5-desc": "動態隨機題庫：隨機抽取公會核心案例進行突襲考核，強化實戰應變力。",
+                "card6-title": "AI 教材訓練中心", "card6-desc": "整合大語言模型（LLM）知識庫，自動化輔助生成標準化作業程序教材。",
+                "card7-title": "大圖書館文檔庫", "card7-desc": "集中收錄公會歷史戰役架構文件、經驗教訓（Lessons Learned）與結案心得卷軸。",
+                "card8-title": "冒險者天賦樹", "card8-desc": "視覺化圖表呈現：清晰追蹤每位成員已解鎖之核心技能點與未完修修煉課程。",
+                "footer-text": "GUILD.REVISION: V4.0 | @2026 | OPERATOR: DANIEL SHIH"
             },
             en: {
-                "logo-mark": "SYS.OPERATIONS / LEVEL 2026", "main-title": "TPM Tactical Command", "subtitle": "Daniel Shih | Management & Training Ecosystem",
-                "status-online": "[ ONLINE ]", "status-reserved": "[ SECURED ]", "status-upcoming": "[ STAGING ]",
-                "card1-title": "Resource Allocation", "card1-desc": "Internal Command: Live workload tracking, multi-project deployment, and grain task control.",
-                "card2-title": "Tactical Proving Grounds", "card2-desc": "Knowledge Management: Interactive SOP guidelines and gamified dungeon quest mode.",
-                "card3-title": "Risk Intelligence", "card3-desc": "Predict project bottlenecks and automatically tag potential buffer delays.",
-                "card4-title": "Performance Analytics", "card4-desc": "Quantify squad velocity, ROI matrix, and professional growth indexing.",
-                "card5-title": "Tech Document Hub", "card5-desc": "Centralized archive for system architecture documentation and post-mortem logs.",
-                "card6-title": "Process Automation", "card6-desc": "Automated pipeline management scripts and tactical cross-dept communication models.",
-                "footer-text": "SYS.REVISION: V3.5 | @2026 | OPERATOR: DANIEL SHIH"
+                "logo-mark": "GUILD HQ / LEVEL 2026", 
+                "main-title": "System TPM Guild", 
+                "subtitle": "Daniel Shih | 2026 Tactical Management & Training Suite",
+                "status-master": "[ GUILD MASTER ]", "status-open": "[ UNLOCKED ]", "status-secured": "[ CLASSIFIED ]", "status-staging": "[ STAGING ]",
+                "card1-title": "Guild Master's Strategic Desk", "card1-desc": "Guild Master Priority: Live workload monitoring, adventurer deployment, and resource orchestration backend.",
+                "card2-title": "Adventurer's Handbook", "card2-desc": "Guild Universal Foundation: Standard Operating Procedures (SOP), cross-dept communication formulas, and baseline tutorials.",
+                "card3-title": "Abyssal Risk Warning Eye", "card3-desc": "Predict system bottlenecks through data modeling, tagging operational latency and asset gaps automatically.",
+                "card4-title": "Rank Promotion Trials", "card4-desc": "Module Assessments: Challenge checkpoint Bosses to verify technical mastery and level up adventurer rankings.",
+                "card5-title": "Random Dungeon Raids", "card5-desc": "Dynamic Quiz Vault: Random pop-up challenges from actual historical bug registries to boost reflexes.",
+                "card6-title": "Sage's Stone AI Hub", "card6-desc": "LLM Knowledge Core: Automated production workspace for creating curriculum blueprints and process scripts.",
+                "card7-title": "The Grand Library Archive", "card7-desc": "Centralized archive storing historical systems design manifests, post-mortems, and hero scrolls.",
+                "card8-title": "Adventurer Talent Tree", "card8-desc": "Visual Progression Matrix: Dynamically mapping completed nodes, skill unlocks, and individual talent trends.",
+                "footer-text": "GUILD.REVISION: V4.0 | @2026 | OPERATOR: DANIEL SHIH"
             },
             vn: {
-                "logo-mark": "SYS.OPERATIONS / LEVEL 2026", "main-title": "Trung Tâm Điều Hành TPM", "subtitle": "Daniel Shih | Bộ Quản Lý Hiệu Suất Cao & Đào Tạo Đội Ngũ",
-                "status-online": "[ ONLINE ]", "status-reserved": "[ BẢO MẬT ]", "status-upcoming": "[ CHUẨN BỊ ]",
-                "card1-title": "Phân Phối Nguồn Lực", "card1-desc": "Mô-đun quản lý nội bộ: Giám sát tải lượng chiến đấu, điều phối nguồn lực và theo dõi nhiệm vụ.",
-                "card2-title": "Trường Luyện Tập Chiến Thuật", "card2-desc": "Tài sản hóa tri thức: Hướng dẫn quy trình chuẩn SOP và phó bản thử thách game hóa.",
-                "card3-title": "Cảnh Báo Rủi Ro Thông Minh", "card3-desc": "Dự đoán điểm nghẽn dự án, tự động đánh dấu rủi ro chậm trễ và thiếu hụt nguồn lực.",
-                "card4-title": "Phân Tích Năng Lực Hiệu Suất", "card4-desc": "Định lượng giá trị đầu ra, phân tích ROI đầu tư nguồn lực và biểu đồ tăng trưởng.",
-                "card5-title": "Trung Tâm Tài Liệu Kỹ Thuật", "card5-desc": "Quản lý tập trung tài liệu kiến trúc dự án, bài học kinh nghiệm và lưu trữ tổng kết.",
-                "card6-title": "Công Cụ Tự Động Hóa", "card6-desc": "Kịch bản tự động hóa quy trình hàng ngày và biểu mẫu giao tiếp liên phòng ban.",
-                "footer-text": "SYS.REVISION: V3.5 | @2026 | OPERATOR: DANIEL SHIH"
+                "logo-mark": "GUILD HQ / LEVEL 2026", 
+                "main-title": "Hội Quán System TPM", 
+                "subtitle": "Daniel Shih | Bộ Quản Lý Hiệu Suất Cao & Đào Tạo Đội Ngũ 2026",
+                "status-master": "【 QUYỀN HỘI TRƯỞNG 】", "status-open": "【 MỞ TOÀN VIÊN 】", "status-secured": "【 BẢO MẬT CAO 】", "status-staging": "【 PHONG ANSI 】",
+                "card1-title": "Phòng Điều Hành Của Hội Trưởng", "card1-desc": "Quyền hạn nội bộ cấp cao: Chỉ định nhiệm vụ cho thám hiểm giả, giám sát tải lượng và phân bổ nguồn lực.",
+                "card2-title": "Sổ Tay Thám Hiểm Giả / Sách Nhập Môn", "card2-desc": "Kiến thức cốt lõi: Quy trình vận hành chuẩn (SOP), hướng dẫn phối hợp liên phòng ban và tài liệu tu luyện cơ bản.",
+                "card3-title": "Ma Nhãn Dự Báo Rủi Ro Abyssal", "card3-desc": "Sử dụng mô hình dữ liệu để dự đoán điểm nghẽn, tự động đánh dấu rủi ro chậm trễ và thiếu hụt tài nguyên.",
+                "card4-title": "Thử Thách Thăng Cấp Bậc", "card4-desc": "Đánh giá từng chương chi tiết: Thử thách Boss để kiểm tra kết quả tu luyện và nâng cao thứ hạng thám hiểm giả.",
+                "card5-title": "Phó Bản Thử Thách Ngẫu Nhiên", "card5-desc": "Kho câu hỏi ngẫu nhiên: Trích xuất các tình huống thực tế để kiểm tra đột xuất, nâng cao khả năng ứng biến.",
+                "card6-title": "Trung Tâm Đào Tạo AI Hòn Đá Triết Gia", "card6-desc": "Tích hợp mô hình ngôn ngữ lớn (LLM), hỗ trợ tự động tạo tài liệu giảng dạy và quy trình chuẩn.",
+                "card7-title": "Thư Viện Lưu Trữ Đại Sảnh", "card7-desc": "Lưu trữ tập trung tài liệu kiến trúc dự án lịch sử, bài học kinh nghiệm và cuộn sách tổng kết.",
+                "card8-title": "Cây Tài Năng Thám Hiểm Giả", "card8-desc": "Biểu đồ trực quan: Theo dõi rõ ràng các điểm kỹ năng đã mở khóa và tiến độ tu luyện của từng thành viên.",
+                "footer-text": "GUILD.REVISION: V4.0 | @2026 | OPERATOR: DANIEL SHIH"
             }
         };
 
-        // 核心功能：切換語言
         function setLang(lang) {
             document.querySelectorAll('.lang-btn').forEach(btn => { 
                 btn.classList.remove('active'); 
@@ -284,15 +320,11 @@
             localStorage.setItem('tpm-lang-pref', lang);
         }
 
-        // 核心功能：檢查管理者特工暗號 (Gatekeeping)
         function checkGatekeeper() {
             const urlParams = new URLSearchParams(window.location.search);
             const opCode = urlParams.get('op');
-            
-            // 如果網址帶有密碼，或者瀏覽器記憶體記錄過密碼
             if (opCode === 'tpm2026' || localStorage.getItem('tpm-authorized') === 'true') {
                 localStorage.setItem('tpm-authorized', 'true');
-                // 解鎖隱藏的管理卡片
                 document.getElementById('card-allocation').style.display = 'flex';
                 document.getElementById('card-risk').style.display = 'flex';
             }
