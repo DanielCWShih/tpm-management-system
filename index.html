@@ -107,7 +107,6 @@
         h1 { font-size: 3.2rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
         .subtitle { font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; margin-top: 15px; }
 
-        /* 門戶頂部身分面板 */
         .portal-auth-zone {
             margin-bottom: 40px;
             display: flex;
@@ -283,7 +282,7 @@
                 <p data-i18n="card-random-desc">動態隨機題庫：隨機抽取公會核心歷史歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
             </div>
 
-            <a href="archive.html" class="hub-card active">
+            <a href="Library.html" class="hub-card active">
                 <div class="status-badge" data-i18n="status-open">【 大圖書館 】</div>
                 <div class="icon-box">📚</div>
                 <h3 data-i18n="card-library-title">知識圖書館</h3>
@@ -338,7 +337,6 @@
             localStorage.setItem('tpm-lang-pref', lang);
         }
 
-        // 統一接收登入凭证並保存，分發全網頁
         function handlePortalLogin(response) {
             const payload = JSON.parse(decodeURIComponent(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')).split('').map(function(c) {
                 return '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2);
