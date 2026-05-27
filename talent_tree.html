@@ -12,8 +12,9 @@
             --text-main: #1A1A1A;
             --text-secondary: #475569;
             --border-heavy: #1A1A1A;
-            --shadow-tactical: 5px 5px 0px #1A1A1A;
+            --shadow-tactical: 6px 6px 0px #1A1A1A;
             --radius-sm: 8px;
+            
             --color-locked: #94A3B8;      
             --color-available: #3B82F6;   
             --color-completed: #F59E0B;   
@@ -35,92 +36,145 @@
             overflow-x: hidden;
         }
 
-        .tree-container { width: 100%; display: flex; flex-direction: column; gap: 40px; }
+        .tree-container { width: 100%; display: flex; flex-direction: column; gap: 35px; }
 
+        /* UI對齊優化：頂部控制列排版全面一致化 */
         .tactical-header {
             width: 100%; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px;
         }
 
-        .header-controls { display: flex; align-items: center; gap: 20px; }
+        .header-controls { display: flex; align-items: center; gap: 15px; }
 
         .auth-panel {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            padding: 8px 15px; border-radius: var(--radius-sm); font-size: 0.85rem;
-            font-weight: 800; box-shadow: 2px 2px 0px var(--border-heavy);
+            background: var(--card-white); border: 3px solid var(--border-heavy);
+            padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem;
+            font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy);
         }
 
         .back-btn {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
+            background: var(--card-white); border: 3px solid var(--border-heavy);
             padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer;
             font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy);
         }
         .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
 
-        .isekai-tree-map {
-            width: 100%; background: var(--card-white); border: 3px solid var(--border-heavy);
-            border-radius: var(--radius-sm); padding: 50px; box-shadow: var(--shadow-tactical);
-            display: flex; flex-direction: column; align-items: center; position: relative;
+        /* 👑 核心優化：硬核 RPG 階層分頁導航欄 (Layered Tab Engine) */
+        .tree-tab-nav {
+            display: flex; gap: 15px; width: 100%; margin-top: 10px;
         }
 
+        .tab-trigger {
+            background: var(--card-white); border: 3px solid var(--border-heavy);
+            padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 900;
+            font-size: 1rem; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy);
+            transition: all 0.1s;
+        }
+        .tab-trigger:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
+        .tab-trigger.active {
+            background: var(--text-main); color: white; transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--border-heavy);
+        }
+
+        /* 天賦樹主星盤畫布容器 */
+        .isekai-tree-map {
+            width: 100%; background: var(--card-white); border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm); padding: 60px 40px; box-shadow: var(--shadow-tactical);
+            display: none; flex-direction: column; align-items: center; position: relative;
+        }
+        .isekai-tree-map.active { display: flex; }
+
+        /* 天賦樹垂直階層行 */
         .tree-tier-row {
-            display: flex; justify-content: center; align-items: center; gap: 60px; width: 100%;
-            position: relative; margin-bottom: 60px;
+            display: flex; justify-content: center; align-items: center; gap: 70px; width: 100%;
+            position: relative; margin-bottom: 70px;
         }
         .tree-tier-row:last-child { margin-bottom: 0; }
 
+        /* 戰術連結引導線 (Tactical Path Connectors) */
         .tree-tier-row::after {
-            content: ''; position: absolute; bottom: -60px; left: 50%; width: 4px; height: 60px;
+            content: ''; position: absolute; bottom: -70px; left: 50%; width: 4px; height: 70px;
             background: var(--border-heavy); z-index: 1;
         }
         .tree-tier-row:last-child::after { display: none; }
 
+        /* 👑 節點美學大改：雙重鋼鐵同心圓與戰術指示牌面 */
         .talent-node {
-            width: 130px; height: 130px; background: var(--card-white); border: 4px solid var(--color-locked);
+            width: 150px; height: 150px; background: var(--card-white); 
+            border: 4px double var(--color-locked); /* 採用雙線同心圓設計 */
             border-radius: 50%; display: flex; flex-direction: column; align-items: center;
             justify-content: center; cursor: pointer; position: relative;
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center;
-            padding: 12px; box-shadow: 4px 4px 0px var(--color-locked); z-index: 5;
+            padding: 15px; box-shadow: 4px 4px 0px var(--color-locked); z-index: 5;
         }
 
-        .talent-node.locked { background: #F1F5F9; cursor: not-allowed; border-color: var(--color-locked); }
+        /* 三態美學視覺鎖定 */
+        .talent-node.locked { background: #F1F5F9; border-color: var(--color-locked); cursor: not-allowed; }
         .talent-node.locked * { color: #64748B; }
 
-        .talent-node.available { border-color: var(--color-available); background: #EFF6FF; box-shadow: 4px 4px 0px var(--color-available); }
+        .talent-node.available { 
+            border: 4px solid var(--color-available); 
+            background: #EFF6FF; box-shadow: 4px 4px 0px var(--color-available); 
+        }
         .talent-node.available * { color: #1D4ED8; }
-        .talent-node.available:hover { transform: scale(1.06); }
+        .talent-node.available:hover { transform: translateY(-4px); box-shadow: 6px 6px 0px var(--color-available); }
 
-        .talent-node.completed { border-color: var(--color-completed); background: #FFFDF2; box-shadow: 4px 4px 0px var(--color-completed); }
+        .talent-node.completed { 
+            border: 5px double var(--color-completed); /* 通關節點加粗雙線 */
+            background: #FFFDF2; box-shadow: 4px 4px 0px var(--color-completed); 
+        }
         .talent-node.completed * { color: #B45309; }
-        .talent-node.completed:hover { transform: scale(1.06); }
+        .talent-node.completed:hover { transform: translateY(-4px); box-shadow: 6px 6px 0px var(--color-completed); }
 
-        .node-code { font-family: monospace; font-size: 0.75rem; font-weight: 900; opacity: 0.8; }
-        .node-name { font-size: 0.75rem; font-weight: 800; margin-top: 4px; line-height: 1.3; }
+        .node-code { font-family: monospace; font-size: 0.8rem; font-weight: 900; opacity: 0.8; }
+        .node-name { font-size: 0.8rem; font-weight: 900; margin-top: 5px; line-height: 1.4; }
 
+        /* 總覽彈窗：全面重構去除了選擇題，改為公文總結面板 */
         .dungeon-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 2000;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 2000;
             justify-content: center; align-items: center; padding: 20px;
         }
 
         .modal-content {
             background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm);
-            width: 100%; max-width: 800px; box-shadow: 10px 10px 0px var(--border-heavy);
-            display: flex; flex-direction: column; overflow: hidden; position: relative;
+            width: 100%; max-width: 650px; box-shadow: 10px 10px 0px var(--border-heavy);
+            display: flex; flex-direction: column; overflow: hidden; animation: modalSlide 0.15s ease-out;
         }
 
-        .modal-header { background: var(--sidebar-cream); padding: 20px 30px; border-bottom: 3px solid var(--border-heavy); display: flex; justify-content: space-between; align-items: center; }
-        .modal-body { padding: 30px; overflow-y: auto; max-height: 70vh; position: relative; }
-        .trial-option { border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-top: 12px; cursor: pointer; font-weight: 700; background: #FFF; }
-        .trial-option:hover { background: var(--sidebar-cream); }
+        @keyframes modalSlide { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .modal-header { 
+            background: var(--sidebar-cream); padding: 20px 30px; 
+            border-bottom: 3px solid var(--border-heavy); display: flex; justify-content: space-between; align-items: center; 
+        }
+
+        .modal-body { padding: 30px; display: flex; flex-direction: column; gap: 25px; }
+
+        /* 成就考核銘牌看板 */
+        .achievement-plate {
+            background: #FAFAFA; border: 2px dashed var(--border-heavy);
+            border-radius: var(--radius-sm); padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .grade-badge {
+            font-size: 2.2rem; font-weight: 900; font-family: 'Impact', sans-serif;
+            line-height: 1; padding: 4px 14px; border-radius: 6px;
+            border: 2px solid var(--border-heavy); background: white;
+        }
+        .grade-badge.unclear { font-size: 1rem; font-family: inherit; color: var(--color-locked); background: #E2E8F0; }
+
+        /* 副本跳轉傳送門按鈕 */
+        .teleport-gate-btn {
+            background: var(--active-yellow); border: 3px solid var(--border-heavy);
+            padding: 16px; border-radius: var(--radius-sm); width: 100%;
+            font-size: 1.1rem; font-weight: 900; text-align: center; cursor: pointer;
+            box-shadow: 4px 4px 0px var(--border-heavy); text-decoration: none;
+            display: block; transition: all 0.1s;
+        }
+        .teleport-gate-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--border-heavy); }
+        
         .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; font-weight: 900; }
-
-        .quest-clear-banner {
-            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-8deg);
-            border: 6px double var(--color-completed); background: rgba(254, 249, 231, 0.95); padding: 15px 40px;
-            z-index: 3000; text-align: center; box-shadow: 0px 0px 30px rgba(245, 158, 11, 0.3); pointer-events: none;
-        }
-        .quest-clear-banner svg { width: 280px; fill: var(--color-completed); }
     </style>
 </head>
 <body>
@@ -128,7 +182,7 @@
     <div class="tree-container">
         <div class="tactical-header">
             <div>
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">SYS.ATLAS_TREE V4.0</span>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">SYS.ATLAS_TREE V4.5</span>
                 <h1 style="margin: 5px 0 0 0; font-size: 2.2rem;">公會技能星盤天賦樹</h1>
             </div>
             
@@ -138,151 +192,224 @@
             </div>
         </div>
 
-        <div class="isekai-tree-map">
+        <div class="tree-tab-nav">
+            <button class="tab-trigger active" onclick="switchTreeTab('tab-l1')">【 初心者階層 L1 - 基礎通識 】</button>
+            <button class="tab-trigger" onclick="switchTreeTab('tab-l2')">【 冒險者階層 L2 - 進階通識 】</button>
+            <button class="tab-trigger" onclick="switchTreeTab('tab-l3')">【 傳奇專科 L3 - 高階領域 】</button>
+        </div>
+
+        <div class="isekai-tree-map active" id="tab-l1">
             <div class="tree-tier-row">
-                <div class="talent-node completed" id="node-L1-A1" onclick="triggerDungeon('L1-A1')">
+                <div class="talent-node completed" id="node-L1-A1" onclick="openTalentSummary('L1-A1')">
                     <div class="node-code">L1-A1 (必修)</div>
-                    <div class="node-name">基本世界觀<br>(四界雙域)<br>Cosmos Matrix</div>
+                    <div class="node-name">基本世界觀<br>Cosmos Matrix</div>
                 </div>
             </div>
-
             <div class="tree-tier-row">
-                <div class="talent-node available" id="node-L1-A2" onclick="triggerDungeon('L1-A2')">
+                <div class="talent-node available" id="node-L1-A2" onclick="openTalentSummary('L1-A2')">
                     <div class="node-code">L1-A2 (選修)</div>
-                    <div class="node-name">市場調查<br>(市場預言術)<br>Market Research</div>
+                    <div class="node-name">市場調查術<br>Market Research</div>
                 </div>
-                <div class="talent-node locked" id="node-L1-A5" onclick="triggerDungeon('L1-A5')">
+                <div class="talent-node locked" id="node-L1-A5" onclick="openTalentSummary('L1-A5')">
                     <div class="node-code">L1-A5 (選修)</div>
-                    <div class="node-name">結構設計整合<br>(骨架形塑)<br>Structural Design</div>
+                    <div class="node-name">結構設計整合<br>Structural Design</div>
                 </div>
-                <div class="talent-node locked" id="node-L1-B1" onclick="triggerDungeon('L1-B1')">
+                <div class="talent-node locked" id="node-L1-B1" onclick="openTalentSummary('L1-B1')">
                     <div class="node-code">L1-B1 (選修)</div>
-                    <div class="node-name">表面黏著技術<br>( SMT 熔爐 )<br>SMT Process</div>
+                    <div class="node-name">表面黏著技術<br>SMT Process</div>
                 </div>
             </div>
-
             <div class="tree-tier-row">
-                <div class="talent-node locked" id="node-L1-A3" onclick="triggerDungeon('L1-A3')">
+                <div class="talent-node locked" id="node-L1-A3" onclick="openTalentSummary('L1-A3')">
                     <div class="node-code">L1-A3</div>
-                    <div class="node-name">外觀設計<br>(外觀幻化術)<br>Industrial Design</div>
+                    <div class="node-name">外觀幻化工藝<br>Industrial Design</div>
                 </div>
-                <div class="talent-node locked" id="node-L1-A4" onclick="triggerDungeon('L1-A4')">
+                <div class="talent-node locked" id="node-L1-A4" onclick="openTalentSummary('L1-A4')">
                     <div class="node-code">L1-A4</div>
-                    <div class="node-name">硬體開發模組<br>(魔力核心)<br>Hardware Module</div>
+                    <div class="node-name">魔力核心模組<br>Hardware Module</div>
                 </div>
-                <div class="talent-node locked" id="node-L1-B3" onclick="triggerDungeon('L1-B3')">
+                <div class="talent-node locked" id="node-L1-B3" onclick="openTalentSummary('L1-B3')">
                     <div class="node-code">L1-B3</div>
-                    <div class="node-name">製造設計審查<br>(深淵防線)<br>DFM Review</div>
+                    <div class="node-name">製造設計審查<br>DFM Review</div>
                 </div>
             </div>
         </div>
+
+        <div class="isekai-tree-map" id="tab-l2">
+            <div class="tree-tier-row">
+                <div class="talent-node available" id="node-L2-W1" onclick="openTalentSummary('L2-W1')">
+                    <div class="node-code">L2-W1</div>
+                    <div class="node-name">防水防護結界<br>Ingress Protection</div>
+                </div>
+                <div class="talent-node locked" id="node-L2-O1" onclick="openTalentSummary('L2-O1')">
+                    <div class="node-code">L2-O1</div>
+                    <div class="node-name">精密光學對位<br>Precision Optics</div>
+                </div>
+            </div>
+            <div class="tree-tier-row">
+                <div class="talent-node locked" id="node-L2-S1" onclick="openTalentSummary('L2-S1')">
+                    <div class="node-code">L2-S1</div>
+                    <div class="node-name">軟韌體系統整合<br>SW/FW Integration</div>
+                </div>
+                <div class="talent-node locked" id="node-L2-M1" onclick="openTalentSummary('L2-M1')">
+                    <div class="node-code">L2-M1</div>
+                    <div class="node-name">極限公差分析<br>Tolerance Stack</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="isekai-tree-map" id="tab-l3">
+            <div class="tree-tier-row">
+                <div class="talent-node locked" id="node-L3-T1" onclick="openTalentSummary('L3-T1')">
+                    <div class="node-code">L3-T1</div>
+                    <div class="node-name">時程代價矩陣<br>Schedule Matrix</div>
+                </div>
+                <div class="talent-node locked" id="node-L3-N1" onclick="openTalentSummary('L3-N1')">
+                    <div class="node-code">L3-N1</div>
+                    <div class="node-name">跨功能談判術<br>XFN Negotiation</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div id="dungeon-modal" class="dungeon-modal">
+    <div id="talent-summary-modal" class="dungeon-modal">
         <div class="modal-content">
-            <div id="gold-clear-seal" class="quest-clear-banner">
-                <svg viewBox="0 0 400 100">
-                    <text x="50%" y="55%" font-family="'Segoe UI', Impact, sans-serif" font-size="34" font-weight="900" text-anchor="middle" letter-spacing="4">QUEST CLEAR</text>
-                    <path d="M 10 10 L 390 10 M 10 90 L 390 90" stroke="#F59E0B" stroke-width="3" stroke-dasharray="10, 5"/>
-                </svg>
-            </div>
             <div class="modal-header">
                 <div>
                     <span id="modal-node-code" style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">L1-A1</span>
-                    <h2 id="modal-node-title" style="margin: 5px 0 0 0; font-size: 1.5rem;">核心課題</h2>
+                    <h2 id="modal-node-title" style="margin: 5px 0 0 0; font-size: 1.5rem; font-weight: 900;">課題總覽</h2>
                 </div>
-                <button class="close-btn" onclick="closeDungeon()">✕</button>
+                <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
             <div class="modal-body">
-                <h3 style="border-left: 5px solid var(--border-heavy); padding-left: 10px;">📜 聖遺物卷軸 (核心教學)</h3>
-                <p id="modal-node-lesson" style="line-height: 1.6; font-weight: 600; margin-bottom: 30px; white-space: pre-line;"></p>
-                <h3 style="border-left: 5px solid var(--border-heavy); padding-left: 10px; margin-top: 40px;">⚔️ 守關 Boss 考驗 (情境抉擇)</h3>
-                <p id="modal-node-question" style="font-weight: 800; color: #DC2626处理;"></p>
-                <div id="modal-node-options"></div>
+                
+                <div>
+                    <h3 style="border-left: 5px solid var(--border-heavy); padding-left: 10px; font-size: 1.05rem; margin-top: 0;">📜 聖遺物卷軸核心摘要 (High-Level Summary)</h3>
+                    <p id="modal-node-summary" style="line-height: 1.7; font-weight: 600; white-space: pre-line; margin-bottom: 0;">載入文獻大綱中...</p>
+                </div>
+
+                <div class="achievement-plate">
+                    <div>
+                        <div style="font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);">公會位階成就考核 (HIGHEST GRADE)</div>
+                        <div id="modal-node-date" style="font-size: 0.85rem; font-weight: 700; margin-top: 5px; color: #16A34A;">完成時間：[ UNCOMPLETED ]</div>
+                    </div>
+                    <div id="modal-node-grade" class="grade-badge unclear">N/A</div>
+                </div>
+
+                <a id="modal-teleport-link" href="#" class="teleport-gate-btn">⚡ 進入該課題修煉場 (跳轉手冊/寶典)</a>
+                
             </div>
         </div>
     </div>
 
     <script>
-        const questVault = {
+        // 重新編制：去除了選擇題，改為核心摘要、跳轉路徑配置
+        const talentMetadata = {
             "L1-A1": {
-                code: "L1-A1", name: "基本世界觀 (四界雙域)",
-                lesson: "天界客戶（Client）下達圖紙，幻界供應商（Vendor）提供元件物料，物質深淵代工廠（EMS Factory）則在公差與工時的物理詛咒下將圖紙轉化為實體裝置。TPM 是兩者之間的技術中介與秩序平衡使者。",
-                question: "當幻界供應商（Vendor）長料期晶圓突然斷線，衝擊深淵代工廠（EMS）試產時，TPM 核心行動是什麼？",
-                options: [
-                    "要求天界客戶修改外觀設計以配合斷料。(❌ 邏輯崩潰，隊伍滅團)",
-                    "與團隊啟動二線備料策略（Second Source Sourcing）並進行可製造性評估。(⭕ 挑戰成功！)",
-                    "坐在辦公室，等待深淵代工廠自行解決。(❌ 失去冒險者資格)"
-                ]
+                summary: "拆解硬體新產品導入（NPI）底層運行的巨觀因果。釐清天界客戶（Client）設計藍圖、決策意圖與2D圖紙；幻界供應商（Vendor）長料期物料控制與核心元件品質；以及物質深淵代工廠（EMS Factory）在公差、線平衡工時與不良率物理結界下的實體複製生產。System TPM 將在此扮演高懸其間的技術中介與秩序平衡使者。",
+                targetUrl: "beginner_codex.html"
             },
             "L1-A2": {
-                code: "L1-A2", name: "市場調查 (市場預言術)",
-                lesson: "教導新人如何將凡間使用者的原始痛點與慾望數據，精準轉化為最初始的產品定義與產品規格書（PRD）。",
-                question: "當市場數據回報對手續航高出30%，客戶要求立刻跟進時，TPM 該做什麼？",
-                options: [
-                    "直接在規格書上改數字。(❌ 忽略結構與電池空間的干涉風險)",
-                    "聯合結構（ME）與電子（EE）召開極限公差堆疊與電池體積調配審查會議。(⭕ 正確，點亮此技術屬性！)"
-                ]
+                summary: "教導如何將凡間使用者的原始痛點與慾望數據，精準轉化為最初始的產品定義與產品規格書（PRD）。在有限的物料清單成本（BOM Cost）與時程上限內，完成對齊客戶女神意圖的黃金技術規格範範疇控管。",
+                targetUrl: "beginner_codex.html"
+            },
+            "L1-A5": {
+                summary: "解鎖3D堆疊（Stack-up）工程。在有限的毫米（mm）維度內，解決內部零組件、電路板與結構外殼的空間極限擠壓，排除所有物理干涉，確保神界美學毫無無損落地。",
+                targetUrl: "beginner_codex.html"
+            },
+            "L1-B1": {
+                summary: "深入物質深淵第一線火山熔爐：SMT（表面黏著技術）製程。掌握鋼網印刷、貼片機元件吸嘴精準度、迴流焊（Reflow）溫度曲線調校，並藉由 SPI 與 AOI 審判之門守護初始良率防線。",
+                targetUrl: "beginner_codex.html"
+            },
+            "L2-W1": {
+                summary: "深入功能單位進階領域。攻克硬體產品防水等級（IP67/IPX8）的物理定義，精準調配點膠製程（Dispensing）膠路路徑，剖析防水橡膠圈（O-Ring）的黃金變形率，並以差壓式氣密測試儀進行無損品質審判。",
+                targetUrl: "handbook.html"
+            },
+            "L2-O1": {
+                summary: "透析高階精密相機模組結構。解析影像感測器（Sensor）封裝公差，主導動態六軸 AA 主動對位（Active Alignment）製程校正，並透過調制度轉移函數（MTF）解析度數據解讀進行製程故障排除。",
+                targetUrl: "handbook.html"
             }
         };
 
-        function triggerDungeon(nodeId) {
+        // 階層分頁控制引擎 (Layered Tab Engine)
+        function switchTreeTab(tabId) {
+            document.querySelectorAll('.tab-trigger').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.isekai-tree-map').forEach(map => map.classList.remove('active'));
+            
+            // 找出點擊的按鈕並啟動
+            const clickedBtn = Array.from(document.querySelectorAll('.tab-trigger')).find(btn => btn.getAttribute('onclick').includes(tabId));
+            if (clickedBtn) clickedBtn.classList.add('active');
+            
+            const targetMap = document.getElementById(tabId);
+            if (targetMap) targetMap.style.display = 'flex';
+            
+            // 隱藏其他分頁
+            document.querySelectorAll('.isekai-tree-map').forEach(map => {
+                if(map.id !== tabId) map.style.display = 'none';
+            });
+        }
+
+        // 開啟天賦總覽面板
+        function openTalentSummary(nodeId) {
             const nodeEl = document.getElementById(`node-${nodeId}`);
             if (nodeEl.classList.contains('locked')) {
-                alert("【系統封印】前置天賦尚未開通，此節點仍處於迷霧鎖定狀態！");
+                alert("【系統提示】前置天賦尚未點亮，此節點仍處於公會封印迷霧狀態！");
                 return;
             }
-            const data = questVault[nodeId];
-            if (!data) return;
 
-            document.getElementById('modal-node-code').innerText = data.code;
-            document.getElementById('modal-node-title').innerText = data.name;
-            document.getElementById('modal-node-lesson').innerText = data.lesson;
-            document.getElementById('modal-node-question').innerText = `⚠️ 戰術情境：${data.question}`;
-
-            const seal = document.getElementById('gold-clear-seal');
-            seal.style.display = nodeEl.classList.contains('completed') ? 'block' : 'none';
-
-            const optionsBox = document.getElementById('modal-node-options');
-            optionsBox.innerHTML = '';
-            data.options.forEach(opt => {
-                optionsBox.innerHTML += `<div class="trial-option" onclick="verifyChoice(this, '${opt.includes('⭕')}', '${nodeId}')">${opt}</div>`;
-            });
-            document.getElementById('dungeon-modal').style.display = 'flex';
-        }
-
-        function closeDungeon() { document.getElementById('dungeon-modal').style.display = 'none'; }
-
-        function verifyChoice(element, isCorrect, nodeId) {
-            if (isCorrect === "true") {
-                element.style.background = "#D1FAE5";
-                element.style.borderColor = "#10B981";
-                document.getElementById('gold-clear-seal').style.display = 'block';
-
-                setTimeout(() => {
-                    alert("🏆 QUEST CLEAR！通關紀錄已安全保存。");
-                    const currentNode = document.getElementById(`node-${nodeId}`);
-                    currentNode.classList.remove('available');
-                    currentNode.classList.add('completed');
-                    
-                    if(nodeId === "L1-A1") {
-                        document.getElementById('node-L1-A5').classList.replace('locked', 'available');
-                        document.getElementById('node-L1-B1').classList.replace('locked', 'available');
-                    }
-                    closeDungeon();
-                }, 400);
-            } else {
-                element.style.background = "#FEE2E2"; element.style.borderColor = "#EF4444";
-                alert("💥 決策失誤！請重讀卷軸思考！");
+            const data = talentMetadata[nodeId];
+            if (!data) {
+                alert("此高級節點文獻尚在賢者撰寫中，敬請期待！");
+                return;
             }
+
+            document.getElementById('modal-node-code').innerText = nodeId;
+            // 取得節點中文名稱
+            const nodeNameText = nodeEl.querySelector('.node-name').innerHTML.replace('<br>', ' ');
+            document.getElementById('modal-node-title').innerHTML = nodeNameText;
+            document.getElementById('modal-node-summary').innerText = data.summary;
+
+            // 讀取快取中的最高得分與完成日期 (持久化識別數據)
+            const savedGrade = localStorage.getItem(`talent-${nodeId}-grade`);
+            const savedDate = localStorage.getItem(`talent-${nodeId}-date`);
+            const gradeEl = document.getElementById('modal-node-grade');
+            const dateEl = document.getElementById('modal-node-date');
+
+            if (nodeEl.classList.contains('completed') || savedGrade) {
+                const finalGrade = savedGrade || "S"; // 預設通過為 S
+                const finalDate = savedDate || new Date().toLocaleDateString();
+                gradeEl.innerText = finalGrade;
+                gradeEl.className = "grade-badge";
+                gradeEl.style.color = "#F59E0B";
+                gradeEl.style.borderColor = "#F59E0B";
+                dateEl.innerText = `完成時間：${finalDate} (成績已同步)`;
+            } else {
+                gradeEl.innerText = "N/A";
+                gradeEl.className = "grade-badge unclear";
+                gradeEl.style.color = "var(--color-locked)";
+                gradeEl.style.borderColor = "var(--color-locked)";
+                dateEl.innerText = "完成時間：[ UNCOMPLETED ]";
+            }
+
+            // 綁定傳送跳轉連結
+            document.getElementById('modal-teleport-link').href = data.targetUrl;
+
+            document.getElementById('talent-summary-modal').style.display = 'flex';
         }
 
+        function closeModal() {
+            document.getElementById('talent-summary-modal').style.display = 'none';
+        }
+
+        // 初始化載入快取與分頁
         window.onload = () => {
             const cachedEmail = localStorage.getItem('tpm-user-email');
             const cachedName = localStorage.getItem('tpm-user-name');
             if (cachedEmail && cachedName) {
                 document.getElementById('user-profile').innerHTML = `👤 特工：${cachedName} (${cachedEmail})`;
             }
+            switchTreeTab('tab-l1'); // 預設開啟 L1
         };
     </script>
 </body>
