@@ -3,136 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初心者寶典 | Beginner's Codex (0527-V1.0)</title>
+    <title>初心者寶典 | Beginner's Codex (0527-V1.2)</title>
     <style>
         :root {
-            --bg-color: #FEF9E7; --sidebar-cream: #FDF2D0; --card-white: #FFFFFF;
-            --text-main: #1A1A1A; --text-secondary: #475569; --border-heavy: #1A1A1A;
-            --shadow-tactical: 5px 5px 0px #1A1A1A; --radius-sm: 8px;
-            --color-locked: #94A3B8; --color-available: #3B82F6; --color-completed: #F59E0B;
+            --bg-color: #FEF9E7; 
+            --sidebar-cream: #FDF2D0; 
+            --card-white: #FFFFFF;
+            --text-main: #1A1A1A; 
+            --text-secondary: #475569; 
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 5px 5px 0px #1A1A1A; 
+            --radius-sm: 8px;
+            --color-locked: #94A3B8; 
+            --color-available: #3B82F6; 
+            --color-completed: #F59E0B;
         }
         * { box-sizing: border-box; font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; color: var(--text-main); }
         body { background-color: var(--bg-color); margin: 0; padding: 0; width: 100vw; height: 100vh; display: flex; overflow: hidden; }
-        aside { width: 320px; background-color: var(--sidebar-cream); border-right: 3px solid var(--border-heavy); display: flex; flex-direction: column; padding: 30px 20px; flex-shrink: 0; height: 100%; }
+        
+        /* 左側大綱導航欄 */
+        aside { width: 340px; background-color: var(--sidebar-cream); border-right: 3px solid var(--border-heavy); display: flex; flex-direction: column; padding: 30px 20px; flex-shrink: 0; height: 100%; }
         .aside-header { border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px; margin-bottom: 25px; }
         .back-btn { display: block; background: var(--card-white); border: 2px solid var(--border-heavy); padding: 10px; border-radius: var(--radius-sm); text-align: center; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 20px; }
         .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
+        
         .chapter-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; }
-        .chapter-item { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 15px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); transition: all 0.15s; }
-        .chapter-item.locked { border-color: var(--color-locked); opacity: 0.6; cursor: not-allowed; }
-        .chapter-item.locked * { color: var(--color-locked); }
-        .chapter-item.available { border-color: var(--color-available); box-shadow: 3px 3px 0px var(--color-available); }
-        .chapter-item.completed { border-color: var(--color-completed); box-shadow: 3px 3px 0px var(--color-completed); background: #FFFDF4; }
-        .chapter-item.active { background: var(--text-main) !important; }
-        .chapter-item.active * { color: white !important; }
-        .chapter-title { font-size: 0.9rem; font-weight: 800; }
+        .chapter-tab { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 12px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); font-weight: 800; font-size: 0.9rem; transition: all 0.1s; }
+        .chapter-tab.active { background: var(--text-main) !important; color: white !important; }
+        .chapter-tab.active * { color: white !important; }
+        
+        /* 右側主畫布 */
         main { flex: 1; height: 100%; padding: 40px; overflow-y: auto; background: var(--card-white); position: relative; }
         .main-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px; margin-bottom: 30px; }
-        .auth-panel { background: var(--bg-color); border: 2px solid var(--border-heavy); padding: 8px 15px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 800; box-shadow: 2px 2px 0px var(--border-heavy); }
-        .lang-switcher-box { display: flex; gap: 5px; }
-        .lang-btn-sub { background:#fff; border:2px solid #000; padding:5px 10px; font-weight:900; cursor:pointer; border-radius:4px; }
-        .lang-btn-sub.active { background:#000; color:#fff; }
-        .scroll-text { font-size: 1.05rem; line-height: 1.8; font-weight: 600; white-space: pre-line; margin-bottom: 40px; }
-        .boss-trial-section { border: 3px solid #DC2626; border-radius: var(--radius-sm); padding: 30px; background: #FEF2F2; box-shadow: 5px 5px 0px #000; margin-top: 50px; }
-        .option-card { background: white; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 15px; cursor: pointer; font-weight: 700; }
-        .option-card:hover { background: var(--sidebar-cream); }
-        .clear-seal-overlay { display: none; position: absolute; top: 200px; left: 50%; transform: translate(-50%, -50%) rotate(-10deg); border: 6px double var(--color-completed); background: rgba(254, 249, 231, 0.95); padding: 15px 50px; z-index: 1000; pointer-events: none; }
-        .clear-seal-overlay text { font-family: sans-serif; font-size: 36px; font-weight: 900; fill: var(--color-completed); letter-spacing: 3px; }
+        
+        /* 剛性切換與身分欄 */
+        .lang-switcher-wrapper { display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; }
+        .lang-btn-core { width: 50px; height: 35px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+        .lang-btn-core.active { background: var(--text-main); color: white; }
+        .auth-panel { background: var(--card-white); border: 2px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); white-space: nowrap; }
+
+        /* 教材內容排版 */
+        .document-canvas { width: 100%; }
+        .scroll-text { font-size: 1.05rem; line-height: 1.8; font-weight: 600; white-space: pre-line; margin-bottom: 35px; }
+        .diagram-placeholder { background: #F8FAFC; border: 2px dashed var(--color-locked); padding: 30px; text-align: center; border-radius: var(--radius-sm); margin: 20px 0 35px 0; font-weight: 700; color: var(--text-secondary); }
+
+        /* 👑 20題大型考會場專用視覺 UI */
+        .exam-session-box { display: none; border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 35px; background: #FFFDF4; box-shadow: var(--shadow-tactical); margin-top: 20px; }
+        .exam-progress-bar { width: 100%; background: #E2E8F0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 25px; border: 1.5px solid #000; }
+        .exam-progress-fill { height: 100%; background: var(--color-available); width: 0%; transition: width 0.2s; }
+        .option-card { background: white; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 14px; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0px #000; transition: all 0.1s; }
+        .option-card:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px #000; background: var(--sidebar-cream); }
+        
+        /* 巨大真皮過關印章 */
+        .clear-seal-overlay { display: none; position: absolute; top: 180px; left: 50%; transform: translate(-50%, -50%) rotate(-8deg); border: 6px double var(--color-completed); background: rgba(254, 249, 231, 0.98); padding: 15px 60px; z-index: 1000; pointer-events: none; box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
+        .clear-seal-overlay text { font-family: Impact, sans-serif; font-size: 38px; font-weight: 900; fill: var(--color-completed); letter-spacing: 4px; }
+        
+        .exam-start-btn { background: #EF4444; color: white; border: 3px solid #000; padding: 18px 35px; font-size: 1.2rem; font-weight: 900; border-radius: var(--radius-sm); cursor: pointer; box-shadow: 4px 4px 0px #000; width: 100%; text-align: center; display: block; margin-top: 40px; transition: all 0.1s; }
+        .exam-start-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #000; }
     </style>
 </head>
 <body>
+
     <aside>
         <div class="aside-header">
-            <a href="index.html" class="back-btn" data-i18n="back-to-hq">↩ 返回公會總部</a>
-            <h2 style="margin: 5px 0 0 0;" data-i18n="codex-title">初心者寶典</h2>
+            <a href="index.html" class="back-btn" id="nav-home-text">首頁</a>
+            <div style="font-size: 0.8rem; font-weight: 900; font-family: monospace; color: var(--text-secondary);">SYS.CODEX V1.2</div>
+            <h2 style="margin: 5px 0 0 0; font-weight: 900;">CH-01 核心教材大綱</h2>
         </div>
-        <ul class="chapter-list" id="chapter-menu"></ul>
+        <ul class="chapter-list">
+            <li class="chapter-tab active" id="tab-p1" onclick="switchPage('p1')">1. 產品供應鏈定位模型</li>
+            <li class="chapter-tab" id="tab-p2" onclick="switchPage('p2')">2. NPI 四大生命週期分期</li>
+            <li class="chapter-tab" id="tab-p3" onclick="switchPage('p3')">3. 直通率與可製造性防線</li>
+            <li class="chapter-tab" id="tab-p4" onclick="switchPage('p4')">4. 跨功能團隊協作仲裁學</li>
+            <li class="chapter-tab" id="tab-exam" onclick="switchPage('exam')" style="border-color:#DC2626; background:#FEF2F2; color:#B91C1C;">⚔️ L1 階段位階終極考核</li>
+        </ul>
     </aside>
+
     <main>
-        <div id="quest-clear-stamp" class="clear-seal-overlay"><svg width="300" height="80" viewBox="0 0 300 80"><text x="50%" y="60%" text-anchor="middle">QUEST CLEAR</text></svg></div>
+        <div id="quest-clear-stamp" class="clear-seal-overlay"><svg width="320" height="80" viewBox="0 0 320 80"><text x="50%" y="60%" text-anchor="middle">QUEST CLEAR</text></svg></div>
+
         <div class="main-header">
-            <div><span id="current-chapter-id" style="font-family: monospace; font-weight: 900;">CHAPTER 01</span><h1 id="current-chapter-name" style="margin: 5px 0 0 0;">加載中...</h1></div>
-            <div class="header-controls" style="display: flex; align-items: center; gap: 20px;">
-                <div class="lang-switcher-box">
-                    <button class="lang-btn-sub active" id="sub-tw" onclick="setLang('tw')">TW</button>
-                    <button class="lang-btn-sub" id="sub-en" onclick="setLang('en')">EN</button>
+            <div>
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">SECTION 1/4</span>
+                <h1 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 2rem; font-weight: 900;">加載中...</h1>
+            </div>
+            <div class="header-controls" style="display: flex; align-items: center; gap: 15px;">
+                <div class="lang-switcher-wrapper">
+                    <button class="lang-btn-core active" id="btn-tw" onclick="setLang('tw')">TW</button>
+                    <button class="lang-btn-core" id="btn-en" onclick="setLang('en')">EN</button>
                 </div>
                 <div id="user-profile" class="auth-panel">👤 冒險者認證中...</div>
             </div>
         </div>
-        <div class="document-canvas">
-            <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.2rem;" data-i18n="doc-lesson-title">📜 教材卷軸</h3>
+
+        <div class="document-canvas" id="reading-canvas">
+            <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.2rem;">📜 聖遺物精髓文獻 (Technical Textbook)</h3>
             <div id="lesson-content" class="scroll-text"></div>
-            <div id="boss-battleground" class="boss-trial-section">
-                <h3 style="margin-top:0; color:#B91C1C;">⚔️ 守關 Boss 考驗 (情境抉擇)</h3>
-                <p id="trial-question" style="font-weight: 800; font-size: 1.1rem; line-height: 1.5;"></p>
-                <div id="trial-options-box"></div>
+            
+            <div class="diagram-placeholder" id="diagram-box">
+                【 戰術結構圖解預留位：SYSTEM TECH FLOW DIAGRAM PLACEHOLDER 】
             </div>
         </div>
+
+        <div class="exam-session-box" id="exam-canvas">
+            <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
+                <span style="color:#B91C1C;">🔥 終極大會考進行中 (Exam Mode)</span>
+                <span id="exam-counter" style="color:var(--color-available);">第 1 / 20 題</span>
+            </div>
+            <div class="exam-progress-bar"><div class="exam-progress-fill" id="exam-progress"></div></div>
+            <h3 id="exam-question-text" style="font-size:1.2rem; line-height:1.5; margin-bottom:25px;">問題載入中...</h3>
+            <div id="exam-options-container"></div>
+        </div>
     </main>
+
     <script>
+        // 語言字典字典
         const translations = {
-            tw: { "codex-title": "初心者寶典", "back-to-hq": "↩ 返回公會總部", "doc-lesson-title": "📜 教材卷軸" },
-            en: { "codex-title": "Beginner's Codex", "back-to-hq": "↩ Back to HQ", "doc-lesson-title": "📜 Lesson Scroll" }
+            tw: { "back-to-hq": "首頁", "auth-unlocked": "冒險者認證成功", "nav-home": "首頁" },
+            en: { "back-to-hq": "Home", "auth-unlocked": "Adventurer Authenticated", "nav-home": "Home" }
         };
-        const codexDatabase = {
-            "CH-01": {
-                id: "CH-01", title: "基本世界觀 (四界雙域)", defaultStatus: "available",
-                lesson: "在 System TPM 的世界中，運行著「四界雙域」的物理法則。\n\n1. 眾神殿/天界：女神（客戶）握有外觀設計與結構堆疊大權，負責下達完美的 2D 圖紙。\n2. 🔮 幻界位面：控制核心元件晶圓材料的供應商，負責向代工廠提供上游零件。\n3. ⚙️ 機械熔爐/物質深淵：這就是代工廠（EMS），在物理公差、線平衡工時與不良良率的物理結界下進行實體召喚。\n4. TPM 則是高懸兩者之間的技術中介與秩序平衡使者。",
-                question: "當供應商突然發生長料期晶圓斷線、影響深淵工廠試產進度時，TPM 核心行動是什麼？",
-                options: [
-                    "立刻要求客戶修改產品設計圖面以配合斷料。(❌ 邏輯崩潰，直接滅團)",
-                    "啟動二線備料策略（Second Source Sourcing）並與團隊進行可製造性評估認證。(⭕ 挑戰成功！)",
-                    "原地待命，等待工廠端自行解決。(❌ 降級為 F-Rank 廢物)"
-                ]
+
+        // 4大核心分頁詳細圖文數據數據
+        const pagesData = {
+            "p1": {
+                id: "SECTION 1/4", title: "產品供應鏈定位模型",
+                diagram: "【 供應傳輸鏈因果流向圖解：Client (天界女神) ──> Vendor (幻界物料) ──> EMS Factory (物質深淵) 】",
+                text: "在硬體專案管理的世界中，運行著「三界一域」的實務鏈條。\n\n1. 客戶端 (遊戲術語: 眾神殿/天界)：握有最初始的市場需求預言術、外觀工業設計（ID）幻化權、以及內部結構設計（ME）空間壓縮權。核心職責是將市場痛點量化為產品規格書（PRD），並輸出神聖的 2D/3D 工程圖紙（2D Drawing）。\n\n2. 供應商 (遊戲術語: 🔮 幻界位面)：游離於上游的技術晶圓與核心材料開發端（如光學鏡片、射頻感測器、特定防水膠材）。他們負責向客戶端進貢樣品（Samples），並在大量生產時將電子零件物料（Components）源源不絕地送抵代工廠。\n\n3. 代工廠 (遊戲術語: ⚙️ 機械熔爐/物質深淵)：即 EMS / OEM 製造廠。接過客戶端的 2D 圖紙指令，吞下供應商的零件原料。在物理公差公差、操作工時與生產時程的邊界下，進行硬體實體化的大規模複製組裝。\n\nSystem TPM 的終極本質，就是橫跨於客戶研發端與工廠製造端之間的技術橋樑、秩序仲裁者與風險平衡使者。"
             },
-            "CH-02": {
-                id: "CH-02", title: "工廠的基礎 (SMT與良率鐵律)", defaultStatus: "locked",
-                lesson: "進入物質深淵的第一站，就是 SMT（表面黏著技術）火山熔爐流水線。經歷錫膏印刷、SPI、貼片與迴流焊（Reflow），並接受 AOI 與 X-Ray 審判之門的考驗。\n在深淵中，直通率（FPY）是至高無上的血統鐵律。一台裝置如果在途中被重修三次才及格，即使良率達標，它也帶有物理內傷。線平衡工時不均，則會引發產能堆積瓶頸。",
-                question: "組裝線功能測試站（FCT）良率突然從 99% 雪崩到 80%。你的第一動是？",
-                options: [
-                    "命令整條產線立刻停線。(❌ 停線一小時損失數百萬魔力)",
-                    "檢查該測試站測試治具探針是否磨損，並比對前站 SMT 的 AOI 數據判斷是否為製程偏移。(⭕ 天條認證！)",
-                    "把不良品全部倒進廢料桶維持報表好看。(❌ 嚴重觸犯公會刑法)"
-                ]
+            "p2": {
+                id: "SECTION 2/4", title: "NPI 四大生命週期分期",
+                diagram: "【 NPI Spacetime Timeline Diagram: Proto ──> EVT ──> DVT ──> PVT ──> MP 】",
+                text: "新產品導入（NPI）是一條高壓且不可逆的時間長河。System TPM 必須精準控管四大驗證里程碑的 Exit 閘門基準：\n\n1. EVT (工程驗證階段)：核心目標是實現電路原理圖（Schematic）與 PCB Layout 的首版通電打通。排除硬體開發模組與結構骨架之間的粗糙干涉，進行首輪功能性打線測試。\n\n2. DVT (設計驗證階段)：此時模具正式開模。核心攻堅目標轉向外觀 CMF 工藝落地、嚴苛的防水氣密防禦、精密光學影像校正、以及高低溫/摔落等全面信賴性極限拷問。\n\n3. PVT (生產驗證階段)：此時設計檔案已全面凍結（Freeze）。重心全面轉移至工廠流水線。調校貼片機生產速率（UPH）、複製大規模測試治具（Fixture）、修正治具公差，並確保產線平衡率，驗證製造良率製程能力（Cpk）。\n\n4. MP (大量生產階段)：全產線開閘放水，神器大批複製，降臨凡間市場。"
+            },
+            "p3": {
+                id: "SECTION 3/4", title: "直通率與可製造性防線",
+                diagram: "【 製造火山流水線與直通漏斗圖解：Stencil Printing ─> SPI ─> Reflow ─> AOI ─> FATP ─> FCT 】",
+                text: "進入工廠流水線後，數據回報的良率往往隱藏著致命的物理陷阱。TPM 必須貫徹兩大核心指標調校：\n\n1. FPY (直通率 / 遊戲術語: 純淨血統鐵律)：指產品在流水線中，從第一站印刷、貼片、迴流焊（Reflow）到後段組裝（FATP）、功能測試（FCT），完全沒有觸發任何不良警報、未曾被拔下來重修，一氣呵成順利過關的完美機率。\n如果一個專案最終良率是 98%，但直通率只有 40%，代表超過一半的裝置經歷過手工拆解、二次焊接。這類帶有隱形物理內傷的機器，運到終端消費者手上極易暴斃。\n\n2. DFM (製造設計審查 / 遊戲術語: 深淵鑄造防線)：在研發早期，主動對外殼拔模角（Draft Angle）、壁厚均勻度（Sink Mark收縮痕預防）、點膠溢膠安全邊界進行工程防禦。在圖紙階段將量產不良率徹底擊碎。"
+            },
+            "p4": {
+                id: "SECTION 4/4", title: "跨功能團隊協作仲裁學",
+                diagram: "【 TPM Trade-off Balance: ID 美學天平 <──( System TPM )──> ME 空間 / 工廠良率限制 】",
+                text: "System TPM 絕非只是個傳話的記錄員，而是具備技術底蘊的「跨功能團隊（XFN）最高仲裁官」。\n\n當專案面臨極限物理干涉時，各方專家會為了捍衛自身領域展開瘋狂爭奪：\n工業設計師（ID）為了極致美學，要求外殼必須做出銳利高光 C 角；結構工程師（ME）則會警告這會導致模具頂針斷裂、引發嚴重的溢料與毛邊；天線工程師（Antenna）則會咆哮金屬皮層過近會引發射頻訊號短路崩潰。\n\n此時，TPM 必須調閱「決策代價矩陣（Trade-off Matrix）」，主導交叉驗證（DOE），現場精算產線能力（Cpk），逼迫各方在公差疊加的邊界內達成黃金技術妥協，這就是 TPM 最核心的戰略價值。"
             }
         };
-        let currentActiveId = "CH-01";
-        function initCodex() { renderMenu(); loadChapter(currentActiveId); }
-        function renderMenu() {
-            const menu = document.getElementById('chapter-menu'); menu.innerHTML = '';
-            Object.keys(codexDatabase).forEach(key => {
-                const item = codexDatabase[key]; const isCleared = localStorage.getItem(`codex-${item.id}-clear`) === 'true';
-                let statusClass = item.defaultStatus; if (isCleared) statusClass = "completed";
-                else if (item.id === "CH-02" && localStorage.getItem(`codex-CH-01-clear`) === 'true') statusClass = "available";
-                const activeClass = item.id === currentActiveId ? "active" : "";
-                menu.innerHTML += `<li class="chapter-item ${statusClass} ${activeClass}" onclick="switchChapter('${item.id}', '${statusClass}')"><div class="chapter-title">${item.id}: ${item.title}</div></li>`;
+
+        // 👑 20題神級硬體 TPM 真實情境題庫矩陣大公開
+        const examQuestions = [
+            { q: "當供應商突然突發長料期（Lead Time）晶片斷線，直接衝擊工廠試產進度，TPM 第一動是？", o: ["要求客戶修改 ID 圖紙封死空間", "啟動二線備料策略（Second Source）並進行可製造性評估", "坐在辦公室等工廠通報"], a: 1 },
+            { q: "工廠回報最終良率高達 99%，但直通率（FPY）只有 30%，這代表什麼？", o: ["產品血統極其純淨，非常健康", "超過三分之二的機器被手工拆解重修過，帶有隱形物理內傷", "可以立刻開閘放水進入MP大量生產"], a: 1 },
+            { q: "在何種階段，TPM 必須強制拦截專案，要求 ME 進行極限公差疊加分析（Tolerance Stack-up）以防模具報廢？", o: ["MP 階段", "EVT 結束進入 DVT 開模前", "市場調研階段"], a: 1 },
+            { q: "在 DVT 階段進行氣密測試（Leak Test）時特定角落連續漏氣，ME 說是工廠膠水問題，你該如何仲裁？", o: ["開單懲罰工廠", "利用千分尺量測組裝間隙，安排扭力對比與膠路寬度微調的 DOE 交叉驗證", "直接將防水規格從 IPX8 降到 IPX4"], a: 1 },
+            { q: "工業設計師（ID）堅持做出銳利無拔模角外殼，工廠警告會發生嚴重縮水痕與出模擦傷，TPM 應？", o: ["全盤聽從 ID，良率隨便工廠去死", "在圖紙端強行妥協微調拔模角與噴砂顆粒度，維持視覺美學並確保可製造性", "直接取消該專案"], a: 1 },
+            { q: "迴流焊（Reflow Profile）出爐後 AOI 掃描集體回報晶片位移與冷焊（Cold Solder），這屬於哪一站的製程偏移？", o: ["FATP 組裝站", "SMT 火山熔爐流水線站", "功能測試 FCT 站"], a: 1 },
+            { q: "在 PVT 階段，產線主管抱怨某一測試工位的操作時間（Cycle Time）過長引發瓶頸，這摧毀了什麼？", o: ["市場預言術書", "線平衡（Line Balance）與產速 UPH 控管", "CMF 顏色貼圖"], a: 1 },
+            { q: "天線 EE 與結構 ME 為了 0.2mm 的防護間距在會議上瘋狂吵架，TPM 扮演的角色是？", o: ["記錄他們吵架的字句並呈報高層", "依據技術底蘊主導 Trade-off Matrix 決策代價矩陣，逼出黃金技術妥協點", "叫他們去走廊打架"], a: 1 },
+            { q: "產品在凡間市場開箱即損（DOA）故障率超標，客退品（Field Returns）應送往何處進行屍檢剖析？", o: ["太古聖堂", "英靈轉生殿中繼站 (EFFA / 早期失效分析)", "重新塞回 SMT 爐子"], a: 1 },
+            { q: "什麼指標是用來量產前評估工廠流水線對特定公差尺寸的「製程能力指數」？", o: ["BOM Cost", "Cpk", "PRD"], a: 1 },
+            { q: "在 SMT 製程中，架設在鋼網錫膏印刷機後方、用來攔截錫膏印偏或厚度不均的關卡是？", o: ["AOI", "SPI (錫膏檢查門)", "X-Ray"], a: 1 },
+            { q: "防水橡膠圈（O-Ring）在結構配置中，最神聖的黃金物理壓縮比變形率區間是？", o: ["1% ~ 5%", "25% ~ 40%", "90% ~ 100%"], a: 1 },
+            { q: "高階相機模組為了排除微米級組裝公差，在點亮動態下利用六軸機器手臂微調至最清晰交點的製程叫？", o: ["ICT 測試", "AA 主動對位技術 (Active Alignment)", "陽極氧化技術"], a: 1 },
+            { q: "各國強制的通訊協議與電磁輻射法規認證（如 FCC、CE），在我們的世界觀中屬於？", o: ["物質深淵", "太古聖堂 (神界之上/運營商法規界)", "Common Pool"], a: 1 },
+            { q: "在 EVT 階段，EE 團隊的核心攻堅指標是什麼？", o: ["完成電路原理圖（Schematic）與 PCB Layout 首版功能通電打通", "大量複製一萬台裝置", "設計包裝彩盒"], a: 0 },
+            { q: "當專案進入 PVT 階段時，代表以下何種硬體狀態已經發生？", o: ["產品還在市場調研", "研發設計檔案全面凍結（Freeze），重心全力轉移至工廠製程能力複製", "外殼材質尚未決定"], a: 1 },
+            { q: "金屬鋁合金外殼表面為了防刮、抗氧化且吸附色彩而進行的電化學工藝叫？", o: ["Reflow", "Anodization (陽極氧化)", "Dispensing"], a: 1 },
+            { q: "BOM Cost 是指什麼？", o: ["工廠開火電費", "物料清單清冊硬體總成本", "TPM的加班費"], a: 1 },
+            { q: "專案完成大量生產（MP）開閘後，TPM 必須將本次戰役的經驗凝結成什麼卷軸，傳送回大圖書館？", o: ["PRD 規格書", "Lessons Learned (歷史經驗教訓文獻)", "CAD 3D 模型"], a: 1 },
+            { q: "若學員在位階考核中得分低於 60%（Fail），系統的天條法則是？", o: ["自動算他過關", "不給予點亮通關認證，必須強退回溯，重新研讀重考", "發放黃金勳章"], a: 1 }
+        ];
+
+        let currentActiveTab = "p1";
+        let examActive = false;
+        let currentQuestionIdx = 0;
+        let examScore = 0;
+
+        function switchPage(pageId) {
+            // 切換分頁主動樣式
+            document.querySelectorAll('.chapter-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${pageId}`).classList.add('active');
+
+            const readingCanvas = document.getElementById('reading-canvas');
+            const examCanvas = document.getElementById('exam-canvas');
+            const stamp = document.getElementById('quest-clear-stamp');
+
+            // 讀取該大關卡是否早已黃金過關
+            const isModuleCleared = localStorage.getItem('codex-L1-Module-clear') === 'true';
+
+            if (pageId === 'exam') {
+                readingCanvas.style.display = 'none';
+                examCanvas.style.display = 'block';
+                stamp.style.display = 'none';
+                
+                if (!examActive) {
+                    startExamSession();
+                }
+            } else {
+                examActive = false; // 退出大考模式
+                readingCanvas.style.display = 'block';
+                examCanvas.style.display = 'none';
+                
+                // 蓋章控制
+                stamp.style.display = isModuleCleared ? 'block' : 'none';
+
+                currentActiveTab = pageId;
+                const data = pagesData[pageId];
+                
+                document.getElementById('current-chapter-id').innerText = data.id;
+                document.getElementById('current-chapter-name').innerText = data.title;
+                document.getElementById('lesson-content').innerText = data.text;
+                document.getElementById('diagram-box').innerText = data.diagram;
+            }
+        }
+
+        // 👑 20題連擊大考核心引擎
+        function startExamSession() {
+            examActive = true;
+            currentQuestionIdx = 0;
+            examScore = 0;
+            
+            document.getElementById('current-chapter-id').innerText = "EXAM MODE";
+            document.getElementById('current-chapter-name').innerText = "L1 職等晉升大會考";
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestionIdx >= examQuestions.length) {
+                evaluateExamResult();
+                return;
+            }
+
+            const qData = examQuestions[currentQuestionIdx];
+            document.getElementById('exam-counter').innerText = `第 ${currentQuestionIdx + 1} / ${examQuestions.length} 題`;
+            
+            // 更新進度條
+            const progressPct = (currentQuestionIdx / examQuestions.length) * 100;
+            document.getElementById('exam-progress').style.width = `${progressPct}%`;
+            
+            document.getElementById('exam-question-text').innerText = `${currentQuestionIdx + 1}. ${qData.q}`;
+            
+            const optionsBox = document.getElementById('exam-options-container');
+            optionsBox.innerHTML = '';
+            
+            qData.o.forEach((opt, idx) => {
+                optionsBox.innerHTML += `
+                    <div class="option-card" onclick="submitExamAnswer(${idx})">${opt}</div>
+                `;
             });
         }
-        function loadChapter(id) {
-            currentActiveId = id; const data = codexDatabase[id];
-            document.getElementById('current-chapter-id').innerText = data.id; document.getElementById('current-chapter-name').innerText = data.title; document.getElementById('lesson-content').innerText = data.lesson; document.getElementById('trial-question').innerText = `⚠️ 實戰情境：${data.question}`;
-            const stamp = document.getElementById('quest-clear-stamp'); const isCleared = localStorage.getItem(`codex-${id}-clear`) === 'true';
-            stamp.style.display = isCleared ? 'block' : 'none'; document.getElementById('boss-battleground').style.display = isCleared ? 'none' : 'block';
-            const optionsBox = document.getElementById('trial-options-box'); optionsBox.innerHTML = '';
-            data.options.forEach(opt => { optionsBox.innerHTML += `<div class="option-card" onclick="checkChoice(this, '${opt.includes('⭕')}', '${id}')">${opt}</div>`; });
+
+        function submitExamAnswer(selectedIdx) {
+            const qData = examQuestions[currentQuestionIdx];
+            if (selectedIdx === qData.a) {
+                examScore++;
+            }
+            
+            // 毫秒未差，直接突襲下一題，維持高度緊湊感
+            currentQuestionIdx++;
+            showQuestion();
         }
-        function switchChapter(id, status) { if (status === 'locked') { alert("請先通關前置章節！"); return; } currentActiveId = id; renderMenu(); loadChapter(id); }
-        function checkChoice(element, isCorrect, id) {
-            if (isCorrect === "true") {
-                element.style.background = "#D1FAE5"; element.style.borderColor = "#10B981"; document.getElementById('quest-clear-stamp').style.display = 'block';
-                setTimeout(() => { alert("🏆 QUEST CLEAR！通關印記已保存。"); localStorage.setItem(`codex-${id}-clear`, 'true'); initCodex(); }, 300);
-            } else { element.style.background = "#FEE2E2"; element.style.borderColor = "#EF4444"; alert("💥 決策原罪！請重讀卷軸重新思考！"); }
+
+        // 評定剛性職等分數
+        function evaluateExamResult() {
+            examActive = false;
+            const finalPct = (examScore / examQuestions.length) * 100;
+            let grade = "Fail";
+            let alertMsg = "";
+
+            if (finalPct === 100) grade = "S";
+            else if (finalPct >= 90) grade = "A";
+            else if (finalPct >= 80) grade = "B";
+            else if (finalPct >= 70) grade = "C";
+            else if (finalPct >= 60) grade = "D";
+
+            if (grade === "Fail") {
+                alert(`💥【位階考核失敗】\n您的答對率僅有 ${finalPct}%（未達 60% 剛性門檻）。\n\n根據公會天條：本次考核判定為 Fail！您不具備通關資格，通行證已鎖定，必須強退回溯重新研讀教材重考！`);
+                localStorage.setItem('codex-L1-Module-clear', 'false');
+                localStorage.removeItem('talent-L1-A1-grade'); // 清空天賦樹聯動成績
+                switchPage('p1'); // 強制打回第一頁重讀
+            } else {
+                alert(`🏆【位階考核通過！】\n恭喜特工！您成功擊碎 20 題實戰情境 Boss 連擊！\n您的最終得分率：${finalPct}%\n核定最終戰力位階：【 ${grade} 】級！\n\n通關數據已全數安全寫入星盤矩陣中。`);
+                
+                localStorage.setItem('codex-L1-Module-clear', 'true');
+                // 核心連動：將成績與日期寫入快取，讓 talent_tree.html 讀取高亮
+                localStorage.setItem('talent-L1-A1-grade', grade);
+                localStorage.setItem('talent-L1-A1-date', new Date().toLocaleDateString());
+                
+                document.getElementById('quest-clear-stamp').style.display = 'block';
+                switchPage('p1'); // 回到主教材頁，呈現黃金大印章
+            }
         }
+
+        // 剛性雙語及快取繼承控制
         function setLang(lang) {
-            document.querySelectorAll('.lang-btn-sub').forEach(btn => btn.classList.remove('active')); document.getElementById(`sub-${lang}`).classList.add('active');
-            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if(translations[lang][key]) el.innerText = translations[lang][key]; });
+            document.querySelectorAll('.lang-btn-core').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-${lang}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => { 
+                const key = el.getAttribute('data-i18n'); 
+                if(translations[lang][key]) el.innerText = translations[lang][key]; 
+            });
+
+            document.getElementById('nav-home-text').innerText = translations[lang]["nav-home"];
+            const cachedName = localStorage.getItem('tpm-user-name');
+            const cachedRank = localStorage.getItem('tpm-user-rank') || "冒險者";
+            let displayRank = (lang === 'tw') ? cachedRank : "Adventurer";
+            
+            if (cachedName) {
+                document.getElementById('user-profile').innerHTML = `👤 ${displayRank}：${cachedName}`;
+            }
             localStorage.setItem('tpm-lang-pref', lang);
         }
+
         window.onload = () => {
-            setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); initCodex();
-            const cachedName = localStorage.getItem('tpm-user-name');
-            if (cachedName) { const currentRank = localStorage.getItem('tpm-user-rank') || "冒險者"; document.getElementById('user-profile').innerHTML = `👤 ${currentRank}：${cachedName}`; }
+            setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); 
+            switchPage('p1'); // 預設開啟第一章
         };
     </script>
 </body>
