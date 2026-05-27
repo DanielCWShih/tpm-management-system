@@ -16,141 +16,86 @@
         aside { width: 320px; background-color: var(--sidebar-cream); border-right: 3px solid var(--border-heavy); display: flex; flex-direction: column; padding: 30px 20px; flex-shrink: 0; height: 100%; }
         .aside-header { border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px; margin-bottom: 25px; }
         .back-btn { display: block; background: var(--card-white); border: 2px solid var(--border-heavy); padding: 10px; border-radius: var(--radius-sm); text-align: center; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 20px; }
-        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
         .chapter-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; }
-        .chapter-item { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 15px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); transition: all 0.15s; }
-        .chapter-item.locked { border-color: var(--color-locked); box-shadow: 2px 2px 0px var(--color-locked); opacity: 0.6; cursor: not-allowed; }
-        .chapter-item.locked * { color: var(--color-locked); }
-        .chapter-item.available { border-color: var(--color-available); box-shadow: 3px 3px 0px var(--color-available); }
-        .chapter-item.available:hover { transform: translateX(4px); }
-        .chapter-item.completed { border-color: var(--color-completed); box-shadow: 3px 3px 0px var(--color-completed); background: #FFFDF4; }
-        .chapter-item.completed:hover { transform: translateX(4px); }
+        .chapter-item { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 15px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); }
+        .chapter-item.completed { border-color: var(--color-completed); box-shadow: 3px 3px 0px var(--color-completed); }
         .chapter-item.active { background: var(--text-main) !important; }
         .chapter-item.active * { color: white !important; }
-        .chapter-badge { font-size: 0.7rem; font-weight: 900; text-transform: uppercase; font-family: monospace; }
-        .chapter-title { font-size: 0.9rem; font-weight: 800; margin-top: 5px; }
+        .chapter-title { font-size: 0.9rem; font-weight: 800; }
         main { flex: 1; height: 100%; padding: 40px; overflow-y: auto; background: var(--card-white); position: relative; }
         .main-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px; margin-bottom: 30px; }
         .auth-panel { background: var(--bg-color); border: 2px solid var(--border-heavy); padding: 8px 15px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 800; box-shadow: 2px 2px 0px var(--border-heavy); }
-        .document-canvas { width: 100%; }
+        .lang-switcher { display: flex; gap: 10px; }
         .scroll-text { font-size: 1.05rem; line-height: 1.8; font-weight: 600; white-space: pre-line; margin-bottom: 40px; }
-        .boss-trial-section { border: 3px solid #DC2626; border-radius: var(--radius-sm); padding: 30px; background: #FEF2F2; box-shadow: var(--shadow-tactical); margin-top: 50px; }
-        .option-card { background: white; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 15px; cursor: pointer; font-weight: 700; }
-        .option-card:hover { background: var(--sidebar-cream); }
-        .clear-seal-overlay { display: none; position: absolute; top: 250px; left: 50%; transform: translate(-50%, -50%) rotate(-10deg); border: 6px double var(--color-completed); background: rgba(254, 249, 231, 0.95); padding: 15px 50px; z-index: 1000; pointer-events: none; }
-        .clear-seal-overlay text { font-family: 'Segoe UI', Impact, sans-serif; font-size: 36px; font-weight: 900; fill: var(--color-completed); letter-spacing: 3px; }
     </style>
 </head>
 <body>
-
     <aside>
         <div class="aside-header">
-            <a href="index.html" class="back-btn">↩ 返回公會大廳</a>
-            <div style="font-size: 0.8rem; font-weight: 900; font-family: monospace; color: var(--text-secondary);">SYS.CODEX V4.5</div>
-            <h2 style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">初心者寶典</h2>
+            <a href="index.html" class="back-btn" data-i18n="back-to-hq">↩ 返回公會總部</a>
+            <h2 style="margin: 5px 0 0 0;" data-i18n="codex-title">初心者寶典</h2>
         </div>
-        <ul class="chapter-list" id="chapter-menu"></ul>
+        <ul class="chapter-list">
+            <li class="chapter-item active">
+                <div class="chapter-title" data-i18n="ch1-title">基本世界觀與NPI流程</div>
+            </li>
+        </ul>
     </aside>
-
     <main>
-        <div id="quest-clear-stamp" class="clear-seal-overlay">
-            <svg width="300" height="80" viewBox="0 0 300 80"><text x="50%" y="60%" text-anchor="middle">QUEST CLEAR</text></svg>
-        </div>
         <div class="main-header">
             <div>
-                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">CHAPTER 01</span>
-                <h1 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 2rem; font-weight: 900;">加載中...</h1>
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900;">CHAPTER 01</span>
+                <h1 id="current-chapter-name" style="margin: 5px 0 0 0;" data-i18n="ch1-title">基本世界觀與NPI流程</h1>
             </div>
-            <div id="user-identity-box" class="auth-panel">👤 未登入特工身分</div>
+            <div class="header-controls" style="display: flex; align-items: center; gap: 20px;">
+                <div class="lang-switcherauth-panel" style="background:white; border:none; box-shadow:none; padding:0; display:flex; gap:10px;">
+                    <button class="chapter-item" id="btn-tw" onclick="setLang('tw')" style="padding: 10px 15px; margin:0; width:55px; text-align:center;">TW</button>
+                    <button class="chapter-item" id="btn-en" onclick="setLang('en')" style="padding: 10px 15px; margin:0; width:55px; text-align:center;">EN</button>
+                </div>
+                <div id="user-profile" class="auth-panel" data-i18n="auth-unlocked">👤 冒險者認證中...</div>
+            </div>
         </div>
         <div class="document-canvas">
-            <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.2rem;">📜 聖遺物卷軸 (核心教學)</h3>
-            <div id="lesson-content" class="scroll-text"></div>
-            <div id="boss-battleground" class="boss-trial-section">
-                <h3 style="margin-top:0; color:#B91C1C;">⚔️ 守關 Boss 考驗 (情境抉擇)</h3>
-                <p id="trial-question" style="font-weight: 800; font-size: 1.1rem; line-height: 1.5;"></p>
-                <div id="trial-options-box"></div>
+            <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.2rem;" data-i18n="doc-lesson-title">📜 教材卷軸</h3>
+            <div id="lesson-content" class="scroll-text" data-i18n="ch1-content">
+                【NPI 流程與 TPM 物理法則】
+                
+                NPI（新產品導入）是一條不可逆的時間詛咒。System TPM 掌控時空之鑰，主導EVT、DVT、PVT、MP四個階段。
+                
+                我們利用「DFM Review（深淵工程審查）」建立早期防線，主導「DFMEA（魔力失效模式分析）」，精準預測「不良良率與物理陷阱」。
+                
+                在PVT（生產驗證階段），我們必須建立「產線平衡與治具模具公差分析」結界，確保量產時產能不致崩潰。
+                
+                當MP（大量生產）降臨，神器大批複製，TPM則退為賢者，藉由「Lessons Learned（歷史戰役史詩）」將經驗凝結為神聖水晶，焊接入公會知識圖書館中。
             </div>
         </div>
     </main>
 
     <script>
-        const codexDatabase = {
-            "CH-01": {
-                id: "CH-01", badge: "Lesson 1 (必修)", title: "基本世界觀 (四界雙域)", defaultStatus: "available",
-                lesson: "在 System TPM 的世界中，運行著「四界雙域」的物理法則。\n\n1. 眾神殿/天界 (Customer/Client)：手握圖紙，負責編撰出最完美的萬物二維圖紙。\n2. 🔮 幻界/萬物星塵 (Vendor/Supplier)：控制核心電子物料，負責向深淵運送零件。\n3. ⚙️ 機械熔爐/物質深淵 (EMS Factory)：這就是代工廠，接過天界圖紙與幻界物料，在生產工時、線平衡與公差的物理結界下進行實體召喚。\n4. 🏘️ 凡間/命運大陸 (End Market)：消費市場。凡人購買產品產生銷售額，反饋天界，完成創世迴圈。",
-                question: "當核心感測器晶片大缺料導致生產中斷。此時，System TPM 該如何做決策？",
-                options: [
-                    "修改天界的外觀幻化圖紙，將缺料空間封死。(❌ 邏輯崩潰，直接滅團)",
-                    "即刻開啟與供應商的品質審查，同時啟動二線備料策略（Second Source Sourcing）進行認證分流。(⭕ 挑戰成功！)",
-                    "原地待命，等待機械熔爐產線主管自行去跟供應商談判。(❌ 降級為 F-Rank)"
-                ]
-            },
-            "CH-02": {
-                id: "CH-02", badge: "Lesson 2 (必修)", title: "工廠的基礎 (SMT與良率鐵律)", defaultStatus: "locked",
-                lesson: "進入物質深淵的第一站，就是 SMT 火山熔爐流水線。\n\n空電路板進入後，經過鋼網印刷、SPI、貼片機貼片、迴流焊。出爐後必須通過 AOI 與 X-Ray 的審判之門。\n\n在深淵中，直通率（FPY）是至高無上的血統鐵律。一台裝置如果在途中被重修三次，即使良率達標，它也帶有物理內傷。線平衡工時不均，則會引發產能瓶頸的堆積詛咒。",
-                question: "組裝測試線最後一站功能測試站（FCT）的良率突然從 99% 雪崩到 80%。你的第一動是？",
-                options: [
-                    "命令整條產線立刻停線，直到抓出原因。(❌ 損失數百萬魔力)",
-                    "檢查該測試站的測試治具探針是否磨損，並比對前站 SMT 的 AOI 數據判斷是否為製程偏移。(⭕ 天條認證！)",
-                    "直接把不良品倒進廢料桶，維持良率報表好看。(❌ 觸犯公會刑法)"
-                ]
-            }
+        const translations = {
+            tw: { "codex-title": "初心者寶典", "ch1-title": "基本世界觀與NPI流程", "ch1-content": "【NPI 流程與 TPM 物理法則】\nNPI是一條不可逆的時間詛咒。TPM掌控時空之鑰，主導EVT、DVT、PVT、MP階段。", "back-to-hq": "↩ 返回公會總部", "doc-lesson-title": "📜 教材卷軸", "auth-unlocked": "冒險者認證成功" },
+            en: { "codex-title": "Beginner's Codex", "ch1-title": "Cosmos Matrix & NPI Process", "ch1-content": "[NPI Process & TPM Physical Laws]\nNPI is an irreversible time curse. TPM holds the key of spacetime, leading EVT, DVT, PVT, MP phases.", "back-to-hq": "↩ Back to HQ", "doc-lesson-title": "📜 Lesson Scroll", "auth-unlocked": "Adventurer Authenticated" }
         };
 
-        let currentActiveId = "CH-01";
-
-        function initCodex() { renderMenu(); loadChapter(currentActiveId); }
-
-        function renderMenu() {
-            const menu = document.getElementById('chapter-menu'); menu.innerHTML = '';
-            Object.keys(codexDatabase).forEach(key => {
-                const item = codexDatabase[key];
-                const isCleared = localStorage.getItem(`codex-${item.id}-clear`) === 'true';
-                let statusClass = item.defaultStatus;
-                if (isCleared) statusClass = "completed";
-                else if (item.id === "CH-02" && localStorage.getItem(`codex-CH-01-clear`) === 'true') statusClass = "available";
-                const activeClass = item.id === currentActiveId ? "active" : "";
-                menu.innerHTML += `<li class="chapter-item ${statusClass} ${activeClass}" onclick="switchChapter('${item.id}', '${statusClass}')"><div class="chapter-badge">${item.badge}</div><div class="chapter-title">${item.title}</div></li>`;
+        function setLang(lang) {
+            document.querySelectorAll('.lang-switcherauth-panel .chapter-item').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            document.querySelectorAll('[data-i18n]').forEach(el => { 
+                const key = el.getAttribute('data-i18n'); 
+                if(translations[lang][key]) el.innerText = translations[lang][key]; 
             });
-        }
-
-        function loadChapter(id) {
-            currentActiveId = id; const data = codexDatabase[id];
-            document.getElementById('current-chapter-id').innerText = data.id;
-            document.getElementById('current-chapter-name').innerText = data.title;
-            document.getElementById('lesson-content').innerText = data.lesson;
-            document.getElementById('trial-question').innerText = `⚠️ 實戰情境：${data.question}`;
-            const stamp = document.getElementById('quest-clear-stamp');
-            const isCleared = localStorage.getItem(`codex-${id}-clear`) === 'true';
-            stamp.style.display = isCleared ? 'block' : 'none';
-            document.getElementById('boss-battleground').style.display = isCleared ? 'none' : 'block';
-            const optionsBox = document.getElementById('trial-options-box'); optionsBox.innerHTML = '';
-            data.options.forEach(opt => { optionsBox.innerHTML += `<div class="option-card" onclick="checkChoice(this, '${opt.includes('⭕')}', '${id}')">${opt}</div>`; });
-        }
-
-        function switchChapter(id, status) { if (status === 'locked') { alert("【公會封印】請先通關前置章節！"); return; } currentActiveId = id; renderMenu(); loadChapter(id); }
-
-        function checkChoice(element, isCorrect, id) {
-            if (isCorrect === "true") {
-                element.style.background = "#D1FAE5"; element.style.borderColor = "#10B981";
-                document.getElementById('quest-clear-stamp').style.display = 'block';
-                setTimeout(() => {
-                    alert("🏆 QUEST CLEAR！通關印記已保存。");
-                    localStorage.setItem(`codex-${id}-clear`, 'true');
-                    initCodex();
-                }, 300);
-            } else {
-                element.style.background = "#FEE2E2"; element.style.borderColor = "#EF4444";
-                alert("💥 決策原罪！請重新思考！");
-            }
+            const cName = localStorage.getItem('tpm-user-name');
+            if(!cName) document.getElementById('user-profile').innerText = translations[lang]["auth-unlocked"];
+            localStorage.setItem('tpm-lang-pref', lang);
         }
 
         window.onload = () => {
-            const cEmail = localStorage.getItem('tpm-user-email');
-            const cName = localStorage.getItem('tpm-user-name');
-            if (cEmail && cName) document.getElementById('user-identity-box').innerHTML = `👤 特工：${cName} (${cEmail})`;
-            initCodex();
+            setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); 
+            const cachedName = localStorage.getItem('tpm-user-name');
+            if (cachedName) {
+                const currentRank = localStorage.getItem('tpm-user-rank') || "冒險者";
+                document.getElementById('user-profile').innerHTML = `👤 ${currentRank}：${cachedName}`;
+            }
         };
     </script>
 </body>
