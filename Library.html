@@ -15,7 +15,6 @@
             --border-heavy: #1A1A1A;
             --shadow-tactical: 5px 5px 0px #1A1A1A;
             --radius-sm: 8px;
-            
             --tier-blue: #3B82F6;
             --tier-gold: #F59E0B;
         }
@@ -34,7 +33,6 @@
             overflow: hidden;
         }
 
-        /* 頂部控制列 ── UI排佈與首頁、天賦樹完全對齊 */
         .tactical-header {
             width: 100%; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 3px solid var(--border-heavy); padding: 30px 40px;
@@ -56,12 +54,10 @@
         }
         .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
 
-        /* 圖書館主體雙版面配置面 */
         .library-workspace {
             flex: 1; width: 100%; display: flex; overflow: hidden;
         }
 
-        /* 左側大分類皮卷導航 */
         aside {
             width: 280px; background-color: var(--sidebar-cream);
             border-right: 3px solid var(--border-heavy);
@@ -81,20 +77,17 @@
             box-shadow: 1px 1px 0px var(--border-heavy);
         }
 
-        /* 右側圖鑑滾動主畫布面 */
         main {
             flex: 1; height: 100%; padding: 40px; overflow-y: auto;
             background: var(--card-white); display: flex; flex-direction: column; gap: 30px;
         }
 
-        /* 圖鑑矩陣網格 */
         .jargon-lexicon-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 25px; width: 100%;
         }
 
-        /* 硬核術語圖鑑卡牌 */
         .jargon-card {
             background: var(--card-white); border: 2px solid var(--border-heavy);
             border-radius: var(--radius-sm); padding: 25px 20px; cursor: pointer;
@@ -114,8 +107,7 @@
         .jargon-main-term { font-size: 1.15rem; font-weight: 900; margin-top: 8px; letter-spacing: -0.5px; }
         .jargon-sub-game-term { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-top: 4px; }
 
-        /* 圖鑑動態展開詳細面板 (Modal Slide) */
-        .lexicon-detail-modal {
+        .lexicon-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 2000;
             justify-content: center; align-items: center; padding: 20px;
@@ -166,7 +158,6 @@
     </div>
 
     <div class="library-workspace">
-        
         <aside>
             <button class="category-btn active" id="btn-all" onclick="filterLexicon('all')">【 顯示全部圖鑑 】</button>
             <button class="category-btn" id="btn-abyss" onclick="filterLexicon('abyss')">⚙️ 物質深淵 (工廠製程)</button>
@@ -175,10 +166,8 @@
         </aside>
 
         <main>
-            <div class="jargon-lexicon-grid" id="lexicon-canvas">
-                </div>
+            <div class="jargon-lexicon-grid" id="lexicon-canvas"></div>
         </main>
-
     </div>
 
     <div id="lexicon-modal" class="lexicon-modal">
@@ -191,9 +180,8 @@
                 <button class="close-btn" onclick="closeLexicon()">✕</button>
             </div>
             <div class="modal-body">
-                
                 <div class="lexicon-section-block" style="background-color: #FFFDF2; border-color: var(--tier-gold);">
-                    <div class="lexicon-block-label" style="color: #B45309;">🌌 異世界奇幻包裝 (Guild Lore Translation)</div>
+                    <div class="lexicon-block-label" style="color: #B45309;">🌌 異世界奇幻包裝 (Guild Lore)</div>
                     <div id="modal-jargon-lore" class="lexicon-block-text" style="color: #B45309; font-weight: 800;"></div>
                 </div>
 
@@ -203,23 +191,21 @@
                 </div>
 
                 <div class="lexicon-section-block" style="background-color: #FEF2F2; border-color: #EF4444;">
-                    <div class="lexicon-block-label" style="color: #B91C1C;">🔥 歷代英雄血淚戰役史詩 (Lessons Learned / Post-Mortem)</div>
+                    <div class="lexicon-block-label" style="color: #B91C1C;">🔥 歷代英雄血淚戰役史詩 (Lessons Learned)</div>
                     <div id="modal-jargon-lessons" class="lexicon-block-text" style="line-height: 1.6;"></div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <script>
-        // 核心大圖書館術語大數據庫 JSON 矩陣模型
         const libraryLexicon = [
             {
                 id: "J-01", category: "abyss", tag: "FATP / Process",
                 term: "FPY (直通率)", en: "First Pass Yield", gameTerm: "純淨血統鐵律",
-                lore: "【純淨血統鐵律】指的是一個神器在深淵流水線中，從第一站鑄造到最後一站測試，『完全沒有觸發任何警報、未曾被拔下來手工維修』，一氣呵成順利通關的完美概率。",
+                lore: "【純淨血統鐵律】指的是一個神器在深淵流水線中，從第一站鑄造到最後一站測試，『完全沒有觸發任何警報、未曾被拔下來手工維修』一氣呵成順利通關的完美概率。",
                 def: "First Pass Yield。指生產線第一次就製造出合格產品的比例。公式為：(完全不需重工即合格的產品數 / 投入生產總數) × 100%。這是衡量製程健康度與隱形成本的終極指標。",
-                lessons: "某歷史手機專案試產時，工廠宣稱良率高達 98%。但 TPM 調閱數據發現 FPY 只有 45%！這代表有超過一半的機器是『拆開重修、手工銲接三次』才勉強過關的。這些帶有物理內傷的機器運到市場後，開箱 DOA（即損不良率）直接炸裂。此役後公會確立鐵律：不看良率，只斬直通率！"
+                lessons: "某歷史手機專案試產時，工廠宣稱良率高達 98%。但 TPM 調閱數據發現 FPY 只有 45%！這代表有超過一半的機器是『拆開重修、手工銲接三次』才勉強過關的。這些帶有物理內傷的機器運到市場後，開箱 DOA 直接炸裂。此役後公會確立鐵律：不看良率，只斬直通率！"
             },
             {
                 id: "J-02", category: "abyss", tag: "SMT / Production",
@@ -244,11 +230,9 @@
             }
         ];
 
-        // 圖鑑渲染引擎
         function renderLexicon(data) {
             const canvas = document.getElementById('lexicon-canvas');
             canvas.innerHTML = '';
-
             data.forEach(item => {
                 canvas.innerHTML += `
                     <div class="jargon-card" onclick="openLexiconDetail('${item.id}')">
@@ -261,11 +245,8 @@
             });
         }
 
-        // 分類過濾機制
         function filterLexicon(category) {
-            // 切換按鈕樣式
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            
             let btnId = 'btn-all';
             if (category === 'abyss') btnId = 'btn-abyss';
             if (category === 'pantheon') btnId = 'btn-pantheon';
@@ -280,32 +261,26 @@
             }
         }
 
-        // 開啟展開詳細視窗面
         function openLexiconDetail(id) {
             const data = libraryLexicon.find(item => item.id === id);
             if (!data) return;
-
             document.getElementById('modal-jargon-tag').innerText = `🏷️ ${data.tag} [ ${data.en} ]`;
             document.getElementById('modal-jargon-term').innerText = data.term;
             document.getElementById('modal-jargon-lore').innerText = data.lore;
             document.getElementById('modal-jargon-def').innerText = data.def;
             document.getElementById('modal-jargon-lessons').innerText = data.lessons;
-
             document.getElementById('lexicon-modal').style.display = 'flex';
         }
 
-        function closeLexicon() {
-            document.getElementById('lexicon-modal').style.display = 'none';
-        }
+        function closeLexicon() { document.getElementById('lexicon-modal').style.display = 'none'; }
 
-        // 自動加載與登入身分繼承機制
         window.onload = () => {
             const cachedEmail = localStorage.getItem('tpm-user-email');
             const cachedName = localStorage.getItem('tpm-user-name');
             if (cachedEmail && cachedName) {
                 document.getElementById('user-profile').innerHTML = `👤 特工：${cachedName} (${cachedEmail})`;
             }
-            renderLexicon(libraryLexicon); // 預設載入全部圖鑑
+            renderLexicon(libraryLexicon);
         };
     </script>
 </body>
