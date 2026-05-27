@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System TPM 公會總部 | System TPM Guild</title>
+    <title>System TPM 公會總部 | System TPM Guild (0527-V1.0)</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         :root {
@@ -18,7 +18,13 @@
             --radius-sm: 12px;
         }
         * { box-sizing: border-box; font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; color: var(--text-main); }
-        body { background-color: var(--bg-color); background-image: radial-gradient(var(--sidebar-cream) 2px, transparent 2px); background-size: 32px 32px; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 100vw; min-height: 100vh; padding: 40px; overflow-x: hidden; }
+        body { 
+            background-color: var(--bg-color); 
+            background-image: radial-gradient(var(--sidebar-cream) 2px, transparent 2px);
+            background-size: 32px 32px;
+            margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            width: 100vw; min-height: 100vh; padding: 40px; overflow-x: hidden;
+        }
         .page-container { width: 100%; max-width: 100%; display: flex; flex-direction: column; align-items: center; }
         .bg-watermark { position: fixed; bottom: 20px; right: 20px; font-size: 10rem; font-weight: 900; color: rgba(253, 242, 208, 0.5); z-index: -1; user-select: none; font-family: monospace; }
         .lang-switcher { position: absolute; top: 30px; right: 40px; display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; z-index: 100; }
@@ -54,10 +60,16 @@
         <header>
             <div class="logo-mark" data-i18n="logo-mark">GUILD HQ / LEVEL 2026</div>
             <h1 data-i18n="main-title">System TPM 公會總部</h1>
-            <div class="subtitle" data-i18n="subtitle">Daniel Shih | 2026 年度高效 management 與團隊修煉套件</div>
+            <div class="subtitle" data-i18n="subtitle">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
         </header>
         <div class="portal-auth-zone" id="portal-sso-gateway">
-            <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-callback="handlePortalLogin" data-auto_select="true"></div>
+            <div id="g_id_onload"
+                data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-callback="handlePortalLogin"
+                data-auto_select="true">
+            </div>
             <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
         </div>
         <div class="hub-grid">
@@ -116,7 +128,7 @@
                 <p data-i18n="card-library-desc">集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。</p>
             </a>
         </div>
-        <footer><span data-i18n="footer-text">GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH</span></footer>
+        <footer><span>GUILD.REVISION: 0527-V1.0 | @2026 | OPERATOR: DANIEL SHIH</span></footer>
     </div>
     <script>
         const translations = {
@@ -131,8 +143,7 @@
                 "card-sage-title": "賢者之識", "card-sage-desc": "智慧核心：整合大語言模型（LLM）知識庫，自動化輔助生成全新標準化作業教材。",
                 "card-tree-title": "冒險者天賦樹", "card-tree-desc": "RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。",
                 "card-random-title": "隨機副本挑戰", "card-random-desc": "動態隨機題庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。",
-                "card-library-title": "知識圖書館", "card-library-desc": "集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。",
-                "footer-text": "GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH"
+                "card-library-title": "知識圖書館", "card-library-desc": "集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。"
             },
             en: {
                 "logo-mark": "GUILD HQ / LEVEL 2026", "main-title": "System TPM Guild", "subtitle": "Daniel Shih | 2026 Tactical Management & Training Suite",
@@ -145,8 +156,7 @@
                 "card-sage-title": "Sage's Knowledge", "card-sage-desc": "LLM Knowledge Core: Automated production workspace for creating curriculum blueprints and process scripts.",
                 "card-tree-title": "Adventurer Talent Tree", "card-tree-desc": "Visual Progression Matrix: Dynamically mapping and allocating completed nodes and individual talent trends.",
                 "card-random-title": "Random Dungeon Raids", "card-random-desc": "Dynamic Quiz Vault: Random pop-up challenges from actual historical bug registries to boost reflexes.",
-                "card-library-title": "Knowledge Library", "card-library-desc": "Centralized archive storing historical systems design manifests, post-mortems, and hero scrolls.",
-                "footer-text": "GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH"
+                "card-library-title": "Knowledge Library", "card-library-desc": "Centralized archive storing historical systems design manifests, post-mortems, and hero scrolls."
             }
         };
         function setLang(lang) {
