@@ -17,214 +17,49 @@
             --shadow-tactical: 6px 6px 0px #1A1A1A;
             --radius-sm: 12px;
         }
-        
-        * { 
-            box-sizing: border-box; 
-            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; 
-            color: var(--text-main); 
-        }
-        
-        body { 
-            background-color: var(--bg-color); 
-            background-image: radial-gradient(var(--sidebar-cream) 2px, transparent 2px);
-            background-size: 32px 32px;
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: flex-start;
-            width: 100vw;
-            min-height: 100vh; 
-            padding: 40px; 
-            overflow-x: hidden;
-        }
-
-        .page-container {
-            width: 100%;
-            max-width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .bg-watermark { 
-            position: fixed; 
-            bottom: 20px; 
-            right: 20px; 
-            font-size: 10rem; 
-            font-weight: 900; 
-            color: rgba(253, 242, 208, 0.5); 
-            z-index: -1; 
-            user-select: none; 
-            font-family: monospace;
-        }
-
-        .lang-switcher { 
-            position: absolute; 
-            top: 30px; 
-            right: 40px; 
-            display: flex; 
-            background: var(--card-white); 
-            border: 3px solid var(--border-heavy); 
-            border-radius: var(--radius-sm);
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            padding: 2px; 
-            z-index: 100; 
-        }
-
-        .lang-btn { 
-            padding: 8px 16px; 
-            border-radius: 6px; 
-            border: none; 
-            background: transparent; 
-            cursor: pointer; 
-            font-size: 0.8rem; 
-            font-weight: 900; 
-            color: var(--text-secondary); 
-        }
-
-        .lang-btn.active { 
-            background: var(--text-main); 
-            color: white; 
-        }
-
-        header { 
-            text-align: center; 
-            margin-bottom: 40px; 
-            width: 100%;
-        }
-
-        .logo-mark { 
-            font-size: 0.9rem; 
-            font-weight: 900; 
-            letter-spacing: 5px; 
-            text-transform: uppercase; 
-            margin-bottom: 12px; 
-            color: var(--text-secondary); 
-            font-family: monospace;
-        }
-
+        * { box-sizing: border-box; font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; color: var(--text-main); }
+        body { background-color: var(--bg-color); background-image: radial-gradient(var(--sidebar-cream) 2px, transparent 2px); background-size: 32px 32px; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 100vw; min-height: 100vh; padding: 40px; overflow-x: hidden; }
+        .page-container { width: 100%; max-width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .bg-watermark { position: fixed; bottom: 20px; right: 20px; font-size: 10rem; font-weight: 900; color: rgba(253, 242, 208, 0.5); z-index: -1; user-select: none; font-family: monospace; }
+        .lang-switcher { position: absolute; top: 30px; right: 40px; display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; z-index: 100; }
+        .lang-btn { padding: 8px 16px; border-radius: 6px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); }
+        .lang-btn.active { background: var(--text-main); color: white; }
+        header { text-align: center; margin-bottom: 40px; width: 100%; }
+        .logo-mark { font-size: 0.9rem; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 12px; color: var(--text-secondary); font-family: monospace; }
         h1 { font-size: 3.2rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
         .subtitle { font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; margin-top: 15px; }
-
-        .portal-auth-zone {
-            margin-bottom: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 50px;
-        }
-
-        .auth-badge-portal {
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            padding: 10px 25px;
-            border-radius: var(--radius-sm);
-            font-weight: 900;
-            box-shadow: 4px 4px 0px var(--border-heavy);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .hub-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 30px; 
-            width: 100%; 
-            padding: 10px 0;
-        }
-
-        .hub-card { 
-            background: var(--card-white); 
-            border: 3px solid var(--border-heavy); 
-            border-radius: var(--radius-sm); 
-            padding: 40px 30px; 
-            text-decoration: none; 
-            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: flex-start; 
-            text-align: left; 
-            box-shadow: var(--shadow-tactical); 
-            position: relative; 
-        }
-
-        .hub-card.active:hover { 
-            transform: translate(-4px, -4px); 
-            box-shadow: 10px 10px 0px var(--text-main); 
-            background-color: #FFFDF2;
-        }
-
+        .portal-auth-zone { margin-bottom: 40px; display: flex; justify-content: center; align-items: center; min-height: 50px; }
+        .auth-badge-portal { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 25px; border-radius: var(--radius-sm); font-weight: 900; box-shadow: 4px 4px 0px var(--border-heavy); display: flex; align-items: center; gap: 15px; }
+        .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; padding: 10px 0; }
+        .hub-card { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 40px 30px; text-decoration: none; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: flex-start; text-align: left; box-shadow: var(--shadow-tactical); position: relative; }
+        .hub-card.active:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--text-main); background-color: #FFFDF2; }
         .restricted-card { display: none; }
-
-        .hub-card.locked { 
-            background: repeating-linear-gradient(45deg, #FFFDF9, #FFFDF9 10px, #FDF2D0 10px, #FDF2D0 20px);
-            opacity: 0.5; 
-            cursor: not-allowed; 
-        }
-
-        .icon-box { 
-            width: 55px; 
-            height: 55px; 
-            background: var(--bg-color); 
-            border: 3px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            margin-bottom: 25px; 
-            font-size: 1.8rem; 
-        }
-        
+        .hub-card.locked { background: repeating-linear-gradient(45deg, #FFFDF9, #FFFDF9 10px, #FDF2D0 10px, #FDF2D0 20px); opacity: 0.5; cursor: not-allowed; }
+        .icon-box { width: 55px; height: 55px; background: var(--bg-color); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 25px; font-size: 1.8rem; }
         .hub-card.active .icon-box { background: var(--active-yellow); }
-
         .hub-card h3 { font-size: 1.4rem; font-weight: 900; margin: 0 0 12px 0; letter-spacing: -0.5px; }
         .hub-card p { font-size: 0.95rem; color: var(--text-secondary); font-weight: 600; margin: 0; line-height: 1.6; }
-
-        .status-badge { 
-            position: absolute; 
-            top: 25px; 
-            right: 25px; 
-            font-size: 0.75rem; 
-            font-weight: 900; 
-            padding: 4px 12px; 
-            border-radius: 6px; 
-            border: 2px solid var(--border-heavy);
-            font-family: monospace;
-            background: #FFF;
-        }
+        .status-badge { position: absolute; top: 25px; right: 25px; font-size: 0.75rem; font-weight: 900; padding: 4px 12px; border-radius: 6px; border: 2px solid var(--border-heavy); font-family: monospace; background: #FFF; }
         .active .status-badge { background: var(--text-main); color: white; }
-
         footer { margin-top: auto; padding: 80px 0 20px 0; text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); font-family: monospace; }
     </style>
 </head>
 <body>
     <div class="bg-watermark">TPM.GUILD</div>
-    
     <div class="page-container">
         <div class="lang-switcher">
             <button class="lang-btn active" id="btn-tw" onclick="setLang('tw')">TW</button>
             <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
         </div>
-        
         <header>
             <div class="logo-mark" data-i18n="logo-mark">GUILD HQ / LEVEL 2026</div>
             <h1 data-i18n="main-title">System TPM 公會總部</h1>
-            <div class="subtitle" data-i18n="subtitle">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
+            <div class="subtitle" data-i18n="subtitle">Daniel Shih | 2026 年度高效 management 與團隊修煉套件</div>
         </header>
-
         <div class="portal-auth-zone" id="portal-sso-gateway">
-            <div id="g_id_onload"
-                data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-                data-context="signin"
-                data-ux_mode="popup"
-                data-callback="handlePortalLogin"
-                data-auto_select="true">
-            </div>
+            <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-callback="handlePortalLogin" data-auto_select="true"></div>
             <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
         </div>
-
         <div class="hub-grid">
             <a href="resource_allocation.html" class="hub-card active restricted-card" id="card-allocation">
                 <div class="status-badge" data-i18n="status-master">【公會長特權】</div>
@@ -232,56 +67,48 @@
                 <h3 data-i18n="card1-title">公會長戰略調度室</h3>
                 <p data-i18n="card1-desc">內部高級權限：即時指派冒險者任務、戰力負載監控與全域資源排配模組。</p>
             </a>
-
             <div class="hub-card locked restricted-card" id="card-risk">
                 <div class="status-badge" data-i18n="status-secured">【高級機密】</div>
                 <div class="icon-box">🔮</div>
                 <h3 data-i18n="card3-title">魔力黑點預警眼</h3>
                 <p data-i18n="card3-desc">利用數據模型觀測任務瓶頸，自動標記高危延遲風險與核心資源缺口。</p>
             </div>
-
             <a href="beginner_codex.html" class="hub-card active">
                 <div class="status-badge" data-i18n="status-open">【 全員開放 】</div>
                 <div class="icon-box">🗺️</div>
                 <h3 data-i18n="card-codex-title">初心者寶典</h3>
                 <p data-i18n="card-codex-desc">工廠基礎與 System TPM 基礎概括：點亮硬體世界觀第一步的核心知識大本營。</p>
             </a>
-
             <a href="handbook.html" class="hub-card active">
                 <div class="status-badge" data-i18n="status-open">【 全員開放 】</div>
                 <div class="icon-box">📜</div>
                 <h3 data-i18n="card-handbook-title">冒險者手冊</h3>
                 <p data-i18n="card-handbook-desc">功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
             </a>
-
             <div class="hub-card locked">
                 <div class="status-badge" data-i18n="status-staging">【 試煉場 】</div>
                 <div class="icon-box">⚔️</div>
                 <h3 data-i18n="card-trial-title">階級晉級試煉</h3>
                 <p data-i18n="card-trial-desc">綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
             </div>
-
             <div class="hub-card locked">
                 <div class="status-badge" data-i18n="status-staging">【 賢者之石 】</div>
                 <div class="icon-box">🤖</div>
                 <h3 data-i18n="card-sage-title">賢者之識</h3>
                 <p data-i18n="card-sage-desc">智慧核心：整合大語言模型（LLM）知識庫，自動化輔助生成全新標準化作業教材。</p>
             </div>
-
             <a href="talent_tree.html" class="hub-card active">
                 <div class="status-badge" data-i18n="status-open">【 修煉星盤 】</div>
                 <div class="icon-box">🌿</div>
                 <h3 data-i18n="card-tree-title">冒險者天賦樹</h3>
                 <p data-i18n="card-tree-desc">RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
             </a>
-
             <div class="hub-card locked">
                 <div class="status-badge" data-i18n="status-staging">【 隨機地下城 】</div>
                 <div class="icon-box">🛡️</div>
                 <h3 data-i18n="card-random-title">隨機副本挑戰</h3>
-                <p data-i18n="card-random-desc">動態隨機題庫：隨機抽取公會核心歷史歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
+                <p data-i18n="card-random-desc">動態隨機題庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
             </div>
-
             <a href="Library.html" class="hub-card active">
                 <div class="status-badge" data-i18n="status-open">【 大圖書館 】</div>
                 <div class="icon-box">📚</div>
@@ -289,10 +116,8 @@
                 <p data-i18n="card-library-desc">集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。</p>
             </a>
         </div>
-
         <footer><span data-i18n="footer-text">GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH</span></footer>
     </div>
-
     <script>
         const translations = {
             tw: {
@@ -305,7 +130,7 @@
                 "card-trial-title": "階級晉級試煉", "card-trial-desc": "綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。",
                 "card-sage-title": "賢者之識", "card-sage-desc": "智慧核心：整合大語言模型（LLM）知識庫，自動化輔助生成全新標準化作業教材。",
                 "card-tree-title": "冒險者天賦樹", "card-tree-desc": "RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。",
-                "card-random-title": "隨機副本挑戰", "card-random-desc": "動態隨機題庫：隨機抽取公會核心歷史歷史 Bug 進行突襲秒通考核，強化反射神經。",
+                "card-random-title": "隨機副本挑戰", "card-random-desc": "動態隨機題庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。",
                 "card-library-title": "知識圖書館", "card-library-desc": "集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。",
                 "footer-text": "GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH"
             },
@@ -324,46 +149,31 @@
                 "footer-text": "GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH"
             }
         };
-
         function setLang(lang) {
-            // 更新按鈕樣式
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${lang}`).classList.add('active');
-            
-            // 更新 data-i18n 元素
             document.querySelectorAll('[data-i18n]').forEach(el => { 
                 const key = el.getAttribute('data-i18n'); 
                 if(translations[lang][key]) el.innerText = translations[lang][key]; 
             });
-            
-            // 持久化保存
             localStorage.setItem('tpm-lang-pref', lang);
         }
-
-        // 統一身份識別接收函式
         function handlePortalLogin(response) {
-            // 解析 Google 官方 JWT Token 加密塊
-            const responsePayload = JSON.parse(decodeURIComponent(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')).split('').map(function(c) {
+            const payload = JSON.parse(decodeURIComponent(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')).split('').map(function(c) {
                 return '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join('')));
-            
-            // 保存至公會通行證快取
-            localStorage.setItem('tpm-user-email', responsePayload.email);
-            localStorage.setItem('tpm-user-name', responsePayload.name);
-            
-            // 動態更新身份識別徽章（修正：冒險者+名稱，無email）
-            renderUserStatus(responsePayload.name);
+            localStorage.setItem('tpm-user-email', payload.email);
+            localStorage.setItem('tpm-user-name', payload.name);
+            renderUserStatus(payload.name);
         }
-
         function renderUserStatus(name) {
-            const currentRank = localStorage.getItem('tpm-user-rank') || "冒險者"; // 預設頭銜
+            const currentRank = localStorage.getItem('tpm-user-rank') || "冒險者";
             document.getElementById('portal-sso-gateway').innerHTML = `
                 <div class="auth-badge-portal">
                     <span style="color:#1D4ED8; font-weight:900;">👤 ${currentRank}：${name}</span>
                 </div>
             `;
         }
-
         function checkGatekeeper() {
             const urlParams = new URLSearchParams(window.location.search);
             const opCode = urlParams.get('op');
@@ -373,14 +183,11 @@
                 document.getElementById('card-risk').style.display = 'flex';
             }
         }
-
         window.onload = () => { 
-            // 優先讀取保存的語系，預設為TW
             setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); 
             checkGatekeeper();
             const cEmail = localStorage.getItem('tpm-user-email');
             const cName = localStorage.getItem('tpm-user-name');
-            // 如果已認證，高亮顯示冒險者頭銜+名稱
             if (cEmail && cName) renderUserStatus(cName);
         };
     </script>
