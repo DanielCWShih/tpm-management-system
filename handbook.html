@@ -9,137 +9,91 @@
             --bg-color: #FEF9E7; --sidebar-cream: #FDF2D0; --card-white: #FFFFFF;
             --text-main: #1A1A1A; --text-secondary: #475569; --border-heavy: #1A1A1A;
             --shadow-tactical: 5px 5px 0px #1A1A1A; --radius-sm: 8px;
-            --color-locked: #94A3B8; --color-available: #3B82F6; --color-completed: #F59E0B;
+            --color-completed: #F59E0B;
         }
         * { box-sizing: border-box; font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; color: var(--text-main); }
         body { background-color: var(--bg-color); margin: 0; padding: 0; width: 100vw; height: 100vh; display: flex; overflow: hidden; }
         aside { width: 320px; background-color: var(--sidebar-cream); border-right: 3px solid var(--border-heavy); display: flex; flex-direction: column; padding: 30px 20px; flex-shrink: 0; height: 100%; }
         .aside-header { border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px; margin-bottom: 25px; }
         .back-btn { display: block; background: var(--card-white); border: 2px solid var(--border-heavy); padding: 10px; border-radius: var(--radius-sm); text-align: center; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 20px; }
-        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
         .chapter-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; }
-        .chapter-item { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 15px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); transition: all 0.15s; }
-        .chapter-item.locked { border-color: var(--color-locked); box-shadow: 2px 2px 0px var(--color-locked); opacity: 0.6; cursor: not-allowed; }
-        .chapter-item.locked * { color: var(--color-locked); }
-        .chapter-item.available { border-color: var(--color-available); box-shadow: 3px 3px 0px var(--color-available); }
-        .chapter-item.available:hover { transform: translateX(4px); }
-        .chapter-item.completed { border-color: var(--color-completed); box-shadow: 3px 3px 0px var(--color-completed); background: #FFFDF4; }
-        .chapter-item.completed:hover { transform: translateX(4px); }
+        .chapter-item { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 15px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); }
         .chapter-item.active { background: var(--text-main) !important; }
         .chapter-item.active * { color: white !important; }
-        .chapter-badge { font-size: 0.7rem; font-weight: 900; text-transform: uppercase; font-family: monospace; }
-        .chapter-title { font-size: 0.9rem; font-weight: 800; margin-top: 5px; }
+        .chapter-title { font-size: 0.9rem; font-weight: 800; }
         main { flex: 1; height: 100%; padding: 40px; overflow-y: auto; background: var(--card-white); position: relative; }
         .main-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px; margin-bottom: 30px; }
         .auth-panel { background: var(--bg-color); border: 2px solid var(--border-heavy); padding: 8px 15px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 800; box-shadow: 2px 2px 0px var(--border-heavy); }
-        .document-canvas { width: 100%; }
+        .lang-switcher { display: flex; gap: 10px; }
         .scroll-text { font-size: 1.05rem; line-height: 1.8; font-weight: 600; white-space: pre-line; margin-bottom: 40px; }
-        .boss-trial-section { border: 3px solid #DC2626; border-radius: var(--radius-sm); padding: 30px; background: #FEF2F2; box-shadow: var(--shadow-tactical); margin-top: 50px; }
-        .option-card { background: white; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 15px; cursor: pointer; font-weight: 700; }
-        .option-card:hover { background: var(--sidebar-cream); }
-        .clear-seal-overlay { display: none; position: absolute; top: 250px; left: 50%; transform: translate(-50%, -50%) rotate(-10deg); border: 6px double var(--color-completed); background: rgba(254, 249, 231, 0.95); padding: 15px 50px; z-index: 1000; pointer-events: none; }
-        .clear-seal-overlay text { font-family: 'Segoe UI', Impact, sans-serif; font-size: 36px; font-weight: 900; fill: var(--color-completed); letter-spacing: 3px; }
     </style>
 </head>
 <body>
-
     <aside>
         <div class="aside-header">
-            <a href="index.html" class="back-btn">↩ 返回公會大廳</a>
-            <div style="font-size: 0.8rem; font-weight: 900; font-family: monospace; color: var(--text-secondary);">SYS.HANDBOOK V4.5</div>
-            <h2 style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">冒險者手冊</h2>
+            <a href="index.html" class="back-btn" data-i18n="back-to-hq">↩ 返回公會總部</a>
+            <h2 style="margin: 5px 0 0 0;" data-i18n="handbook-title">冒險者手冊</h2>
         </div>
-        <ul class="chapter-list" id="handbook-menu"></ul>
+        <ul class="chapter-list">
+            <li class="chapter-item active">
+                <div class="chapter-title" data-i18n="fu1-title">防水與環境防護結界</div>
+            </li>
+        </ul>
     </aside>
-
     <main>
-        <div id="quest-clear-stamp" class="clear-seal-overlay">
-            <svg width="300" height="80" viewBox="0 0 300 80"><text x="50%" y="60%" text-anchor="middle">QUEST CLEAR</text></svg>
-        </div>
         <div class="main-header">
             <div>
-                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">LAYER 02 / FU-01</span>
-                <h1 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 2rem; font-weight: 900;">加載中...</h1>
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900;">MODULE 01</span>
+                <h1 id="current-chapter-name" style="margin: 5px 0 0 0;" data-i18n="fu1-title">防水與環境防護結界</h1>
             </div>
-            <div id="user-identity-box" class="auth-panel">👤 未登入特工身分</div>
+            <div class="header-controls" style="display: flex; align-items: center; gap: 20px;">
+                <div class="lang-switcherauth-panel" style="background:white; border:none; box-shadow:none; padding:0; display:flex; gap:10px;">
+                    <button class="chapter-item" id="btn-tw" onclick="setLang('tw')" style="padding: 10px 15px; margin:0; width:55px; text-align:center;">TW</button>
+                    <button class="chapter-item" id="btn-en" onclick="setLang('en')" style="padding: 10px 15px; margin:0; width:55px; text-align:center;">EN</button>
+                </div>
+                <div id="user-profile" class="auth-panel" data-i18n="auth-unlocked">👤 冒險者認證中...</div>
+            </div>
         </div>
         <div class="document-canvas">
-            <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.2rem;">📜 屬性祕寶卷軸 (功能技術)</h3>
-            <div id="lesson-content" class="scroll-text"></div>
-            <div id="boss-battleground" class="boss-trial-section">
-                <h3 style="margin-top:0; color:#B91C1C;">⚔️ 守關 Boss 考驗 (屬性抉擇)</h3>
-                <p id="trial-question" style="font-weight: 800; font-size: 1.1rem; line-height: 1.5;"></p>
-                <div id="trial-options-box"></div>
+            <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.2rem;" data-i18n="doc-relic-title">📜 聖遺物卷軸</h3>
+            <div id="lesson-content" class="scroll-text" data-i18n="fu1-content">
+                【防水等級的定義與物理干涉】
+                
+                硬體產品要開通防水能力（IP67 / IPX8），必須在結構熔爐中精準計算。TPM必須釐清：
+                1. 「點膠製程（Dispensing）」：膠水的黏度、點膠路徑、固化時間是建立第一道防護結界的關鍵。膠路稍微偏移，水元素就會瞬間滲透。
+                2. 「防水橡膠圈（O-Ring）」：受壓形變必須維持在 25%~40% 的黃金壓縮比。
+                3. 「氣密測試 DOE」：代工廠端必須利用氣體差壓測試（Leak Test），驗證氣密性（Leak Rate < 1.0 sccm）以判定防水結界是否完好。不需真的泡水即可驗證。
+                
+                在DVT（設計驗證） Exit關卡，若發生氣密測試失效，TPM必須主導防水干涉（防水失效DOE）分析，排除結構公差或外觀零件CMF造成的物理孔隙陷阱。
             </div>
         </div>
     </main>
 
     <script>
-        const handbookDatabase = {
-            "FU-01": {
-                id: "FU-01", badge: "🌊 狂瀾元素", title: "防水與環境防護結界", defaultStatus: "available",
-                lesson: "在進階硬體中，防水等級（IP67/IPX8）是一道物理高壓牆。\n\n1. 點膠製程（Dispensing）：膠水的黏度、點膠路徑的精準度與固化時間，稍微偏移就會引發溢膠或缺膠。\n2. O-Ring（防水橡膠圈）：其受壓變形率必須維持在 25%~40% 的黃金壓縮比。\n3. 氣密測試（Leak Test）：在工廠端使用高壓差檢測儀（Pressurized Chamber），藉由漏氣率（cc/min）來判定防水結界是否完好。",
-                question: "在 DVT 階段進行氣密測試時，發現某外殼角落連續 5 台樣機 Leak（漏氣）。結構工程師（ME）堅持是工廠膠水問題，System TPM 該如何主導驗證（DOE）？",
-                options: [
-                    "聽從 ME 意見，開單懲罰代工廠重新調整膠水配方。(❌ 盲目偏袒)",
-                    "利用千分尺量測組裝間隙，安排一組『手工鎖附壓力對比』與『點膠路徑加寬』的交叉驗證（DOE）矩陣。(⭕ 天條認證！)",
-                    "直接把防水規格從 IPX8 降到 IPX4。(❌ 降低規格)"
-                ]
-            }
+        const translations = {
+            tw: { "handbook-title": "冒險者手冊", "fu1-title": "防水與環境防護結界", "fu1-content": " 【防水等級定義與物理干涉】\nIP67 / IPX8防水能力的開通，必須釐清點膠製程、O-Ring防水圈、與氣密測試DOE。Leak Rate < 1.0 sccm是物理結界判定準則。", "back-to-hq": "↩ 返回公會總部", "doc-relic-title": "📜 聖遺物卷軸", "auth-unlocked": "冒險者認證成功" },
+            en: { "handbook-title": "Adventurer's Handbook", "fu1-title": "Ingress Protection (IPX)", "fu1-content": " [IP Rating Definition & Physics]\nEnabling IP67 / IPX8 requires understanding Dispensing, O-Ring, and Leak Test DOE. Leak Rate < 1.0 sccm is the standard。", "back-to-hq": "↩ Back to HQ", "doc-relic-title": "📜 Relic Scroll", "auth-unlocked": "Adventurer Authenticated" }
         };
 
-        let currentActiveId = "FU-01";
-
-        function initHandbook() { renderMenu(); loadChapter(currentActiveId); }
-
-        function renderMenu() {
-            const menu = document.getElementById('handbook-menu'); menu.innerHTML = '';
-            Object.keys(handbookDatabase).forEach(key => {
-                const item = handbookDatabase[key];
-                const isCleared = localStorage.getItem(`handbook-${item.id}-clear`) === 'true';
-                let statusClass = item.defaultStatus;
-                if (isCleared) statusClass = "completed";
-                const activeClass = item.id === currentActiveId ? "active" : "";
-                menu.innerHTML += `<li class="chapter-item ${statusClass} ${activeClass}" onclick="switchChapter('${item.id}', '${statusClass}')"><div class="chapter-badge">${item.badge}</div><div class="chapter-title">${item.title}</div></li>`;
+        function setLang(lang) {
+            document.querySelectorAll('.lang-switcherauth-panel .chapter-item').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            document.querySelectorAll('[data-i18n]').forEach(el => { 
+                const key = el.getAttribute('data-i18n'); 
+                if(translations[lang][key]) el.innerText = translations[lang][key]; 
             });
-        }
-
-        function loadChapter(id) {
-            currentActiveId = id; const data = handbookDatabase[id];
-            document.getElementById('current-chapter-id').innerText = data.id;
-            document.getElementById('current-chapter-name').innerText = data.title;
-            document.getElementById('lesson-content').innerText = data.lesson;
-            document.getElementById('trial-question').innerText = `⚠️ 實戰情境：${data.question}`;
-            const stamp = document.getElementById('quest-clear-stamp');
-            const isCleared = localStorage.getItem(`handbook-${id}-clear`) === 'true';
-            stamp.style.display = isCleared ? 'block' : 'none';
-            document.getElementById('boss-battleground').style.display = isCleared ? 'none' : 'block';
-            const optionsBox = document.getElementById('trial-options-box'); optionsBox.innerHTML = '';
-            data.options.forEach(opt => { optionsBox.innerHTML += `<div class="option-card" onclick="checkChoice(this, '${opt.includes('⭕')}', '${id}')">${opt}</div>`; });
-        }
-
-        function switchChapter(id, status) { if (status === 'locked') { alert("【天賦封印】請先通關前置章節！"); return; } currentActiveId = id; renderMenu(); loadChapter(id); }
-
-        function checkChoice(element, isCorrect, id) {
-            if (isCorrect === "true") {
-                element.style.background = "#D1FAE5"; element.style.borderColor = "#10B981";
-                document.getElementById('quest-clear-stamp').style.display = 'block';
-                setTimeout(() => {
-                    alert("🏆 QUEST CLEAR！資料已安全儲存。");
-                    localStorage.setItem(`handbook-${id}-clear`, 'true');
-                    initHandbook();
-                }, 300);
-            } else {
-                element.style.background = "#FEE2E2"; element.style.borderColor = "#EF4444";
-                alert("💥 決策失誤，請重新思考！");
-            }
+            const cName = localStorage.getItem('tpm-user-name');
+            if(!cName) document.getElementById('user-profile').innerText = translations[lang]["auth-unlocked"];
+            localStorage.setItem('tpm-lang-pref', lang);
         }
 
         window.onload = () => {
-            const cEmail = localStorage.getItem('tpm-user-email');
-            const cName = localStorage.getItem('tpm-user-name');
-            if (cEmail && cName) document.getElementById('user-identity-box').innerHTML = `👤 特工：${cName} (${cEmail})`;
-            initHandbook();
+            setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); 
+            const cachedName = localStorage.getItem('tpm-user-name');
+            if (cachedName) {
+                const currentRank = localStorage.getItem('tpm-user-rank') || "冒險者";
+                document.getElementById('user-profile').innerHTML = `👤 ${currentRank}：${cachedName}`;
+            }
         };
     </script>
 </body>
