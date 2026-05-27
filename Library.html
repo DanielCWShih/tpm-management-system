@@ -13,274 +13,99 @@
             --text-main: #1A1A1A;
             --text-secondary: #475569;
             --border-heavy: #1A1A1A;
-            --shadow-tactical: 5px 5px 0px #1A1A1A;
-            --radius-sm: 8px;
-            --tier-blue: #3B82F6;
-            --tier-gold: #F59E0B;
+            --shadow-tactical: 6px 6px 0px #1A1A1A;
+            --radius-sm: 12px;
         }
         
-        * { 
-            box-sizing: border-box; 
-            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; 
-            color: var(--text-main); 
-        }
+        * { box-sizing: border-box; font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; color: var(--text-main); }
         
-        body { 
-            background-color: var(--bg-color); 
-            margin: 0; padding: 0;
-            width: 100vw; height: 100vh;
-            display: flex; flex-direction: column;
-            overflow: hidden;
-        }
+        body { background-color: var(--bg-color); background-image: radial-gradient(var(--sidebar-cream) 2px, transparent 2px); background-size: 32px 32px; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 100vw; min-height: 100vh; padding: 40px; overflow-x: hidden; }
 
-        .tactical-header {
-            width: 100%; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 3px solid var(--border-heavy); padding: 30px 40px;
-            background-color: var(--bg-color); flex-shrink: 0;
-        }
+        header { text-align: center; margin-bottom: 50px; width: 100%; position: relative; }
+        .back-btn { position: absolute; top: 0; left: 0; background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 20px; border-radius: var(--radius-sm); font-weight: 900; text-decoration: none; box-shadow: 4px 4px 0px var(--border-heavy); }
+        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--border-heavy); }
 
-        .header-controls { display: flex; align-items: center; gap: 15px; }
+        /* 身分顯示與雙語切換控制區 */
+        .head-controls { position: absolute; top: 0; right: 0; display: flex; align-items: center; gap: 20px; }
+        .auth-panel { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 25px; border-radius: var(--radius-sm); font-weight: 900; box-shadow: 4px 4px 0px var(--border-heavy); }
+        .lang-switcher-hq { display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 4px 4px 0px var(--border-heavy); padding: 2px; }
+        .lang-btn-hq { padding: 8px 16px; border-radius: 6px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); }
+        .lang-btn-hq.active { background: var(--text-main); color: white; }
 
-        .auth-panel {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem;
-            font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy);
-        }
+        h1 { font-size: 3rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
 
-        .back-btn {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer;
-            font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy);
-        }
-        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
+        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; width: 100%; margin-top: 50px; }
 
-        .library-workspace {
-            flex: 1; width: 100%; display: flex; overflow: hidden;
-        }
+        .archive-card { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 30px; box-shadow: var(--shadow-tactical); position: relative; }
+        .status-badge { position: absolute; top: 20px; right: 20px; font-size: 0.7rem; font-weight: 900; padding: 4px 10px; border-radius: 6px; border: 2px solid var(--border-heavy); background: #FFF; font-family: monospace; }
+        .archive-card h3 { font-size: 1.3rem; font-weight: 900; margin: 0 0 10px 0; }
+        .archive-card p { font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; margin: 0 0 20px 0; line-height: 1.6; }
+        .lessons-title { font-size: 0.95rem; font-weight: 900; color: #B91C1C; margin-bottom: 8px; border-left: 4px solid #B91C1C; padding-left: 8px; }
+        .lessons-text { font-size: 0.85rem; color: #DC2626; font-weight: 600; line-height: 1.6; white-space: pre-line; }
 
-        aside {
-            width: 280px; background-color: var(--sidebar-cream);
-            border-right: 3px solid var(--border-heavy);
-            display: flex; flex-direction: column; padding: 25px;
-            overflow-y: auto; flex-shrink: 0;
-        }
-
-        .category-btn {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            padding: 14px 18px; border-radius: var(--radius-sm); font-weight: 900;
-            font-size: 0.95rem; text-align: left; cursor: pointer; margin-bottom: 15px;
-            box-shadow: 3px 3px 0px var(--border-heavy); transition: all 0.1s;
-        }
-        .category-btn:hover { transform: translateX(4px); }
-        .category-btn.active {
-            background: var(--text-main); color: white; transform: translateX(2px);
-            box-shadow: 1px 1px 0px var(--border-heavy);
-        }
-
-        main {
-            flex: 1; height: 100%; padding: 40px; overflow-y: auto;
-            background: var(--card-white); display: flex; flex-direction: column; gap: 30px;
-        }
-
-        .jargon-lexicon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 25px; width: 100%;
-        }
-
-        .jargon-card {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            border-radius: var(--radius-sm); padding: 25px 20px; cursor: pointer;
-            box-shadow: 4px 4px 0px var(--border-heavy); transition: all 0.15s ease;
-            display: flex; flex-direction: column; justify-content: space-between;
-            position: relative; min-height: 140px;
-        }
-        .jargon-card:hover {
-            transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--text-main);
-            background-color: #FFFDF4;
-        }
-
-        .jargon-tag-box {
-            font-family: monospace; font-size: 0.75rem; font-weight: 900;
-            color: var(--tier-blue); text-transform: uppercase;
-        }
-        .jargon-main-term { font-size: 1.15rem; font-weight: 900; margin-top: 8px; letter-spacing: -0.5px; }
-        .jargon-sub-game-term { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-top: 4px; }
-
-        .lexicon-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 2000;
-            justify-content: center; align-items: center; padding: 20px;
-        }
-
-        .modal-content {
-            background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm);
-            width: 100%; max-width: 700px; box-shadow: 10px 10px 0px var(--border-heavy);
-            display: flex; flex-direction: column; overflow: hidden; animation: lexiconZoom 0.15s ease-out;
-        }
-
-        @keyframes lexiconZoom { from { transform: scale(0.96); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .modal-header {
-            background: var(--sidebar-cream); padding: 20px 30px;
-            border-bottom: 3px solid var(--border-heavy); display: flex;
-            justify-content: space-between; align-items: center;
-        }
-
-        .modal-body { padding: 35px; display: flex; flex-direction: column; gap: 25px; overflow-y: auto; max-height: 70vh; }
-
-        .lexicon-section-block {
-            border: 2px solid var(--border-heavy); border-radius: var(--radius-sm);
-            padding: 20px; background: #FAFAFA;
-        }
-        .lexicon-block-label {
-            font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);
-            font-family: monospace; text-transform: uppercase; border-bottom: 1px dashed var(--border-heavy);
-            padding-bottom: 5px; margin-bottom: 10px;
-        }
-        .lexicon-block-text { font-size: 1rem; font-weight: 600; line-height: 1.7; white-space: pre-line; }
-
-        .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; font-weight: 900; }
+        footer { margin-top: auto; padding: 60px 0 20px 0; text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); font-family: monospace; }
     </style>
 </head>
 <body>
-
-    <div class="tactical-header">
-        <div>
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">SYS.LEXICON_LIBRARY V4.5</span>
-            <h1 style="margin: 5px 0 0 0; font-size: 2.2rem;">大圖書館術語圖鑑庫</h1>
-        </div>
+    <header>
+        <a href="index.html" class="back-btn" data-i18n="back-to-hq">↩ 返回公會總部</a>
         
-        <div class="header-controls">
-            <div id="user-profile" class="auth-panel">🔒 尚未讀取到公會特工憑證，請先回首頁登入</div>
-            <a href="index.html" class="back-btn">↩ 返回公會大廳</a>
+        <div class="head-controls">
+            <div class="lang-switcher-hq">
+                <button class="lang-btn-hq active" id="btn-tw" onclick="setLang('tw')">TW</button>
+                <button class="lang-btn-hq" id="btn-en" onclick="setLang('en')">EN</button>
+            </div>
+            <div id="user-profile" class="auth-panel" data-i18n="auth-unlocked">👤 冒險者認證中...</div>
+        </div>
+
+        <h1 data-i18n="library-title">知識圖書館文檔庫</h1>
+    </header>
+
+    <div class="archive-grid">
+        <div class="archive-card">
+            <div class="status-badge" style="background:#B91C1C; color:white;">🔥 歷史戰役 (Lessons Learned)</div>
+            <h3>[DVT] 膠水反噬戰役 (P0x防水DOE)</h3>
+            <p>DFM階段過度妥協公差設計，導致PVT大量生產時，點膠路徑突發性干涉，導致防水氣密測試雪崩式潰散。</p>
+            <div class="lessons-title">凝結水晶教訓 (Lessons Learned):</div>
+            <div class="lessons-text">DVT Exit邊界閘門必須強制審查「極限防水DOE與CMF外觀零件分析」。絕不能讓工廠手工修銼刀磨公差的物理陷阱進入PVT。建立「點膠軌徑自動校正儀」驗證物理結界。</div>
+        </div>
+
+        <div class="archive-card">
+            <div class="status-badge" style="background:#1D4ED8; color:white;">📜 設計架構文檔 (Specs)</div>
+            <h3>G-Rank 冒險者位階身分驗證體系</h3>
+            <p>整合凡間 Google SSO 水晶（data-client_id），藉由 `handleCredentialResponse` 讀取並保存冒險者身分。</p>
+            <div class="lessons-title">凝結水晶教訓 (Lessons Learned):</div>
+            <div class="lessons-text">冒險者通行證驗證後，藉由 `renderUserStatus` 將名稱與Email焊接入公會通行證快取（localStorage）中。未來整合晉級試煉卡片，需讀取此快取以判定帳號戰力位階。</div>
         </div>
     </div>
 
-    <div class="library-workspace">
-        <aside>
-            <button class="category-btn active" id="btn-all" onclick="filterLexicon('all')">【 顯示全部圖鑑 】</button>
-            <button class="category-btn" id="btn-abyss" onclick="filterLexicon('abyss')">⚙️ 物質深淵 (工廠製程)</button>
-            <button class="category-btn" id="btn-pantheon" onclick="filterLexicon('pantheon')">🏛️ 眾神殿 (研發設計)</button>
-            <button class="category-btn" id="btn-phantom" onclick="filterLexicon('phantom')">🔮 幻界位面 (供應鏈)</button>
-        </aside>
-
-        <main>
-            <div class="jargon-lexicon-grid" id="lexicon-canvas"></div>
-        </main>
-    </div>
-
-    <div id="lexicon-modal" class="lexicon-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>
-                    <span id="modal-jargon-tag" style="font-family: monospace; font-weight: 900; color: var(--tier-blue);">TAG</span>
-                    <h2 id="modal-jargon-term" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">專有名詞</h2>
-                </div>
-                <button class="close-btn" onclick="closeLexicon()">✕</button>
-            </div>
-            <div class="modal-body">
-                <div class="lexicon-section-block" style="background-color: #FFFDF2; border-color: var(--tier-gold);">
-                    <div class="lexicon-block-label" style="color: #B45309;">🌌 異世界奇幻包裝 (Guild Lore)</div>
-                    <div id="modal-jargon-lore" class="lexicon-block-text" style="color: #B45309; font-weight: 800;"></div>
-                </div>
-
-                <div class="lexicon-section-block">
-                    <div class="lexicon-block-label">📘 正統實務工程學定義 (Technical Definition)</div>
-                    <div id="modal-jargon-def" class="lexicon-block-text"></div>
-                </div>
-
-                <div class="lexicon-section-block" style="background-color: #FEF2F2; border-color: #EF4444;">
-                    <div class="lexicon-block-label" style="color: #B91C1C;">🔥 歷代英雄血淚戰役史詩 (Lessons Learned)</div>
-                    <div id="modal-jargon-lessons" class="lexicon-block-text" style="line-height: 1.6;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <footer><span>GUILD.LIBRARY / OPERATOR: DANIEL SHIH / ATLAS_ARCHIVE_TREE_V3</span></footer>
 
     <script>
-        const libraryLexicon = [
-            {
-                id: "J-01", category: "abyss", tag: "FATP / Process",
-                term: "FPY (直通率)", en: "First Pass Yield", gameTerm: "純淨血統鐵律",
-                lore: "【純淨血統鐵律】指的是一個神器在深淵流水線中，從第一站鑄造到最後一站測試，『完全沒有觸發任何警報、未曾被拔下來手工維修』一氣呵成順利通關的完美概率。",
-                def: "First Pass Yield。指生產線第一次就製造出合格產品的比例。公式為：(完全不需重工即合格的產品數 / 投入生產總數) × 100%。這是衡量製程健康度與隱形成本的終極指標。",
-                lessons: "某歷史手機專案試產時，工廠宣稱良率高達 98%。但 TPM 調閱數據發現 FPY 只有 45%！這代表有超過一半的機器是『拆開重修、手工銲接三次』才勉強過關的。這些帶有物理內傷的機器運到市場後，開箱 DOA 直接炸裂。此役後公會確立鐵律：不看良率，只斬直通率！"
-            },
-            {
-                id: "J-02", category: "abyss", tag: "SMT / Production",
-                term: "AOI (自動光學檢測)", en: "Automated Optical Inspection", gameTerm: "深淵第一審判之門",
-                lore: "【深淵第一審判之門】架設在 SMT 火山熔爐出口。利用神聖高頻光學天眼，在毫秒間掃描剛出爐的電路板，判斷晶片符文是否有印歪、短路或偏移浮起。",
-                def: "Automated Optical Inspection。利用光學攝影機與影像處理演算法，自動檢測 PCB 組裝（PCBA）上零件的缺件、偏位、墓碑（Tombstoning）、橋接短路等外觀缺陷。",
-                lessons: "在 KSH5 專案的 EVT 階段，過迴流焊爐後集體出現特定電阻浮起（墓碑效應）。工廠黑手堅持是客戶設計問題，但 TPM 調閱第一道審判之門（SPI 錫膏檢查）與 AOI 數據，精確抓到是工廠鋼網（Stencil）厚度磨損導致錫膏量不均。工廠當場低頭，賠償整批板費。"
-            },
-            {
-                id: "J-03", category: "pantheon", tag: "Design / CMF",
-                term: "Anodization (陽極氧化)", en: "Anodization", gameTerm: "金屬幻化護甲術",
-                lore: "【金屬幻化護甲術】利用電化學魔力，在鋁合金骨架表面強行鍍上一層高硬度、抗刮、且能吸附神聖色彩的半透明防禦皮層。",
-                def: "一種電化學製程，將金屬（主要是鋁合金）物件作為陽極，置於電解液中施加電流，使其表面形成一層具保護性與裝飾性的氧化膜。涉及極度敏感的酸鹼度、電流工藝控制。",
-                lessons: "天界女神（ID設計師）要求高階無人機外殼必須呈現深邃極光藍。然而深淵工廠回報：該陽極氧化藥水在量產線上的色差（Delta E）極難控制，直通率雪崩。TPM 緊急介入，在圖紙端妥協微調噴砂顆粒度（120號改為150號），增加光線漫反射，完美遮蓋色差，拯救了大量生產時程。"
-            },
-            {
-                id: "J-04", category: "phantom", tag: "Supply Chain / Logistics",
-                term: "Lead Time (長料期/交期)", en: "Lead Time", gameTerm: "長料期的沉沒詛咒",
-                lore: "【長料期的沉沒詛咒】指的是從你向幻界供應商下達召喚聖旨那一刻起，到零件原料真正穿越時空跨海送進深淵倉庫，所需要耗費的時間沙漏總長度。",
-                def: "從訂單確認下達，到物料或成品實際交付到指定地點的這段總時間。包含晶圓排產、封裝測試、跨國海空運通關時間。在晶圓或感測器晶片上，長料期通常高達 12 至 16 週。",
-                lessons: "某次 DVT 階段前夕，幻界晶圓廠遭遇地震，特定光學 IC 的 Lead Time 瞬間暴增一倍。System TPM 發動時空扭曲魔法（Schedule Matrix Analysis），大膽決定：試產不延期，前半段空板（Dummy Board）上線過爐，等 4 週後晶片運抵，再在工廠後段架設手工專屬工位（Rework Station）進行後補後焊。專案因此毫秒未差，如期 Exit！"
-            }
-        ];
+        const translations = {
+            tw: { "back-to-hq": "↩ 返回公會總部", "library-title": "知識圖書館文檔庫", "auth-unlocked": "冒險者認證成功" },
+            en: { "back-to-hq": "↩ Back to HQ", "library-title": "Knowledge Library Archive", "auth-unlocked": "Adventurer Authenticated" }
+        };
 
-        function renderLexicon(data) {
-            const canvas = document.getElementById('lexicon-canvas');
-            canvas.innerHTML = '';
-            data.forEach(item => {
-                canvas.innerHTML += `
-                    <div class="jargon-card" onclick="openLexiconDetail('${item.id}')">
-                        <div class="jargon-tag-box">🏷️ ${item.tag}</div>
-                        <div class="jargon-main-term">${item.term}</div>
-                        <div class="jargon-sub-game-term">(${item.gameTerm})</div>
-                        <div style="font-family: monospace; font-size: 0.7rem; opacity: 0.5; margin-top: 10px; text-transform: uppercase;">${item.en}</div>
-                    </div>
-                `;
+        function setLang(lang) {
+            document.querySelectorAll('.lang-btn-hq').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            document.querySelectorAll('[data-i18n]').forEach(el => { 
+                const key = el.getAttribute('data-i18n'); 
+                if(translations[lang][key]) el.innerText = translations[lang][key]; 
             });
+            const cName = localStorage.getItem('tpm-user-name');
+            if(!cName) document.getElementById('user-profile').innerText = translations[lang]["auth-unlocked"];
+            localStorage.setItem('tpm-lang-pref', lang);
         }
-
-        function filterLexicon(category) {
-            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            let btnId = 'btn-all';
-            if (category === 'abyss') btnId = 'btn-abyss';
-            if (category === 'pantheon') btnId = 'btn-pantheon';
-            if (category === 'phantom') btnId = 'btn-phantom';
-            document.getElementById(btnId).classList.add('active');
-
-            if (category === 'all') {
-                renderLexicon(libraryLexicon);
-            } else {
-                const filtered = libraryLexicon.filter(item => item.category === category);
-                renderLexicon(filtered);
-            }
-        }
-
-        function openLexiconDetail(id) {
-            const data = libraryLexicon.find(item => item.id === id);
-            if (!data) return;
-            document.getElementById('modal-jargon-tag').innerText = `🏷️ ${data.tag} [ ${data.en} ]`;
-            document.getElementById('modal-jargon-term').innerText = data.term;
-            document.getElementById('modal-jargon-lore').innerText = data.lore;
-            document.getElementById('modal-jargon-def').innerText = data.def;
-            document.getElementById('modal-jargon-lessons').innerText = data.lessons;
-            document.getElementById('lexicon-modal').style.display = 'flex';
-        }
-
-        function closeLexicon() { document.getElementById('lexicon-modal').style.display = 'none'; }
 
         window.onload = () => {
-            const cachedEmail = localStorage.getItem('tpm-user-email');
+            setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); 
             const cachedName = localStorage.getItem('tpm-user-name');
-            if (cachedEmail && cachedName) {
-                document.getElementById('user-profile').innerHTML = `👤 特工：${cachedName} (${cachedEmail})`;
+            if (cachedName) {
+                const currentRank = localStorage.getItem('tpm-user-rank') || "冒險者";
+                document.getElementById('user-profile').innerHTML = `👤 ${currentRank}：${cachedName}`;
             }
-            renderLexicon(libraryLexicon);
         };
     </script>
 </body>
