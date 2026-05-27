@@ -6,14 +6,15 @@
     <title>System TPM 公會總部 | System TPM Guild</title>
     <style>
         :root {
+            /* Daniel 專屬高階文具配色系統表 */
             --bg-color: #FEF9E7; 
             --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
             --active-yellow: #FDE047;
             --text-main: #1A1A1A;
             --text-secondary: #475569;
-            --border-heavy: #1A1A1A;
-            --shadow-tactical: 6px 6px 0px #1A1A1A;
+            --border-heavy: #1A1A1A; /* 輕小說粗線條風格 */
+            --shadow-tactical: 6px 6px 0px #1A1A1A; /* 塊狀硬派陰影 */
             --radius-sm: 12px;
         }
         
@@ -103,9 +104,11 @@
             font-family: monospace;
         }
 
+        /* 完美同步老闆最新指令：System TPM 公會總部 */
         h1 { font-size: 3.2rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
         .subtitle { font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; margin-top: 15px; }
 
+        /* 全彈性滿版自適應網格 */
         .hub-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
@@ -135,6 +138,7 @@
             background-color: #FFFDF2;
         }
 
+        /* 權限控制隱藏類別 */
         .restricted-card {
             display: none; 
         }
@@ -205,13 +209,6 @@
                 <p data-i18n="card1-desc">內部高級權限：即時指派冒險者任務、戰力負載監控與全域資源排配模組。</p>
             </a>
 
-            <a href="talent_tree.html" class="hub-card active">
-                <div class="status-badge" data-i18n="status-open">【 全員開放 】</div>
-                <div class="icon-box">📜</div>
-                <h3 data-i18n="card2-title">冒險者手冊 / 初心者寶典</h3>
-                <p data-i18n="card2-desc">公會核心通識：標準作業程序（SOP）、跨部門協作指南與核心基礎修煉手冊。</p>
-            </a>
-
             <div class="hub-card locked restricted-card" id="card-risk">
                 <div class="status-badge" data-i18n="status-secured">【高級機密】</div>
                 <div class="icon-box">🔮</div>
@@ -219,43 +216,57 @@
                 <p data-i18n="card3-desc">利用數據模型觀測任務瓶頸，自動標記高危延遲風險與核心資源缺口。</p>
             </div>
 
+            <a href="beginner_codex.html" class="hub-card active">
+                <div class="status-badge" data-i18n="status-open">【 全員開放 】</div>
+                <div class="icon-box">🗺️</div>
+                <h3 data-i18n="card-codex-title">初心者寶典</h3>
+                <p data-i18n="card-codex-desc">工廠基礎與 System TPM 基礎概括：點亮硬體世界觀第一步的核心知識大本營。</p>
+            </a>
+
+            <a href="handbook.html" class="hub-card active">
+                <div class="status-badge" data-i18n="status-open">【 全員開放 】</div>
+                <div class="icon-box">📜</div>
+                <h3 data-i18n="card-handbook-title">冒險者手冊</h3>
+                <p data-i18n="card-handbook-desc">功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
+            </a>
+
             <div class="hub-card locked">
                 <div class="status-badge" data-i18n="status-staging">【 試煉場 】</div>
                 <div class="icon-box">⚔️</div>
-                <h3 data-i18n="card4-title">階級晉升試煉</h3>
-                <p data-i18n="card4-desc">細節章節專屬考核：挑戰守關 Boss，檢驗修煉成果並晉升冒險者序列位階。</p>
-            </div>
-
-            <div class="hub-card locked">
-                <div class="status-badge" data-i18n="status-staging">【 隨機地下城 】</div>
-                <div class="icon-box">🛡️</div>
-                <h3 data-i18n="card5-title">隨機副本挑戰</h3>
-                <p data-i18n="card5-desc">動態隨機題庫：隨機抽取公會核心案例進行突襲考核，強化實戰應變力。</p>
+                <h3 data-i18n="card-trial-title">階級晉級試煉</h3>
+                <p data-i18n="card-trial-desc">綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
             </div>
 
             <div class="hub-card locked">
                 <div class="status-badge" data-i18n="status-staging">【 賢者之石 】</div>
                 <div class="icon-box">🤖</div>
-                <h3 data-i18n="card6-title">AI 教材訓練中心</h3>
-                <p data-i18n="card6-desc">整合大語言模型（LLM）知識庫，自動化輔助生成標準化作業程序教材。</p>
+                <h3 data-i18n="card-sage-title">賢者之識</h3>
+                <p data-i18n="card-sage-desc">智慧核心：整合大語言模型（LLM）知識庫，自動化輔助生成全新標準化作業教材。</p>
+            </div>
+
+            <a href="talent_tree.html" class="hub-card active">
+                <div class="status-badge" data-i18n="status-open">【 修煉星盤 】</div>
+                <div class="icon-box">🌿</div>
+                <h3 data-i18n="card-tree-title">冒險者天賦樹</h3>
+                <p data-i18n="card-tree-desc">RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
+            </a>
+
+            <div class="hub-card locked">
+                <div class="status-badge" data-i18n="status-staging">【 隨機地下城 】</div>
+                <div class="icon-box">🛡️</div>
+                <h3 data-i18n="card-random-title">隨機副本挑戰</h3>
+                <p data-i18n="card-random-desc">動態隨機題庫：隨機抽取公會核心歷史歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
             </div>
 
             <a href="archive.html" class="hub-card active">
                 <div class="status-badge" data-i18n="status-open">【 大圖書館 】</div>
                 <div class="icon-box">📚</div>
-                <h3 data-i18n="card7-title">大圖書館文檔庫</h3>
-                <p data-i18n="card7-desc">集中收錄公會歷史戰役架構文件、經驗教訓（Lessons Learned）與結案心得卷軸。</p>
-            </a>
-
-            <a href="talent_tree.html" class="hub-card active">
-                <div class="status-badge" data-i18n="status-open">【 修煉星盤 】</div>
-                <div class="icon-box">🌿</div>
-                <h3 data-i18n="card8-title">冒險者天賦樹</h3>
-                <p data-i18n="card8-desc">視覺化圖表呈現：清晰追蹤每位成員已解鎖之核心技能點與未完修修煉課程。</p>
+                <h3 data-i18n="card-library-title">知識圖書館</h3>
+                <p data-i18n="card-library-desc">集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。</p>
             </a>
         </div>
 
-        <footer><span data-i18n="footer-text">GUILD.REVISION: V4.0 | @2026 | OPERATOR: DANIEL SHIH</span></footer>
+        <footer><span data-i18n="footer-text">GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH</span></footer>
     </div>
 
     <script>
@@ -266,14 +277,15 @@
                 "subtitle": "Daniel Shih | 2026 年度高效管理與團隊修煉套件",
                 "status-master": "【公會長特權】", "status-open": "【 全員開放 】", "status-secured": "【高級機密】", "status-staging": "【 封印中 】",
                 "card1-title": "公會長戰略調度室", "card1-desc": "內部高級權限：即時指派冒險者任務、戰力負載監控與全域資源排配模組。",
-                "card2-title": "冒險者手冊 / 初心者寶典", "card2-desc": "公會核心通識：標準作業程序（SOP）、跨部門協作指南與核心基礎修煉手冊。",
                 "card3-title": "魔力黑點預警眼", "card3-desc": "利用數據模型觀測任務瓶頸，自動標記高危延遲風險與核心資源缺口。",
-                "card4-title": "階級晉升試煉", "card4-desc": "細節章節專屬考核：挑戰守關 Boss，檢驗修煉成果並晉升冒險者序列位階。",
-                "card5-title": "隨機副本挑戰", "card5-desc": "動態隨機題庫：隨機抽取公會核心案例進行突襲考核，強化實戰應變力。",
-                "card6-title": "AI 教材訓練中心", "card6-desc": "整合大語言模型（LLM）知識庫，自動化輔助生成標準化作業程序教材。",
-                "card7-title": "大圖書館文檔庫", "card7-desc": "集中收錄公會歷史戰役架構文件、經驗教訓（Lessons Learned）與結案心得卷軸。",
-                "card8-title": "冒險者天賦樹", "card8-desc": "視覺化圖表呈現：清晰追蹤每位成員已解鎖之核心技能點與未完修修煉課程。",
-                "footer-text": "GUILD.REVISION: V4.0 | @2026 | OPERATOR: DANIEL SHIH"
+                "card-codex-title": "初心者寶典", "card-codex-desc": "工廠基礎與 System TPM 基礎概括：點亮硬體世界觀第一步的核心知識大本營。",
+                "card-handbook-title": "冒險者手冊", "card-handbook-desc": "功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。",
+                "card-trial-title": "階級晉級試煉", "card-trial-desc": "綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。",
+                "card-sage-title": "賢者之識", "card-sage-desc": "智慧核心：整合大語言模型（LLM）知識庫，自動化輔助生成全新標準化作業教材。",
+                "card-tree-title": "冒險者天賦樹", "card-tree-desc": "RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。",
+                "card-random-title": "隨機副本挑戰", "card-random-desc": "動態隨機題庫：隨機抽取公會核心歷史歷史 Bug 進行突襲秒通考核，強化反射神經。",
+                "card-library-title": "知識圖書館", "card-library-desc": "集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。",
+                "footer-text": "GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH"
             },
             en: {
                 "logo-mark": "GUILD HQ / LEVEL 2026", 
@@ -281,14 +293,15 @@
                 "subtitle": "Daniel Shih | 2026 Tactical Management & Training Suite",
                 "status-master": "[ GUILD MASTER ]", "status-open": "[ UNLOCKED ]", "status-secured": "[ CLASSIFIED ]", "status-staging": "[ STAGING ]",
                 "card1-title": "Guild Master's Strategic Desk", "card1-desc": "Guild Master Priority: Live workload monitoring, adventurer deployment, and resource orchestration backend.",
-                "card2-title": "Adventurer's Handbook", "card2-desc": "Guild Universal Foundation: Standard Operating Procedures (SOP), cross-dept communication formulas, and baseline tutorials.",
                 "card3-title": "Abyssal Risk Warning Eye", "card3-desc": "Predict system bottlenecks through data modeling, tagging operational latency and asset gaps automatically.",
-                "card4-title": "Rank Promotion Trials", "card4-desc": "Module Assessments: Challenge checkpoint Bosses to verify technical mastery and level up adventurer rankings.",
-                "card5-title": "Random Dungeon Raids", "card5-desc": "Dynamic Quiz Vault: Random pop-up challenges from actual historical bug registries to boost reflexes.",
-                "card6-title": "Sage's Stone AI Hub", "card6-desc": "LLM Knowledge Core: Automated production workspace for creating curriculum blueprints and process scripts.",
-                "card7-title": "The Grand Library Archive", "card7-desc": "Centralized archive storing historical systems design manifests, post-mortems, and hero scrolls.",
-                "card8-title": "Adventurer Talent Tree", "card8-desc": "Visual Progression Matrix: Dynamically mapping completed nodes, skill unlocks, and individual talent trends.",
-                "footer-text": "GUILD.REVISION: V4.0 | @2026 | OPERATOR: DANIEL SHIH"
+                "card-codex-title": "Beginner's Codex", "card-codex-desc": "Factory Foundations & System TPM Overviews: The core base camp for stepping into hardware cosmos.",
+                "card-handbook-title": "Adventurer's Handbook", "card-handbook-desc": "Advanced Functional Modules: Deep-dive into IPX8, Precision Optics, FW Integration, and XFN tactical mechanics.",
+                "card-trial-title": "Rank Promotion Trials", "card-trial-desc": "Milestone Exams: Face multi-disaster compound Boss raids to verify technical mastery and level up rankings.",
+                "card-sage-title": "Sage's Knowledge", "card-sage-desc": "LLM Knowledge Core: Automated production workspace for creating curriculum blueprints and process scripts.",
+                "card-tree-title": "Adventurer Talent Tree", "card-tree-desc": "Visual Progression Matrix: Dynamically mapping and allocating completed nodes and individual talent trends.",
+                "card-random-title": "Random Dungeon Raids", "card-random-desc": "Dynamic Quiz Vault: Random pop-up challenges from actual historical bug registries to boost reflexes.",
+                "card-library-title": "Knowledge Library", "card-library-desc": "Centralized archive storing historical systems design manifests, post-mortems, and hero scrolls.",
+                "footer-text": "GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH"
             }
         };
 
