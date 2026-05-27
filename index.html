@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System TPM 公會總部 | System TPM Guild (0527-V1.0)</title>
+    <title>System TPM 公會總部 | System TPM Guild (0527-V1.5)</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         :root {
@@ -85,6 +85,7 @@
                 <h3 data-i18n="card3-title">魔力黑點預警眼</h3>
                 <p data-i18n="card3-desc">利用數據模型觀測任務瓶頸，自動標記高危延遲風險與核心資源缺口。</p>
             </div>
+            
             <a href="beginner_codex.html" class="hub-card active">
                 <div class="status-badge" data-i18n="status-open">【 全員開放 】</div>
                 <div class="icon-box">🗺️</div>
@@ -125,15 +126,15 @@
                 <div class="status-badge" data-i18n="status-open">【 大圖書館 】</div>
                 <div class="icon-box">📚</div>
                 <h3 data-i18n="card-library-title">知識圖書館</h3>
-                <p data-i18n="card-library-desc">集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。</p>
+                <p data-i18n="card-library-desc">集中收錄公會歷史戰役系統架隔文件、經驗教訓（Lessons Learned）與心得卷軸。</p>
             </a>
         </div>
-        <footer><span>GUILD.REVISION: 0527-V1.0 | @2026 | OPERATOR: DANIEL SHIH</span></footer>
+        <footer><span>GUILD.REVISION: 0527-V1.5 | @2026 | OPERATOR: DANIEL SHIH</span></footer>
     </div>
     <script>
         const translations = {
             tw: {
-                "logo-mark": "GUILD HQ / LEVEL 2026", "main-title": "System TPM 公會總部", "subtitle": "Daniel Shih | 2026 年度高效管理與團隊修煉套件",
+                "logo-mark": "GUILD HQ / LEVEL 2026", "main-title": "System TPM 公會總部", "subtitle": "Daniel Shih | 2026 年度高效 management 與團隊修煉套件",
                 "status-master": "【公會長特權】", "status-open": "【 全員開放 】", "status-secured": "【高級機密】", "status-staging": "【 封印中 】",
                 "card1-title": "公會長戰略調度室", "card1-desc": "內部高級權限：即時指派冒險者任務、戰力負載監控與全域資源排配模組。",
                 "card3-title": "魔力黑點預警眼", "card3-desc": "利用數據模型觀測任務瓶頸，自動標記高危延遲風險與核心資源缺口。",
@@ -148,8 +149,6 @@
             en: {
                 "logo-mark": "GUILD HQ / LEVEL 2026", "main-title": "System TPM Guild", "subtitle": "Daniel Shih | 2026 Tactical Management & Training Suite",
                 "status-master": "[ GUILD MASTER ]", "status-open": "[ UNLOCKED ]", "status-secured": "[ CLASSIFIED ]", "status-staging": "[ STAGING ]",
-                "card1-title": "Guild Master's Strategic Desk", "card1-desc": "Guild Master Priority: Live workload monitoring, adventurer deployment, and resource orchestration backend.",
-                "card3-title": "Abyssal Risk Warning Eye", "card3-desc": "Predict system bottlenecks through data modeling, tagging operational latency and asset gaps automatically.",
                 "card-codex-title": "Beginner's Codex", "card-codex-desc": "Factory Foundations & System TPM Overviews: The core base camp for stepping into hardware cosmos.",
                 "card-handbook-title": "Adventurer's Handbook", "card-handbook-desc": "Advanced Functional Modules: Deep-dive into IPX8, Precision Optics, FW Integration, and XFN tactical mechanics.",
                 "card-trial-title": "Rank Promotion Trials", "card-trial-desc": "Milestone Exams: Face multi-disaster compound Boss raids to verify technical mastery and level up rankings.",
@@ -171,7 +170,7 @@
         function handlePortalLogin(response) {
             const payload = JSON.parse(decodeURIComponent(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')).split('').map(function(c) {
                 return '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join('')));
+            }).join(''));
             localStorage.setItem('tpm-user-email', payload.email);
             localStorage.setItem('tpm-user-name', payload.name);
             renderUserStatus(payload.name);
@@ -184,18 +183,8 @@
                 </div>
             `;
         }
-        function checkGatekeeper() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const opCode = urlParams.get('op');
-            if (opCode === 'tpm2026' || localStorage.getItem('tpm-authorized') === 'true') {
-                localStorage.setItem('tpm-authorized', 'true');
-                document.getElementById('card-allocation').style.display = 'flex';
-                document.getElementById('card-risk').style.display = 'flex';
-            }
-        }
         window.onload = () => { 
             setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); 
-            checkGatekeeper();
             const cEmail = localStorage.getItem('tpm-user-email');
             const cName = localStorage.getItem('tpm-user-name');
             if (cEmail && cName) renderUserStatus(cName);
