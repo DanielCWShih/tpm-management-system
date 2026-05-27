@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冒險者手冊 | Adventurer's Handbook</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        :root {
+            --bg-color: #FEF9E7; 
+            --sidebar-cream: #FDF2D0;
+            --card-white: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-secondary: #475569;
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 5px 5px 0px #1A1A1A;
+            --radius-sm: 8px;
+            
+            --color-locked: #94A3B8;
+            --color-available: #3B82F6;
+            --color-completed: #F59E0B;
+        }
+        
+        * { 
+            box-sizing: border-box; 
+            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; 
+            color: var(--text-main); 
+        }
+        
+        body { 
+            background-color: var(--bg-color); 
+            margin: 0; padding: 0;
+            width: 100vw; height: 100vh;
+            display: flex; overflow: hidden;
+        }
+
+        aside {
+            width: 320px; background-color: var(--sidebar-cream);
+            border-right: 3px solid var(--border-heavy);
+            display: flex; flex-direction: column;
+            padding: 30px 20px; flex-shrink: 0; height: 100%;
+        }
+
+        .aside-header { border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px; margin-bottom: 25px; }
+        
+        .back-btn {
+            display: block; background: var(--card-white); border: 2px solid var(--border-heavy);
+            padding: 10px; border-radius: var(--radius-sm); text-align: center; font-weight: 900;
+            text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 20px;
+        }
+        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
+
+        .chapter-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; }
+        
+        .chapter-item {
+            background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm);
+            padding: 15px; margin-bottom: 15px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy);
+            transition: all 0.15s; position: relative;
+        }
+        .chapter-item.locked { border-color: var(--color-locked); box-shadow: 2px 2px 0px var(--color-locked); opacity: 0.6; cursor: not-allowed; }
+        .chapter-item.locked * { color: var(--color-locked); }
+        .chapter-item.available { border-color: var(--color-available); box-shadow: 3px 3px 0px var(--color-available); }
+        .chapter-item.available:hover { transform: translateX(4px); }
+        .chapter-item.completed { border-color: var(--color-completed); box-shadow: 3px 3px 0px var(--color-completed); background: #FFFDF4; }
+        .chapter-item.completed:hover { transform: translateX(4px); }
+        .chapter-item.active { background: var(--text-main) !important; }
+        .chapter-item.active * { color: white !important; }
+
+        .chapter-badge { font-size: 0.7rem; font-weight: 900; text-transform: uppercase; font-family: monospace; }
+        .chapter-title { font-size: 0.9rem; font-weight: 800; margin-top: 5px; }
+
+        main { flex: 1; height: 100%; padding: 40px; overflow-y: auto; background: var(--card-white); position: relative; }
+        .main-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px; margin-bottom: 30px; }
+        
+        .auth-panel { background: var(--bg-color); border: 2px solid var(--border-heavy); padding: 8px 15px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 800; box-shadow: 2px 2px 0px var(--border-heavy); display: flex; align-items: center; }
+        
+        .document-canvas { width: 100%; }
+        .scroll-text { font-size: 1.05rem; line-height: 1.8; font-weight: 600; white-space: pre-line; margin-bottom: 40px; }
+        
+        .boss-trial-section { border: 3px solid #DC2626; border-radius: var(--radius-sm); padding: 30px; background: #FEF2F2; box-shadow: var(--shadow-tactical); margin-top: 50px; }
+        .option-card { background: white; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 15px; cursor: pointer; font-weight: 700; }
+        .option-card:hover { background: var(--sidebar-cream); }
+
+        .clear-seal-overlay { display: none; position: absolute; top: 250px; left: 50%; transform: translate(-50%, -50%) rotate(-10deg); border: 6px double var(--color-completed); background: rgba(254, 249, 231, 0.95); padding: 15px 50px; z-index: 1000; pointer-events: none; }
+        .clear-seal-overlay text { font-family: 'Segoe UI', Impact, sans-serif; font-size: 36px; font-weight: 900; fill: var(--color-completed); letter-spacing: 3px; }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="aside-header">
+            <a href="index.html" class="back-btn">↩ 返回公會大廳</a>
+            <div style="font-size: 0.8rem; font-weight: 900; font-family: monospace; color: var(--text-secondary);">SYS.HANDBOOK V4.5</div>
+            <h2 style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">冒險者手冊</h2>
+        </div>
+        <ul class="chapter-list" id="handbook-menu"></ul>
+    </aside>
+
+    <main>
+        <div id="quest-clear-stamp" class="clear-seal-overlay">
+            <svg width="300" height="80" viewBox="0 0 300 80"><text x="50%" y="60%" text-anchor="middle">QUEST CLEAR</text></svg>
+        </div>
+
+        <div class="main-header">
+            <div>
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">LAYER 02 / FU-01</span>
+                <h1 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 2rem; font-weight: 900;">加載中...</h1>
+            </div>
+            <div id="user-identity-box" class="auth-panel">
+                <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-callback="onGoogleAuthIn" data-auto_select="true"></div>
+                <div class="g_id_signin" data-type="standard" data-size="medium"></div>
+            </div>
+        </div>
+
+        <div class="document-canvas">
+            <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.2rem;">📜 屬性祕寶卷軸 (功能技術)</h3>
+            <div id="lesson-content" class="scroll-text"></div>
+            
+            <div id="boss-battleground" class="boss-trial-section">
+                <h3 style="margin-top:0; color:#B91C1C;">⚔️ 守關 Boss 考驗 (屬性抉擇)</h3>
+                <p id="trial-question" style="font-weight: 800; font-size: 1.1rem; line-height: 1.5;"></p>
+                <div id="trial-options-box"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const handbookDatabase = {
+            "FU-01": {
+                id: "FU-01", badge: "🌊 狂瀾元素", title: "防水與環境防護結界", defaultStatus: "available",
+                lesson: "在進階硬體中，防水等級（IP67/IPX8）是一道物理高壓牆。\n\nTPM 必須掌握的核心包括：\n1. 點膠製程（Dispensing）：膠水的黏度、點膠路徑（Glue Track）的精準度與固化時間，濕度稍微偏移就會引發溢膠或缺膠。\n2. O-Ring（防水橡膠圈）：其受壓變形率必須維持在 25%~40% 的黃金壓縮比。低於此數值會漏水，高於此數值會導致結構形變。\n3. 氣密測試（Leak Test）：在工廠端使用高壓差檢測儀（Pressurized Chamber），藉由漏氣率（cc/min）來判定防水結界是否完好，不需真的泡水。",
+                question: "在 DVT 階段進行氣密測試時，發現某一特定外殼角落連續 5 台樣機判定 Leak（漏氣）。結構工程師（ME）堅持是工廠膠水調配問題，此時 System TPM 該如何主導驗證（DOE）？",
+                options: [
+                    "聽從 ME 意見，開單懲罰代工廠重新調整膠水配方。(❌ 盲目偏袒，未抓出公差根本原罪)",
+                    "利用千分尺量測該 corners 的組裝間隙，安排一組『手工鎖附壓力對比』與『點膠路徑加寬』的交叉驗證（DOE）矩陣。(⭕ 天條認證！標準的 TPM XFN 技術仲裁思維！)",
+                    "直接把防水規格從 IPX8 降到 IPX4，以求順利過關。(❌ 降低公會神器規格，直接除名)"
+                ]
+            },
+            "FU-02": {
+                id: "FU-02", badge: "☀️ 聖光元素", title: "精密光學影像對位", defaultStatus: "locked",
+                lesson: "精密相機模組（Lens Module）與影像感測器（Sensor）的結合，容不下任何微米級的公差。\n\n1. AA 主動對位（Active Alignment）技術：傳統組裝是靠機械死死卡入，而高階鏡頭則是在相機點亮開啟、即時讀取調制度轉移函數（MTF）解析度的動態下，利用 6 軸機器手臂微調到上下左右、傾斜度最完美的黃金物理交點，再以紫外光（UV Glue）瞬間定型封印。\n2. 組裝公差原罪：解析度模糊究竟是 Lens 組件元件公差（Component Spec Out），還是工廠 AA 設備治具偏移？這需要極強數據解讀力。",
+                question: "工廠線上升級 AA 設備參數後，吐出來的相機出現邊角 MTF 解析度集體下滑、中心清晰的異常。你的第一直覺判定是？",
+                options: [
+                    "鏡頭供應商這批貨是垃圾，直接全數退貨。(❌ 錯怪幻界上游)",
+                    "這是典型的 AA 六軸 Tilt（傾斜）對位參數在更新時發生偏移，設備對位面與 Sensor 表面不平行。(⭕ 聖光解析！精準鎖定 Process Issue！)",
+                    "告訴客戶這叫自然模糊美學。(❌ 嚴重違反公會職業道德)"
+                ]
+            }
+        };
+
+        let currentActiveId = "FU-01";
+
+        function initHandbook() {
+            renderMenu();
+            loadChapter(currentActiveId);
+        }
+
+        function renderMenu() {
+            const menu = document.getElementById('handbook-menu');
+            menu.innerHTML = '';
+            
+            Object.keys(handbookDatabase).forEach(key => {
+                const item = handbookDatabase[key];
+                const isCleared = localStorage.getItem(`handbook-${item.id}-clear`) === 'true';
+                let statusClass = item.defaultStatus;
+                
+                if (isCleared) {
+                    statusClass = "completed";
+                } else if (item.id === "FU-02" && localStorage.getItem(`handbook-FU-01-clear`) === 'true') {
+                    statusClass = "available";
+                }
+
+                const activeClass = item.id === currentActiveId ? "active" : "";
+
+                menu.innerHTML += `
+                    <li class="chapter-item ${statusClass} ${activeClass}" onclick="switchChapter('${item.id}', '${statusClass}')">
+                        <div class="chapter-badge">${item.badge}</div>
+                        <div class="chapter-title">${item.title}</div>
+                    </li>
+                `;
+            });
+        }
+
+        function loadChapter(id) {
+            currentActiveId = id;
+            const data = handbookDatabase[id];
+            
+            document.getElementById('current-chapter-id').innerText = data.id;
+            document.getElementById('current-chapter-name').innerText = data.title;
+            document.getElementById('lesson-content').innerText = data.lesson;
+            document.getElementById('trial-question').innerText = `⚠️ 實戰情境：${data.question}`;
+
+            const stamp = document.getElementById('quest-clear-stamp');
+            if (localStorage.getItem(`handbook-${id}-clear`) === 'true') {
+                stamp.style.display = 'block';
+                document.getElementById('boss-battleground').style.display = 'none';
+            } else {
+                stamp.style.display = 'none';
+                document.getElementById('boss-battleground').style.display = 'block';
+            }
+
+            const optionsBox = document.getElementById('trial-options-box');
+            optionsBox.innerHTML = '';
+            data.options.forEach(opt => {
+                optionsBox.innerHTML += `<div class="option-card" onclick="checkChoice(this, '${opt.includes('⭕')}', '${id}')">${opt}</div>`;
+            });
+        }
+
+        function switchChapter(id, status) {
+            if (status === 'locked') {
+                alert("【天賦封印】請先點亮前置元素地下城，此手冊進階高階卷軸方能開啟！");
+                return;
+            }
+            currentActiveId = id;
+            renderMenu();
+            loadChapter(id);
+        }
+
+        function checkChoice(element, isCorrect, id) {
+            if (isCorrect === "true") {
+                element.style.background = "#D1FAE5";
+                element.style.borderColor = "#10B981";
+                document.getElementById('quest-clear-stamp').style.display = 'block';
+                
+                setTimeout(() => {
+                    alert("🏆 QUEST CLEAR！冒險者進階屬性核心數據已成功儲存。");
+                    localStorage.setItem(`handbook-${id}-clear`, 'true');
+                    if (id === "FU-01") handbookDatabase["FU-02"].defaultStatus = "available";
+                    initHandbook();
+                }, 300);
+            } else {
+                element.style.background = "#FEE2E2";
+                element.style.borderColor = "#EF4444";
+                alert("💥 屬性反噬！決策失誤引發實體爆炸，請重新修煉卷軸！");
+            }
+        }
+
+        function onGoogleAuthIn(response) {
+            const payload = parseToken(response.credential);
+            localStorage.setItem('tpm-user-email', payload.email);
+            localStorage.setItem('tpm-user-name', payload.name);
+            showUserBadge(payload.name, payload.email);
+        }
+
+        function parseToken(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            return JSON.parse(decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join('')));
+        }
+
+        function showUserBadge(name, email) {
+            document.getElementById('user-identity-box').innerHTML = `
+                <span style="color:#1D4ED8; font-weight:900; font-size:0.8rem;">👤 ${name} (${email})</span>
+            `;
+        }
+
+        window.onload = () => {
+            const cEmail = localStorage.getItem('tpm-user-email');
+            const cName = localStorage.getItem('tpm-user-name');
+            if (cEmail && cName) showUserBadge(cName, cEmail);
+            initHandbook();
+        };
+    </script>
+</body>
+</html>
