@@ -3,75 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公會修煉星盤 | System TPM Talent Tree (0527-V1.0)</title>
+    <title>公會修煉星盤 | System TPM Talent Tree (0527-V1.1)</title>
     <style>
         :root {
-            --bg-color: #FEF9E7; --sidebar-cream: #FDF2D0; --card-white: #FFFFFF;
-            --text-main: #1A1A1A; --text-secondary: #475569; --border-heavy: #1A1A1A;
-            --shadow-tactical: 5px 5px 0px #1A1A1A; --radius-sm: 8px;
-            --color-locked: #94A3B8; --color-available: #3B82F6; --color-completed: #F59E0B;
+            --bg-color: #FEF9E7; 
+            --sidebar-cream: #FDF2D0;
+            --card-white: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-secondary: #475569;
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 5px 5px 0px #1A1A1A;
+            --radius-sm: 8px;
+            
+            --color-locked: #94A3B8;      
+            --color-available: #3B82F6;   
+            --color-completed: #F59E0B;   
         }
-        * { box-sizing: border-box; font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; color: var(--text-main); }
-        body { background-color: var(--bg-color); background-image: radial-gradient(var(--sidebar-cream) 2px, transparent 2px); background-size: 32px 32px; margin: 0; padding: 40px; width: 100vw; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        .tree-container { width: 100%; display: flex; flex-direction: column; gap: 40px; }
-        .tactical-header { width: 100%; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px; }
-        .header-controls { display: flex; align-items: center; gap: 20px; }
-        .auth-panel { background: var(--card-white); border: 2px solid var(--border-heavy); padding: 8px 15px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 800; box-shadow: 2px 2px 0px var(--border-heavy); }
-        .back-btn { background: var(--card-white); border: 2px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); }
+        
+        * { 
+            box-sizing: border-box; 
+            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; 
+            color: var(--text-main); 
+        }
+        
+        body { 
+            background-color: var(--bg-color); 
+            background-image: radial-gradient(var(--sidebar-cream) 2px, transparent 2px);
+            background-size: 32px 32px;
+            margin: 0; padding: 40px;
+            width: 100vw; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
+        }
+
+        .tree-container { width: 100%; display: flex; flex-direction: column; gap: 35px; }
+
+        /* 頂部戰術控制列 */
+        .tactical-header {
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 3px solid var(--border-heavy); padding-bottom: 20px;
+        }
+
+        .header-controls { display: flex; align-items: center; gap: 15px; }
+
+        /* 👑 剛性架構修正：獨立語系切換器殼體，固定寬度，徹底消除語言切換時的佈局抖動Bug */
+        .lang-switcher-wrapper {
+            display: flex;
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            padding: 2px;
+        }
+
+        .lang-btn-core {
+            width: 50px;
+            height: 35px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background 0.1s;
+        }
+
+        .lang-btn-core.active {
+            background: var(--text-main);
+            color: white;
+        }
+
+        /* 身分認證卡剛性化 */
+        .auth-panel {
+            background: var(--card-white); border: 3px solid var(--border-heavy);
+            padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem;
+            font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy);
+            white-space: nowrap;
+        }
+
+        /* 需求：精簡為 Home 導航按鈕 */
+        .back-btn {
+            background: var(--card-white); border: 3px solid var(--border-heavy);
+            padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer;
+            font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy);
+        }
         .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
-        .tree-tier-nav { display: flex; gap: 10px; width: 100%; border-bottom: 3px solid var(--border-heavy); padding-bottom: 15px; margin-top: 10px; }
-        .tier-tab-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 900; font-size: 0.95rem; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); }
-        .tier-tab-btn.active { background: var(--text-main); color: white; transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--border-heavy); }
-        .isekai-tree-map { width: 100%; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 50px; box-shadow: var(--shadow-tactical); display: none; flex-direction: column; align-items: center; position: relative; }
+
+        /* WoW-Style 階層分頁按鈕控制列 */
+        .tree-tier-nav {
+            display: flex; gap: 15px; width: 100%; margin-top: 10px;
+        }
+
+        .tier-tab-btn {
+            background: var(--card-white); border: 3px solid var(--border-heavy);
+            padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 900;
+            font-size: 1rem; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy);
+            transition: all 0.1s;
+        }
+        .tier-tab-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
+        .tier-tab-btn.active {
+            background: var(--text-main); color: white; transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--border-heavy);
+        }
+
+        /* 天賦樹主星盤畫布 */
+        .isekai-tree-map {
+            width: 100%; background: var(--card-white); border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm); padding: 60px 40px; box-shadow: var(--shadow-tactical);
+            display: none; flex-direction: column; align-items: center; position: relative;
+        }
         .isekai-tree-map.active { display: flex; }
-        .tree-tier-row { display: flex; justify-content: center; align-items: center; gap: 60px; width: 100%; position: relative; margin-bottom: 60px; }
+
+        /* 天賦樹垂直階層行 */
+        .tree-tier-row {
+            display: flex; justify-content: center; align-items: center; gap: 70px; width: 100%;
+            position: relative; margin-bottom: 70px;
+        }
         .tree-tier-row:last-child { margin-bottom: 0; }
-        .tree-tier-row::after { content: ''; position: absolute; bottom: -60px; left: 50%; width: 4px; height: 60px; background: var(--border-heavy); z-index: 1; }
+
+        /* 戰術連線路徑 */
+        .tree-tier-row::after {
+            content: ''; position: absolute; bottom: -70px; left: 50%; width: 4px; height: 70px;
+            background: var(--border-heavy); z-index: 1;
+        }
         .tree-tier-row:last-child::after { display: none; }
-        .talent-node { width: 130px; height: 130px; background: var(--card-white); border: 4px double var(--color-locked); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; padding: 12px; box-shadow: 4px 4px 0px var(--color-locked); z-index: 5; }
+
+        /* 雙重鋼鐵同心圓技能節點 */
+        .talent-node {
+            width: 150px; height: 150px; background: var(--card-white); 
+            border: 4px double var(--color-locked); 
+            border-radius: 50%; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; cursor: pointer; position: relative;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center;
+            padding: 15px; box-shadow: 4px 4px 0px var(--color-locked); z-index: 5;
+        }
+
         .talent-node.locked { background: #F1F5F9; border-color: var(--color-locked); cursor: not-allowed; }
         .talent-node.locked * { color: #64748B; }
-        .talent-node.available { border-color: var(--color-available); background: #EFF6FF; box-shadow: 4px 4px 0px var(--color-available); }
+
+        .talent-node.available { 
+            border: 4px solid var(--color-available); 
+            background: #EFF6FF; box-shadow: 4px 4px 0px var(--color-available); 
+        }
         .talent-node.available * { color: #1D4ED8; }
-        .talent-node.completed { border: 5px double var(--color-completed); background: #FFFDF2; box-shadow: 4px 4px 0px var(--color-completed); }
+        .talent-node.available:hover { transform: translateY(-4px); box-shadow: 6px 6px 0px var(--color-available); }
+
+        .talent-node.completed { 
+            border: 5px double var(--color-completed); 
+            background: #FFFDF2; box-shadow: 4px 4px 0px var(--color-completed); 
+        }
         .talent-node.completed * { color: #B45309; }
-        .dungeon-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); width: 100%; max-width: 700px; box-shadow: 10px 10px 0px var(--border-heavy); display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .modal-header { background: var(--sidebar-cream); padding: 20px 30px; border-bottom: 3px solid var(--border-heavy); display: flex; justify-content: space-between; align-items: center; }
-        .modal-body { padding: 30px; overflow-y: auto; max-height: 70vh; display: flex; flex-direction: column; gap: 20px; }
-        .achievement-plate { border: 2px dashed var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; display: flex; justify-content: space-between; align-items: center; background:#FAFAFA; }
-        .grade-badge { font-size: 2rem; font-weight: 900; font-family: 'Impact'; padding: 2px 12px; border-radius: 6px; border:2px solid #000; background:#FFF; }
-        .grade-badge.unclear { font-size: 1rem; color: var(--color-locked); border-color: var(--color-locked); }
-        .teleport-btn { background: var(--active-yellow); border: 3px solid var(--border-heavy); padding: 15px; border-radius: var(--radius-sm); width: 100%; font-size: 1.1rem; font-weight: 900; text-align: center; cursor: pointer; box-shadow: 4px 4px 0px var(--border-heavy); text-decoration: none; display: block; }
-        .teleport-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--border-heavy); }
+        .talent-node.completed:hover { transform: translateY(-4px); box-shadow: 6px 6px 0px var(--color-completed); }
+
+        .node-code { font-family: monospace; font-size: 0.8rem; font-weight: 900; opacity: 0.8; }
+        .node-name { font-size: 0.8rem; font-weight: 900; margin-top: 5px; line-height: 1.4; }
+
+        /* 總覽摘要公文彈窗 */
+        .dungeon-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 2000;
+            justify-content: center; align-items: center; padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm);
+            width: 100%; max-width: 650px; box-shadow: 10px 10px 0px var(--border-heavy);
+            display: flex; flex-direction: column; overflow: hidden; animation: modalSlide 0.15s ease-out;
+        }
+
+        @keyframes modalSlide { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .modal-header { 
+            background: var(--sidebar-cream); padding: 20px 30px; 
+            border-bottom: 3px solid var(--border-heavy); display: flex; justify-content: space-between; align-items: center; 
+        }
+
+        .modal-body { padding: 30px; display: flex; flex-direction: column; gap: 25px; overflow-y: auto; max-height: 70vh; }
+
+        .lexicon-section-block {
+            border: 2px solid var(--border-heavy); border-radius: var(--radius-sm);
+            padding: 20px; background: #FAFAFA;
+        }
+        .lexicon-block-label {
+            font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);
+            font-family: monospace; text-transform: uppercase; border-bottom: 1px dashed var(--border-heavy);
+            padding-bottom: 5px; margin-bottom: 10px;
+        }
+        .lexicon-block-text { font-size: 1rem; font-weight: 600; line-height: 1.7; white-space: pre-line; }
+
+        .achievement-plate {
+            background: #FAFAFA; border: 2px dashed var(--border-heavy);
+            border-radius: var(--radius-sm); padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .grade-badge {
+            font-size: 2.2rem; font-weight: 900; font-family: 'Impact', sans-serif;
+            line-height: 1; padding: 4px 14px; border-radius: 6px;
+            border: 2px solid var(--border-heavy); background: white;
+        }
+        .grade-badge.unclear { font-size: 1rem; font-family: inherit; color: var(--color-locked); background: #E2E8F0; }
+
+        .teleport-gate-btn {
+            background: var(--active-yellow); border: 3px solid var(--border-heavy);
+            padding: 16px; border-radius: var(--radius-sm); width: 100%;
+            font-size: 1.1rem; font-weight: 900; text-align: center; cursor: pointer;
+            box-shadow: 4px 4px 0px var(--border-heavy); text-decoration: none;
+            display: block; transition: all 0.1s;
+        }
+        .teleport-gate-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--border-heavy); }
+        
         .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; font-weight: 900; }
-        .quest-clear-banner { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-8deg); border: 6px double var(--color-completed); background: rgba(254, 249, 231, 0.95); padding: 15px 40px; z-index: 3000; text-align: center; pointer-events: none; }
-        .quest-clear-banner svg { width: 280px; fill: var(--color-completed); }
     </style>
 </head>
 <body>
+
     <div class="tree-container">
         <div class="tactical-header">
             <div>
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">SYS.ATLAS_TREE V1.0</span>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">SYS.ATLAS_TREE V1.1</span>
                 <h1 style="margin: 5px 0 0 0; font-size: 2.2rem;" data-i18n="tree-main-title">公會技能星盤天賦樹</h1>
             </div>
+            
             <div class="header-controls">
-                <div class="tree-tier-nav" style="border:none; margin:0; padding:0; gap:5px;">
-                    <button class="tier-tab-btn active" id="btn-tw" onclick="setLang('tw')">TW</button>
-                    <button class="tier-tab-btn" id="btn-en" onclick="setLang('en')">EN</button>
+                <div class="lang-switcher-wrapper">
+                    <button class="lang-btn-core active" id="btn-tw" onclick="setLang('tw')">TW</button>
+                    <button class="lang-btn-core" id="btn-en" onclick="setLang('en')">EN</button>
                 </div>
+                
                 <div id="user-profile" class="auth-panel" data-i18n="auth-unlocked">🔒 未讀取公會憑證</div>
-                <a href="index.html" class="back-btn" data-i18n="back-to-hq">↩ 返回公會總部</a>
+                
+                <a href="index.html" class="back-btn" id="nav-home-text">返回總部</a>
             </div>
         </div>
+
         <div class="tree-tier-nav">
-            <button class="tier-tab-btn active" id="tab-l1-btn" onclick="switchTier('l1')" data-i18n="tab-l1">【 初心者階層 L1 - 基礎通識 】</button>
-            <button class="tier-tab-btn" id="tab-l2-btn" onclick="switchTier('l2')" data-i18n="tab-l2">【 冒險者階層 L2 - 功能技術 】</button>
-            <button class="tier-tab-btn" id="tab-l3-btn" onclick="switchTier('l3')" data-i18n="tab-l3">【 傳奇專科 L3 - 高階領域 】</button>
+            <button class="tier-tab-btn active" id="tab-l1-btn" onclick="switchTreeTab('tab-l1')" data-i18n="tab-l1">【 初心者階層 L1 - 基礎通識 】</button>
+            <button class="tier-tab-btn" id="tab-l2-btn" onclick="switchTreeTab('tab-l2')" data-i18n="tab-l2">【 冒險者階層 L2 - 進階通識 】</button>
+            <button class="tier-tab-btn" id="tab-l3-btn" onclick="switchTreeTab('tab-l3')" data-i18n="tab-l3">【 傳奇專科 L3 - 高階領域 】</button>
         </div>
 
-        <div class="isekai-tree-map active" id="tab-l1-map">
+        <div class="isekai-tree-map active" id="tab-l1">
             <div class="tree-tier-row">
                 <div class="talent-node completed" id="node-L1-A1" onclick="openTalentSummary('L1-A1')">
                     <div class="node-code">L1-A1 (必修)</div>
@@ -80,43 +255,63 @@
             </div>
             <div class="tree-tier-row">
                 <div class="talent-node available" id="node-L1-A2" onclick="openTalentSummary('L1-A2')">
-                    <div class="node-code">L1-A2</div>
+                    <div class="node-code">L1-A2 (選修)</div>
                     <div class="node-name">市場調查術<br>Market Research</div>
                 </div>
                 <div class="talent-node locked" id="node-L1-A5" onclick="openTalentSummary('L1-A5')">
-                    <div class="node-code">L1-A5</div>
+                    <div class="node-code">L1-A5 (選修)</div>
                     <div class="node-name">結構設計整合<br>Structural Design</div>
                 </div>
                 <div class="talent-node locked" id="node-L1-B1" onclick="openTalentSummary('L1-B1')">
-                    <div class="node-code">L1-B1</div>
+                    <div class="node-code">L1-B1 (選修)</div>
                     <div class="node-name">表面黏著技術<br>SMT Process</div>
+                </div>
+            </div>
+            <div class="tree-tier-row">
+                <div class="talent-node locked" id="node-L1-A3" onclick="openTalentSummary('L1-A3')">
+                    <div class="node-code">L1-A3</div>
+                    <div class="node-name">外觀幻化工藝<br>Industrial Design</div>
+                </div>
+                <div class="talent-node locked" id="node-L1-A4" onclick="openTalentSummary('L1-A4')">
+                    <div class="node-code">L1-A4</div>
+                    <div class="node-name">魔力核心模組<br>Hardware Module</div>
+                </div>
+                <div class="talent-node locked" id="node-L1-B3" onclick="openTalentSummary('L1-B3')">
+                    <div class="node-code">L1-B3</div>
+                    <div class="node-name">製造設計審查<br>DFM Review</div>
                 </div>
             </div>
         </div>
 
-        <div class="isekai-tree-map" id="tab-l2-map">
+        <div class="isekai-tree-map" id="tab-l2">
             <div class="tree-tier-row">
                 <div class="talent-node available" id="node-L2-W1" onclick="openTalentSummary('L2-W1')">
-                    <div class="node-code">FU-01</div>
-                    <div class="node-name">防水防護術<br>Ingress Protection</div>
+                    <div class="node-code">L2-W1</div>
+                    <div class="node-name">防水防護結界<br>Ingress Protection</div>
+                </div>
+                <div class="talent-node locked" id="node-L2-O1" onclick="openTalentSummary('L2-O1')">
+                    <div class="node-code">L2-O1</div>
+                    <div class="node-name">精密光學對位<br>Precision Optics</div>
                 </div>
             </div>
         </div>
-        <div class="isekai-tree-map" id="tab-l3-map">
+
+        <div class="isekai-tree-map" id="tab-l3">
             <div class="tree-tier-row">
-                 <div class="talent-node locked" id="node-L3-Neg">
-                    <div class="node-code">LEG-01</div>
-                    <div class="node-name">高階談判術<br>Negotiation</div>
+                <div class="talent-node locked" id="node-L3-T1" onclick="openTalentSummary('L3-T1')">
+                    <div class="node-code">L3-T1</div>
+                    <div class="node-name">時程代價矩陣<br>Schedule Matrix</div>
+                </div>
+                <div class="talent-node locked" id="node-L3-N1" onclick="openTalentSummary('L3-N1')">
+                    <div class="node-code">L3-N1</div>
+                    <div class="node-name">跨功能談判術<br>XFN Negotiation</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="dungeon-modal" class="dungeon-modal">
+    <div id="talent-summary-modal" class="dungeon-modal">
         <div class="modal-content">
-            <div id="gold-clear-seal" class="quest-clear-banner">
-                <svg viewBox="0 0 400 100"><text x="50%" y="55%" font-family="sans-serif" font-size="34" font-weight="900" text-anchor="middle" fill="#F59E0B" letter-spacing="4">QUEST CLEAR</text></svg>
-            </div>
             <div class="modal-header">
                 <div>
                     <span id="modal-node-code" style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">L1-A1</span>
@@ -126,54 +321,137 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 10px; font-size: 1.1rem;" data-i18n="modal-lesson-title">📜 聖遺物卷軸摘要 (High-Level Summary)</h3>
-                    <p id="modal-node-lesson" style="line-height: 1.7; font-weight: 600; white-space: pre-line; margin-bottom: 0;"></p>
+                    <h3 style="border-left: 5px solid var(--border-heavy); padding-left: 10px; font-size: 1.05rem; margin-top: 0;" data-i18n="modal-lesson-title">📜 聖遺物卷軸摘要 (High-Level Summary)</h3>
+                    <p id="modal-node-summary" style="line-height: 1.7; font-weight: 600; white-space: pre-line; margin-bottom: 0;">載入中...</p>
                 </div>
                 <div class="achievement-plate">
                     <div>
                         <div style="font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);" data-i18n="modal-highest-grade">公會位階成就考核 (HIGHEST GRADE)</div>
-                        <div id="modal-node-date" style="font-size: 0.8rem; font-weight: 700; margin-top: 5px; color: var(--color-completed);">完成時間：[ UNCOMPLETED ]</div>
+                        <div id="modal-node-date" style="font-size: 0.85rem; font-weight: 700; margin-top: 5px; color: #16A34A;">完成時間：[ UNCOMPLETED ]</div>
                     </div>
                     <div id="modal-node-grade" class="grade-badge unclear">N/A</div>
                 </div>
-                <a id="modal-teleport-link" href="#" class="teleport-btn">⚡ 進入該課題修煉場 (跳轉手冊/寶典)</a>
+                <a id="modal-teleport-link" href="#" class="teleport-gate-btn" data-i18n="modal-gate-link">⚡ 進入該課題修煉場 (跳轉手冊/寶典)</a>
             </div>
         </div>
     </div>
 
     <script>
+        // 靜態雙語數據字典
         const translations = {
-            tw: { "tree-main-title": "公會技能星盤天賦樹", "back-to-hq": "↩ 返回公會總部", "tab-l1": "【 初心者階層 L1 - 基礎通識 】", "tab-l2": "【 冒險者階層 L2 - 功能技術 】", "tab-l3": "【 傳奇專科 L3 - 高階領域 】", "auth-unlocked": "冒險者認證成功", "modal-lesson-title": "📜 聖遺物卷軸摘要 (High-Level Summary)", "modal-highest-grade": "公會位階成就考核 (HIGHEST GRADE)" },
-            en: { "tree-main-title": "Adventurer Talent Tree", "back-to-hq": "↩ Back to HQ", "tab-l1": "[ Level 1 Codex: Foundation ]", "tab-l2": "[ Level 2 Handbook: Modules ]", "tab-l3": "[ Level 3 Staging: Specialized ]", "auth-unlocked": "Adventurer Authenticated", "modal-lesson-title": "📜 Relic Scroll Summary (High-Level)", "modal-highest-grade": "Guild Highest Grade Assessment" }
+            tw: {
+                "tree-main-title": "公會技能星盤天賦樹", "tab-l1": "【 初心者階層 L1 - 基礎通識 】", "tab-l2": "【 冒險者階層 L2 - 進階通識 】", "tab-l3": "【 傳奇專科 L3 - 高階領域 】", "auth-unlocked": "冒險者認證成功", "modal-lesson-title": "📜 聖遺物卷軸摘要 (High-Level Summary)", "modal-highest-grade": "公會位階成就考核 (HIGHEST GRADE)", "modal-gate-link": "⚡ 進入該課題修煉場 (跳轉手冊/寶典)", "nav-home": "首頁"
+            },
+            en: {
+                "tree-main-title": "Adventurer Talent Tree", "tab-l1": "[ Level 1 Codex: Foundation ]", "tab-l2": "[ Level 2 Handbook: Modules ]", "tab-l3": "[ Level 3 Staging: Specialized ]", "auth-unlocked": "Adventurer Authenticated", "modal-lesson-title": "📜 Relic Scroll Summary (High-Level)", "modal-highest-grade": "Guild Highest Grade Assessment", "modal-gate-link": "⚡ Teleport to Training Grounds (Go to Handbook/Codex)", "nav-home": "Home"
+            }
         };
-        const talentVault = {
-            "L1-A1": { summary: "釐清「四界雙域」核心物理法則，串聯天界女神設計意圖、供應商元件物料、代工廠複製實體化。System TPM 是兩者之間的技術中介與秩序平衡使者。", target: "beginner_codex.html" },
-            "L1-A2": { summary: "教導如何將凡間使用者的原始痛點數據，轉化為產品規格書（PRD）。在有限成本與時程上限內，完成黃金規格範疇控管。", target: "beginner_codex.html" },
-            "L2-W1": { summary: "深入防水等級定義。剖析點膠製程、O-Ring防水圈變形率控制、氣密測試DOE與製程雷區排除技術。", target: "handbook.html" }
+
+        const talentMetadata = {
+            "L1-A1": { summary: "拆解硬體新產品導入（NPI）底層運行的巨觀因果。釐清天界客戶（Client）設計藍圖、決策意圖與2D圖紙；外觀工藝與結構融合；以及物質深淵代工廠（EMS Factory）在公差、線平衡工時與直通率物理結界下的實體複製生產。System TPM 將在此扮演秩序平衡使者。", targetUrl: "beginner_codex.html" },
+            "L1-A2": { summary: "教導如何將凡間使用者的原始痛點與慾望數據，精準轉化為最初始的產品定義與產品規格書（PRD）。在有限的物料清單成本（BOM Cost）與時程上限內，完成對齊客戶女神意圖的黃金技術規格範疇控管。", targetUrl: "beginner_codex.html" },
+            "L1-A5": { summary: "解鎖3D堆疊（Stack-up）工程。在有限的毫米（mm）維度內，解決內部零組件、電路板與結構外殼的空間極限擠壓，排除所有物理干涉，確保神界美學毫無損落地。", targetUrl: "beginner_codex.html" },
+            "L1-B1": { summary: "深入物質深淵第一線火山熔爐：SMT（表面黏著技術）製程。掌握鋼網印刷、貼片機元件吸嘴精準度、迴流焊（Reflow）溫度曲線調校，並藉由 SPI 與 AOI 審判之門守護初始良率防線。", targetUrl: "beginner_codex.html" },
+            "L2-W1": { summary: "深入功能單位進階領域。攻克硬體產品防水等級（IP67/IPX8）的物理定義，精準調配點膠製程（Dispensing）膠路路徑，剖析防水橡膠圈（O-Ring）的黃金變形率，並以差壓式氣密測試儀進行無損品質審判。", targetUrl: "handbook.html" }
         };
-        function switchTier(tierId) { document.querySelectorAll('.tier-tab-btn').forEach(btn => btn.classList.remove('active')); document.getElementById(`tab-${tierId}-btn`).classList.add('active'); document.querySelectorAll('.isekai-tree-map').forEach(map => map.classList.remove('active')); document.getElementById(`tab-${tierId}-map`).classList.add('active'); }
-        function openTalentSummary(nodeId) {
-            const nodeEl = document.getElementById(`node-${nodeId}`); if (nodeEl.classList.contains('locked')) { alert("【天賦封印】前置條件未達成！"); return; }
-            const data = talentVault[nodeId]; if (!data) { alert("尚未開通。"); return; }
-            document.getElementById('modal-node-code').innerText = nodeId; document.getElementById('modal-node-title').innerText = nodeEl.querySelector('.node-name').innerText.replace('\n', ' '); document.getElementById('modal-node-lesson').innerText = data.summary;
-            const savedGrade = localStorage.getItem(`talent-${nodeId}-grade`) || (nodeEl.classList.contains('completed') ? "S" : null);
-            const savedDate = localStorage.getItem(`talent-${nodeId}-date`) || new Date().toLocaleDateString();
-            const gradeEl = document.getElementById('modal-node-grade'); const dateEl = document.getElementById('modal-node-date');
-            if (savedGrade) { gradeEl.innerText = savedGrade; dateEl.innerText = `完成時間：${savedDate}`; document.getElementById('gold-clear-seal').style.display = 'block'; } 
-            else { gradeEl.innerText = "N/A"; dateEl.innerText = `完成時間：[ UNCOMPLETED ]`; document.getElementById('gold-clear-seal').style.display = 'none'; }
-            document.getElementById('modal-teleport-link').href = data.target; document.getElementById('dungeon-modal').style.display = 'flex';
+
+        // 階層分頁控制引擎 (Layered Tab Engine)
+        function switchTreeTab(tabId) {
+            document.querySelectorAll('.tier-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.isekai-tree-map').forEach(map => map.classList.remove('active'));
+            
+            // 找出點擊的按鈕並高亮
+            const btnSuffix = tabId.replace('tab-', '');
+            const clickedBtn = document.getElementById(`tab-${btnSuffix}-btn`);
+            if (clickedBtn) clickedBtn.classList.add('active');
+            
+            const targetMap = document.getElementById(tabId);
+            if (targetMap) targetMap.classList.add('active');
         }
-        function closeModal() { document.getElementById('dungeon-modal').style.display = 'none'; }
+
+        // 開啟天賦總覽面板
+        function openTalentSummary(nodeId) {
+            const nodeEl = document.getElementById(`node-${nodeId}`);
+            if (nodeEl.classList.contains('locked')) {
+                alert("【系統提示】前置天賦尚未點亮，此節點仍處於公會封印狀態！");
+                return;
+            }
+
+            const data = talentMetadata[nodeId];
+            if (!data) {
+                alert("此高級節點文獻尚在賢者撰寫中，敬請期待！");
+                return;
+            }
+
+            document.getElementById('modal-node-code').innerText = nodeId;
+            const nodeNameText = nodeEl.querySelector('.node-name').innerHTML.replace('<br>', ' ');
+            document.getElementById('modal-node-title').innerHTML = nodeNameText;
+            document.getElementById('modal-node-summary').innerText = data.summary;
+
+            // 讀取快取中的最高得分與完成日期
+            const savedGrade = localStorage.getItem(`talent-${nodeId}-grade`);
+            const savedDate = localStorage.getItem(`talent-${nodeId}-date`);
+            const gradeEl = document.getElementById('modal-node-grade');
+            const dateEl = document.getElementById('modal-node-date');
+
+            if (nodeEl.classList.contains('completed') || savedGrade) {
+                const finalGrade = savedGrade || "S"; 
+                const finalDate = savedDate || new Date().toLocaleDateString();
+                gradeEl.innerText = finalGrade;
+                gradeEl.className = "grade-badge";
+                gradeEl.style.color = "#F59E0B";
+                gradeEl.style.borderColor = "#F59E0B";
+                dateEl.innerText = `完成時間：${finalDate} (水晶同步成功)`;
+            } else {
+                gradeEl.innerText = "N/A";
+                gradeEl.className = "grade-badge unclear";
+                gradeEl.style.color = "var(--color-locked)";
+                gradeEl.style.borderColor = "var(--color-locked)";
+                dateEl.innerText = "完成時間：[ UNCOMPLETED ]";
+            }
+
+            document.getElementById('modal-teleport-link').href = data.targetUrl;
+            document.getElementById('talent-summary-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('talent-summary-modal').style.display = 'none';
+        }
+
+        // 👑 修正語系切換引擎：動態讀取狀態，徹底杜絕同步死當或跳位Bug
         function setLang(lang) {
-            document.querySelectorAll('.lang-switcherauth-panel .tier-tab-btn').forEach(btn => btn.classList.remove('active'));
-            const b = document.getElementById(`btn-${lang}`); if(b) b.classList.add('active');
-            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if(translations[lang][key]) el.innerText = translations[lang][key]; });
+            document.querySelectorAll('.lang-btn-core').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-${lang}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            // 靜態翻譯分發
+            document.querySelectorAll('[data-i18n]').forEach(el => { 
+                const key = el.getAttribute('data-i18n'); 
+                if(translations[lang][key]) el.innerText = translations[lang][key]; 
+            });
+
+            // 首頁按鈕語意更換
+            document.getElementById('nav-home-text').innerText = translations[lang]["nav-home"];
+
+            // 帳號認證狀態動態轉換（維持頭銜＋名稱，無 Email）
+            const cachedName = localStorage.getItem('tpm-user-name');
+            const cachedRank = localStorage.getItem('tpm-user-rank') || "冒險者";
+            
+            let displayRank = (lang === 'tw') ? "冒險者" : "Adventurer";
+            if (cachedRank === "G.M.") displayRank = "G.M.";
+
+            if (cachedName) {
+                document.getElementById('user-profile').innerHTML = `👤 ${displayRank}：${cachedName}`;
+            } else {
+                document.getElementById('user-profile').innerText = (lang === 'tw') ? "🔒 未讀取公會憑證" : "🔒 No Credentials";
+            }
+
             localStorage.setItem('tpm-lang-pref', lang);
         }
+
         window.onload = () => {
-            setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); switchTier('l1');
-            const cachedName = localStorage.getItem('tpm-user-name');
-            if (cachedName) { const currentRank = localStorage.getItem('tpm-user-rank') || "冒險者"; document.getElementById('user-profile').innerHTML = `👤 ${currentRank}：${cachedName}`; }
+            setLang(localStorage.getItem('tpm-lang-pref') || 'tw');
+            switchTreeTab('tab-l1'); 
         };
     </script>
 </body>
