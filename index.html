@@ -204,8 +204,8 @@
     
     <div class="page-container">
         <div class="lang-switcher">
-            <button class="lang-btn active" onclick="setLang('tw')">TW</button>
-            <button class="lang-btn" onclick="setLang('en')">EN</button>
+            <button class="lang-btn active" id="btn-tw" onclick="setLang('tw')">TW</button>
+            <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
         </div>
         
         <header>
@@ -216,7 +216,7 @@
 
         <div class="portal-auth-zone" id="portal-sso-gateway">
             <div id="g_id_onload"
-                data-client_id="714448595856-i1nkps3f08arusf8fdfguj3gpnnu69uf.apps.googleusercontent.com"
+                data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
                 data-context="signin"
                 data-ux_mode="popup"
                 data-callback="handlePortalLogin"
@@ -326,32 +326,40 @@
         };
 
         function setLang(lang) {
-            document.querySelectorAll('.lang-btn').forEach(btn => { 
-                btn.classList.remove('active'); 
-                if(btn.innerText.toLowerCase() === lang) btn.classList.add('active'); 
-            });
+            // 更新按鈕樣式
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            
+            // 更新 data-i18n 元素
             document.querySelectorAll('[data-i18n]').forEach(el => { 
                 const key = el.getAttribute('data-i18n'); 
                 if(translations[lang][key]) el.innerText = translations[lang][key]; 
             });
+            
+            // 持久化保存
             localStorage.setItem('tpm-lang-pref', lang);
         }
 
+        // 統一身份識別接收函式
         function handlePortalLogin(response) {
-            const payload = JSON.parse(decodeURIComponent(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')).split('').map(function(c) {
+            // 解析 Google 官方 JWT Token 加密塊
+            const responsePayload = JSON.parse(decodeURIComponent(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')).split('').map(function(c) {
                 return '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join('')));
             
-            localStorage.setItem('tpm-user-email', payload.email);
-            localStorage.setItem('tpm-user-name', payload.name);
-            renderUserStatus(payload.name, payload.email);
+            // 保存至公會通行證快取
+            localStorage.setItem('tpm-user-email', responsePayload.email);
+            localStorage.setItem('tpm-user-name', responsePayload.name);
+            
+            // 動態更新身份識別徽章（修正：冒險者+名稱，無email）
+            renderUserStatus(responsePayload.name);
         }
 
-        function renderUserStatus(name, email) {
+        function renderUserStatus(name) {
+            const currentRank = localStorage.getItem('tpm-user-rank') || "冒險者"; // 預設頭銜
             document.getElementById('portal-sso-gateway').innerHTML = `
                 <div class="auth-badge-portal">
-                    <span style="color:#1D4ED8; font-weight:900;">👤 冒險者：${name}</span>
-                    <span style="color:#64748B; font-size:0.8rem;">[ ${email} ]</span>
+                    <span style="color:#1D4ED8; font-weight:900;">👤 ${currentRank}：${name}</span>
                 </div>
             `;
         }
@@ -367,11 +375,13 @@
         }
 
         window.onload = () => { 
+            // 優先讀取保存的語系，預設為TW
             setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); 
             checkGatekeeper();
             const cEmail = localStorage.getItem('tpm-user-email');
             const cName = localStorage.getItem('tpm-user-name');
-            if (cEmail && cName) renderUserStatus(cName, cEmail);
+            // 如果已認證，高亮顯示冒險者頭銜+名稱
+            if (cEmail && cName) renderUserStatus(cName);
         };
     </script>
 </body>
