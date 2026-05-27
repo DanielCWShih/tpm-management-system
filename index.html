@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System TPM 公會總部 | System TPM Guild</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         :root {
-            /* Daniel 專屬高階文具配色系統表 */
             --bg-color: #FEF9E7; 
             --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
             --active-yellow: #FDE047;
             --text-main: #1A1A1A;
             --text-secondary: #475569;
-            --border-heavy: #1A1A1A; /* 輕小說粗線條風格 */
-            --shadow-tactical: 6px 6px 0px #1A1A1A; /* 塊狀硬派陰影 */
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 6px 6px 0px #1A1A1A;
             --radius-sm: 12px;
         }
         
@@ -90,7 +90,7 @@
 
         header { 
             text-align: center; 
-            margin-bottom: 60px; 
+            margin-bottom: 40px; 
             width: 100%;
         }
 
@@ -104,11 +104,30 @@
             font-family: monospace;
         }
 
-        /* 完美同步老闆最新指令：System TPM 公會總部 */
         h1 { font-size: 3.2rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
         .subtitle { font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; margin-top: 15px; }
 
-        /* 全彈性滿版自適應網格 */
+        /* 門戶頂部身分面板 */
+        .portal-auth-zone {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 50px;
+        }
+
+        .auth-badge-portal {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 25px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            box-shadow: 4px 4px 0px var(--border-heavy);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         .hub-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
@@ -138,10 +157,7 @@
             background-color: #FFFDF2;
         }
 
-        /* 權限控制隱藏類別 */
-        .restricted-card {
-            display: none; 
-        }
+        .restricted-card { display: none; }
 
         .hub-card.locked { 
             background: repeating-linear-gradient(45deg, #FFFDF9, #FFFDF9 10px, #FDF2D0 10px, #FDF2D0 20px);
@@ -162,9 +178,7 @@
             font-size: 1.8rem; 
         }
         
-        .hub-card.active .icon-box {
-            background: var(--active-yellow);
-        }
+        .hub-card.active .icon-box { background: var(--active-yellow); }
 
         .hub-card h3 { font-size: 1.4rem; font-weight: 900; margin: 0 0 12px 0; letter-spacing: -0.5px; }
         .hub-card p { font-size: 0.95rem; color: var(--text-secondary); font-weight: 600; margin: 0; line-height: 1.6; }
@@ -200,6 +214,17 @@
             <h1 data-i18n="main-title">System TPM 公會總部</h1>
             <div class="subtitle" data-i18n="subtitle">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
         </header>
+
+        <div class="portal-auth-zone" id="portal-sso-gateway">
+            <div id="g_id_onload"
+                data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-callback="handlePortalLogin"
+                data-auto_select="true">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+        </div>
 
         <div class="hub-grid">
             <a href="resource_allocation.html" class="hub-card active restricted-card" id="card-allocation">
@@ -272,9 +297,7 @@
     <script>
         const translations = {
             tw: {
-                "logo-mark": "GUILD HQ / LEVEL 2026", 
-                "main-title": "System TPM 公會總部", 
-                "subtitle": "Daniel Shih | 2026 年度高效管理與團隊修煉套件",
+                "logo-mark": "GUILD HQ / LEVEL 2026", "main-title": "System TPM 公會總部", "subtitle": "Daniel Shih | 2026 年度高效管理與團隊修煉套件",
                 "status-master": "【公會長特權】", "status-open": "【 全員開放 】", "status-secured": "【高級機密】", "status-staging": "【 封印中 】",
                 "card1-title": "公會長戰略調度室", "card1-desc": "內部高級權限：即時指派冒險者任務、戰力負載監控與全域資源排配模組。",
                 "card3-title": "魔力黑點預警眼", "card3-desc": "利用數據模型觀測任務瓶頸，自動標記高危延遲風險與核心資源缺口。",
@@ -288,9 +311,7 @@
                 "footer-text": "GUILD.REVISION: V4.5 | @2026 | OPERATOR: DANIEL SHIH"
             },
             en: {
-                "logo-mark": "GUILD HQ / LEVEL 2026", 
-                "main-title": "System TPM Guild", 
-                "subtitle": "Daniel Shih | 2026 Tactical Management & Training Suite",
+                "logo-mark": "GUILD HQ / LEVEL 2026", "main-title": "System TPM Guild", "subtitle": "Daniel Shih | 2026 Tactical Management & Training Suite",
                 "status-master": "[ GUILD MASTER ]", "status-open": "[ UNLOCKED ]", "status-secured": "[ CLASSIFIED ]", "status-staging": "[ STAGING ]",
                 "card1-title": "Guild Master's Strategic Desk", "card1-desc": "Guild Master Priority: Live workload monitoring, adventurer deployment, and resource orchestration backend.",
                 "card3-title": "Abyssal Risk Warning Eye", "card3-desc": "Predict system bottlenecks through data modeling, tagging operational latency and asset gaps automatically.",
@@ -317,6 +338,26 @@
             localStorage.setItem('tpm-lang-pref', lang);
         }
 
+        // 統一接收登入凭证並保存，分發全網頁
+        function handlePortalLogin(response) {
+            const payload = JSON.parse(decodeURIComponent(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')).split('').map(function(c) {
+                return '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join('')));
+            
+            localStorage.setItem('tpm-user-email', payload.email);
+            localStorage.setItem('tpm-user-name', payload.name);
+            renderUserStatus(payload.name, payload.email);
+        }
+
+        function renderUserStatus(name, email) {
+            document.getElementById('portal-sso-gateway').innerHTML = `
+                <div class="auth-badge-portal">
+                    <span style="color:#1D4ED8; font-weight:900;">👤 冒險者：${name}</span>
+                    <span style="color:#64748B; font-size:0.8rem;">[ ${email} ]</span>
+                </div>
+            `;
+        }
+
         function checkGatekeeper() {
             const urlParams = new URLSearchParams(window.location.search);
             const opCode = urlParams.get('op');
@@ -330,6 +371,9 @@
         window.onload = () => { 
             setLang(localStorage.getItem('tpm-lang-pref') || 'tw'); 
             checkGatekeeper();
+            const cEmail = localStorage.getItem('tpm-user-email');
+            const cName = localStorage.getItem('tpm-user-name');
+            if (cEmail && cName) renderUserStatus(cName, cEmail);
         };
     </script>
 </body>
