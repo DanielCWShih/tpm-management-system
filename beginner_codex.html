@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初心者寶典基底引擎 | Beginner's Codex Core</title>
+    <title>中央初心者寶典基底核心 | Beginner's Codex Core</title>
     <link rel="stylesheet" href="global_theme.css">
 </head>
 <body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
@@ -18,7 +18,7 @@
             <ul class="chapter-list" id="dynamic-course-menu"></ul>
         </aside>
 
-        <main>
+        <main style="flex:1; height:100%; padding:40px; display:flex; flex-direction:column; overflow-y:auto;">
             <div class="dashboard-view-hall" id="dashboard-menu-hall" style="padding:0;">
                 <div class="level-section">
                     <div class="level-title-divider">🌿 Level 1：基礎通識研修領域 (Foundations)</div>
@@ -76,10 +76,14 @@
                 injectContentPackScript(contentPackId);
             }
         }
+        
+        // 👑 核心修復：解析 1-1 到天賦樹 L1-A1 的映射漏洞，高亮金屬色塊
         function renderDashboardHallCards() {
             const grid = document.getElementById('l1-cards-grid'); grid.innerHTML = '';
             beginnerCourseManifest.forEach(course => {
-                const savedGrade = localStorage.getItem(`talent-L1-A${course.id.replace('-','')}-grade`);
+                const targetNodeId = "L1-A" + course.id.split('-')[1]; // 完美轉化 1-1 -> L1-A1
+                const savedGrade = localStorage.getItem(`talent-${targetNodeId}-grade`);
+                
                 let medalClass = ""; let badgeText = "AVAILABLE"; let badgeColor = "border-color:var(--color-available); color:var(--color-available);";
                 if (course.isNew) { badgeText = "NEW"; badgeColor = "background:#EF4444; color:white; border-color:#000;"; }
                 if (savedGrade === "S") { medalClass = "medal-gold"; badgeText = "S 級過關"; } else if (savedGrade && savedGrade !== "Fail") { medalClass = "medal-silver"; badgeText = `${savedGrade} 級完工`; }
@@ -133,17 +137,14 @@
             examActive = false; const course = codexCourseEngineData[activeCourseIdx]; const finalPct = (examScoreCount / course.examVault.length) * 100; let grade = "Fail";
             if (finalPct === 100) grade = "S"; else if (finalPct >= 90) grade = "A"; else if (finalPct >= 80) grade = "B"; else if (finalPct >= 70) grade = "C"; else if (finalPct >= 60) grade = "D";
             if (grade === "Fail") {
-                alert(`💥【考核失敗】得分率 ${finalPct}%\n判定為 Fail！通行證已鎖定，強退重考！`);
+                alert(`💥【考核失敗】\n判定為 Fail！通行證已鎖定，強退重考！`);
                 localStorage.setItem(`codex-${course.courseId}-clear`, 'false'); localStorage.removeItem(`talent-${course.courseId}-grade`); triggerCourseSelect(activeCourseIdx);
             } else {
                 alert(`🏆【考核通過】戰力位階核定為：【 ${grade} 】級！`);
                 localStorage.setItem(`codex-${course.courseId}-clear`, 'true'); localStorage.setItem(`talent-${course.courseId}-grade`, grade); localStorage.setItem(`talent-${course.courseId}-date`, new Date().toLocaleDateString()); triggerCourseSelect(activeCourseIdx);
             }
         }
-        function setLang(lang) {
-            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if(translations[lang][key]) el.innerText = translations[lang][key]; });
-            if (document.getElementById('dashboard-menu-hall').style.display === 'block') { renderDashboardHallCards(); }
-        }
+        function setLang(lang) { if (document.getElementById('dashboard-menu-hall').style.display === 'block') { renderDashboardHallCards(); } }
     </script>
 </body>
 </html>
