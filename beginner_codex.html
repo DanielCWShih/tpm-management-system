@@ -21,7 +21,8 @@
             --color-fail: #DC2626;
         }
 
-        html, body {
+        html, 
+        body {
             margin: 0;
             padding: 0;
             width: 100vw;
@@ -179,15 +180,7 @@
             color: white !important;
         }
 
-        /* 預設隱藏防止並存爆開 */
-        .dashboard-view-hall, 
-        .document-canvas, 
-        .exam-session-box, 
-        .sub-pagination-dots-zone {
-            display: none;
-        }
-
-        /* 大廳卡牌選單 */
+        /* 大廳選單 */
         .level-section {
             margin-bottom: 45px;
             width: 100%;
@@ -237,11 +230,7 @@
             box-shadow: 4px 4px 0px #B45309 !important;
         }
 
-        .cdx-dashboard-card.medal-gold * {
-            color: #B45309 !important;
-        }
-
-        /* 二級子產品副選單導航條 */
+        /* 二級子導航條 */
         .cdx-sub-nav-bar {
             display: flex;
             gap: 12px;
@@ -271,7 +260,7 @@
             box-shadow: 1px 1px 0px var(--border-heavy);
         }
 
-        /* 內文教材排版 */
+        /* 教材閱讀區與流程圖 */
         .textbook-scroll-box {
             flex: 1;
             overflow-y: auto;
@@ -287,7 +276,6 @@
             margin-bottom: 20px;
         }
 
-        /* 純 CSS 戰術流程圖 */
         .dynamic-flow-canvas {
             display: flex;
             align-items: center;
@@ -323,7 +311,6 @@
             color: #1D4ED8;
         }
 
-        /* 👑 修正：當流程圖節點被選中時的高亮戰術外殼 👑 */
         .flow-node-block.active-node {
             background: #1A1A1A !important;
             color: #FFFFFF !important;
@@ -338,7 +325,7 @@
             user-select: none;
         }
 
-        /* 分頁小點點點導航列 */
+        /* 分頁點點引導列 */
         .sub-pagination-dots-zone {
             justify-content: center;
             align-items: center;
@@ -422,7 +409,7 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V4.1</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V4.2</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -510,7 +497,7 @@
         let examCurrentQ = 0;
         let examScoreCount = 0;
         let activeSubMatrixIdx = 0;
-        let activeFlowNodeIdx = 0; // 👑 追蹤當前點選的流程圖節點
+        let activeFlowNodeIdx = 0; 
 
         const globalUiTranslations = {
             tw: { "nav-home": "首頁", "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者", "title": "初心者寶典大廳" },
@@ -637,7 +624,11 @@
             dotsBar.innerHTML = '';
             
             const innerHeader = document.getElementById('cdx-page-header-zone');
-            if (innerHeader) innerHeader.style.display = 'block';
+            
+            // 👑 剛性除錯銲接防線：修正為單層標準 .style.display 👑
+            if (innerHeader) {
+                innerHeader.style.display = 'block';
+            }
 
             if (examActive) {
                 document.getElementById('textbook-viewport').style.display = 'none';
@@ -676,14 +667,12 @@
                     activeSubMatrixIdx = 0;
                 }
 
-                // 👑 核心渲染邏輯：如果流程圖節點帶有專屬定義，則依據 activeFlowNodeIdx 進行分步抽換
                 if (targetedFlow && targetedFlow[activeFlowNodeIdx] && targetedFlow[activeFlowNodeIdx].text) {
                     document.getElementById('lesson-content').innerText = targetedFlow[activeFlowNodeIdx].text;
                 } else {
                     document.getElementById('lesson-content').innerText = targetedText;
                 }
 
-                // 渲染頂部流程圖畫布，並銲死節點 onclick 監聽
                 const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
                 if (flowRenderer && targetedFlow) {
                     flowRenderer.style.display = 'flex';
@@ -715,17 +704,16 @@
 
         function triggerMainPageChange(sIdx) {
             activeSubMatrixIdx = 0;
-            activeFlowNodeIdx = 0; // 👑 重置流程節點
+            activeFlowNodeIdx = 0; 
             loadCourseState(activeCourseIdx, sIdx);
         }
 
         function switchSubMatrixBranch(bIdx) {
             activeSubMatrixIdx = bIdx;
-            activeFlowNodeIdx = 0; // 👑 重置流程節點
+            activeFlowNodeIdx = 0; 
             loadCourseState(activeCourseIdx, activePageIdx);
         }
 
-        // 👑 點擊流程圖方塊時的原地狀態變更器
         function switchFlowNode(nIdx) {
             activeFlowNodeIdx = nIdx;
             loadCourseState(activeCourseIdx, activePageIdx);
