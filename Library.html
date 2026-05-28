@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>大圖書館文檔庫 | System TPM Knowledge Library</title>
+    
     <link rel="stylesheet" href="global_theme.css">
 </head>
 <body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
     <div style="display: flex; flex: 1; width: 100%; overflow: hidden;">
-        <aside>
+        
+        <aside style="width: 280px; background-color: var(--sidebar-cream); border-right: 3px solid var(--border-heavy); display: flex; flex-direction: column; padding: 25px; overflow-y: auto; flex-shrink: 0;">
             <button class="category-btn active" id="btn-all" onclick="filterLexicon('all')" data-i18n="cat-all">【 顯示全部圖鑑 】</button>
             <button class="category-btn" id="btn-abyss" onclick="filterLexicon('abyss')" data-i18n="cat-abyss">⚙️ 物質深淵 (工廠製程)</button>
             <button class="category-btn" id="btn-pantheon" onclick="filterLexicon('pantheon')" data-i18n="cat-pantheon">🏛️ 眾神殿 (研發設計)</button>
             <button class="category-btn" id="btn-phantom" onclick="filterLexicon('phantom')" data-i18n="cat-phantom">🔮 幻界位面 (供應鏈)</button>
         </aside>
 
-        <main style="padding: 40px;">
+        <main style="flex: 1; height: 100%; padding: 40px; overflow-y: auto; background: var(--card-white); display: flex; flex-direction: column; gap: 30px;">
             <div class="jargon-lexicon-grid" id="lexicon-canvas"></div>
         </main>
     </div>
@@ -52,7 +54,9 @@
         };
         const libraryLexicon = [
             { id: "J-01", category: "abyss", tag: "FATP / Process", term: "FPY (直通率)", en: "First Pass Yield", gameTerm: "純淨血統鐵律", lore: "【純淨血統鐵律】一個神器在深淵流水線中，完全沒有重工修復、一氣呵成順利通關的完美機率。", def: "First Pass Yield。第一次就製造出合格產品的比例。公式為：(不需重工合格數 / 投入總數) × 100%。", lessons: "某手機試產良率 98%，但 FPY 只有 45%！代表過半都是手工重修三次勉強過關。運到市場開箱 DOA 良率炸裂。確立鐵律：不斬良率，只斬直通率！" },
-            { id: "J-02", category: "abyss", tag: "SMT / Production", term: "AOI (自動光學檢測)", en: "Automated Optical Inspection", gameTerm: "深淵第一審判之門", lore: "【深淵第一審判之門】架設在 SMT 火山熔爐出口，毫秒間高速掃描晶片符文是否有印歪、短路或偏移浮起。", def: "Automated Optical Inspection。利用光學攝影機與影像演算法，自動檢測 PCBA 上零件的缺件、墓碑（Tombstoning）、短路等外觀缺陷。", lessons: "EVT 出現集體電阻浮起（墓碑效應）。工廠黑手堅持是設計問題，TPM 調閱第一道審判之門（SPI 錫膏檢查）與 AOI 數據，精確抓到是鋼網（Stencil）厚度磨損。工廠當場認賠。" }
+            { id: "J-02", category: "abyss", tag: "SMT / Production", term: "AOI (自動光學檢測)", en: "Automated Optical Inspection", gameTerm: "深淵第一審判之門", lore: "【深淵第一審判之門】架設在 SMT 火山熔爐出口，毫秒間高速掃描晶片符文是否有印歪、短路或偏移浮起。", def: "Automated Optical Inspection。利用光學攝影機與影像演算法，自動檢測 PCBA 上零件的缺件、墓碑（Tombstoning）、短路等外觀缺陷。", lessons: "EVT 出現集體電阻浮起（墓碑效應）。工廠黑手堅持是設計問題，TPM 調閱第一道審判之門（SPI 錫膏檢查）與 AOI 數據，精確抓到是鋼網（Stencil）厚度磨損。工廠當場認賠。" },
+            { id: "J-03", category: "pantheon", tag: "Design / CMF", term: "Anodization (陽極氧化)", en: "Anodization", gameTerm: "金屬幻化護甲術", lore: "【金屬幻化護甲術】利用電化學魔力，在鋁合金骨架表面強行鍍上一層高硬度、抗刮、且能吸附神聖色彩的半透明防禦皮層。", def: "一種電化學製程，將金屬（主要是鋁合金）物件作為陽極，置於電解液中施加電流，使其表面形成一層具保護性與裝飾性的氧化膜。涉及極度敏感的酸鹼度、電流工藝控制。", lessons: "設計師要求高階無人機外殼必須呈現深邃極光藍。然而深淵工廠回報：該陽極氧化藥水在量產線上的色差（Delta E）極難控制，直通率雪崩。TPM 緊急介入，在圖紙端妥協微調噴砂顆粒度（120號改為150號），增加光線漫反射，完美遮蓋色差，拯救了大量生產時程。" },
+            { id: "J-04", category: "phantom", tag: "Supply Chain / Logistics", term: "Lead Time (長料期)", en: "Lead Time", gameTerm: "長料期的沉沒詛咒", lore: "【長料期的沉沒詛咒】指的是從你向廠商下達下單指令那一刻起，到零件原料真正穿越海關送進倉庫，所需要耗費的時間沙漏總長度。", def: "從訂單確認下達，到物料或成品實際交付到指定地點的這段總時間。包含晶圓排產、封裝測試、跨國海空運通關時間。在晶圓或感測器晶片上，長料期通常高達 12 至 16 週。", lessons: "某次 DVT 階段前夕，晶圓廠遭遇地震，特定光學 IC 的 Lead Time 瞬間暴增一倍。TPM 大膽決定：試產不延期，前半段空板（Dummy Board）上線過爐，等 4 週後晶片運抵，再在工廠後段架設手工專屬工位（Rework Station）進行後補後焊。專案因此毫秒未差，如期 Exit！" }
         ];
         function renderLexicon(data) {
             const canvas = document.getElementById('lexicon-canvas'); canvas.innerHTML = '';
