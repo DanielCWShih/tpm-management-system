@@ -17,6 +17,11 @@
         </aside>
 
         <main class="content-panel">
+            <div id="cdx-page-header-zone" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px dashed var(--border-heavy); display: none;">
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;"></span>
+                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;"></h2>
+            </div>
+
             <div class="dashboard-view-hall" id="dashboard-menu-hall" style="width:100%;">
                 <div class="level-section">
                     <div class="level-title-divider">🌊 Level 2：進階跨功能技術支線 (Modules)</div>
@@ -60,6 +65,7 @@
             const urlParams = new URLSearchParams(window.location.search); const contentPackId = urlParams.get('c');
             if (!contentPackId) {
                 document.getElementById('shell-sidebar-area').style.display = 'none'; document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('universal-dots-bar').style.display = 'none'; document.getElementById('dashboard-menu-hall').style.display = 'block';
+                const innerHeader = document.getElementById('cdx-page-header-zone'); if(innerHeader) innerHeader.style.display = 'none';
                 document.getElementById('global-inject-title').innerText = localStorage.getItem('tpm-lang-pref') === 'en' ? "Adventurer's Handbook" : "冒險者手冊大廳";
                 renderDashboardHallCards();
             } else {
@@ -74,7 +80,7 @@
                 let medalClass = ""; let badgeText = "AVAILABLE"; let badgeColor = "border-color:var(--color-available); color:var(--color-available);";
                 if (course.isNew) { badgeText = "NEW"; badgeColor = "background:#EF4444; color:white; border-color:#000;"; }
                 if (savedGrade === "S") { medalClass = "medal-gold"; badgeText = "S 級過關"; } else if (savedGrade && savedGrade !== "Fail") { medalClass = "medal-silver"; badgeText = `${savedGrade} 級完工`; }
-                grid.innerHTML += `<div class="dashboard-card ${medalClass}" onclick="navigateToCourse('${course.id}')"><div class="card-status-badge" style="${badgeColor}">${badgeText}</div><h3 style="margin-top:15px; font-size:1.2rem; font-weight:900;">L2-${course.id} ${course.title}</h3><p style="font-size:0.85rem; margin-top:10px; font-weight:600; line-height:1.5;">${course.desc}</p></div>`;
+                grid.innerHTML += `<div class="cdx-dashboard-card ${medalClass}" onclick="navigateToCourse('${course.id}')"><div class="card-status-badge" style="${badgeColor}">${badgeText}</div><h3 style="margin-top:15px; font-size:1.2rem; font-weight:900;">L2-${course.id} ${course.title}</h3><p style="font-size:0.85rem; margin-top:10px; font-weight:600; line-height:1.5;">${course.desc}</p></div>`;
             });
         }
         function navigateToCourse(courseId) { window.location.search = `?c=${courseId}`; }
@@ -91,11 +97,14 @@
                 const savedGrade = localStorage.getItem(`talent-${course.courseId}-grade`);
                 let medalClass = ""; if (savedGrade === "S") medalClass = "medal-gold"; else if (savedGrade && savedGrade !== "Fail") medalClass = "medal-silver";
                 const activeClass = idx === activeCourseIdx ? "active" : "";
-                menu.innerHTML += `<li class="chapter-tab ${activeClass} ${medalClass}" onclick="triggerCourseSelect(${idx})">${course.menuTitle}</li>`;
+                menu.innerHTML += `<li class="cdx-chapter-tab ${activeClass} ${medalClass}" onclick="triggerCourseSelect(${idx})">${course.menuTitle}</li>`;
             });
         }
         function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx; const course = codexCourseEngineData[cIdx]; const dotsBar = document.getElementById('universal-dots-bar'); dotsBar.innerHTML = '';
+            
+            const innerHeader = document.getElementById('cdx-page-header-zone'); if(innerHeader) innerHeader.style.display = 'block';
+
             if (examActive) {
                 document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block';
                 course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; });
@@ -121,7 +130,7 @@
         function submitAnswer(idx) { const course = codexCourseEngineData[activeCourseIdx]; if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } examCurrentQ++; runExamEngine(); }
         function settleExamPayload() {
             examActive = false; const course = codexCourseEngineData[activeCourseIdx]; const finalPct = (examScoreCount / course.examVault.length) * 100; let grade = "Fail";
-            if (finalPct === 100) grade = "S"; else if (finalPct >= 90) grade = "A"; else if (finalPct >= 80) grade = "B"; else if (finalPct >= 70) grade = "C"; else if (finalPct >= 60) grade = "D";
+            if (finalPct === 100) grade = "S"; else if (finalPct >= 90) grade = "A"; else if (finalPct >= 80) grade = "B"; else if (finalPct >= 70) grid = "C"; else if (finalPct >= 60) grade = "D";
             if (grade === "Fail") {
                 alert(`💥【考核失敗】\n未達 60% 剛性標準，強退重考！`);
                 localStorage.setItem(`handbook-${course.courseId}-clear`, 'false'); localStorage.removeItem(`talent-${course.courseId}-grade`); triggerCourseSelect(activeCourseIdx);
