@@ -1,6 +1,6 @@
 /**
  * System TPM Guild - Global Navigation & Auth Injection Engine
- * 定版代碼代號: 0528-V2.0 // 登入小按鈕沒收、右上角整合專用版
+ * 定版代碼代號: 0528-V2.1 // 帳戶登入沒收、全自適應分流版
  */
 
 const globalUiTranslations = {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageName = pagePath.substring(pagePath.lastIndexOf('/') + 1) || 'index.html';
     const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
 
-    // 🚀 模式 A：如果是入口總部首頁
+    // 🚀 模式 A：如果是入口總部首頁 index.html
     if (pageName === 'index.html' || pageName === '') {
         let homeHeaderSection = document.getElementById('global-injected-home-header');
         if (!homeHeaderSection) {
@@ -21,10 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
             homeHeaderSection.id = 'global-injected-home-header';
             homeHeaderSection.style.cssText = "text-align: center; margin-bottom: 30px; width: 100%; padding-top: 40px; position: relative; flex-shrink:0;";
             
-            // 👑 沒收改動：登入小方塊收歸右上角控制列，絕不突兀地擺在正中間
+            // 👑 結構修正：Google 登入容器直接嵌入右上角控制列，原地安全渲染，絕不產生跳轉
             homeHeaderSection.innerHTML = `
                 <div class="index-floating-controls">
-                    <div id="global-google-login-holder"></div>
+                    <div id="global-google-login-holder">
+                        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+                    </div>
                     <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
                     <div class="lang-switcher-wrapper">
                         <button class="lang-btn-core" id="global-btn-tw" onclick="executeGlobalLangSwitch('tw')">TW</button>
@@ -41,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageContainer) pageContainer.insertBefore(homeHeaderSection, pageContainer.firstChild);
         }
     } 
-    // 🚀 模式 B：如果是子功能頁面
+    // 🚀 模式 B：如果是子功能功能分頁
     else {
         let targetNavbar = document.querySelector('.tactical-navbar');
         if (!targetNavbar) {
@@ -58,11 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         targetNavbar.innerHTML = `
             <div class="navbar-brand">
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.0</span>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.1</span>
                 <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
             </div>
             <div class="navbar-controls">
-                <div id="global-google-login-holder"></div>
+                <div id="global-google-login-holder">
+                    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+                </div>
                 <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
                 <div class="lang-switcher-wrapper">
                     <button class="lang-btn-core" id="global-btn-tw" onclick="executeGlobalLangSwitch('tw')">TW</button>
@@ -73,18 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // 跨頁面強制獵取 HTML 內的原始 Google 登入按鈕並塞入右上角掛載點
-    bindGoogleButtonToNavbar();
     syncGlobalLanguageState(currentLang);
 });
-
-function bindGoogleButtonToNavbar() {
-    const rawGoogleBtn = document.querySelector('.g_id_signin');
-    const holder = document.getElementById('global-google-login-holder');
-    if (rawGoogleBtn && holder) {
-        holder.appendChild(rawGoogleBtn);
-    }
-}
 
 function syncGlobalLanguageState(lang) {
     const twBtn = document.getElementById('global-btn-tw');
@@ -126,11 +120,11 @@ function syncGlobalLanguageState(lang) {
             let rankTag = cachedRank;
             if (rankTag === "冒險者" || rankTag === "Adventurer") { rankTag = (lang === 'tw') ? "冒險者" : "Adventurer"; }
             profileCard.innerHTML = `👤 ${rankTag}：${cachedName}`;
-            // 👑 智能優化：既然已經認證成功，右上角的 Google 登入按鈕立刻隱藏
-            if (holder) holder.style.display = 'none';
+            // 👑 認證成功時，右上角的 Google 登入卡片直接沒收，維持絕對純淨
+            if (holder) holder.style.style.display = 'none';
         } else {
             profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
-            if (holder) holder.style.display = 'block';
+            if (holder) holder.style.style.display = 'block';
         }
     }
 
