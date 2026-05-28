@@ -1,86 +1,103 @@
 /**
  * System TPM Guild - Global Navigation & Auth Injection Engine
- * 定版代碼代號: 0528-V1.0
- * 權責範圍: 全網域動態注入頂部控制列、多國語系零像素位移持久化同步、身分安全識別
+ * 定版代碼代號: 0528-V1.1 // 智能首頁佈局識別除錯版
  */
 
-// 中央共通雙語文字矩陣模型
 const globalUiTranslations = {
-    tw: { "nav-home": "首頁", "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者" },
-    en: { "nav-home": "Home", "auth-locked": "🔒 No Credentials", "rank-default": "Adventurer" }
+    tw: { "nav-home": "首頁", "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者", "logo-mark": "GUILD HQ / LEVEL 2026", "main-title": "System TPM 公會總部", "subtitle": "Daniel Shih | 2026 年度高效管理與團隊修煉套件" },
+    en: { "nav-home": "Home", "auth-locked": "🔒 No Credentials", "rank-default": "Adventurer", "logo-mark": "GUILD HQ / LEVEL 2026", "main-title": "System TPM Guild", "subtitle": "Daniel Shih | 2026 Tactical Management & Training Suite" }
 };
 
-/**
- * 👑 全自動動態結構注入核心
- * 說明：網頁一旦載入本腳本，會自動在 <body> 的最前方生出剛性頂部控制列，免去手動維修結構的痛苦。
- */
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. 偵測或建立頂部注入掛載點
-    let targetHeader = document.querySelector('.tactical-header');
-    if (!targetHeader) {
-        targetHeader = document.createElement('div');
-        targetHeader.className = 'tactical-header';
-        document.body.insertBefore(targetHeader, document.body.firstChild);
-    }
-
-    // 2. 獲取目前網頁檔案名稱，用來自動給予對應的系統版本編碼標記
     const pagePath = window.location.pathname;
     const pageName = pagePath.substring(pagePath.lastIndexOf('/') + 1) || 'index.html';
-    
-    let sysTag = "SYS.MAIN_PORTAL";
-    let sysTitleTw = "System TPM 公會總部";
-    let sysTitleEn = "System TPM Guild";
+    const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
 
-    if (pageName.includes('talent_tree')) {
-        sysTag = "SYS.ATLAS_TREE"; sysTitleTw = "公會技能星盤天賦樹"; sysTitleEn = "Adventurer Talent Tree";
-    } else if (pageName.includes('beginner_codex')) {
-        sysTag = "SYS.BEGINNER_CODEX"; sysTitleTw = "初心者寶典大廳"; sysTitleEn = "Beginner's Codex";
-    } else if (pageName.includes('handbook')) {
-        sysTag = "SYS.HANDBOOK"; sysTitleTw = "冒險者手冊大廳"; sysTitleEn = "Adventurer's Handbook";
-    } else if (pageName.includes('Library')) {
-        sysTag = "SYS.LEXICON_LIBRARY"; sysTitleTw = "大圖書館術語圖鑑庫"; sysTitleEn = "Knowledge Lexicon Library";
-    } else if (pageName.includes('resource_allocation')) {
-        sysTag = "SYS.STRATEGY_DESK"; sysTitleTw = "G.M. 公會長戰略調度室"; sysTitleEn = "G.M. Strategy Desk";
+    // 👑 智能判定 A：如果目前是門戶首頁 index.html，採用大氣的中央置中巨型大堂 header 排版
+    if (pageName === 'index.html' || pageName === '') {
+        let homeHeaderSection = document.getElementById('global-injected-home-header');
+        if (!homeHeaderSection) {
+            homeHeaderSection = document.createElement('header');
+            homeHeaderSection.id = 'global-injected-home-header';
+            homeHeaderSection.style.cssText = "text-align: center; margin-bottom: 30px; width: 100%; padding-top: 40px; position: relative;";
+            
+            // 將語言控制與身分卡以絕對剛性定位優雅掛載在首頁右上角，杜絕擠壓
+            homeHeaderSection.innerHTML = `
+                <div class="lang-switcher-wrapper" style="position: absolute; top: 20px; right: 40px; z-index: 100;">
+                    <button class="lang-btn-core" id="global-btn-tw" onclick="executeGlobalLangSwitch('tw')">TW</button>
+                    <button class="lang-btn-core" id="global-btn-en" onclick="executeGlobalLangSwitch('en')">EN</button>
+                </div>
+                <div id="global-user-profile-card" class="auth-panel" style="position: absolute; top: 20px; right: 160px; z-index: 100;">🔒 認證讀取中...</div>
+                
+                <div class="logo-mark" id="home-logo-mark-text" style="font-size: 0.9rem; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 12px; color: var(--text-secondary); font-family: monospace;">GUILD HQ / LEVEL 2026</div>
+                <h1 style="font-size: 3.2rem; margin: 0; font-weight: 900; letter-spacing: -1px;" id="home-main-title-text">System TPM 公會總部</h1>
+                <div class="subtitle" id="home-subtitle-text" style="font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; margin-top: 15px;">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
+            `;
+            
+            // 完美插入至首頁 page-container 的最前端
+            const pageContainer = document.querySelector('.page-container');
+            if (pageContainer) {
+                pageContainer.insertBefore(homeHeaderSection, pageContainer.firstChild);
+            }
+        }
+    } 
+    // 👑 智能判定 B：如果是子網頁（天賦樹、手冊等），維持高效緊湊的頂部水平控制列
+    else {
+        let targetHeader = document.querySelector('.tactical-header');
+        if (!targetHeader) {
+            targetHeader = document.createElement('div');
+            targetHeader.className = 'tactical-header';
+            document.body.insertBefore(targetHeader, document.body.firstChild);
+        }
+
+        let sysTag = "SYS.MAIN_PORTAL";
+        let sysTitleTw = "System TPM 公會總部";
+
+        if (pageName.includes('talent_tree')) { sysTag = "SYS.ATLAS_TREE"; sysTitleTw = "公會技能星盤天賦樹"; }
+        else if (pageName.includes('beginner_codex')) { sysTag = "SYS.BEGINNER_CODEX"; sysTitleTw = "初心者寶典大廳"; }
+        else if (pageName.includes('handbook')) { sysTag = "SYS.HANDBOOK"; sysTitleTw = "冒險者手冊大廳"; }
+        else if (pageName.includes('Library')) { sysTag = "SYS.LEXICON_LIBRARY"; sysTitleTw = "大圖書館術語圖鑑庫"; }
+
+        targetHeader.innerHTML = `
+            <div>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">${sysTag} V1.1</span>
+                <h1 style="margin: 5px 0 0 0; font-size: 2.2rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
+            </div>
+            <div class="header-controls">
+                <div class="lang-switcher-wrapper">
+                    <button class="lang-btn-core" id="global-btn-tw" onclick="executeGlobalLangSwitch('tw')">TW</button>
+                    <button class="lang-btn-core" id="global-btn-en" onclick="executeGlobalLangSwitch('en')">EN</button>
+                </div>
+                <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
+                <a href="index.html" class="back-btn" id="global-nav-home-btn">首頁</a>
+            </div>
+        `;
     }
 
-    // 3. 剛性結構 HTML 拼裝注入 (銲死 50px 按鈕，徹底消滅中英佈局移位)
-    targetHeader.innerHTML = `
-        <div>
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">${sysTag} V1.0</span>
-            <h1 style="margin: 5px 0 0 0; font-size: 2.2rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
-        </div>
-        <div class="header-controls">
-            <div class="lang-switcher-wrapper">
-                <button class="lang-btn-core" id="global-btn-tw" onclick="executeGlobalLangSwitch('tw')">TW</button>
-                <button class="lang-btn-core" id="global-btn-en" onclick="executeGlobalLangSwitch('en')">EN</button>
-            </div>
-            <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
-            <a href="index.html" class="back-btn" id="global-nav-home-btn">首頁</a>
-        </div>
-    `;
-
-    // 4. 啟動語系持久化繼承監聽器
-    syncGlobalLanguageState(localStorage.getItem('tpm-lang-pref') || 'tw');
+    syncGlobalLanguageState(currentLang);
 });
 
-/**
- * 👑 多國語系持久化同步引擎 (0 像素位移調校)
- */
 function syncGlobalLanguageState(lang) {
-    // A. 修正按鈕 active 樣式
     const twBtn = document.getElementById('global-btn-tw');
     const enBtn = document.getElementById('global-btn-en');
     if (twBtn && enBtn) {
-        twBtn.classList.remove('active');
-        enBtn.classList.remove('active');
+        twBtn.classList.remove('active'); enBtn.classList.remove('active');
         document.getElementById(`global-btn-${lang}`).classList.add('active');
     }
 
-    // B. 自動翻譯控制列頂層靜態元素
     const homeBtn = document.getElementById('global-nav-home-btn');
     if (homeBtn) homeBtn.innerText = globalUiTranslations[lang]["nav-home"];
 
-    // C. 自動連動大頁面標題
+    // 首頁專屬的大標題雙語動態切換
+    const homeMark = document.getElementById('home-logo-mark-text');
+    const homeTitle = document.getElementById('home-main-title-text');
+    const homeSub = document.getElementById('home-subtitle-text');
+    if (homeMark && homeTitle && homeSub) {
+        homeMark.innerText = globalUiTranslations[lang]["logo-mark"];
+        homeTitle.innerText = globalUiTranslations[lang]["main-title"];
+        homeSub.innerText = globalUiTranslations[lang]["subtitle"];
+    }
+
     const titleEl = document.getElementById('global-inject-title');
     if (titleEl) {
         const pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
@@ -88,10 +105,9 @@ function syncGlobalLanguageState(lang) {
         else if (pageName.includes('beginner_codex')) { titleEl.innerText = lang === 'tw' ? "初心者寶典大廳" : "Beginner's Codex Hall"; }
         else if (pageName.includes('handbook')) { titleEl.innerText = lang === 'tw' ? "冒險者手冊大廳" : "Adventurer's Handbook Hall"; }
         else if (pageName.includes('Library')) { titleEl.innerText = lang === 'tw' ? "大圖書館術語圖鑑庫" : "Knowledge Lexicon Library"; }
-        else if (pageName.includes('resource_allocation')) { titleEl.innerText = lang === 'tw' ? "G.M. 公會長戰略調度室" : "G.M. Strategy Desk"; }
     }
 
-    // D. 👑 核心優化：身分卡認證狀態動態轉換（維持頭銜＋名稱，嚴格遮蔽 Email 顯示）
+    // 全網域身分徽章高亮鎖定（強制屏蔽 email）
     const cachedName = localStorage.getItem('tpm-user-name');
     const cachedRank = localStorage.getItem('tpm-user-rank') || globalUiTranslations[lang]["rank-default"];
     const profileCard = document.getElementById('global-user-profile-card');
@@ -99,35 +115,23 @@ function syncGlobalLanguageState(lang) {
     if (profileCard) {
         if (cachedName) {
             let rankTag = cachedRank;
-            if (window.location.pathname.includes('resource_allocation')) { rankTag = "G.M."; }
-            else if (rankTag === "冒險者" || rankTag === "Adventurer") { rankTag = (lang === 'tw') ? "冒險者" : "Adventurer"; }
-            
+            if (rankTag === "冒險者" || rankTag === "Adventurer") { rankTag = (lang === 'tw') ? "冒險者" : "Adventurer"; }
             profileCard.innerHTML = `👤 ${rankTag}：${cachedName}`;
         } else {
             profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
         }
     }
 
-    // E. 觸發各子頁面專屬的本地翻譯回呼（如果子網頁內建有 setLang 函式話）
-    if (typeof window.setLang === 'function') {
-        window.setLang(lang);
-    }
+    if (typeof window.setLang === 'function') { window.setLang(lang); }
 }
 
-/**
- * 點擊按鈕觸發全域廣播
- */
 function executeGlobalLangSwitch(lang) {
     localStorage.setItem('tpm-lang-pref', lang);
     syncGlobalLanguageState(lang);
-    
-    // 如果子網頁內建有特殊的分頁或菜單渲染，強行觸發重新整理或重新渲染
     const pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
-    if (pageName.includes('beginner_codex') && typeof window.routeController === 'function') {
+    if ((pageName.includes('beginner_codex') || pageName.includes('handbook')) && typeof window.routeController === 'function') {
         window.routeController();
-    } else if (pageName.includes('handbook') && typeof window.routeController === 'function') {
-        window.routeController();
-    } else if (pageName.includes('Library') && typeof window.renderLexicon === 'function') {
-        location.reload(); // 大圖書館直接刷新防範資料流卡死
+    } else if (pageName.includes('Library')) {
+        location.reload();
     }
 }
