@@ -1,11 +1,10 @@
 /**
  * System TPM Guild - Global Design System StyleSheet
  * 定版代碼代號: 0528-V1.0
- * 權責範圍: UIUX 視覺外觀、色彩、邊框、Neubrutalism 戰術美學全域規範
+ * 權責範圍: 全網域 UIUX 視覺外觀、色彩、天賦樹連線、Neubrutalism 戰術美學全域規範
  */
 
 :root {
-    /* 剛性色彩矩陣 */
     --bg-color: #FEF9E7; 
     --sidebar-cream: #FDF2D0; 
     --card-white: #FFFFFF;
@@ -15,7 +14,6 @@
     --shadow-tactical: 5px 5px 0px #1A1A1A; 
     --radius-sm: 8px;
     
-    /* 戰力三態與職等顏色 */
     --color-locked: #94A3B8; 
     --color-available: #3B82F6; 
     --color-completed: #F59E0B;
@@ -24,74 +22,34 @@
     --tier-gold: #F59E0B;
 }
 
-/* 基礎版面重設 */
-* { 
-    box-sizing: border-box; 
-    font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; 
-    color: var(--text-main); 
-}
+* { box-sizing: border-box; font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; color: var(--text-main); }
 
 body { 
     background-color: var(--bg-color); 
     background-image: radial-gradient(var(--sidebar-cream) 2px, transparent 2px);
-    background-size: 32px 32px;
-    margin: 0; padding: 0;
-    width: 100vw; height: 100vh;
-    display: flex;
-    overflow: hidden;
+    background-size: 32px 32px; margin: 0; padding: 0; width: 100vw; height: 100vh; display: flex; overflow: hidden;
 }
 
 /* 頂部中央控制列共通樣式表 (0位移剛性防護) */
-.tactical-header {
-    width: 100%; display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 3px solid var(--border-heavy); padding: 25px 40px;
-    background-color: var(--bg-color); flex-shrink: 0;
-}
+.tactical-header { width: 100%; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--border-heavy); padding: 25px 40px; background-color: var(--bg-color); flex-shrink: 0; }
 .header-controls { display: flex; align-items: center; gap: 15px; }
-
-/* 語言切換剛性器外殼 */
-.lang-switcher-wrapper {
-    display: flex; background: var(--card-white);
-    border: 3px solid var(--border-heavy); border-radius: var(--radius-sm);
-    box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px;
-}
-.lang-btn-core {
-    width: 50px; height: 35px; border: none; background: transparent;
-    cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);
-    display: flex; align-items: center; justify-content: center; border-radius: 4px;
-}
+.lang-switcher-wrapper { display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; }
+.lang-btn-core { width: 50px; height: 35px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; border-radius: 4px; }
 .lang-btn-core.active { background: var(--text-main); color: white; }
-
-/* 身分憑證卡 */
-.auth-panel {
-    background: var(--card-white); border: 3px solid var(--border-heavy);
-    padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem;
-    font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); white-space: nowrap;
-}
-.back-btn {
-    background: var(--card-white); border: 3px solid var(--border-heavy);
-    padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer;
-    font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy);
-    display: inline-block; text-align: center;
-}
+.auth-panel { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); white-space: nowrap; }
+.back-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); display: inline-block; text-align: center; }
 .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
 
-/* 大廳總覽選單 (Dashboard System) 共通樣式表 */
+/* 大廳總覽選單樣式 */
 .dashboard-view-hall { width: 100%; flex: 1; padding: 40px; overflow-y: auto; }
 .level-section { margin-bottom: 45px; width: 100%; }
 .level-title-divider { font-size: 1.5rem; font-weight: 900; border-bottom: 3px solid var(--border-heavy); padding-bottom: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
 .dashboard-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; width: 100%; }
-
-/* 粗線條卡牌 */
-.dashboard-card { 
-    background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); 
-    padding: 30px; cursor: pointer; box-shadow: var(--shadow-tactical); position: relative; 
-    transition: all 0.15s; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; 
-}
+.dashboard-card { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 30px; cursor: pointer; box-shadow: var(--shadow-tactical); position: relative; transition: all 0.15s; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; }
 .dashboard-card:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0px var(--text-main); }
 .card-status-badge { position: absolute; top: 20px; right: 20px; font-size: 0.7rem; font-weight: 900; padding: 4px 10px; border-radius: 4px; border: 2px solid var(--border-heavy); font-family: monospace; background: white; }
 
-/* 🎖️ 金屬勳章漸層視覺系統 ── 0 移位剛性對齊 */
+/* 🎖️ 金屬勳章漸層視覺系統 */
 .chapter-tab.medal-gold, .dashboard-card.medal-gold { background: linear-gradient(135deg, #FFFDF4 0%, #FDE047 100%) !important; border-color: #B45309 !important; box-shadow: 4px 4px 0px #B45309 !important; }
 .chapter-tab.medal-gold *, .dashboard-card.medal-gold * { color: #B45309 !important; }
 .chapter-tab.medal-silver, .dashboard-card.medal-silver { background: linear-gradient(135deg, #F8FAFC 0%, #CBD5E1 100%) !important; border-color: #475569 !important; box-shadow: 4px 4px 0px #475569 !important; }
@@ -103,12 +61,20 @@ body {
 .chapter-tab.active { background: var(--text-main) !important; color: white !important; }
 .chapter-tab.active * { color: white !important; }
 
-/* 天賦樹同心圓星盤樣式 */
-.talent-node {
-    width: 150px; height: 150px; background: var(--card-white); border: 4px double var(--color-locked); border-radius: 50%; 
-    display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; padding: 15px; box-shadow: 4px 4px 0px var(--color-locked); z-index: 5;
-}
+/* 🌿 核心補齊：天賦樹專屬剛性佈局樣式表 (中央集權化) 🌿 */
+.tree-tier-nav { display: flex; gap: 15px; width: 100%; margin-top: 10px; }
+.tier-tab-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 900; font-size: 1rem; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); transition: all 0.1s; }
+.tier-tab-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
+.tier-tab-btn.active { background: var(--text-main); color: white; transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--border-heavy); }
+.isekai-tree-map { width: 100%; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 60px 40px; box-shadow: var(--shadow-tactical); display: none; flex-direction: column; align-items: center; position: relative; }
+.isekai-tree-map.active { display: flex; }
+.tree-tier-row { display: flex; justify-content: center; align-items: center; gap: 70px; width: 100%; position: relative; margin-bottom: 70px; }
+.tree-tier-row:last-child { margin-bottom: 0; }
+.tree-tier-row::after { content: ''; position: absolute; bottom: -70px; left: 50%; width: 4px; height: 70px; background: var(--border-heavy); z-index: 1; }
+.tree-tier-row:last-child::after { display: none; }
+
+/* 雙重鋼鐵同心圓技能節點 */
+.talent-node { width: 150px; height: 150px; background: var(--card-white); border: 4px double var(--color-locked); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; padding: 15px; box-shadow: 4px 4px 0px var(--color-locked); z-index: 5; }
 .talent-node.locked { background: #F1F5F9; border-color: var(--color-locked); cursor: not-allowed; }
 .talent-node.locked * { color: #64748B; }
 .talent-node.available { border: 4px solid var(--color-available); background: #EFF6FF; box-shadow: 4px 4px 0px var(--color-available); }
@@ -117,18 +83,25 @@ body {
 .talent-node.completed { border: 5px double var(--color-completed); background: #FFFDF2; box-shadow: 4px 4px 0px var(--color-completed); }
 .talent-node.completed * { color: #B45309; }
 .talent-node.completed:hover { transform: translateY(-4px); box-shadow: 6px 6px 0px var(--color-completed); }
+.node-code { font-family: monospace; font-size: 0.8rem; font-weight: 900; opacity: 0.8; }
+.node-name { font-size: 0.8rem; font-weight: 900; margin-top: 5px; line-height: 1.4; }
 
-/* 👑 右上角突出視窗之剛性勳章蓋章樣式 👑 */
+/* 👑 右上角貼附式巨大剛性勳章蓋章樣式 (Sticker Core) 👑 */
 .talent-grade-sticker-case { position: absolute; top: -25px; right: -25px; display: none; z-index: 3000; animation: stickerPasted 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 @keyframes stickerPasted { from { transform: scale(0) rotate(15deg); opacity: 0; } to { transform: scale(1) rotate(-8deg); opacity: 1; } }
-.talent-grade-stamp {
-    width: 110px; height: 110px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-family: 'Impact', sans-serif; font-size: 3rem; font-weight: 900; line-height: 1; text-shadow: 3px 3px 0px rgba(0,0,0,0.1); transform: rotate(-8deg);
-}
-.case-S .talent-grade-stamp { background-color: #FFFDF2; border: 6px double var(--color-completed); color: var(--color-completed); box-shadow: 5px 5px 0px rgba(180, 83, 9, 0.15), inset 0 0 15px rgba(245, 158, 11, 0.2); }
-.case-FAIL .talent-grade-stamp { background-color: #FEF2F2; border: 6px dashed var(--color-fail); color: var(--color-fail); box-shadow: 5px 5px 0px rgba(185, 28, 28, 0.15), inset 0 0 15px rgba(220, 38, 37, 0.2); font-family: monospace; font-size: 1.4rem; letter-spacing: -1px; }
+.talent-grade-stamp { width: 110px; height: 110px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Impact', sans-serif; font-size: 3rem; font-weight: 900; line-height: 1; text-shadow: 3px 3px 0px rgba(0,0,0,0.1); transform: rotate(-8deg); }
 
-/* 萬用彈窗模組 */
+/* 👑 註解引導：如果您未來上傳了自製圖片（如 my-gold-s.png），直接解除下方 background-image 的註解即可！ */
+.case-S .talent-grade-stamp { 
+    background-color: #FFFDF2; border: 6px double var(--color-completed); color: var(--color-completed); box-shadow: 5px 5px 0px rgba(180, 83, 9, 0.15), inset 0 0 15px rgba(245, 158, 11, 0.2); 
+    /* background-image: url('my-gold-s.png'); background-size: cover; color: transparent !important; */
+}
+.case-FAIL .talent-grade-stamp { 
+    background-color: #FEF2F2; border: 6px dashed var(--color-fail); color: var(--color-fail); box-shadow: 5px 5px 0px rgba(185, 28, 28, 0.15), inset 0 0 15px rgba(220, 38, 37, 0.2); font-family: monospace; font-size: 1.4rem; letter-spacing: -1px; 
+    /* background-image: url('my-cracked-fail.png'); background-size: cover; color: transparent !important; */
+}
+
+/* 萬用彈窗與文件閱讀器樣式 */
 .dungeon-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
 .modal-content { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); width: 100%; max-width: 650px; box-shadow: 10px 10px 0px var(--border-heavy); display: flex; flex-direction: column; overflow: visible; position: relative; animation: modalSlide 0.15s ease-out; }
 @keyframes modalSlide { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -137,10 +110,18 @@ body {
 .teleport-gate-btn { background: var(--active-yellow); border: 3px solid var(--border-heavy); padding: 16px; border-radius: var(--radius-sm); width: 100%; font-size: 1.1rem; font-weight: 900; text-align: center; cursor: pointer; box-shadow: 4px 4px 0px var(--border-heavy); text-decoration: none; display: block; transition: all 0.1s; }
 .teleport-gate-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--border-heavy); }
 .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; font-weight: 900; }
+.lexicon-section-block { border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 20px; background: #FAFAFA; }
+.lexicon-block-label { font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); font-family: monospace; border-bottom: 1px dashed var(--border-heavy); padding-bottom: 5px; margin-bottom: 10px; }
+.lexicon-block-text { font-size: 1rem; font-weight: 600; line-height: 1.7; white-space: pre-line; }
 
-/* 內文分頁小點點元件 */
+/* 翻頁小點點與大考會場元件 */
 .sub-pagination-dots-zone { display: flex; justify-content: center; align-items: center; gap: 14px; padding: 20px 0; width: 100%; flex-shrink: 0; margin-top: auto; }
 .slider-dot { width: 14px; height: 14px; border: 3px solid var(--border-heavy); border-radius: 50%; background: white; cursor: pointer; transition: all 0.1s; }
 .slider-dot.active { background: var(--text-main); transform: scale(1.2); }
 .slider-dot.exam-dot { border-color: #DC2626; background: #FEF2F2; font-size: 9px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #B91C1C; }
 .slider-dot.exam-dot.active { background: #DC2626; color: white; }
+.exam-session-box { display: none; border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 35px; background: #FFFDF4; box-shadow: var(--shadow-tactical); width: 100%; }
+.exam-progress-bar { width: 100%; background: #E2E8F0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 25px; border: 1.5px solid #000; }
+.exam-progress-fill { height: 100%; background: var(--color-available); width: 0%; transition: width 0.2s; }
+.option-card { background: white; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 14px; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0px #000; transition: all 0.1s; }
+.option-card:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px #000; background: var(--sidebar-cream); }
