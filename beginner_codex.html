@@ -3,21 +3,439 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>中央初心者寶典基底核心 | Beginner's Codex Core</title>
-    <link rel="stylesheet" href="global_theme.css">
+    <title>初心者寶典大廳 | Beginner's Codex Hall</title>
+    
+    <style>
+        :root {
+            --bg-color: #FEF9E7;
+            --sidebar-cream: #FDF2D0;
+            --card-white: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-secondary: #475569;
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 5px 5px 0px #1A1A1A;
+            --radius-sm: 8px;
+            --color-locked: #94A3B8;
+            --color-available: #3B82F6;
+            --color-completed: #F59E0B;
+            --color-fail: #DC2626;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 剛性頂部控制列 */
+        .tactical-navbar {
+            width: 100vw;
+            height: 85px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--border-heavy);
+            padding: 0 40px;
+            background-color: var(--bg-color);
+            flex-shrink: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .lang-switcher-wrapper {
+            display: flex;
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            padding: 2px;
+        }
+
+        .lang-btn-core {
+            width: 50px;
+            height: 35px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .lang-btn-core.active {
+            background: var(--text-main) !important;
+            color: white !important;
+        }
+
+        .auth-panel {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 900;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            white-space: nowrap;
+        }
+
+        .back-btn {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 15px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 900;
+            text-decoration: none;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            display: inline-block;
+            text-align: center;
+            min-width: 95px;
+        }
+
+        .back-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
+        }
+
+        /* 雙區塊工作主框架 */
+        .workspace-container {
+            display: flex;
+            width: 100vw;
+            height: calc(100vh - 85px);
+            overflow: hidden;
+        }
+
+        .sidebar-panel {
+            width: 340px;
+            background-color: var(--sidebar-cream);
+            border-right: 4px solid var(--border-heavy);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            height: 100%;
+        }
+
+        .cdx-sidebar-header {
+            border-bottom: 3px solid var(--border-heavy);
+            padding-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        .content-panel {
+            flex: 1;
+            height: 100%;
+            padding: 35px 40px;
+            overflow: hidden;
+            background-color: var(--card-white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chapter-tab {
+            background: var(--card-white);
+            border: 2px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            font-weight: 900;
+            font-size: 0.9rem;
+        }
+
+        .chapter-tab.active {
+            background: var(--text-main) !important;
+            color: white !important;
+        }
+
+        /* 預設隱藏防止並存爆開 */
+        .dashboard-view-hall, 
+        .document-canvas, 
+        .exam-session-box, 
+        .sub-pagination-dots-zone {
+            display: none;
+        }
+
+        /* 大廳卡牌選單 */
+        .level-section {
+            margin-bottom: 45px;
+            width: 100%;
+        }
+
+        .level-title-divider {
+            font-size: 1.5rem;
+            font-weight: 900;
+            border-bottom: 3px solid var(--border-heavy);
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cdx-dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+
+        .cdx-dashboard-card {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            padding: 30px;
+            cursor: pointer;
+            box-shadow: var(--shadow-tactical);
+            position: relative;
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+        }
+
+        .cdx-dashboard-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0px var(--text-main);
+        }
+
+        .cdx-dashboard-card.medal-gold {
+            background: linear-gradient(135deg, #FFFDF4 0%, #FDE047 100%) !important;
+            border-color: #B45309 !important;
+            box-shadow: 4px 4px 0px #B45309 !important;
+        }
+
+        .cdx-dashboard-card.medal-gold * {
+            color: #B45309 !important;
+        }
+
+        /* 二級子產品副選單導航條 */
+        .cdx-sub-nav-bar {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--border-heavy);
+            padding-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .sub-nav-btn {
+            background: #FFF;
+            border: 2px solid var(--border-heavy);
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            transition: all 0.1s;
+        }
+
+        .sub-nav-btn.active {
+            background: #FDE047;
+            color: var(--text-main);
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px var(--border-heavy);
+        }
+
+        /* 內文教材排版 */
+        .textbook-scroll-box {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+            width: 100%;
+        }
+
+        .scroll-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            font-weight: 600;
+            white-space: pre-line;
+            margin-bottom: 20px;
+        }
+
+        /* 純 CSS 戰術流程圖 */
+        .dynamic-flow-canvas {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            background: #F8FAFC;
+            border: 2px dashed var(--color-locked);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            margin: 15px 0;
+            width: 100%;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
+        .flow-node-block {
+            background: #FFF;
+            border: 2px solid var(--border-heavy);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.85rem;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .flow-node-block.highlight {
+            background: linear-gradient(135deg, #FFFDF2 0%, #FDE047 100%);
+            border-color: #B45309;
+            box-shadow: 2px 2px 0px #B45309;
+            color: #B45309;
+        }
+
+        .flow-arrow-split {
+            font-weight: 900;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            user-select: none;
+        }
+
+        /* 分頁小點點點導航列 */
+        .sub-pagination-dots-zone {
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            padding: 15px 0;
+            width: 100%;
+            flex-shrink: 0;
+            margin-top: auto;
+            border-top: 2px dashed #E2E8F0;
+        }
+
+        .slider-dot {
+            width: 14px;
+            height: 14px;
+            border: 3px solid var(--border-heavy);
+            border-radius: 50%;
+            background: #FFF;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .slider-dot.active {
+            background: var(--text-main);
+            transform: scale(1.2);
+        }
+
+        .slider-dot.exam-dot {
+            border-color: #DC2626;
+            background: #FEF2F2;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #B91C1C;
+        }
+
+        .slider-dot.exam-dot.active {
+            background: #DC2626;
+            color: #FFF;
+        }
+
+        /* 大考考場 */
+        .exam-progress-bar {
+            width: 100%;
+            background: #E2E8F0;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1.5px solid #000;
+        }
+
+        .exam-progress-fill {
+            height: 100%;
+            background: var(--color-available);
+            width: 0%;
+            transition: width 0.2s;
+        }
+
+        .option-card {
+            background: #FFF;
+            border: 2px solid var(--border-heavy);
+            padding: 18px;
+            border-radius: var(--radius-sm);
+            margin-top: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 3px 3px 0px #000;
+            transition: all 0.1s;
+        }
+
+        .option-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px #000;
+            background: var(--sidebar-cream);
+        }
+    </style>
 </head>
-<body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
+<body>
+
+    <div class="tactical-navbar">
+        <div class="navbar-brand">
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V4.0</span>
+            <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
+        </div>
+        <div class="navbar-controls">
+            <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
+            <div class="lang-switcher-wrapper">
+                <button class="lang-btn-core" id="global-btn-tw" onclick="executeLangSwitch('tw')">TW</button>
+                <button class="lang-btn-core" id="global-btn-en" onclick="executeLangSwitch('en')">EN</button>
+            </div>
+            <a href="index.html" class="back-btn" id="global-nav-home-btn">首頁</a>
+        </div>
+    </div>
 
     <div class="workspace-container">
         
-        <aside class="cdx-sidebar" id="shell-sidebar-area">
+        <aside class="sidebar-panel" id="shell-sidebar-area">
             <div class="cdx-sidebar-header">
                 <button class="back-btn" onclick="exitToDashboardMenu()" style="width:100%; cursor:pointer;">↩ 返回目錄</button>
             </div>
             <ul class="chapter-list" id="dynamic-course-menu"></ul>
         </aside>
 
-        <main class="cdx-main-content">
+        <main class="content-panel">
             
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); display: none; flex-shrink:0;">
                 <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;"></span>
@@ -33,7 +451,6 @@
                     <div class="level-title-divider" style="opacity: 0.4;">🔒 Level 2：進階專科領域 (Staging)</div>
                     <div class="cdx-dashboard-grid" style="opacity: 0.4; pointer-events: none;">
                         <div class="cdx-dashboard-card">
-                            <div class="card-status-badge">WIP</div>
                             <h3>精細防水防護與氣密 DOE 研修</h3>
                             <p>專修 IPX8 膠路、O-Ring 壓縮比與氣密防線調校。</p>
                         </div>
@@ -41,12 +458,9 @@
                 </div>
             </div>
 
-            <div class="document-canvas" id="textbook-viewport" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
-                
+            <div class="document-canvas" id="textbook-viewport" style="flex-direction:column; flex:1; overflow:hidden;">
                 <div class="cdx-sub-nav-bar" id="cdx-sub-nav-wrapper" style="display:none;"></div>
-
-                <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.15rem; margin: 0 0 15px 0;" data-i18n="doc-title">📘 專業核心教材文獻 (Technical Textbook)</h3>
-                
+                <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.15rem; margin: 0 0 15px 0;">📘 專業核心教材文獻 (Technical Textbook)</h3>
                 <div class="textbook-scroll-box">
                     <div id="lesson-content" class="scroll-text"></div>
                     <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
@@ -55,7 +469,7 @@
 
             <div class="exam-session-box" id="exam-viewport">
                 <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
-                    <span style="color:#B91C1C;" data-i18n="exam-running">🔥 終極大會考進行中 (Exam Mode)</span>
+                    <span style="color:#B91C1C;">🔥 終極大會考進行中 (Exam Mode)</span>
                     <span id="exam-counter" style="color:var(--color-available);">第 1 / 20 題</span>
                 </div>
                 <div class="exam-progress-bar">
@@ -70,200 +484,198 @@
         </main>
     </div>
 
-    <script src="global_ui.js"></script>
     <script>
         const beginnerCourseManifest = [
             { id: "1-1", level: "l1", title: "基本世界觀與 NPI 鏈條", desc: "打通硬體產品從研發端到代工製造廠的巨觀因果鏈與生命週期。", isNew: true },
             { id: "1-2", level: "l1", title: "工廠基礎與良率鐵律", desc: "主攻 SMT 焊接製程、直通率（FPY）雷區排除與線平衡調校。", isNew: true }
         ];
-        
-        let codexCourseEngineData = []; 
-        let activeCourseIdx = 0; 
-        let activePageIdx = 0; 
-        let examActive = false; 
-        let examCurrentQ = 0; 
-        let examScoreCount = 0;
-        let activeSubMatrixIdx = 0; 
 
-        const translations = {
-            tw: { "doc-title": "📘 專業核心教材文獻 (Technical Textbook)", "exam-running": "🔥 終極大會考進行中 (Exam Mode)" },
-            en: { "doc-title": "📘 Technical Textbook Content", "exam-running": "🔥 Exam Session Active" }
+        let codexCourseEngineData = [];
+        let activeCourseIdx = 0;
+        let activePageIdx = 0;
+        let examActive = false;
+        let examCurrentQ = 0;
+        let examScoreCount = 0;
+        let activeSubMatrixIdx = 0;
+
+        const globalUiTranslations = {
+            tw: { "nav-home": "首頁", "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者", "title": "初心者寶典大廳" },
+            en: { "nav-home": "Home", "auth-locked": "🔒 No Credentials", "rank-default": "Adventurer", "title": "Beginner's Codex Hall" }
+        };
+
+        window.onload = () => {
+            routeController();
         };
 
         function routeController() {
-            const urlParams = new URLSearchParams(window.location.search); 
+            const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
+            const urlParams = new URLSearchParams(window.location.search);
             const contentPackId = urlParams.get('c');
-            
+
+            syncNavbarState(currentLang);
+
             if (!contentPackId) {
-                document.getElementById('shell-sidebar-area').style.display = 'none'; 
-                document.getElementById('textbook-viewport').style.display = 'none'; 
-                document.getElementById('exam-viewport').style.display = 'none'; 
-                document.getElementById('universal-dots-bar').style.display = 'none'; 
+                document.getElementById('shell-sidebar-area').style.display = 'none';
+                document.getElementById('textbook-viewport').style.display = 'none';
+                document.getElementById('exam-viewport').style.display = 'none';
+                document.getElementById('universal-dots-bar').style.display = 'none';
                 document.getElementById('dashboard-menu-hall').style.display = 'block';
                 
-                const innerHeader = document.getElementById('cdx-page-header-zone'); 
-                if(innerHeader) {
-                    innerHeader.style.display = 'none';
-                }
-                document.getElementById('global-inject-title').innerText = localStorage.getItem('tpm-lang-pref') === 'en' ? "Beginner's Codex Hall" : "初心者寶典大廳";
+                const innerHeader = document.getElementById('cdx-page-header-zone');
+                if (innerHeader) innerHeader.style.display = 'none';
+                
                 renderDashboardHallCards();
             } else {
-                document.getElementById('dashboard-menu-hall').style.display = 'none'; 
+                document.getElementById('dashboard-menu-hall').style.display = 'none';
                 document.getElementById('shell-sidebar-area').style.display = 'flex';
                 injectContentPackScript(contentPackId);
             }
         }
 
+        function syncNavbarState(lang) {
+            localStorage.setItem('tpm-lang-pref', lang);
+            document.getElementById('global-nav-home-btn').innerText = globalUiTranslations[lang]["nav-home"];
+            document.getElementById('global-inject-tag').innerText = lang === 'en' ? "SYS.BEGINNER_CODEX V4.0" : "SYS.BEGINNER_CODEX V4.0";
+            document.getElementById('global-inject-title').innerText = globalUiTranslations[lang]["title"];
+            document.title = globalUiTranslations[lang]["title"];
+
+            const twBtn = document.getElementById('global-btn-tw');
+            const enBtn = document.getElementById('global-btn-en');
+            if (twBtn && enBtn) {
+                twBtn.classList.remove('active');
+                enBtn.classList.remove('active');
+                document.getElementById(`global-btn-${lang}`).classList.add('active');
+            }
+
+            const cachedName = localStorage.getItem('tpm-user-name');
+            const cachedRank = localStorage.getItem('tpm-user-rank') || globalUiTranslations[lang]["rank-default"];
+            const profileCard = document.getElementById('global-user-profile-card');
+            if (profileCard) {
+                if (cachedName) {
+                    profileCard.innerHTML = `👤 ${cachedRank}：${cachedName}`;
+                } else {
+                    profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
+                }
+            }
+        }
+
+        function executeLangSwitch(lang) {
+            syncNavbarState(lang);
+            routeController();
+        }
+
         function renderDashboardHallCards() {
-            const grid = document.getElementById('l1-cards-grid'); 
+            const grid = document.getElementById('l1-cards-grid');
             grid.innerHTML = '';
-            
             beginnerCourseManifest.forEach(course => {
-                const targetNodeId = "L1-A" + course.id.split('-')[1]; 
+                const targetNodeId = "L1-A" + course.id.split('-')[1];
                 const savedGrade = localStorage.getItem(`talent-${targetNodeId}-grade`);
-                
-                let medalClass = ""; 
-                let badgeText = "AVAILABLE"; 
-                let badgeColor = "border-color:var(--color-available); color:var(--color-available);";
-                
-                if (course.isNew) { 
-                    badgeText = "NEW"; 
-                    badgeColor = "background:#EF4444; color:white; border-color:#000;"; 
-                }
-                if (savedGrade === "S") { 
-                    medalClass = "medal-gold"; 
-                    badgeText = "S 級過關"; 
-                } else if (savedGrade && savedGrade !== "Fail") { 
-                    medalClass = "medal-silver"; 
-                    badgeText = `${savedGrade} 級完工`; 
-                }
-                
+                let medalClass = "";
+                if (savedGrade === "S") medalClass = "medal-gold";
+                else if (savedGrade && savedGrade !== "Fail") medalClass = "medal-silver";
+
                 grid.innerHTML += `
                     <div class="cdx-dashboard-card ${medalClass}" onclick="navigateToCourse('${course.id}')">
-                        <div class="card-status-badge" style="${badgeColor}">${badgeText}</div>
-                        <h3 style="margin-top:15px; font-size:1.2rem; font-weight:900;">L1-${course.id} ${course.title}</h3>
+                        <h3 style="margin-top:0; font-size:1.2rem; font-weight:900;">L1-${course.id} ${course.title}</h3>
                         <p style="font-size:0.85rem; margin-top:10px; font-weight:600; line-height:1.5;">${course.desc}</p>
                     </div>
                 `;
             });
         }
 
-        function navigateToCourse(courseId) { 
-            window.location.search = `?c=${courseId}`; 
+        function navigateToCourse(courseId) {
+            window.location.search = `?c=${courseId}`;
         }
 
-        function exitToDashboardMenu() { 
-            window.location.search = ''; 
+        function exitToDashboardMenu() {
+            window.location.search = '';
         }
 
         function injectContentPackScript(packId) {
-            const script = document.createElement('script'); 
+            const script = document.createElement('script');
             script.src = `course_data_${packId}.js`;
-            script.onload = () => { 
-                initEngine(); 
-            }; 
-            script.onerror = () => { 
-                alert(`無法載入 course_data_${packId}.js 資料包。`); 
-                exitToDashboardMenu(); 
-            };
+            script.onload = () => { initEngine(); };
+            script.onerror = () => { alert(`無法載入 course_data_${packId}.js 資料包。`); exitToDashboardMenu(); };
             document.head.appendChild(script);
         }
 
-        function initEngine() { 
-            renderLeftMenu(); 
-            loadCourseState(activeCourseIdx, activePageIdx); 
+        function initEngine() {
+            renderLeftMenu();
+            loadCourseState(activeCourseIdx, activePageIdx);
         }
 
         function renderLeftMenu() {
-            const menu = document.getElementById('dynamic-course-menu'); 
+            const menu = document.getElementById('dynamic-course-menu');
             menu.innerHTML = '';
-            
             codexCourseEngineData.forEach((course, idx) => {
                 const savedGrade = localStorage.getItem(`talent-${course.courseId}-grade`);
-                let medalClass = ""; 
-                if (savedGrade === "S") {
-                    medalClass = "medal-gold"; 
-                } else if (savedGrade && savedGrade !== "Fail") {
-                    medalClass = "medal-silver";
-                }
+                let medalClass = "";
+                if (savedGrade === "S") medalClass = "medal-gold";
+                else if (savedGrade && savedGrade !== "Fail") medalClass = "medal-silver";
                 const activeClass = idx === activeCourseIdx ? "active" : "";
-                menu.innerHTML += `
-                    <li class="cdx-chapter-tab ${activeClass} ${medalClass}" onclick="triggerCourseSelect(${idx})">
-                        ${course.menuTitle}
-                    </li>
-                `;
+                menu.innerHTML += `<li class="chapter-tab ${activeClass} ${medalClass}" onclick="triggerCourseSelect(${idx})">${course.menuTitle}</li>`;
             });
         }
 
         function loadCourseState(cIdx, pIdx) {
-            activeCourseIdx = cIdx; 
-            const course = codexCourseEngineData[cIdx]; 
-            const dotsBar = document.getElementById('universal-dots-bar'); 
+            activeCourseIdx = cIdx;
+            const course = codexCourseEngineData[cIdx];
+            const dotsBar = document.getElementById('universal-dots-bar');
             dotsBar.innerHTML = '';
             
-            const innerHeader = document.getElementById('cdx-page-header-zone'); 
-            if(innerHeader) {
-                innerHeader.style.style.display = 'block';
-            }
+            const innerHeader = document.getElementById('cdx-page-header-zone');
+            if (innerHeader) innerHeader.style.display = 'block';
 
             if (examActive) {
-                document.getElementById('textbook-viewport').style.display = 'none'; 
+                document.getElementById('textbook-viewport').style.display = 'none';
                 document.getElementById('exam-viewport').style.display = 'block';
                 document.getElementById('universal-dots-bar').style.display = 'flex';
-                
-                course.subPages.forEach((_, sIdx) => { 
-                    dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; 
+                course.subPages.forEach((_, sIdx) => {
+                    dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`;
                 });
-                dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; 
+                dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`;
                 runExamEngine();
             } else {
-                document.getElementById('textbook-viewport').style.display = 'flex'; 
+                document.getElementById('textbook-viewport').style.display = 'flex';
                 document.getElementById('exam-viewport').style.display = 'none';
                 document.getElementById('universal-dots-bar').style.display = 'flex';
-                
-                activePageIdx = pIdx; 
+                activePageIdx = pIdx;
                 const page = course.subPages[pIdx];
-                
-                document.getElementById('current-chapter-id').innerText = `SECTION ${pIdx + 1} / ${course.subPages.length}`; 
+
+                document.getElementById('current-chapter-id').innerText = `SECTION ${pIdx + 1} / ${course.subPages.length}`;
                 document.getElementById('current-chapter-name').innerText = page.title;
 
                 const subNavWrapper = document.getElementById('cdx-sub-nav-wrapper');
-                let targetedText = page.text; 
+                let targetedText = page.text;
                 let targetedFlow = page.diagramFlowArray;
 
                 if (page.subMatrixBranches) {
-                    subNavWrapper.style.display = 'flex'; 
+                    subNavWrapper.style.display = 'flex';
                     subNavWrapper.innerHTML = '';
                     page.subMatrixBranches.forEach((branch, bIdx) => {
                         const activeBranchClass = bIdx === activeSubMatrixIdx ? 'active' : '';
-                        subNavWrapper.innerHTML += `
-                            <button class="sub-nav-btn ${activeBranchClass}" onclick="switchSubMatrixBranch(${bIdx})">
-                                ${branch.branchLabel}
-                            </button>
-                        `;
+                        subNavWrapper.innerHTML += `<button class="sub-nav-btn ${activeBranchClass}" onclick="switchSubMatrixBranch(${bIdx})">${branch.branchLabel}</button>`;
                     });
                     targetedText = page.subMatrixBranches[activeSubMatrixIdx].text;
                     targetedFlow = page.subMatrixBranches[activeSubMatrixIdx].diagramFlowArray;
-                } else { 
-                    subNavWrapper.style.display = 'none'; 
-                    activeSubMatrixIdx = 0; 
+                } else {
+                    subNavWrapper.style.display = 'none';
+                    activeSubMatrixIdx = 0;
                 }
 
                 document.getElementById('lesson-content').innerText = targetedText;
-                
+
                 const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
                 if (flowRenderer && targetedFlow) {
-                    flowRenderer.style.display = 'flex'; 
+                    flowRenderer.style.display = 'flex';
                     flowRenderer.innerHTML = '';
                     targetedFlow.forEach((node, nIdx) => {
                         const highlightClass = node.highlight ? 'highlight' : '';
                         flowRenderer.innerHTML += `<div class="flow-node-block ${highlightClass}">${node.name}</div>`;
-                        if (nIdx < targetedFlow.length - 1) {
-                            flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
-                        }
+                        if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
                     });
-                } else if(flowRenderer) { 
-                    flowRenderer.style.display = 'none'; 
+                } else if (flowRenderer) {
+                    flowRenderer.style.display = 'none';
                 }
 
                 course.subPages.forEach((_, sIdx) => {
@@ -274,105 +686,71 @@
             }
         }
 
-        function triggerMainPageChange(sIdx) { 
-            activeSubMatrixIdx = 0; 
-            loadCourseState(activeCourseIdx, sIdx); 
+        function triggerMainPageChange(sIdx) {
+            activeSubMatrixIdx = 0;
+            loadCourseState(activeCourseIdx, sIdx);
         }
 
-        function switchSubMatrixBranch(bIdx) { 
-            activeSubMatrixIdx = bIdx; 
-            loadCourseState(activeCourseIdx, activePageIdx); 
+        // 👑 修正連動：切換二級選單時重新加載畫布
+        function switchSubMatrixBranch(bIdx) {
+            activeSubMatrixIdx = bIdx;
+            loadCourseState(activeCourseIdx, activePageIdx);
         }
 
-        function triggerCourseSelect(idx) { 
-            examActive = false; 
-            activeCourseIdx = idx; 
-            activePageIdx = 0; 
-            activeSubMatrixIdx = 0; 
-            renderLeftMenu(); 
-            loadCourseState(idx, 0); 
-        }
-        
-        function exitExamToPage(pIdx) { 
-            examActive = false; 
-            activeSubMatrixIdx = 0; 
-            loadCourseState(activeCourseIdx, pIdx); 
-        }
-        
-        function enterExamMode() { 
-            examActive = true; 
-            examCurrentQ = 0; 
-            examScoreCount = 0; 
-            loadCourseState(activeCourseIdx, 0); 
-        }
+        function triggerCourseSelect(idx) { examActive = false; activeCourseIdx = idx; activePageIdx = 0; activeSubMatrixIdx = 0; renderLeftMenu(); loadCourseState(idx, 0); }
+        function exitExamToPage(pIdx) { examActive = false; activeSubMatrixIdx = 0; loadCourseState(activeCourseIdx, pIdx); }
+        function enterExamMode() { examActive = true; examCurrentQ = 0; examScoreCount = 0; loadCourseState(activeCourseIdx, 0); }
         
         function runExamEngine() {
-            const course = codexCourseEngineData[activeCourseIdx]; 
-            if (examCurrentQ >= course.examVault.length) { 
-                settleExamPayload(); 
-                return; 
-            }
-            const qData = course.examVault[examCurrentQ]; 
-            document.getElementById('current-chapter-id').innerText = "EXAM MODE"; 
-            document.getElementById('current-chapter-name').innerText = "L1 階段終極大考"; 
+            const course = codexCourseEngineData[activeCourseIdx];
+            if (examCurrentQ >= course.examVault.length) { settleExamPayload(); return; }
+            const qData = course.examVault[examCurrentQ];
+            document.getElementById('current-chapter-id').innerText = "EXAM MODE";
+            document.getElementById('current-chapter-name').innerText = "L1 階段終極大考";
             document.getElementById('exam-counter').innerText = `第 ${examCurrentQ + 1} / ${course.examVault.length} 題`;
-            
-            const progressPct = (examCurrentQ / course.examVault.length) * 100; 
-            document.getElementById('exam-progress').style.width = `${progressPct}%`; 
+
+            const progressPct = (examCurrentQ / course.examVault.length) * 100;
+            document.getElementById('exam-progress').style.width = `${progressPct}%`;
             document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
-            
-            const container = document.getElementById('exam-options-container'); 
+
+            const container = document.getElementById('exam-options-container');
             container.innerHTML = '';
-            
-            qData.o.forEach((opt, idx) => { 
-                container.innerHTML += `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`; 
+            qData.o.forEach((opt, idx) => {
+                container.innerHTML += `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`;
             });
         }
-        
-        function submitAnswer(idx) { 
-            const course = codexCourseEngineData[activeCourseIdx]; 
-            if (idx === course.examVault[examCurrentQ].a) { 
-                examScoreCount++; 
-            } 
-            examCurrentQ++; 
-            runExamEngine(); 
+
+        function submitAnswer(idx) {
+            const course = codexCourseEngineData[activeCourseIdx];
+            if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; }
+            examCurrentQ++;
+            runExamEngine();
         }
-        
+
         function settleExamPayload() {
-            examActive = false; 
-            const course = codexCourseEngineData[activeCourseIdx]; 
-            const finalPct = (examScoreCount / course.examVault.length) * 100; 
+            examActive = false;
+            const course = codexCourseEngineData[activeCourseIdx];
+            const finalPct = (examScoreCount / course.examVault.length) * 100;
             let grade = "Fail";
-            
-            if (finalPct === 100) grade = "S"; 
-            else if (finalPct >= 90) grade = "A"; 
-            else if (finalPct >= 80) grade = "B"; 
-            else if (finalPct >= 70) grade = "C"; 
+            if (finalPct === 100) grade = "S";
+            else if (finalPct >= 90) grade = "A";
+            else if (finalPct >= 80) grade = "B";
+            else if (finalPct >= 70) grade = "C";
             else if (finalPct >= 60) grade = "D";
-            
+
             if (grade === "Fail") {
                 alert(`💥【考核失敗】\n判定為 Fail！通行證已鎖定，強退重考！`);
-                localStorage.setItem(`codex-${course.courseId}-clear`, 'false'); 
-                localStorage.removeItem(`talent-${course.courseId}-grade`); 
+                localStorage.setItem(`codex-${course.courseId}-clear`, 'false');
+                localStorage.removeItem(`talent-${course.courseId}-grade`);
                 triggerCourseSelect(activeCourseIdx);
             } else {
                 alert(`🏆【考核通過】戰力位階核定為：【 ${grade} 】級！`);
-                localStorage.setItem(`codex-${course.courseId}-clear`, 'true'); 
-                localStorage.setItem(`talent-${course.courseId}-grade`, grade); 
-                localStorage.setItem(`talent-${course.courseId}-date`, new Date().toLocaleDateString()); 
+                localStorage.setItem(`codex-${course.courseId}-clear`, 'true');
+                localStorage.setItem(`talent-${course.courseId}-grade`, grade);
+                localStorage.setItem(`talent-${course.courseId}-date`, new Date().toLocaleDateString());
                 triggerCourseSelect(activeCourseIdx);
             }
         }
-        
-        function setLang(lang) { 
-            if (document.getElementById('dashboard-menu-hall').style.display === 'block') { 
-                renderDashboardHallCards(); 
-            } 
-        }
-
-        window.onload = () => { 
-            routeController(); 
-        };
     </script>
 </body>
 </html>
