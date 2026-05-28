@@ -1,6 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
+2026-05-28 V3.2: 👑 修正同步：整合全新 V3.2 頂部控制列 UIUX 規格，確保中英文按鈕邊界嚴密不溢出。
 2026-05-28 V2.4: 徹底切除不穩定的 style.style.display 語法瘤，修正身分同步渲染時序。
 2026-05-28 V2.1: 實施 Google 原生帳戶登入沒收機制，全自動高亮右上角控制列。
 ========================================================================
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageName = pagePath.substring(pagePath.lastIndexOf('/') + 1) || 'index.html';
     const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
 
-    // 🚀 模式 A：如果是總部首頁
+    // 🚀 模式 A：總部首頁
     if (pageName === 'index.html' || pageName === '') {
         let homeHeaderSection = document.getElementById('global-injected-home-header');
         if (!homeHeaderSection) {
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageContainer) pageContainer.insertBefore(homeHeaderSection, pageContainer.firstChild);
         }
     } 
-    // 🚀 模式 B：如果是子系統分頁控制列
+    // 🚀 模式 B：子系統頁面
     else {
         let targetNavbar = document.querySelector('.tactical-navbar');
         if (!targetNavbar) {
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         targetNavbar.innerHTML = `
             <div class="navbar-brand">
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.4</span>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V3.2</span>
                 <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
             </div>
             <div class="navbar-controls">
@@ -122,7 +123,7 @@ function syncGlobalLanguageState(lang) {
             let rankTag = cachedRank;
             if (rankTag === "冒險者" || rankTag === "Adventurer") { rankTag = (lang === 'tw') ? "冒險者" : "Adventurer"; }
             profileCard.innerHTML = `👤 ${rankTag}：${cachedName}`;
-            if (holder) holder.style.display = 'none'; // 👑 嚴格修正為標準語法
+            if (holder) holder.style.display = 'none'; 
         } else {
             profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
             if (holder) holder.style.display = 'block';
