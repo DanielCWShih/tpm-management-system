@@ -1,6 +1,6 @@
 /**
  * System TPM Guild - Global Navigation & Auth Injection Engine
- * 定版代碼代號: 0528-V2.2 // 語法極限大修正、全網域綠燈對齊版
+ * 定版代碼代號: 0528-V2.3 // 30次極限除錯、解鎖預設組件隱藏防線
  */
 
 const globalUiTranslations = {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageName = pagePath.substring(pagePath.lastIndexOf('/') + 1) || 'index.html';
     const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
 
-    // 🚀 模式 A：首頁大廳
+    // 🚀 模式 A：總部首頁
     if (pageName === 'index.html' || pageName === '') {
         let homeHeaderSection = document.getElementById('global-injected-home-header');
         if (!homeHeaderSection) {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             homeHeaderSection.style.cssText = "text-align: center; margin-bottom: 30px; width: 100%; padding-top: 40px; position: relative; flex-shrink:0;";
             
             homeHeaderSection.innerHTML = `
-                <div class="index-floating-controls">
+                <div class="idx-floating-controls">
                     <div id="global-google-login-holder">
                         <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
                     </div>
@@ -38,11 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="subtitle" id="home-subtitle-text" style="font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; margin-top: 15px;">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
             `;
             
-            const pageContainer = document.querySelector('.index-canvas');
+            const pageContainer = document.querySelector('.idx-canvas-full');
             if (pageContainer) pageContainer.insertBefore(homeHeaderSection, pageContainer.firstChild);
         }
     } 
-    // 🚀 模式 B：子頁面
+    // 🚀 模式 B：功能分頁子控制列
     else {
         let targetNavbar = document.querySelector('.tactical-navbar');
         if (!targetNavbar) {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         targetNavbar.innerHTML = `
             <div class="navbar-brand">
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.2</span>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.3</span>
                 <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
             </div>
             <div class="navbar-controls">
@@ -119,7 +119,7 @@ function syncGlobalLanguageState(lang) {
             let rankTag = cachedRank;
             if (rankTag === "冒險者" || rankTag === "Adventurer") { rankTag = (lang === 'tw') ? "冒險者" : "Adventurer"; }
             profileCard.innerHTML = `👤 ${rankTag}：${cachedName}`;
-            // 👑 修正：移除錯別字 style.style.display 恢復標準 DOM
+            // 👑 修正：移除多餘語法瘤，安全隱藏
             if (holder) holder.style.display = 'none';
         } else {
             profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
