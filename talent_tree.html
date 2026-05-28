@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公會修煉星盤 | System TPM Talent Tree (0528-V1.0)</title>
-    
+    <title>公會修煉星盤 | System TPM Talent Tree</title>
     <link rel="stylesheet" href="global_theme.css">
 </head>
 <body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
-    <div class="tree-container" style="flex: 1; padding: 30px 40px; overflow-y: auto; width: 100%;">
-        
+    <div class="single-pane-canvas">
         <div class="tree-tier-nav">
-            <button class="tier-tab-btn active" id="tab-l1-btn" onclick="switchTreeTab('tab-l1')" data-i18n="tab-l1">【 初心者階層 L1 - 基礎通識 】</button>
-            <button class="tier-tab-btn" id="tab-l2-btn" onclick="switchTreeTab('tab-l2')" data-i18n="tab-l2">【 冒險者階層 L2 - 進階通識 】</button>
-            <button class="tier-tab-btn" id="tab-l3-btn" onclick="switchTreeTab('tab-l3')" data-i18n="tab-l3">【 傳奇專科 L3 - 高階領域 】</button>
+            <button class="tier-tab-btn active" id="tab-l1-btn" onclick="switchTreeTab('tab-l1')">【 初心者階層 L1 - 基礎通識 】</button>
+            <button class="tier-tab-btn" id="tab-l2-btn" onclick="switchTreeTab('tab-l2')">【 冒險者階層 L2 - 進階通識 】</button>
+            <button class="tier-tab-btn" id="tab-l3-btn" onclick="switchTreeTab('tab-l3')">【 傳奇專科 L3 - 高階領域 】</button>
         </div>
 
         <div class="isekai-tree-map active" id="tab-l1">
@@ -41,11 +39,11 @@
             <div class="tree-tier-row">
                 <div class="talent-node locked" id="node-L1-A3" onclick="openTalentSummary('L1-A3')">
                     <div class="node-code">L1-A3</div>
-                    <div class="node-name">外觀幻化工藝<br>Industrial Design</div>
+                    <div class="node-name">外觀工藝落地<br>Industrial Design</div>
                 </div>
                 <div class="talent-node locked" id="node-L1-A4" onclick="openTalentSummary('L1-A4')">
                     <div class="node-code">L1-A4</div>
-                    <div class="node-name">魔力核心模組<br>Hardware Module</div>
+                    <div class="node-name">開發模組管理<br>Hardware Module</div>
                 </div>
                 <div class="talent-node locked" id="node-L1-B3" onclick="openTalentSummary('L1-B3')">
                     <div class="node-code">L1-B3</div>
@@ -86,93 +84,58 @@
             <div id="grade-sticker-wrapper" class="talent-grade-sticker-case">
                 <div class="talent-grade-stamp" id="grade-stamp-core">S</div>
             </div>
-
             <div class="modal-header">
-                <div>
-                    <span id="modal-node-code" style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">L1-A1</span>
-                    <h2 id="modal-node-title" style="margin: 5px 0 0 0; font-size: 1.5rem; font-weight: 900;">課題總覽</h2>
-                </div>
+                <div><span id="modal-node-code" style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">L1-A1</span><h2 id="modal-node-title" style="margin: 5px 0 0 0; font-size: 1.5rem; font-weight: 900;">課題總覽</h2></div>
                 <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
             <div class="modal-body">
                 <div>
-                    <h3 style="border-left: 5px solid var(--border-heavy); padding-left: 10px; font-size: 1.05rem; margin-top: 0;" data-i18n="modal-lesson-title">📜 聖遺物卷軸摘要 (High-Level Summary)</h3>
+                    <h3 style="border-left: 5px solid var(--border-heavy); padding-left: 10px; font-size: 1.05rem; margin-top: 0;">📜 聖遺物卷軸摘要 (High-Level Summary)</h3>
                     <p id="modal-node-summary" style="line-height: 1.7; font-weight: 600; white-space: pre-line; margin-bottom: 0;">載入中...</p>
                 </div>
                 <div id="modal-node-date" style="font-size: 0.85rem; font-weight: 700; color: #16A34A; padding-left: 5px;"></div>
-                <a id="modal-teleport-link" href="#" class="teleport-gate-btn" data-i18n="modal-gate-link">⚡ 進入該課題修煉場 (跳轉手冊/寶典)</a>
+                <a id="modal-teleport-link" href="#" class="teleport-gate-btn">⚡ 進入該課題修煉場 (跳轉手冊/寶典)</a>
             </div>
         </div>
     </div>
 
     <script src="global_ui.js"></script>
     <script>
-        // 本地靜態翻譯字典
-        const translations = {
-            tw: { "tab-l1": "【 初心者階層 L1 - 基礎通識 】", "tab-l2": "【 冒險者階層 L2 - 進階通識 】", "tab-l3": "【 傳奇專科 L3 - 高階領域 】", "modal-lesson-title": "📜 聖遺物卷軸摘要 (High-Level Summary)", "modal-gate-link": "⚡ 進入該課題修煉場 (跳轉手冊/寶典)" },
-            en: { "tab-l1": "[ Level 1 Codex: Foundation ]", "tab-l2": "[ Level 2 Handbook: Modules ]", "tab-l3": "[ Level 3 Staging: Specialized ]", "modal-lesson-title": "📜 Relic Scroll Summary (High-Level)", "modal-gate-link": "⚡ Teleport to Training Grounds (Go to Handbook/Codex)" }
-        };
-
-        // 全域11大節點空投路由地圖 ── 精準咬合 1-1 / 1-2 資料流
         const talentMetadata = {
             "L1-A1": { summary: "拆解硬體新產品導入（NPI）底層運行的巨觀因果。釐清客戶端設計藍圖、供應商元件物料、以及代工廠複製實體化製程防線。System TPM 將在此扮演跨功能團隊仲裁使者。", targetUrl: "beginner_codex.html?c=1-1" },
             "L1-A2": { summary: "教導如何將凡間使用者的原始痛點與欲望數據，精準轉化為最初始的產品定義與產品規格書（PRD）。在有限物料成本與時程上限內，完成黃金技術規格範疇控管。", targetUrl: "beginner_codex.html?c=1-2" },
-            "L1-A5": { summary: "解鎖 3D 堆疊（Stack-up）工程。在有限的毫米空間內，排除內部電子零組件與外殼空間極限擠壓的物理干涉。", targetUrl: "beginner_codex.html?c=1-3" },
-            "L1-B1": { summary: "深入前段流水線：SMT（表面黏著技術）製程。掌握鋼網印刷、貼片元件吸嘴精度、迴流焊（Reflow）溫度曲線調校工藝。", targetUrl: "beginner_codex.html?c=1-4" },
-            "L1-A3": { summary: "專研外觀 CMF（色彩、材質、表面處理）工藝落地。攻克噴砂顆粒度、陽極氧化電化學藥水藥劑調配與色差邊界控制。", targetUrl: "beginner_codex.html?c=1-5" },
-            "L1-A4": { summary: "核心硬體開發模組化管理。針對射頻天線、主晶片、感測器進行跨功能早期 DFM 審查，阻斷物理缺陷。", targetUrl: "beginner_codex.html?c=1-6" },
-            "L1-B3": { summary: "可製造性設計（DFM）全面複審。審查外殼拔模角、壁厚收縮痕痕、點膠溢膠邊界，在圖紙端斬斷量產雷區。", targetUrl: "beginner_codex.html?c=1-7" },
-            "L2-W1": { summary: "深入功能單位技術通識。攻克防水規格（IP67/IPX8）在結構設計中的精密計算。剖析點膠製程（Dispensing）、防水橡膠圈（O-Ring）壓縮比對比、與氣密測試DOE驗證防禦機制。", targetUrl: "handbook.html?c=1-1" },
-            "L2-O1": { summary: "精密光學影像校正軸。解鎖 AA 主動對位技術（Active Alignment），利用六軸手臂在點亮動態下微調相機模組微米級組裝公差。", targetUrl: "handbook.html?c=1-2" },
-            "L3-T1": { summary: "傳奇專科生命週期，精算時程代價矩陣（Schedule Matrix Analysis）。在斷料、地震、設計變更（ECO）爆發時扭曲時間軸如期 Exit。", targetUrl: "handbook.html?c=1-3" },
-            "L3-N1": { summary: "跨功能（XFN）最高仲裁學。當 ID 美學、ME 空間與 EE 射頻訊號短路發生極限干涉衝突時，主導決策代價矩陣達成黃金技術妥協。", targetUrl: "handbook.html?c=1-4" }
+            "L2-W1": { summary: "深入功能單位技術通識。攻克防水規格（IP67/IPX8）在結構設計中的精密計算。剖析點膠製程（Dispensing）、防水橡膠圈（O-Ring）壓縮比對比、與氣密測試DOE驗證防禦機制。", targetUrl: "handbook.html?c=1-1" }
         };
-
         function switchTreeTab(tabId) {
             document.querySelectorAll('.tier-tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.isekai-tree-map').forEach(map => map.classList.remove('active'));
             document.getElementById(`${tabId}-btn`).classList.add('active');
             const targetMap = document.getElementById(tabId); if (targetMap) targetMap.classList.add('active');
         }
-
         function openTalentSummary(nodeId) {
             const nodeEl = document.getElementById(`node-${nodeId}`);
             if (nodeEl.classList.contains('locked')) { alert("【系統提示】天賦封印尚未解除！"); return; }
             const data = talentMetadata[nodeId]; if (!data) { alert("文獻尚在編撰中。"); return; }
-
             document.getElementById('modal-node-code').innerText = nodeId;
             document.getElementById('modal-node-title').innerHTML = nodeEl.querySelector('.node-name').innerHTML.replace('<br>', ' ');
             document.getElementById('modal-node-summary').innerText = data.summary;
-
-            // 讀取 20 題終極大考回寫的最高評級
             const savedGrade = localStorage.getItem(`talent-${nodeId}-grade`);
             const savedDate = localStorage.getItem(`talent-${nodeId}-date`);
-            
             const stickerWrapper = document.getElementById('grade-sticker-wrapper');
             const stampCore = document.getElementById('grade-stamp-core');
             const dateEl = document.getElementById('modal-node-date');
-
             if (savedGrade || nodeEl.classList.contains('completed')) {
                 const finalGrade = savedGrade || "S"; const finalDate = savedDate || new Date().toLocaleDateString();
                 stickerWrapper.style.display = 'block'; stickerWrapper.className = `talent-grade-sticker-case case-${finalGrade}`;
                 stampCore.innerText = finalGrade; dateEl.innerText = `完成日期：${finalDate}`;
                 dateEl.style.color = (finalGrade === 'FAIL') ? "var(--color-fail)" : "#16A34A";
                 nodeEl.classList.remove('available'); nodeEl.classList.add('completed');
-            } else {
-                stickerWrapper.style.display = 'none'; dateEl.innerText = "";
-            }
-
+            } else { stickerWrapper.style.display = 'none'; dateEl.innerText = ""; }
             document.getElementById('modal-teleport-link').href = data.targetUrl;
             document.getElementById('talent-summary-modal').style.display = 'flex';
         }
-
         function closeModal() { document.getElementById('talent-summary-modal').style.display = 'none'; }
-
-        // 中央大腦語系回呼機制
         function setLang(lang) {
-            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if(translations[lang][key]) el.innerText = translations[lang][key]; });
-            
-            // 掃描全域解鎖進度，高亮點亮星盤
             Object.keys(talentMetadata).forEach(nodeId => {
                 const grade = localStorage.getItem(`talent-${nodeId}-grade`); const el = document.getElementById(`node-${nodeId}`);
                 if (el && grade && grade !== 'FAIL') { el.classList.remove('available'); el.classList.add('completed'); }
