@@ -9,14 +9,14 @@
 <body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
     <div class="workspace-container">
-        <aside class="sidebar-panel" id="shell-sidebar-area">
-            <div class="aside-header">
-                <button class="back-btn" onclick="exitToDashboardMenu()" style="width:100%; cursor:pointer;">↩ 返回手冊選單</button>
+        <aside class="cdx-sidebar" id="shell-sidebar-area">
+            <div class="cdx-sidebar-header">
+                <button class="back-btn" onclick="exitToDashboardMenu()" style="width:100%; cursor:pointer;">↩ 返回目錄</button>
             </div>
             <ul class="chapter-list" id="dynamic-course-menu"></ul>
         </aside>
 
-        <main class="content-panel">
+        <main class="cdx-main-content">
             <div id="cdx-page-header-zone" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px dashed var(--border-heavy); display: none;">
                 <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;"></span>
                 <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;"></h2>
@@ -30,10 +30,11 @@
             </div>
 
             <div class="document-canvas" id="textbook-viewport">
-                <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.2rem;" data-i18n="doc-title">📜 聖遺物精髓文獻 (Technical Textbook)</h3>
-                <div class="textbook-scroll-box">
-                    <div id="lesson-content" class="scroll-text"></div>
-                    <div class="diagram-placeholder" id="diagram-box">DIAGRAM PLACEHOLDER</div>
+                <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.2rem; margin-top:0;" data-i18n="doc-title">📘 專業核心教材文獻 (Technical Textbook)</h3>
+                <div class="textbook-scroll-box" style="display:flex; flex-direction:column; flex:1;">
+                    <div id="lesson-content" class="scroll-text" style="font-size:1.05rem; line-height:1.8; font-weight:600; margin-bottom:15px;"></div>
+                    
+                    <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
                 </div>
             </div>
 
@@ -47,7 +48,7 @@
                 <div id="exam-options-container"></div>
             </div>
 
-            <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
+            <div class="sub-pagination-dots-zone" id="universal-dots-bar" style="display:none;"></div>
         </main>
     </div>
 
@@ -58,8 +59,8 @@
         ];
         let codexCourseEngineData = []; let activeCourseIdx = 0; let activePageIdx = 0; let examActive = false; let examCurrentQ = 0; let examScoreCount = 0;
         const translations = {
-            tw: { "doc-title": "📜 聖遺物精髓文獻 (Technical Textbook)", "exam-running": "🔥 終極大會考進行中 (Exam Mode)" },
-            en: { "doc-title": "📜 Relic Scroll Textbook", "exam-running": "🔥 Exam Session Active" }
+            tw: { "doc-title": "📘 專業核心教材文獻 (Technical Textbook)", "exam-running": "🔥 終極大會考進行中 (Exam Mode)" },
+            en: { "doc-title": "📘 Technical Textbook Content", "exam-running": "🔥 Exam Session Active" }
         };
         function routeController() {
             const urlParams = new URLSearchParams(window.location.search); const contentPackId = urlParams.get('c');
@@ -69,7 +70,7 @@
                 document.getElementById('global-inject-title').innerText = localStorage.getItem('tpm-lang-pref') === 'en' ? "Adventurer's Handbook" : "冒險者手冊大廳";
                 renderDashboardHallCards();
             } else {
-                document.getElementById('dashboard-menu-hall').style.display = 'none'; document.getElementById('shell-sidebar-area').style.display = 'flex'; document.getElementById('universal-dots-bar').style.display = 'flex';
+                document.getElementById('dashboard-menu-hall').style.display = 'none'; document.getElementById('shell-sidebar-area').style.display = 'flex';
                 injectContentPackScript(contentPackId);
             }
         }
@@ -107,13 +108,35 @@
 
             if (examActive) {
                 document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block';
+                document.getElementById('universal-dots-bar').style.display = 'flex';
                 course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; });
                 dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; runExamEngine();
             } else {
                 document.getElementById('textbook-viewport').style.display = 'block'; document.getElementById('exam-viewport').style.display = 'none';
+                document.getElementById('universal-dots-bar').style.display = 'flex';
                 activePageIdx = pIdx; const page = course.subPages[pIdx];
-                document.getElementById('current-chapter-id').innerText = `SECTION ${pIdx + 1} / ${course.subPages.length}`; document.getElementById('current-chapter-name').innerText = page.title; document.getElementById('lesson-content').innerText = page.text; document.getElementById('diagram-box').innerText = page.diagram;
-                course.subPages.forEach((_, sIdx) => { const dotActive = sIdx === pIdx ? "active" : ""; dotsBar.innerHTML += `<div class="slider-dot ${dotActive}" onclick="loadCourseState(${cIdx}, ${sIdx})"></div>`; });
+                document.getElementById('current-chapter-id').innerText = `SECTION ${pIdx + 1} / ${course.subPages.length}`; document.getElementById('current-chapter-name').innerText = page.title; document.getElementById('lesson-content').innerText = page.text;
+                
+                // 純 CSS 動態戰術流程圖渲染引擎
+                const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
+                if (flowRenderer && page.diagramFlowArray) {
+                    flowRenderer.style.display = 'flex';
+                    flowRenderer.innerHTML = '';
+                    page.diagramFlowArray.forEach((node, nIdx) => {
+                        const highlightClass = node.highlight ? 'highlight' : '';
+                        flowRenderer.innerHTML += `<div class="flow-node-block ${highlightClass}">${node.name}</div>`;
+                        if (nIdx < page.diagramFlowArray.length - 1) {
+                            flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
+                        }
+                    });
+                } else if(flowRenderer) {
+                    flowRenderer.style.display = 'none';
+                }
+
+                course.subPages.forEach((_, sIdx) => {
+                    const dotActive = sIdx === pIdx ? "active" : "";
+                    dotsBar.innerHTML += `<div class="slider-dot ${dotActive}" onclick="loadCourseState(${cIdx}, ${sIdx})"></div>`;
+                });
                 dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
             }
         }
