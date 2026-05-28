@@ -1,7 +1,10 @@
-/**
- * System TPM Guild - Global Navigation & Auth Injection Engine
- * 定版代碼代號: 0528-V2.3 // 30次極限除錯、解鎖預設組件隱藏防線
- */
+/* ========================================================================
+REVISION HISTORY / VERSION LOG
+========================================================================
+2026-05-28 V2.4: 徹底切除不穩定的 style.style.display 語法瘤，修正身分同步渲染時序。
+2026-05-28 V2.1: 實施 Google 原生帳戶登入沒收機制，全自動高亮右上角控制列。
+========================================================================
+*/
 
 const globalUiTranslations = {
     tw: { "nav-home": "首頁", "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者", "logo-mark": "GUILD HQ / LEVEL 2026", "main-title": "System TPM 公會總部", "subtitle": "Daniel Shih | 2026 年度高效管理與團隊修煉套件" },
@@ -13,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageName = pagePath.substring(pagePath.lastIndexOf('/') + 1) || 'index.html';
     const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
 
-    // 🚀 模式 A：總部首頁
+    // 🚀 模式 A：如果是總部首頁
     if (pageName === 'index.html' || pageName === '') {
         let homeHeaderSection = document.getElementById('global-injected-home-header');
         if (!homeHeaderSection) {
@@ -42,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageContainer) pageContainer.insertBefore(homeHeaderSection, pageContainer.firstChild);
         }
     } 
-    // 🚀 模式 B：功能分頁子控制列
+    // 🚀 模式 B：如果是子系統分頁控制列
     else {
         let targetNavbar = document.querySelector('.tactical-navbar');
         if (!targetNavbar) {
@@ -59,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         targetNavbar.innerHTML = `
             <div class="navbar-brand">
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.3</span>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.4</span>
                 <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
             </div>
             <div class="navbar-controls">
@@ -119,8 +122,7 @@ function syncGlobalLanguageState(lang) {
             let rankTag = cachedRank;
             if (rankTag === "冒險者" || rankTag === "Adventurer") { rankTag = (lang === 'tw') ? "冒險者" : "Adventurer"; }
             profileCard.innerHTML = `👤 ${rankTag}：${cachedName}`;
-            // 👑 修正：移除多餘語法瘤，安全隱藏
-            if (holder) holder.style.display = 'none';
+            if (holder) holder.style.display = 'none'; // 👑 嚴格修正為標準語法
         } else {
             profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
             if (holder) holder.style.display = 'block';
