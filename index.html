@@ -32,7 +32,7 @@
             box-sizing: border-box;
         }
 
-        /* 剛性首頁畫布外殼：允許卡牌超出時自然出現垂直滾動條，絕對不裁剪卡牌 */
+        /* 剛性首頁畫布外殼：解鎖底層高度，卡牌超出時出現垂直滾動條，絕對不裁剪 */
         .idx-canvas-full {
             width: 100vw;
             height: 100vh;
@@ -44,7 +44,7 @@
             position: relative;
         }
 
-        /* 史詩級巨型中央標題區域 */
+        /* 中央標題區域 */
         .idx-main-header {
             text-align: center;
             margin-bottom: 40px;
@@ -77,7 +77,7 @@
             margin-top: 15px;
         }
 
-        /* 右上角剛性控制中樞 ── 絕不產生寬度推擠與橫條黑框 */
+        /* 右上角剛性控制中樞 */
         .idx-floating-controls {
             position: absolute;
             top: 30px;
@@ -126,9 +126,12 @@
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            min-height: 45px;
         }
 
-        /* 粗線條卡牌大廳網格 */
+        /* 卡牌矩陣網格 */
         .idx-hub-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -197,24 +200,6 @@
             line-height: 1.6;
         }
 
-        .status-badge {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            font-size: 0.75rem;
-            font-weight: 900;
-            padding: 4px 12px;
-            border-radius: 6px;
-            border: 2px solid var(--border-heavy);
-            font-family: monospace;
-            background: #FFF;
-        }
-
-        .idx-hub-card:hover .status-badge {
-            background: var(--text-main);
-            color: white;
-        }
-
         .idx-bg-watermark {
             position: fixed;
             bottom: 20px;
@@ -227,6 +212,13 @@
             font-family: monospace;
             pointer-events: none;
         }
+
+        /* 👑 修正隱藏框架：用來修正 Google Iframe 初始化渲染的安全佔位 */
+        #google-native-icon-wrapper {
+            display: flex;
+            align-items: center;
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -235,18 +227,32 @@
     
     <div class="idx-canvas-full">
         
-        <div class="idx-floating-controls">
-            <div id="global-google-login-holder">
-                <div id="g_id_onload"
-                     data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-                     data-context="signin"
-                     data-ux_mode="popup"
-                     data-callback="handlePortalLogin"
-                     data-auto_select="true">
-                </div>
-                <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+        <div style="display: none;">
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handlePortalLogin"
+                 data-auto_select="true">
             </div>
-            <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
+        </div>
+
+        <div class="idx-floating-controls">
+            
+            <div id="auth-unlogged-zone" class="auth-panel">
+                <span data-i18n="auth-locked">🔒 未讀取公會憑證</span>
+                <div id="google-native-icon-wrapper">
+                    <div class="g_id_signin" 
+                         data-type="icon" 
+                         data-shape="square" 
+                         data-theme="outline" 
+                         data-size="large">
+                    </div>
+                </div>
+            </div>
+
+            <div id="auth-logged-zone" class="auth-panel" style="display: none;"></div>
+
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core" id="global-btn-tw" onclick="executeLangSwitch('tw')">TW</button>
                 <button class="lang-btn-core" id="global-btn-en" onclick="executeLangSwitch('en')">EN</button>
@@ -262,49 +268,42 @@
         <div class="idx-hub-grid">
             
             <a href="beginner_codex.html" class="idx-hub-card active">
-                <div class="status-badge" data-i18n="badge-open">全員開放</div>
                 <div class="idx-icon-box">🗺️</div>
                 <h3 data-i18n="card-codex-title">初心者寶典</h3>
                 <p data-i18n="card-codex-desc">工廠基礎與 System TPM 基礎概括：點亮硬體世界觀第一步的核心知識大本營。</p>
             </a>
             
             <a href="handbook.html" class="idx-hub-card active">
-                <div class="status-badge" data-i18n="badge-open">全員開放</div>
                 <div class="idx-icon-box">📜</div>
                 <h3 data-i18n="card-handbook-title">冒險者手冊</h3>
                 <p data-i18n="card-handbook-desc">功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
             </a>
             
             <div class="idx-hub-card locked">
-                <div class="status-badge" data-i18n="badge-lock">試煉場</div>
                 <div class="idx-icon-box">⚔️</div>
                 <h3 data-i18n="card-trial-title">階級晉級試煉</h3>
                 <p data-i18n="card-trial-desc">綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
             </div>
             
             <div class="idx-hub-card locked">
-                <div class="status-badge" data-i18n="badge-lock">賢者之石</div>
                 <div class="idx-icon-box">🤖</div>
                 <h3 data-i18n="card-sage-title">賢者之識</h3>
                 <p data-i18n="card-sage-desc">智慧核心：整合大語言模型（LLM）知識庫，自動化輔助生成全新標準化作業教材。</p>
             </div>
             
             <a href="talent_tree.html" class="idx-hub-card active">
-                <div class="status-badge" data-i18n="badge-tree">修煉星盤</div>
                 <div class="idx-icon-box">🌿</div>
                 <h3 data-i18n="card-tree-title">冒險者天賦樹</h3>
                 <p data-i18n="card-tree-desc">RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
             </a>
             
             <div class="idx-hub-card locked">
-                <div class="status-badge" data-i18n="badge-lock">隨機地下城</div>
                 <div class="idx-icon-box">🛡️</div>
                 <h3>隨機副本挑戰</h3>
-                <p>動態隨機題庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
+                <p>動態隨機题庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
             </div>
             
             <a href="Library.html" class="idx-hub-card active">
-                <div class="status-badge" data-i18n="badge-lib">大圖書館</div>
                 <div class="idx-icon-box">📚</div>
                 <h3 data-i18n="card-library-title">知識圖書館</h3>
                 <p data-i18n="card-library-desc">集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。</p>
@@ -313,7 +312,7 @@
         </div>
         
         <footer style="margin-top: auto; padding: 40px 0; text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); font-family: monospace;">
-            <span>GUILD.REVISION: 0528-V4.0 | @2026 | OPERATOR: DANIEL SHIH</span>
+            <span>GUILD.REVISION: 0528-V4.1 | @2026 | OPERATOR: DANIEL SHIH</span>
         </footer>
         
     </div>
@@ -321,7 +320,6 @@
     <script>
         const pageTranslations = {
             tw: {
-                "badge-open": "全員開放", "badge-lock": "封印中", "badge-tree": "修煉星盤", "badge-lib": "大圖書館",
                 "home-logo-mark-text": "GUILD HQ / LEVEL 2026",
                 "home-main-title-text": "System TPM 公會總部",
                 "home-subtitle-text": "Daniel Shih | 2026 年度高效管理與團隊修煉套件",
@@ -333,10 +331,10 @@
                 "card-tree-desc": "RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。",
                 "card-library-title": "知識圖書館",
                 "card-library-desc": "集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。",
-                "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者"
+                "auth-locked": "🔒 未讀取公會憑證", 
+                "rank-default": "冒險者"
             },
             en: {
-                "badge-open": "UNLOCKED", "badge-lock": "STAGING", "badge-tree": "ATLAS TREE", "badge-lib": "LEXICON",
                 "home-logo-mark-text": "GUILD HQ / LEVEL 2026",
                 "home-main-title-text": "System TPM Guild",
                 "home-subtitle-text": "Daniel Shih | 2026 Tactical Management & Training Suite",
@@ -348,7 +346,8 @@
                 "card-tree-desc": "Visual Progression Matrix: Dynamically mapping and allocating completed nodes.",
                 "card-library-title": "Knowledge Library",
                 "card-library-desc": "Centralized archive storing historical systems design manifests, post-mortems, and scrolls.",
-                "auth-locked": "🔒 No Credentials", "rank-default": "Adventurer"
+                "auth-locked": "🔒 No Credentials", 
+                "rank-default": "Adventurer"
             }
         };
 
@@ -382,16 +381,25 @@
 
             const cachedName = localStorage.getItem('tpm-user-name');
             const cachedRank = localStorage.getItem('tpm-user-rank') || pageTranslations[lang]["rank-default"];
-            const profileCard = document.getElementById('global-user-profile-card');
-            const holder = document.getElementById('global-google-login-holder');
+            
+            const unloggedZone = document.getElementById('auth-unlogged-zone');
+            const loggedZone = document.getElementById('auth-logged-zone');
 
-            if (profileCard) {
-                if (cachedName) {
-                    profileCard.innerHTML = `👤 ${cachedRank}：${cachedName}`;
-                    if (holder) holder.style.display = 'none';
-                } else {
-                    profileCard.innerText = pageTranslations[lang]["auth-locked"];
-                    if (holder) holder.style.display = 'block';
+            // 👑 狀態機判定切換：未登入顯示內嵌 G Logo，登入成功姓名直接覆蓋取代
+            if (cachedName) {
+                if (unloggedZone) {
+                    unloggedZone.style.display = 'none';
+                }
+                if (loggedZone) {
+                    loggedZone.style.display = 'flex';
+                    loggedZone.innerHTML = `👤 ${cachedRank}：${cachedName}`;
+                }
+            } else {
+                if (loggedZone) {
+                    loggedZone.style.display = 'none';
+                }
+                if (unloggedZone) {
+                    unloggedZone.style.display = 'flex';
                 }
             }
         }
