@@ -9,23 +9,23 @@
 <body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
     <div class="workspace-container">
-        <aside class="sidebar-panel" id="shell-sidebar-area">
+        <aside class="cdx-sidebar" id="shell-sidebar-area">
             <div class="aside-header">
                 <button class="back-btn" onclick="exitToDashboardMenu()" style="width:100%; cursor:pointer;">↩ 返回寶典選單</button>
             </div>
             <ul class="chapter-list" id="dynamic-course-menu"></ul>
         </aside>
 
-        <main class="content-panel">
+        <main class="cdx-main-content">
             <div class="dashboard-view-hall" id="dashboard-menu-hall" style="width:100%;">
                 <div class="level-section">
                     <div class="level-title-divider">🌿 Level 1：基礎通識研修領域 (Foundations)</div>
-                    <div class="dashboard-cards-grid" id="l1-cards-grid"></div>
+                    <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
                 </div>
                 <div class="level-section" style="margin-top: 40px;">
                     <div class="level-title-divider" style="opacity: 0.4;">🔒 Level 2：進階專科領域 (Staging)</div>
-                    <div class="dashboard-cards-grid" style="opacity: 0.4; pointer-events: none;">
-                        <div class="dashboard-card"><div class="card-status-badge">WIP</div><h3>精細防水防護與氣密 DOE 研修</h3><p>專修 IPX8 膠路、O-Ring 壓縮比與氣密防線調校。</p></div>
+                    <div class="cdx-dashboard-grid" style="opacity: 0.4; pointer-events: none;">
+                        <div class="cdx-dashboard-card"><div class="card-status-badge">WIP</div><h3>精細防水防護與氣密 DOE 研修</h3><p>專修 IPX8 膠路、O-Ring 壓縮比與氣密防線調校。</p></div>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                 let medalClass = ""; let badgeText = "AVAILABLE"; let badgeColor = "border-color:var(--color-available); color:var(--color-available);";
                 if (course.isNew) { badgeText = "NEW"; badgeColor = "background:#EF4444; color:white; border-color:#000;"; }
                 if (savedGrade === "S") { medalClass = "medal-gold"; badgeText = "S 級過關"; } else if (savedGrade && savedGrade !== "Fail") { medalClass = "medal-silver"; badgeText = `${savedGrade} 級完工`; }
-                grid.innerHTML += `<div class="dashboard-card ${medalClass}" onclick="navigateToCourse('${course.id}')"><div class="card-status-badge" style="${badgeColor}">${badgeText}</div><h3 style="margin-top:15px; font-size:1.2rem; font-weight:900;">L1-${course.id} ${course.title}</h3><p style="font-size:0.85rem; margin-top:10px; font-weight:600; line-height:1.5;">${course.desc}</p></div>`;
+                grid.innerHTML += `<div class="cdx-dashboard-card ${medalClass}" onclick="navigateToCourse('${course.id}')"><div class="card-status-badge" style="${badgeColor}">${badgeText}</div><h3 style="margin-top:15px; font-size:1.2rem; font-weight:900;">L1-${course.id} ${course.title}</h3><p style="font-size:0.85rem; margin-top:10px; font-weight:600; line-height:1.5;">${course.desc}</p></div>`;
             });
         }
         function navigateToCourse(courseId) { window.location.search = `?c=${courseId}`; }
@@ -98,11 +98,16 @@
                 const savedGrade = localStorage.getItem(`talent-${course.courseId}-grade`);
                 let medalClass = ""; if (savedGrade === "S") medalClass = "medal-gold"; else if (savedGrade && savedGrade !== "Fail") medalClass = "medal-silver";
                 const activeClass = idx === activeCourseIdx ? "active" : "";
-                menu.innerHTML += `<li class="chapter-tab ${activeClass} ${medalClass}" onclick="triggerCourseSelect(${idx})">${course.menuTitle}</li>`;
+                menu.innerHTML += `<li class="cdx-chapter-tab ${activeClass} ${medalClass}" onclick="triggerCourseSelect(${idx})">${course.menuTitle}</li>`;
             });
         }
         function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx; const course = codexCourseEngineData[cIdx]; const dotsBar = document.getElementById('universal-dots-bar'); dotsBar.innerHTML = '';
+            const isModuleCleared = localStorage.getItem(`codex-${course.courseId}-clear`) === 'true';
+            
+            // 點亮控制
+            document.getElementById('dashboard-menu-hall').style.display = 'none';
+
             if (examActive) {
                 document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block';
                 course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; });
@@ -139,6 +144,7 @@
         }
         function setLang(lang) { if (document.getElementById('dashboard-menu-hall').style.display === 'block') { renderDashboardHallCards(); } }
 
+        // 👑 銲死加載入口，解鎖 1-1.js 資料載入
         window.onload = () => {
             routeController();
         };
