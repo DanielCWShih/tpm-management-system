@@ -8,70 +8,70 @@
 </head>
 <body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
-    <div class="single-pane-canvas">
+    <div class="tree-main-canvas">
         <div class="tree-tier-nav">
             <button class="tier-tab-btn active" id="tab-l1-btn" onclick="switchTreeTab('tab-l1')">【 初心者階層 L1 - 基礎通識 】</button>
             <button class="tier-tab-btn" id="tab-l2-btn" onclick="switchTreeTab('tab-l2')">【 冒險者階層 L2 - 進階通識 】</button>
             <button class="tier-tab-btn" id="tab-l3-btn" onclick="switchTreeTab('tab-l3')">【 傳奇專科 L3 - 高階領域 】</button>
         </div>
 
-        <div class="isekai-tree-map active" id="tab-l1">
-            <div class="tree-tier-row">
-                <div class="talent-node available" id="node-L1-A1" onclick="openTalentSummary('L1-A1')">
+        <div class="tree-map-wrapper active" id="tab-l1">
+            <div class="tree-row">
+                <div class="tree-node-circle available" id="node-L1-A1" onclick="openTalentSummary('L1-A1')">
                     <div class="node-code">L1-A1 (必修)</div>
                     <div class="node-name">基本世界觀<br>Cosmos Matrix</div>
                 </div>
             </div>
-            <div class="tree-tier-row">
-                <div class="talent-node available" id="node-L1-A2" onclick="openTalentSummary('L1-A2')">
+            <div class="tree-row">
+                <div class="tree-node-circle available" id="node-L1-A2" onclick="openTalentSummary('L1-A2')">
                     <div class="node-code">L1-A2 (選修)</div>
                     <div class="node-name">市場調查術<br>Market Research</div>
                 </div>
-                <div class="talent-node locked" id="node-L1-A5" onclick="openTalentSummary('L1-A5')">
+                <div class="tree-node-circle locked" id="node-L1-A5" onclick="openTalentSummary('L1-A5')">
                     <div class="node-code">L1-A5 (選修)</div>
                     <div class="node-name">結構設計整合<br>Structural Design</div>
                 </div>
-                <div class="talent-node locked" id="node-L1-B1" onclick="openTalentSummary('L1-B1')">
+                <div class="tree-node-circle locked" id="node-L1-B1" onclick="openTalentSummary('L1-B1')">
                     <div class="node-code">L1-B1 (選修)</div>
                     <div class="node-name">表面黏著技術<br>SMT Process</div>
                 </div>
             </div>
-            <div class="tree-tier-row">
-                <div class="talent-node locked" id="node-L1-A3" onclick="openTalentSummary('L1-A3')">
+            <div class="tree-row">
+                <div class="tree-node-circle locked" id="node-L1-A3" onclick="openTalentSummary('L1-A3')">
                     <div class="node-code">L1-A3</div>
                     <div class="node-name">外觀工藝落地<br>Industrial Design</div>
                 </div>
-                <div class="talent-node locked" id="node-L1-A4" onclick="openTalentSummary('L1-A4')">
+                <div class="tree-node-circle locked" id="node-L1-A4" onclick="openTalentSummary('L1-A4')">
                     <div class="node-code">L1-A4</div>
                     <div class="node-name">開發模組管理<br>Hardware Module</div>
                 </div>
-                <div class="talent-node locked" id="node-L1-B3" onclick="openTalentSummary('L1-B3')">
+                <div class="tree-node-circle locked" id="node-L1-B3" onclick="openTalentSummary('L1-B3')">
                     <div class="node-code">L1-B3</div>
                     <div class="node-name">製造設計審查<br>DFM Review</div>
                 </div>
             </div>
         </div>
 
-        <div class="isekai-tree-map" id="tab-l2">
-            <div class="tree-tier-row">
-                <div class="talent-node available" id="node-L2-W1" onclick="openTalentSummary('L2-W1')">
+        <div class="tree-map-wrapper" id="tab-l2">
+            <div class="tree-row">
+                <div class="tree-node-circle available" id="node-L2-W1" onclick="openTalentSummary('L2-W1')">
                     <div class="node-code">L2-W1</div>
                     <div class="node-name">防水防護結界<br>Ingress Protection</div>
                 </div>
-                <div class="talent-node locked" id="node-L2-O1" onclick="openTalentSummary('L2-O1')">
+                <div class="tree-node-circle locked" id="node-L2-O1" onclick="openTalentSummary('L2-O1')">
                     <div class="node-code">L2-O1</div>
                     <div class="node-name">精密光學對位<br>Precision Optics</div>
                 </div>
             </div>
         </div>
 
-        <div class="isekai-tree-map" id="tab-l3">
-            <div class="tree-tier-row">
-                <div class="talent-node locked" id="node-L3-T1" onclick="openTalentSummary('L3-T1')">
+        <div class="tree-map-wrapper" id="tab-l3">
+            <div class="tree-row">
+                <div class="tree-node-circle locked" id="node-L3-T1" onclick="openTalentSummary('L3-T1')">
                     <div class="node-code">L3-T1</div>
                     <div class="node-name">時程代價矩陣<br>Schedule Matrix</div>
                 </div>
-                <div class="talent-node locked" id="node-L3-N1" onclick="openTalentSummary('L3-N1')">
+                <div class="tree-node-circle locked" id="node-L3-N1" onclick="openTalentSummary('L3-N1')">
                     <div class="node-code">L3-N1</div>
                     <div class="node-name">跨功能談判術<br>XFN Negotiation</div>
                 </div>
@@ -108,7 +108,7 @@
         };
         function switchTreeTab(tabId) {
             document.querySelectorAll('.tier-tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.isekai-tree-map').forEach(map => map.classList.remove('active'));
+            document.querySelectorAll('.tree-map-wrapper').forEach(map => map.classList.remove('active'));
             document.getElementById(`${tabId}-btn`).classList.add('active');
             const targetMap = document.getElementById(tabId); if (targetMap) targetMap.classList.add('active');
         }
