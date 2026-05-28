@@ -5,7 +5,229 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System TPM 公會總部 | System TPM Guild</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link rel="stylesheet" href="global_theme.css">
+    
+    <style>
+        :root {
+            --bg-color: #FEF9E7;
+            --sidebar-cream: #FDF2D0;
+            --card-white: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-secondary: #475569;
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 5px 5px 0px #1A1A1A;
+            --radius-sm: 8px;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 剛性首頁畫布外殼：允許卡牌超出時自然出現垂直滾動條，絕對不裁剪卡牌 */
+        .idx-canvas-full {
+            width: 100vw;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 40px 40px 80px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* 史詩級巨型中央標題區域 */
+        .idx-main-header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+            padding-top: 20px;
+            flex-shrink: 0;
+        }
+
+        .idx-main-header .logo-mark {
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        .idx-main-header h1 {
+            font-size: 3.2rem;
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .idx-main-header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        /* 右上角剛性控制中樞 ── 絕不產生寬度推擠與橫條黑框 */
+        .idx-floating-controls {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 2000;
+        }
+
+        .lang-switcher-wrapper {
+            display: flex;
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            padding: 2px;
+        }
+
+        .lang-btn-core {
+            width: 50px;
+            height: 35px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .lang-btn-core.active {
+            background: var(--text-main) !important;
+            color: white !important;
+        }
+
+        .auth-panel {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 900;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            white-space: nowrap;
+        }
+
+        /* 粗線條卡牌大廳網格 */
+        .idx-hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1400px;
+            padding: 10px 0;
+        }
+
+        .idx-hub-card {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-decoration: none;
+            box-shadow: var(--shadow-tactical);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .idx-hub-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0px var(--text-main);
+            background-color: #FFFDF2;
+        }
+
+        .idx-hub-card.locked {
+            background: repeating-linear-gradient(45deg, #FFFDF9, #FFFDF9 10px, #FDF2D0 10px, #FDF2D0 20px);
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .idx-icon-box {
+            width: 55px;
+            height: 55px;
+            background: var(--bg-color);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .idx-hub-card:hover .idx-icon-box {
+            background: #FDE047;
+        }
+
+        .idx-hub-card h3 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .idx-hub-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 2px solid var(--border-heavy);
+            font-family: monospace;
+            background: #FFF;
+        }
+
+        .idx-hub-card:hover .status-badge {
+            background: var(--text-main);
+            color: white;
+        }
+
+        .idx-bg-watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 10rem;
+            font-weight: 900;
+            color: rgba(253, 242, 208, 0.4);
+            z-index: -1;
+            user-select: none;
+            font-family: monospace;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
 
@@ -13,92 +235,176 @@
     
     <div class="idx-canvas-full">
         
-        <div style="display: none;">
-            <div id="g_id_onload"
-                 data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-                 data-context="signin"
-                 data-ux_mode="popup"
-                 data-callback="handlePortalLogin"
-                 data-auto_select="true">
+        <div class="idx-floating-controls">
+            <div id="global-google-login-holder">
+                <div id="g_id_onload"
+                     data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handlePortalLogin"
+                     data-auto_select="true">
+                </div>
+                <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
             </div>
-            <div class="g_id_signin" 
-                 data-type="standard" 
-                 data-shape="rectangular" 
-                 data-theme="outline" 
-                 data-text="signin_with" 
-                 data-size="large" 
-                 data-logo_alignment="left">
+            <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
+            <div class="lang-switcher-wrapper">
+                <button class="lang-btn-core" id="global-btn-tw" onclick="executeLangSwitch('tw')">TW</button>
+                <button class="lang-btn-core" id="global-btn-en" onclick="executeLangSwitch('en')">EN</button>
             </div>
         </div>
 
-        <div class="idx-hub-grid" style="padding: 20px 0; max-width: 1400px;">
+        <div class="idx-main-header">
+            <div class="logo-mark" id="home-logo-mark-text">GUILD HQ / LEVEL 2026</div>
+            <h1 id="home-main-title-text">System TPM 公會總部</h1>
+            <div class="subtitle" id="home-subtitle-text">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
+        </div>
+
+        <div class="idx-hub-grid">
             
             <a href="beginner_codex.html" class="idx-hub-card active">
-                <div class="status-badge">【 全員開放 】</div>
+                <div class="status-badge" data-i18n="badge-open">全員開放</div>
                 <div class="idx-icon-box">🗺️</div>
-                <h3>初心者寶典</h3>
-                <p>工廠基礎與 System TPM 基礎概括：點亮硬體世界觀第一步的核心知識大本營。</p>
+                <h3 data-i18n="card-codex-title">初心者寶典</h3>
+                <p data-i18n="card-codex-desc">工廠基礎與 System TPM 基礎概括：點亮硬體世界觀第一步的核心知識大本營。</p>
             </a>
             
             <a href="handbook.html" class="idx-hub-card active">
-                <div class="status-badge">【 全員開放 】</div>
+                <div class="status-badge" data-i18n="badge-open">全員開放</div>
                 <div class="idx-icon-box">📜</div>
-                <h3>冒險者手冊</h3>
-                <p>功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
+                <h3 data-i18n="card-handbook-title">冒險者手冊</h3>
+                <p data-i18n="card-handbook-desc">功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
             </a>
             
             <div class="idx-hub-card locked">
-                <div class="status-badge">【 試煉場 】</div>
+                <div class="status-badge" data-i18n="badge-lock">試煉場</div>
                 <div class="idx-icon-box">⚔️</div>
-                <h3>階級晉級試煉</h3>
-                <p>綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
+                <h3 data-i18n="card-trial-title">階級晉級試煉</h3>
+                <p data-i18n="card-trial-desc">綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
             </div>
             
             <div class="idx-hub-card locked">
-                <div class="status-badge">【 賢者之石 】</div>
+                <div class="status-badge" data-i18n="badge-lock">賢者之石</div>
                 <div class="idx-icon-box">🤖</div>
-                <h3>賢者之識</h3>
-                <p>智慧核心：整合大語言模型（LLM）知識庫，自動化輔助生成全新標準化作業教材。</p>
+                <h3 data-i18n="card-sage-title">賢者之識</h3>
+                <p data-i18n="card-sage-desc">智慧核心：整合大語言模型（LLM）知識庫，自動化輔助生成全新標準化作業教材。</p>
             </div>
             
             <a href="talent_tree.html" class="idx-hub-card active">
-                <div class="status-badge">【 修煉星盤 】</div>
+                <div class="status-badge" data-i18n="badge-tree">修煉星盤</div>
                 <div class="idx-icon-box">🌿</div>
-                <h3>冒險者天賦樹</h3>
-                <p>RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
+                <h3 data-i18n="card-tree-title">冒險者天賦樹</h3>
+                <p data-i18n="card-tree-desc">RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
             </a>
             
             <div class="idx-hub-card locked">
-                <div class="status-badge">【 隨機地下城 】</div>
+                <div class="status-badge" data-i18n="badge-lock">隨機地下城</div>
                 <div class="idx-icon-box">🛡️</div>
                 <h3>隨機副本挑戰</h3>
                 <p>動態隨機題庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
             </div>
             
             <a href="Library.html" class="idx-hub-card active">
-                <div class="status-badge">【 大圖書館 】</div>
+                <div class="status-badge" data-i18n="badge-lib">大圖書館</div>
                 <div class="idx-icon-box">📚</div>
-                <h3>知識圖書館</h3>
-                <p>集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。</p>
+                <h3 data-i18n="card-library-title">知識圖書館</h3>
+                <p data-i18n="card-library-desc">集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。</p>
             </a>
             
         </div>
         
-        <footer style="margin-top: auto; padding: 30px 0; text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); font-family: monospace;">
-            <span>GUILD.REVISION: 0528-V3.5 | @2026 | OPERATOR: DANIEL SHIH</span>
+        <footer style="margin-top: auto; padding: 40px 0; text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); font-family: monospace;">
+            <span>GUILD.REVISION: 0528-V4.0 | @2026 | OPERATOR: DANIEL SHIH</span>
         </footer>
         
     </div>
 
-    <script src="global_ui.js"></script>
     <script>
+        const pageTranslations = {
+            tw: {
+                "badge-open": "全員開放", "badge-lock": "封印中", "badge-tree": "修煉星盤", "badge-lib": "大圖書館",
+                "home-logo-mark-text": "GUILD HQ / LEVEL 2026",
+                "home-main-title-text": "System TPM 公會總部",
+                "home-subtitle-text": "Daniel Shih | 2026 年度高效管理與團隊修煉套件",
+                "card-codex-title": "初心者寶典",
+                "card-codex-desc": "工廠基礎與 System TPM 基礎概括：點亮硬體世界觀第一步的核心知識大本營。",
+                "card-handbook-title": "冒險者手冊",
+                "card-handbook-desc": "功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。",
+                "card-tree-title": "冒險者天賦樹",
+                "card-tree-desc": "RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。",
+                "card-library-title": "知識圖書館",
+                "card-library-desc": "集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。",
+                "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者"
+            },
+            en: {
+                "badge-open": "UNLOCKED", "badge-lock": "STAGING", "badge-tree": "ATLAS TREE", "badge-lib": "LEXICON",
+                "home-logo-mark-text": "GUILD HQ / LEVEL 2026",
+                "home-main-title-text": "System TPM Guild",
+                "home-subtitle-text": "Daniel Shih | 2026 Tactical Management & Training Suite",
+                "card-codex-title": "Beginner's Codex",
+                "card-codex-desc": "Factory Foundations & System TPM Overviews: The core base camp for stepping into hardware cosmos.",
+                "card-handbook-title": "Adventurer's Handbook",
+                "card-handbook-desc": "Advanced Functional Modules: Deep-dive into IPX8, Precision Optics, FW Integration, and XFN mechanics.",
+                "card-tree-title": "Adventurer Talent Tree",
+                "card-tree-desc": "Visual Progression Matrix: Dynamically mapping and allocating completed nodes.",
+                "card-library-title": "Knowledge Library",
+                "card-library-desc": "Centralized archive storing historical systems design manifests, post-mortems, and scrolls.",
+                "auth-locked": "🔒 No Credentials", "rank-default": "Adventurer"
+            }
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
+            syncLanguageState(currentLang);
+        });
+
+        function syncLanguageState(lang) {
+            localStorage.setItem('tpm-lang-pref', lang);
+            
+            const twBtn = document.getElementById('global-btn-tw');
+            const enBtn = document.getElementById('global-btn-en');
+            if (twBtn && enBtn) {
+                twBtn.classList.remove('active');
+                enBtn.classList.remove('active');
+                document.getElementById(`global-btn-${lang}`).classList.add('active');
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (pageTranslations[lang][key]) {
+                    el.innerText = pageTranslations[lang][key];
+                }
+            });
+
+            document.getElementById('home-logo-mark-text').innerText = pageTranslations[lang]["home-logo-mark-text"];
+            document.getElementById('home-main-title-text').innerText = pageTranslations[lang]["home-main-title-text"];
+            document.getElementById('home-subtitle-text').innerText = pageTranslations[lang]["home-subtitle-text"];
+            document.title = pageTranslations[lang]["home-main-title-text"];
+
+            const cachedName = localStorage.getItem('tpm-user-name');
+            const cachedRank = localStorage.getItem('tpm-user-rank') || pageTranslations[lang]["rank-default"];
+            const profileCard = document.getElementById('global-user-profile-card');
+            const holder = document.getElementById('global-google-login-holder');
+
+            if (profileCard) {
+                if (cachedName) {
+                    profileCard.innerHTML = `👤 ${cachedRank}：${cachedName}`;
+                    if (holder) holder.style.display = 'none';
+                } else {
+                    profileCard.innerText = pageTranslations[lang]["auth-locked"];
+                    if (holder) holder.style.display = 'block';
+                }
+            }
+        }
+
+        function executeLangSwitch(lang) {
+            syncLanguageState(lang);
+        }
+
         function handlePortalLogin(response) {
             const payload = JSON.parse(decodeURIComponent(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')).split('').map(function(c) { return '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2); }).join('')));
             localStorage.setItem('tpm-user-email', payload.email);
             localStorage.setItem('tpm-user-name', payload.name);
-            if (typeof window.syncGlobalLanguageState === 'function') { 
-                syncGlobalLanguageState(localStorage.getItem('tpm-lang-pref') || 'tw'); 
-            }
+            syncLanguageState(localStorage.getItem('tpm-lang-pref') || 'tw');
         }
     </script>
 </body>
