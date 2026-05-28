@@ -8,18 +8,16 @@
 </head>
 <body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
-    <div style="display: flex; flex: 1; width: 100%; overflow: hidden;">
-        <aside id="shell-sidebar-area">
+    <div class="workspace-container">
+        <aside class="sidebar-panel" id="shell-sidebar-area">
             <div class="aside-header">
                 <button class="back-btn" onclick="exitToDashboardMenu()" style="width:100%; cursor:pointer;">↩ 返回寶典選單</button>
-                <div style="font-size: 0.8rem; font-weight: 900; font-family: monospace; color: var(--text-secondary);">ENGINE V1.5</div>
-                <h2 style="margin: 5px 0 0 0; font-weight: 900;">單元大綱</h2>
             </div>
             <ul class="chapter-list" id="dynamic-course-menu"></ul>
         </aside>
 
-        <main style="flex:1; height:100%; padding:40px; display:flex; flex-direction:column; overflow-y:auto;">
-            <div class="dashboard-view-hall" id="dashboard-menu-hall" style="padding:0;">
+        <main class="content-panel">
+            <div class="dashboard-view-hall" id="dashboard-menu-hall" style="width:100%;">
                 <div class="level-section">
                     <div class="level-title-divider">🌿 Level 1：基礎通識研修領域 (Foundations)</div>
                     <div class="dashboard-cards-grid" id="l1-cards-grid"></div>
@@ -76,14 +74,10 @@
                 injectContentPackScript(contentPackId);
             }
         }
-        
-        // 👑 核心修復：解析 1-1 到天賦樹 L1-A1 的映射漏洞，高亮金屬色塊
         function renderDashboardHallCards() {
             const grid = document.getElementById('l1-cards-grid'); grid.innerHTML = '';
             beginnerCourseManifest.forEach(course => {
-                const targetNodeId = "L1-A" + course.id.split('-')[1]; // 完美轉化 1-1 -> L1-A1
-                const savedGrade = localStorage.getItem(`talent-${targetNodeId}-grade`);
-                
+                const targetNodeId = "L1-A" + course.id.split('-')[1]; const savedGrade = localStorage.getItem(`talent-${targetNodeId}-grade`);
                 let medalClass = ""; let badgeText = "AVAILABLE"; let badgeColor = "border-color:var(--color-available); color:var(--color-available);";
                 if (course.isNew) { badgeText = "NEW"; badgeColor = "background:#EF4444; color:white; border-color:#000;"; }
                 if (savedGrade === "S") { medalClass = "medal-gold"; badgeText = "S 級過關"; } else if (savedGrade && savedGrade !== "Fail") { medalClass = "medal-silver"; badgeText = `${savedGrade} 級完工`; }
@@ -109,13 +103,12 @@
         }
         function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx; const course = codexCourseEngineData[cIdx]; const dotsBar = document.getElementById('universal-dots-bar'); dotsBar.innerHTML = '';
-            const isModuleCleared = localStorage.getItem(`codex-${course.courseId}-clear`) === 'true';
             if (examActive) {
-                document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block'; document.getElementById('quest-clear-stamp').style.display = 'none';
+                document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block';
                 course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; });
                 dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; runExamEngine();
             } else {
-                document.getElementById('textbook-viewport').style.display = 'block'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('quest-clear-stamp').style.display = isModuleCleared ? 'block' : 'none';
+                document.getElementById('textbook-viewport').style.display = 'block'; document.getElementById('exam-viewport').style.display = 'none';
                 activePageIdx = pIdx; const page = course.subPages[pIdx];
                 document.getElementById('current-chapter-id').innerText = `SECTION ${pIdx + 1} / ${course.subPages.length}`; document.getElementById('current-chapter-name').innerText = page.title; document.getElementById('lesson-content').innerText = page.text; document.getElementById('diagram-box').innerText = page.diagram;
                 course.subPages.forEach((_, sIdx) => { const dotActive = sIdx === pIdx ? "active" : ""; dotsBar.innerHTML += `<div class="slider-dot ${dotActive}" onclick="loadCourseState(${cIdx}, ${sIdx})"></div>`; });
@@ -145,6 +138,10 @@
             }
         }
         function setLang(lang) { if (document.getElementById('dashboard-menu-hall').style.display === 'block') { renderDashboardHallCards(); } }
+
+        window.onload = () => {
+            routeController();
+        };
     </script>
 </body>
 </html>
