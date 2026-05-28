@@ -8,18 +8,16 @@
 </head>
 <body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
-    <div style="display: flex; flex: 1; width: 100%; overflow: hidden;">
-        <aside id="shell-sidebar-area">
+    <div class="workspace-container">
+        <aside class="sidebar-panel" id="shell-sidebar-area">
             <div class="aside-header">
                 <button class="back-btn" onclick="exitToDashboardMenu()" style="width:100%; cursor:pointer;">↩ 返回手冊選單</button>
-                <div style="font-size: 0.8rem; font-weight: 900; font-family: monospace; color: var(--text-secondary);">ENGINE V1.6</div>
-                <h2 style="margin: 5px 0 0 0; font-weight: 900;">技術大綱</h2>
             </div>
             <ul class="chapter-list" id="dynamic-course-menu"></ul>
         </aside>
 
-        <main style="flex:1; height:100%; padding:40px; display:flex; flex-direction:column; overflow-y:auto;">
-            <div class="dashboard-view-hall" id="dashboard-menu-hall" style="padding:0;">
+        <main class="content-panel">
+            <div class="dashboard-view-hall" id="dashboard-menu-hall" style="width:100%;">
                 <div class="level-section">
                     <div class="level-title-divider">🌊 Level 2：進階跨功能技術支線 (Modules)</div>
                     <div class="dashboard-cards-grid" id="l2-cards-grid"></div>
@@ -98,13 +96,12 @@
         }
         function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx; const course = codexCourseEngineData[cIdx]; const dotsBar = document.getElementById('universal-dots-bar'); dotsBar.innerHTML = '';
-            const isModuleCleared = localStorage.getItem(`handbook-${course.courseId}-clear`) === 'true';
             if (examActive) {
-                document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block'; document.getElementById('quest-clear-stamp').style.display = 'none';
+                document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block';
                 course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; });
                 dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; runExamEngine();
             } else {
-                document.getElementById('textbook-viewport').style.display = 'block'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('quest-clear-stamp').style.display = isModuleCleared ? 'block' : 'none';
+                document.getElementById('textbook-viewport').style.display = 'block'; document.getElementById('exam-viewport').style.display = 'none';
                 activePageIdx = pIdx; const page = course.subPages[pIdx];
                 document.getElementById('current-chapter-id').innerText = `SECTION ${pIdx + 1} / ${course.subPages.length}`; document.getElementById('current-chapter-name').innerText = page.title; document.getElementById('lesson-content').innerText = page.text; document.getElementById('diagram-box').innerText = page.diagram;
                 course.subPages.forEach((_, sIdx) => { const dotActive = sIdx === pIdx ? "active" : ""; dotsBar.innerHTML += `<div class="slider-dot ${dotActive}" onclick="loadCourseState(${cIdx}, ${sIdx})"></div>`; });
@@ -119,7 +116,6 @@
             const qData = course.examVault[examCurrentQ]; document.getElementById('current-chapter-id').innerText = "EXAM MODE"; document.getElementById('current-chapter-name').innerText = "L2 進階技術位階大考"; document.getElementById('exam-counter').innerText = `第 ${examCurrentQ + 1} / ${course.examVault.length} 題`;
             const progressPct = (examCurrentQ / course.examVault.length) * 100; document.getElementById('exam-progress').style.width = `${progressPct}%`; document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
             const container = document.getElementById('exam-options-container'); container.innerHTML = '';
-            container.innerHTML = '';
             qData.o.forEach((opt, idx) => { container.innerHTML += `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`; });
         }
         function submitAnswer(idx) { const course = codexCourseEngineData[activeCourseIdx]; if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } examCurrentQ++; runExamEngine(); }
@@ -135,6 +131,10 @@
             }
         }
         function setLang(lang) { if (document.getElementById('dashboard-menu-hall').style.display === 'block') { renderDashboardHallCards(); } }
+
+        window.onload = () => {
+            routeController();
+        };
     </script>
 </body>
 </html>
