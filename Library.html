@@ -3,71 +3,465 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大圖書館文檔庫 | System TPM Knowledge Library</title>
-    <link rel="stylesheet" href="global_theme.css">
+    <title>大圖書館術語圖鑑庫 | Knowledge Lexicon Library</title>
+    
+    <style>
+        :root {
+            --bg-color: #FEF9E7;
+            --sidebar-cream: #FDF2D0;
+            --card-white: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-secondary: #475569;
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 5px 5px 0px #1A1A1A;
+            --radius-sm: 8px;
+            --color-locked: #94A3B8;
+            --color-available: #3B82F6;
+            --color-completed: #F59E0B;
+            --color-fail: #DC2626;
+            --tier-blue: #3B82F6;
+            --tier-gold: #F59E0B;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .tactical-navbar {
+            width: 100vw;
+            height: 85px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--border-heavy);
+            padding: 0 40px;
+            background-color: var(--bg-color);
+            flex-shrink: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .lang-switcher-wrapper {
+            display: flex;
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            padding: 2px;
+        }
+
+        .lang-btn-core {
+            width: 50px;
+            height: 35px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .lang-btn-core.active {
+            background: var(--text-main) !important;
+            color: white !important;
+        }
+
+        .auth-panel {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 900;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            white-space: nowrap;
+        }
+
+        .back-btn {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 15px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 900;
+            text-decoration: none;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            display: inline-block;
+            text-align: center;
+            min-width: 95px;
+        }
+
+        .back-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
+        }
+
+        /* 工作主框架 */
+        .workspace-container {
+            display: flex;
+            width: 100vw;
+            height: calc(100vh - 85px);
+            overflow: hidden;
+        }
+
+        .sidebar-panel {
+            width: 320px;
+            background-color: var(--sidebar-cream);
+            border-right: 4px solid var(--border-heavy);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            height: 100%;
+        }
+
+        .content-panel {
+            flex: 1;
+            height: 100%;
+            padding: 40px;
+            overflow-y: auto;
+            background-color: var(--card-white);
+        }
+
+        /* 類別導航按鈕 */
+        .category-btn {
+            background: var(--card-white);
+            border: 2px solid var(--border-heavy);
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.95rem;
+            text-align: left;
+            cursor: pointer;
+            margin-bottom: 5px;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            width: 100%;
+        }
+
+        .category-btn.active {
+            background: var(--text-main);
+            color: white;
+            box-shadow: 1px 1px 0px var(--border-heavy);
+        }
+
+        /* 圖鑑卡牌密排矩陣 */
+        .lib-lexicon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+
+        .lib-jargon-card {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            padding: 25px 20px;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px var(--border-heavy);
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            min-height: 150px;
+        }
+
+        .lib-jargon-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--text-main);
+            background-color: #FFFDF4;
+        }
+
+        .jargon-tag-box {
+            font-family: monospace;
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: var(--color-available);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .jargon-main-term {
+            font-size: 1.2rem;
+            font-weight: 900;
+        }
+
+        .jargon-sub-game-term {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* 遮罩彈窗 */
+        .dungeon-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 10px 10px 0px var(--border-heavy);
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
+            position: relative;
+        }
+
+        .modal-header {
+            background: var(--sidebar-cream);
+            padding: 20px 30px;
+            border-bottom: 3px solid var(--border-heavy);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            overflow-y: auto;
+            max-height: 70vh;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            font-weight: 900;
+        }
+
+        .lexicon-section-block {
+            border: 2px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            background: #FAFAFA;
+            margin-bottom: 15px;
+        }
+
+        .lexicon-block-label {
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: var(--text-secondary);
+            font-family: monospace;
+            border-bottom: 1px dashed var(--border-heavy);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .lexicon-block-text {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+    </style>
 </head>
-<body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
+<body>
+
+    <div class="tactical-navbar">
+        <div class="navbar-brand">
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.LEXICON_LIBRARY V4.0</span>
+            <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">大圖書館術語圖鑑庫</h1>
+        </div>
+        <div class="navbar-controls">
+            <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
+            <div class="lang-switcher-wrapper">
+                <button class="lang-btn-core" id="global-btn-tw" onclick="executeLangSwitch('tw')">TW</button>
+                <button class="lang-btn-core" id="global-btn-en" onclick="executeLangSwitch('en')">EN</button>
+            </div>
+            <a href="index.html" class="back-btn" id="global-nav-home-btn">首頁</a>
+        </div>
+    </div>
 
     <div class="workspace-container">
-        <aside class="sidebar-panel" style="width:280px;">
-            <button class="category-btn active" id="btn-all" onclick="filterLexicon('all')">【 顯示全部圖鑑 】</button>
-            <button class="category-btn" id="btn-abyss" onclick="filterLexicon('abyss')">⚙️ 物質製造 (工廠製程)</button>
-            <button class="category-btn" id="btn-pantheon" onclick="filterLexicon('pantheon')">🏛️ 核心研發 (研發設計)</button>
-            <button class="category-btn" id="btn-phantom" onclick="filterLexicon('phantom')">🔮 幻界物料 (供應鏈)</button>
+        
+        <aside class="sidebar-panel">
+            <button class="category-btn active" id="btn-all" onclick="filterLexicon('all')" data-i18n="cat-all">【 顯示全部圖鑑 】</button>
+            <button class="category-btn" id="btn-abyss" onclick="filterLexicon('abyss')" data-i18n="cat-abyss">⚙️ 物質製造 (工廠製程)</button>
+            <button class="category-btn" id="btn-pantheon" onclick="filterLexicon('pantheon')" data-i18n="cat-pantheon">🏛️ 核心研發 (研發設計)</button>
+            <button class="category-btn" id="btn-phantom" onclick="filterLexicon('phantom')" data-i18n="cat-phantom">🔮 供應鏈採購 (供應鏈)</button>
         </aside>
 
         <main class="content-panel">
-            <div class="jargon-lexicon-grid" id="lexicon-canvas"></div>
+            <div class="lib-lexicon-grid" id="lexicon-canvas"></div>
         </main>
+        
     </div>
 
     <div id="lexicon-modal" class="dungeon-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div><span id="modal-jargon-tag" style="font-family: monospace; font-weight: 900; color: var(--tier-blue);">TAG</span><h2 id="modal-jargon-term" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">專有名詞</h2></div>
+                <div>
+                    <span id="modal-jargon-tag" style="font-family: monospace; font-weight: 900; color: var(--tier-blue);">TAG</span>
+                    <h2 id="modal-jargon-term" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">專有名詞</h2>
+                </div>
                 <button class="close-btn" onclick="closeLexicon()">✕</button>
             </div>
             <div class="modal-body">
                 <div class="lexicon-section-block" style="background-color: #FFFDF2; border-color: var(--tier-gold);">
-                    <div class="lexicon-block-label" style="color: #B45309;">🌌 經驗故事包裝 (Guild Lore)</div>
+                    <div class="lexicon-block-label" data-i18n="modal-lore-label">🌌 實務情境案例解說 (Technical Lore)</div>
                     <div id="modal-jargon-lore" class="lexicon-block-text" style="color: #B45309; font-weight: 800;"></div>
                 </div>
                 <div class="lexicon-section-block">
-                    <div class="lexicon-block-label">📘 正統實務工程學定義 (Technical Definition)</div>
+                    <div class="lexicon-block-label" data-i18n="modal-def-label">📘 正統實務工程學定義 (Technical Definition)</div>
                     <div id="modal-jargon-def" class="lexicon-block-text"></div>
                 </div>
                 <div class="lexicon-section-block" style="background-color: #FEF2F2; border-color: #EF4444;">
-                    <div class="lexicon-block-label" style="color: #B91C1C;">🔥 歷代英雄血淚戰役史詩 (Lessons Learned / Post-Mortem)</div>
+                    <div class="lexicon-block-label" style="color: #B91C1C;" data-i18n="modal-lessons-label">🔥 歷代專案經驗教訓歷史文檔 (Lessons Learned / Post-Mortem)</div>
                     <div id="modal-jargon-lessons" class="lexicon-block-text" style="line-height: 1.6;"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="global_ui.js"></script>
     <script>
+        const globalUiTranslations = {
+            tw: { 
+                "nav-home": "首頁", "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者", "title": "大圖書館術語圖鑑庫",
+                "cat-all": "【 顯示全部圖鑑 】", "cat-abyss": "⚙️ 物質製造 (工廠製程)", "cat-pantheon": "🏛️ 核心研發 (研發設計)", "cat-phantom": "🔮 供應鏈採購 (供應鏈)",
+                "modal-lore-label": "🌌 實務情境案例解說 (Technical Lore)", "modal-def-label": "📘 正統實務工程學定義 (Technical Definition)", "modal-lessons-label": "🔥 歷代專案經驗教訓歷史文檔 (Lessons Learned)"
+            },
+            en: { 
+                "nav-home": "Home", "auth-locked": "🔒 No Credentials", "rank-default": "Adventurer", "title": "Knowledge Lexicon Library",
+                "cat-all": "[ Show All Lexicons ]", "cat-abyss": "⚙️ Factory Process", "cat-pantheon": "🏛️ R&D Design", "cat-phantom": "🔮 Supply Chain",
+                "modal-lore-label": "🌌 Technical Practical Lore", "modal-def-label": "📘 Industry Standard Definition", "modal-lessons-label": "🔥 Project Post-Mortem Records"
+            }
+        };
+
         const libraryLexicon = [
-            { id: "J-01", category: "abyss", tag: "FATP / Process", term: "FPY (直通率)", en: "First Pass Yield", gameTerm: "純淨血統鐵律", lore: "【純淨血統鐵律】一個產品在流水線中，完全沒有重工修復、一氣耗成順利通關的完美機率。", def: "First Pass Yield。第一次就製造出合格產品的比例。公式為：(不需重工合格數 / 投入總數) × 100%。", lessons: "某手機試產良率 98%，但 FPY 只有 45%！代表過半都是手工重修三次勉強過關。運到市場開箱 DOA 良率炸裂。確立鐵律：不斬良率，只斬直通率！" },
-            { id: "J-02", category: "abyss", tag: "SMT / Production", term: "AOI (自動光學檢測)", en: "Automated Optical Inspection", gameTerm: "第一審判之門", lore: "【第一審判之門】架設在 SMT 火山熔爐出口，毫秒間高速掃描主板是否有印歪、短路 or 偏移浮起。", def: "Automated Optical Inspection。利用光學攝影機與影像演算法，自動檢測 PCBA 上零件的缺件、墓碑（Tombstoning）、短路等外觀缺陷。", lessons: "EVT 出現集體電阻浮起（墓碑效應）。工廠堅持是設計問題，TPM 調閱第一道審判（SPI 錫膏檢查）與 AOI 數據，精確抓到是鋼網（Stencil）厚度磨損。工廠當場認賠。" }
+            { id: "J-01", category: "abyss", tag: "FATP / Process", term: "FPY (直通率)", en: "First Pass Yield", gameTerm: "製造防線鐵律", lore: "一個產品在流水線中，完全沒有重工修復、一氣合成順利通關的完美機率。", def: "First Pass Yield。第一次就製造出合格產品的比例。公式為：(不需重工合格數 / 投入總數) × 100%。", lessons: "某手機試產良率 98%，但 FPY 只有 45%！代表過半都是手工重修三次勉強過關。運到市場開箱 DOA 良率炸裂。確立鐵律：不斬良率，只斬直通率！" },
+            { id: "J-02", category: "abyss", tag: "SMT / Production", term: "AOI (自動光學檢測)", en: "Automated Optical Inspection", gameTerm: "第一審判之門", lore: "架設在 SMT 火山熔爐出口，毫秒間高速掃描主板是否有印歪、短路 or 偏移浮起。", def: "Automated Optical Inspection。利用光學攝影機與影像演算法，自動檢測 PCBA 上零件的缺件、墓碑（Tombstoning）、短路等外觀缺陷。", lessons: "EVT 出現集體電阻浮起（墓碑效應）。工廠堅持是設計問題，TPM 調閱第一道審判（SPI 錫膏檢查）與 AOI 數據，精確抓到是鋼網（Stencil）厚度磨損。工廠當場認賠經營。" },
+            { id: "J-03", category: "pantheon", tag: "Design / CMF", term: "Anodization (陽極氧化)", en: "Anodization", gameTerm: "表面保護皮層", lore: "利用電化學製程，在鋁合金骨架表面形成一層高硬度、抗刮、且能吸附色彩的防禦皮層。", def: "一種電化學製程，將金屬（主要是鋁合金）物件作為陽極，置於電解液中施加電流，使其表面形成一層具保護性與裝飾性的氧化膜。涉及極度敏感的酸鹼度、電流工藝控制。", lessons: "設計師要求高階無人機外殼必須呈現深邃極光藍。然而工廠回報：該陽極氧化藥水在量產線上的色差（Delta E）極難控制，直通率雪崩。TPM 緊急介入，在圖紙端妥協微調噴砂顆粒度（120號改為150號），增加光線漫反射，完美遮蓋色差，拯救了大量生產時程。" },
+            { id: "J-04", category: "phantom", tag: "Supply Chain / Logistics", term: "Lead Time (料期沙漏)", en: "Lead Time", gameTerm: "下單到交貨時程", lore: "指的是從你向廠商下達下單指令那一刻起，到零件原料真正送進代工廠倉庫，所需耗費的時間總長度。", def: "從訂單確認下達，到物料或成品實際交付到指定地點的這段總時間。包含晶圓排產、封裝測試、跨國海空運通關時間。在晶圓或感測器晶片上，長料期通常高達 12 至 16 週。", lessons: "某次 DVT 階段前夕，晶圓廠遭遇地震，特定光學 IC 的 Lead Time 瞬間暴增一倍。TPM 大膽決定：試產不延期，前半段空板（Dummy Board）上線過爐，等 4 週後晶片運抵，再在工廠後段架設手工專屬工位（Rework Station）進行後補後焊。專案因此毫秒未差，如期 Exit！" }
         ];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
+            syncNavbarState(currentLang);
+        });
+
+        function syncNavbarState(lang) {
+            localStorage.setItem('tpm-lang-pref', lang);
+            document.getElementById('global-nav-home-btn').innerText = globalUiTranslations[lang]["nav-home"];
+            document.getElementById('global-inject-title').innerText = globalUiTranslations[lang]["title"];
+            document.title = globalUiTranslations[lang]["title"];
+
+            const twBtn = document.getElementById('global-btn-tw');
+            const enBtn = document.getElementById('global-btn-en');
+            if (twBtn && enBtn) {
+                twBtn.classList.remove('active');
+                enBtn.classList.remove('active');
+                document.getElementById(`global-btn-${lang}`).classList.add('active');
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (globalUiTranslations[lang][key]) el.innerText = globalUiTranslations[lang][key];
+            });
+
+            const cachedName = localStorage.getItem('tpm-user-name');
+            const cachedRank = localStorage.getItem('tpm-user-rank') || globalUiTranslations[lang]["rank-default"];
+            const profileCard = document.getElementById('global-user-profile-card');
+            if (profileCard) {
+                if (cachedName) {
+                    profileCard.innerHTML = `👤 ${cachedRank}：${cachedName}`;
+                } else {
+                    profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
+                }
+            }
+
+            renderLexicon(libraryLexicon);
+        }
+
+        function executeLangSwitch(lang) {
+            syncNavbarState(lang);
+        }
+
         function renderLexicon(data) {
-            const canvas = document.getElementById('lexicon-canvas'); canvas.innerHTML = '';
+            const canvas = document.getElementById('lexicon-canvas');
+            canvas.innerHTML = '';
             data.forEach(item => {
-                canvas.innerHTML += `<div class="jargon-card" onclick="openLexiconDetail('${item.id}')"><div class="jargon-tag-box">🏷️ ${item.tag}</div><div class="jargon-main-term">${item.term}</div><div class="jargon-sub-game-term">(${item.gameTerm})</div><div style="font-family: monospace; font-size: 0.7rem; opacity: 0.5; margin-top: 10px; text-transform: uppercase;">${item.en}</div></div>`;
+                canvas.innerHTML += `
+                    <div class="lib-jargon-card" onclick="openLexiconDetail('${item.id}')">
+                        <div class="jargon-tag-box">🏷️ ${item.tag}</div>
+                        <div class="jargon-main-term">${item.term}</div>
+                        <div class="jargon-sub-game-term">(${item.gameTerm})</div>
+                        <div style="font-family: monospace; font-size: 0.7rem; opacity: 0.5; margin-top: 10px; text-transform: uppercase;">${item.en}</div>
+                    </div>
+                `;
             });
         }
+
         function filterLexicon(category) {
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            let btnId = category === 'all' ? 'btn-all' : 'btn-' + category; const tgtBtn = document.getElementById(btnId); if(tgtBtn) tgtBtn.classList.add('active');
-            if (category === 'all') { renderLexicon(libraryLexicon); } else { renderLexicon(libraryLexicon.filter(item => item.category === category)); }
+            let btnId = category === 'all' ? 'btn-all' : 'btn-' + category;
+            const tgtBtn = document.getElementById(btnId);
+            if(tgtBtn) tgtBtn.classList.add('active');
+            
+            if (category === 'all') { 
+                renderLexicon(libraryLexicon); 
+            } else { 
+                renderLexicon(libraryLexicon.filter(item => item.category === category)); 
+            }
         }
+
         function openLexiconDetail(id) {
-            const data = libraryLexicon.find(item => item.id === id); if (!data) return;
-            document.getElementById('modal-jargon-tag').innerText = `🏷️ ${data.tag} [ ${data.en} ]`; document.getElementById('modal-jargon-term').innerText = data.term; document.getElementById('modal-jargon-lore').innerText = data.lore; document.getElementById('modal-jargon-def').innerText = data.def; document.getElementById('modal-jargon-lessons').innerText = data.lessons;
+            const data = libraryLexicon.find(item => item.id === id);
+            if (!data) return;
+            document.getElementById('modal-jargon-tag').innerText = `🏷️ ${data.tag} [ ${data.en} ]`;
+            document.getElementById('modal-jargon-term').innerText = data.term;
+            document.getElementById('modal-jargon-lore').innerText = data.lore;
+            document.getElementById('modal-jargon-def').innerText = data.def;
+            document.getElementById('modal-jargon-lessons').innerText = data.lessons;
             document.getElementById('lexicon-modal').style.display = 'flex';
         }
-        function closeLexicon() { document.getElementById('lexicon-modal').style.display = 'none'; }
-        function setLang(lang) { renderLexicon(libraryLexicon); }
+
+        function closeLexicon() {
+            document.getElementById('lexicon-modal').style.display = 'none';
+        }
     </script>
 </body>
 </html>
