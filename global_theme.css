@@ -1,9 +1,9 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-05-28 V3.2: 👑 終極優化：校正全域字體層級比例與行高，追加動態 CSS 流程圖組件美學變數，銲死點點導航防線。
-2026-05-28 V3.1: 修正偏位：補回漏失的底層巨型浮水印樣式，並綁定隔離命名空間 .idx-bg-watermark。
-2026-05-28 V3.0: 徹底實施命名空間絕對隔離，銲死返回按鈕與語系按鈕防偏位防線。
+2026-05-28 V3.3: 👑 結構重組：為課程與手冊大廳加裝內部二級子選單 (.cdx-sub-nav) 戰術美學變數，排除任何堆疊擠壓。
+2026-05-28 V3.2: 校正全域字體比例與行高，追加 CSS 動態流程圖組件樣式，銲死導航防線。
+2026-05-28 V3.1: 補回漏失的底層獨立隔離命名空間巨型浮水印樣式 .idx-bg-watermark。
 ========================================================================
 */
 
@@ -16,29 +16,20 @@ REVISION HISTORY / VERSION LOG
     --border-heavy: #1A1A1A;
     --shadow-tactical: 5px 5px 0px #1A1A1A; 
     --radius-sm: 8px;
-    
     --color-locked: #94A3B8; 
     --color-available: #3B82F6; 
     --color-completed: #F59E0B;
     --color-fail: #DC2626;
-    --tier-blue: #3B82F6;
-    --tier-gold: #F59E0B;
 }
 
-/* ================= 🧱 基礎全域剛性骨架 ================= */
 html, body {
     margin: 0; padding: 0; width: 100vw; height: 100vh;
     overflow: hidden; background-color: var(--bg-color);
     font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
 }
 
-* { 
-    box-sizing: border-box; 
-    font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; 
-    color: var(--text-main); 
-}
+* { box-sizing: border-box; }
 
-/* 頂部導航控制列 */
 .tactical-navbar {
     width: 100vw; height: 85px; display: flex; justify-content: space-between;
     align-items: center; border-bottom: 4px solid var(--border-heavy); padding: 0 40px;
@@ -47,63 +38,28 @@ html, body {
 .navbar-brand { display: flex; flex-direction: column; }
 .navbar-controls { display: flex; align-items: center; gap: 15px; }
 
-/* 首頁專屬獨立控制列 */
-.index-floating-controls {
-    position: absolute; top: 30px; right: 40px; display: flex;
-    align-items: center; gap: 15px; z-index: 2000;
-}
+.index-floating-controls { position: absolute; top: 30px; right: 40px; display: flex; align-items: center; gap: 15px; z-index: 2000; }
+.workspace-container { display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden; }
+.single-pane-canvas { width: 100vw; height: calc(100vh - 85px); overflow-y: auto; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+.index-canvas { width: 100vw; height: 100vh; overflow-y: auto; padding: 40px; display: flex; flex-direction: column; align-items: center; position: relative; }
 
-/* 雙區塊工作主框架 */
-.workspace-container {
-    display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden;
-}
-/* 單區塊滾動框架 */
-.single-pane-canvas {
-    width: 100vw; height: calc(100vh - 85px); overflow-y: auto; padding: 40px;
-    display: flex; flex-direction: column; align-items: center;
-}
-.index-canvas {
-    width: 100vw; height: 100vh; overflow-y: auto; padding: 40px;
-    display: flex; flex-direction: column; align-items: center; position: relative;
-}
-
-/* 共用組件定義區 */
 .lang-switcher-wrapper { display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; }
 .lang-btn-core { width: 50px; height: 35px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; border-radius: 4px; }
 .lang-btn-core.active { background: var(--text-main) !important; color: white !important; }
 .auth-panel { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); white-space: nowrap; }
-
 .back-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 15px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); display: inline-block; text-align: center; min-width: 95px; }
 .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
 
-.dungeon-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-.modal-content { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); width: 100%; max-width: 650px; box-shadow: 10px 10px 0px var(--border-heavy); display: flex; flex-direction: column; overflow: visible; position: relative; }
-.modal-header { background: var(--sidebar-cream); padding: 20px 30px; border-bottom: 3px solid var(--border-heavy); display: flex; justify-content: space-between; align-items: center; }
-.modal-body { padding: 30px; display: flex; flex-direction: column; gap: 25px; overflow-y: auto; max-height: 70vh; }
-.teleport-gate-btn { background: #FDE047; border: 3px solid var(--border-heavy); padding: 16px; border-radius: var(--radius-sm); width: 100%; font-size: 1.1rem; font-weight: 900; text-align: center; cursor: pointer; box-shadow: 4px 4px 0px var(--border-heavy); text-decoration: none; display: block; }
-.teleport-gate-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--border-heavy); }
-.close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; font-weight: 900; }
-
-/* 右上角勳章蓋章 */
-.talent-grade-sticker-case { position: absolute; top: -25px; right: -25px; display: none; z-index: 3000; animation: stickerPasted 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-@keyframes stickerPasted { from { transform: scale(0) rotate(15deg); opacity: 0; } to { transform: scale(1) rotate(-8deg); opacity: 1; } }
-.talent-grade-stamp { width: 110px; height: 110px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Impact', sans-serif; font-size: 3rem; font-weight: 900; line-height: 1; text-shadow: 3px 3px 0px rgba(0,0,0,0.1); transform: rotate(-8deg); }
-.case-S .talent-grade-stamp { background-color: #FFFDF2; border: 6px double var(--color-completed); color: var(--color-completed); box-shadow: 5px 5px 0px rgba(180, 83, 9, 0.15), inset 0 0 15px rgba(245, 158, 11, 0.2); }
-.case-FAIL .talent-grade-stamp { background-color: #FEF2F2; border: 6px dashed var(--color-fail); color: var(--color-fail); box-shadow: 5px 5px 0px rgba(185, 28, 28, 0.15), inset 0 0 15px rgba(220, 38, 37, 0.2); font-family: monospace; font-size: 1.4rem; letter-spacing: -1px; }
-
-/* ================= 🗺️ 課程/手冊 專用隔離樣式表 (前綴 .cdx-) ================= */
-.cdx-workspace { display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden; }
-.cdx-sidebar { width: 340px; background-color: var(--sidebar-cream); border-right: 4px solid var(--border-heavy); padding: 30px 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; flex-shrink: 0; height: 100%; }
+.sidebar-panel { width: 340px; background-color: var(--sidebar-cream); border-right: 4px solid var(--border-heavy); padding: 30px 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; flex-shrink: 0; height: 100%; }
 .cdx-sidebar-header { border-bottom: 3px solid var(--border-heavy); padding-bottom: 15px; margin-bottom: 10px; }
-.cdx-main-content { flex: 1; height: 100%; padding: 40px; overflow-y: auto; background-color: var(--card-white); display: flex; flex-direction: column; }
-.cdx-chapter-tab { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 12px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); font-weight: 900; font-size: 0.9rem; }
-.cdx-chapter-tab.active { background: var(--text-main) !important; color: white !important; }
-.cdx-chapter-tab.active * { color: white !important; }
+.content-panel { flex: 1; height: 100%; padding: 35px 40px; overflow: hidden; background-color: var(--card-white); display: flex; flex-direction: column; }
+.chapter-list { list-style: none; padding: 0; margin: 0; }
+.chapter-tab { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 12px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); font-weight: 900; font-size: 0.9rem; }
+.chapter-tab.active { background: var(--text-main) !important; color: white !important; }
+.chapter-tab.active * { color: white !important; }
 
-/* 👑 修正：解鎖預設隱藏，由 JS 動態切換大廳與閱讀空間 */
 .dashboard-view-hall, .document-canvas, .exam-session-box, .sub-pagination-dots-zone { display: none; }
 
-/* 大廳卡牌網格 */
 .level-section { margin-bottom: 45px; width: 100%; }
 .level-title-divider { font-size: 1.5rem; font-weight: 900; border-bottom: 3px solid var(--border-heavy); padding-bottom: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
 .cdx-dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; width: 100%; }
@@ -113,43 +69,42 @@ html, body {
 
 .cdx-chapter-tab.medal-gold, .cdx-dashboard-card.medal-gold { background: linear-gradient(135deg, #FFFDF4 0%, #FDE047 100%) !important; border-color: #B45309 !important; box-shadow: 4px 4px 0px #B45309 !important; }
 .cdx-chapter-tab.medal-gold *, .cdx-dashboard-card.medal-gold * { color: #B45309 !important; }
-.cdx-chapter-tab.medal-silver, .cdx-dashboard-card.medal-silver { background: linear-gradient(135deg, #F8FAFC 0%, #CBD5E1 100%) !important; border-color: #475569 !important; box-shadow: 4px 4px 0px #475569 !important; }
-.cdx-chapter-tab.medal-silver *, .cdx-dashboard-card.medal-silver * { color: #475569 !important; }
 
-/* 👑 修正：內文分頁引導小點點專用樣式表 */
-.sub-pagination-dots-zone { display: none; justify-content: center; align-items: center; gap: 14px; padding: 25px 0; width: 100%; flex-shrink: 0; margin-top: auto; }
+.sub-pagination-dots-zone { display: none; justify-content: center; align-items: center; gap: 14px; padding: 15px 0; width: 100%; flex-shrink: 0; margin-top: auto; border-top: 2px dashed #E2E8F0; }
 .slider-dot { width: 14px; height: 14px; border: 3px solid var(--border-heavy); border-radius: 50%; background: #FFF; cursor: pointer; transition: all 0.1s; }
 .slider-dot.active { background: var(--text-main); transform: scale(1.2); }
 .slider-dot.exam-dot { border-color: #DC2626; background: #FEF2F2; font-size: 9px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #B91C1C; }
 .slider-dot.exam-dot.active { background: #DC2626; color: #FFF; }
 
-/* 大考會場面板 */
-.exam-session-box { border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 35px; background: #FFFDF4; box-shadow: var(--shadow-tactical); width: 100%; }
+.exam-session-box { border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 35px; background: #FFFDF4; box-shadow: var(--shadow-tactical); width: 100%; overflow-y:auto; }
 .exam-progress-bar { width: 100%; background: #E2E8F0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 25px; border: 1.5px solid #000; }
 .exam-progress-fill { height: 100%; background: var(--color-available); width: 0%; transition: width 0.2s; }
 .option-card { background: #FFF; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 14px; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0px #000; transition: all 0.1s; }
 .option-card:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px #000; background: var(--sidebar-cream); }
 
-/* 👑 需求重構：硬派 Neubrutalism 純 CSS 動態流程圖組件樣式表 👑 */
-.dynamic-flow-canvas {
-    display: flex; align-items: center; justify-content: center; gap: 15px; 
-    background: #F8FAFC; border: 2px dashed var(--color-locked); padding: 25px; 
-    border-radius: var(--radius-sm); margin: 25px 0; width: 100%; overflow-x: auto;
+/* 👑 需求整改：二級內部子選單互動導航條樣式表 👑 */
+.cdx-sub-nav-bar {
+    display: flex; gap: 12px; width: 100%; margin-bottom: 20px;
+    border-bottom: 3px solid var(--border-heavy); padding-bottom: 12px; flex-shrink: 0;
 }
-.flow-node-block {
-    background: #FFF; border: 2px solid var(--border-heavy); padding: 12px 18px;
-    border-radius: var(--radius-sm); font-weight: 900; font-size: 0.9rem;
-    box-shadow: 3px 3px 0px var(--border-heavy); white-space: nowrap; text-align: center;
+.sub-nav-btn {
+    background: #FFF; border: 2px solid var(--border-heavy); padding: 8px 16px;
+    border-radius: var(--radius-sm); font-weight: 900; font-size: 0.85rem; cursor: pointer;
+    box-shadow: 2px 2px 0px var(--border-heavy); transition: all 0.1s;
 }
-.flow-node-block.highlight {
-    background: linear-gradient(135deg, #FFFDF2 0%, #FDE047 100%);
-    border-color: #B45309; box-shadow: 3px 3px 0px #B45309; color: #B45309;
-}
-.flow-arrow-split {
-    font-weight: 900; font-size: 1.2rem; color: var(--text-secondary); user-select: none;
+.sub-nav-btn.active {
+    background: #FDE047; color: var(--text-main); transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px var(--border-heavy);
 }
 
-/* ================= 🌿 天賦樹 專用隔離樣式表 (前綴 .tree-) ================= */
+/* 閱讀滾動區範圍優化 */
+.textbook-scroll-box { flex: 1; overflow-y: auto; padding-right: 8px; width: 100%; }
+
+.dynamic-flow-canvas { display: flex; align-items: center; justify-content: flex-start; gap: 12px; background: #F8FAFC; border: 2px dashed var(--color-locked); padding: 20px; border-radius: var(--radius-sm); margin: 15px 0; width: 100%; overflow-x: auto; flex-shrink: 0; }
+.flow-node-block { background: #FFF; border: 2px solid var(--border-heavy); padding: 10px 14px; border-radius: var(--radius-sm); font-weight: 900; font-size: 0.85rem; box-shadow: 2px 2px 0px var(--border-heavy); white-space: nowrap; text-align: center; }
+.flow-node-block.highlight { background: linear-gradient(135deg, #FFFDF2 0%, #FDE047 100%); border-color: #B45309; box-shadow: 2px 2px 0px #B45309; color: #B45309; }
+.flow-arrow-split { font-weight: 900; font-size: 1rem; color: var(--text-secondary); user-select: none; }
+
 .tree-main-canvas { width: 100vw; height: calc(100vh - 85px); overflow-y: auto; padding: 40px; display: flex; flex-direction: column; align-items: center; }
 .tree-map-wrapper { width: 100%; background: var(--card-white); border: 4px solid var(--border-heavy); border-radius: 12px; padding: 60px 40px; box-shadow: var(--shadow-tactical); display: none; flex-direction: column; align-items: center; position: relative; }
 .tree-map-wrapper.active { display: flex; }
@@ -158,14 +113,7 @@ html, body {
 .tree-row::after { content: ''; position: absolute; bottom: -70px; left: 50%; width: 4px; height: 70px; background: var(--border-heavy); z-index: 1; }
 .tree-row:last-child::after { display: none; }
 
-.tree-node-circle { 
-    width: 150px; height: 150px; background: var(--card-white); 
-    border: 4px double var(--color-locked); border-radius: 50%; 
-    display: flex; flex-direction: column; align-items: center; justify-content: center; 
-    cursor: pointer; position: relative; text-align: center; padding: 15px; 
-    box-shadow: 4px 4px 0px var(--color-locked); z-index: 5;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+.tree-node-circle { width: 150px; height: 150px; background: var(--card-white); border: 4px double var(--color-locked); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; text-align: center; padding: 15px; box-shadow: 4px 4px 0px var(--color-locked); z-index: 5; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .tree-node-circle.locked { background: #F1F5F9; border-color: var(--color-locked); cursor: not-allowed; }
 .tree-node-circle.locked * { color: #64748B; }
 .tree-node-circle.available { border: 4px solid var(--color-available); background: #EFF6FF; box-shadow: 4px 4px 0px var(--color-available); }
@@ -175,7 +123,6 @@ html, body {
 .tree-node-circle.completed * { color: #B45309; }
 .tree-node-circle.completed:hover { transform: translateY(-4px); box-shadow: 6px 6px 0px var(--color-completed); }
 
-/* ================= 📚 大圖書館 專用隔離樣式表 (前綴 .lib-) ================= */
 .lib-workspace { display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden; }
 .lib-sidebar { width: 280px; background-color: var(--sidebar-cream); border-right: 4px solid var(--border-heavy); padding: 25px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; flex-shrink: 0; }
 .lib-content-canvas { flex: 1; height: 100%; padding: 40px; overflow-y: auto; background-color: var(--card-white); }
@@ -183,7 +130,6 @@ html, body {
 .lib-jargon-card { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 25px 20px; cursor: pointer; box-shadow: 4px 4px 0px var(--border-heavy); transition: all 0.15s; display: flex; flex-direction: column; min-height: 150px; }
 .lib-jargon-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--text-main); background-color: #FFFDF4; }
 
-/* ================= 🏛️ 總部首頁 專用隔離樣式表 (前綴 .idx-) ================= */
 .idx-canvas-full { width: 100vw; height: 100vh; overflow-y: auto; padding: 40px; display: flex; flex-direction: column; align-items: center; position: relative; }
 .idx-floating-controls { position: absolute; top: 30px; right: 40px; display: flex; align-items: center; gap: 15px; z-index: 2000; }
 .idx-hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; padding: 10px 40px 40px 40px; }
@@ -192,10 +138,4 @@ html, body {
 .idx-hub-card.locked { background: repeating-linear-gradient(45deg, #FFFDF9, #FFFDF9 10px, #FDF2D0 10px, #FDF2D0 20px); opacity: 0.5; cursor: not-allowed; }
 .idx-icon-box { width: 55px; height: 55px; background: var(--bg-color); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 25px; font-size: 1.8rem; }
 .idx-hub-card.active .idx-icon-box { background: #FDE047; }
-
-.idx-bg-watermark { 
-    position: fixed; bottom: 20px; right: 20px; 
-    font-size: 10rem; font-weight: 900; 
-    color: rgba(253, 242, 208, 0.4); z-index: -1; 
-    user-select: none; font-family: monospace; pointer-events: none;
-}
+.idx-bg-watermark { position: fixed; bottom: 20px; right: 20px; font-size: 10rem; font-weight: 900; color: rgba(253, 242, 208, 0.4); z-index: -1; user-select: none; font-family: monospace; pointer-events: none; }
