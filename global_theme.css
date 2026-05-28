@@ -1,6 +1,6 @@
 /**
  * System TPM Guild - Global Design System StyleSheet
- * 定版代碼代號: 0528-V2.1 // 語法嚴格校正、全綠燈定格版
+ * 定版代碼代號: 0528-V2.2 // 全域編譯防錯、Neubrutalism 戰術美學定格版
  */
 
 :root {
@@ -57,7 +57,7 @@ html, body {
     display: flex; flex-direction: column; align-items: center; position: relative;
 }
 
-/* ================= 📂 共通組件定義區 ================= */
+/* 共用組件定義區 */
 .lang-switcher-wrapper { display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; }
 .lang-btn-core { width: 50px; height: 35px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; border-radius: 4px; }
 .lang-btn-core.active { background: var(--text-main) !important; color: white !important; }
@@ -65,7 +65,7 @@ html, body {
 .back-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 15px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); display: inline-block; text-align: center; min-width: 90px; }
 .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
 
-/* ================= 🗺️ 課程/手冊 專屬風格線體 ================= */
+/* 課程/手冊 專屬風格線體 */
 .sidebar-panel { width: 340px; background-color: var(--sidebar-cream); border-right: 4px solid var(--border-heavy); padding: 30px 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; flex-shrink: 0; height: 100%; }
 .aside-header { border-bottom: 3px solid var(--border-heavy); padding-bottom: 15px; margin-bottom: 10px; }
 .content-panel { flex: 1; height: 100%; padding: 40px; overflow-y: auto; background-color: var(--card-white); display: flex; flex-direction: column; }
@@ -75,7 +75,6 @@ html, body {
 .chapter-tab.active * { color: white !important; }
 
 /* 大廳卡牌 */
-.dashboard-view-hall { width: 100%; flex: 1; display: none; }
 .level-section { margin-bottom: 45px; width: 100%; }
 .level-title-divider { font-size: 1.5rem; font-weight: 900; border-bottom: 3px solid var(--border-heavy); padding-bottom: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
 .dashboard-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; width: 100%; }
@@ -88,12 +87,12 @@ html, body {
 .chapter-tab.medal-silver, .dashboard-card.medal-silver { background: linear-gradient(135deg, #F8FAFC 0%, #CBD5E1 100%) !important; border-color: #475569 !important; box-shadow: 4px 4px 0px #475569 !important; }
 .chapter-tab.medal-silver *, .dashboard-card.medal-silver * { color: #475569 !important; }
 
-/* ================= 🌿 天賦樹 專屬排版防線 ================= */
+/* 天賦樹路徑 */
 .tree-tier-nav { display: flex; justify-content: center; gap: 15px; width: 100%; margin-bottom: 30px; }
 .tier-tab-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 900; font-size: 1rem; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); }
 .tier-tab-btn.active { background: var(--text-main); color: white; box-shadow: 1px 1px 0px var(--border-heavy); }
 
-/* ================= 📚 大圖書館 圖鑑卡牌 ================= */
+/* 大圖書館 圖鑑卡牌 */
 .category-btn { background: var(--card-white); border: 2px solid var(--border-heavy); padding: 14px 18px; border-radius: var(--radius-sm); font-weight: 900; font-size: 0.95rem; text-align: left; cursor: pointer; margin-bottom: 15px; box-shadow: 3px 3px 0px var(--border-heavy); width: 100%; }
 .category-btn.active { background: var(--text-main); color: white; box-shadow: 1px 1px 0px var(--border-heavy); }
 .jargon-lexicon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; width: 100%; }
@@ -103,15 +102,13 @@ html, body {
 .jargon-main-term { font-size: 1.2rem; font-weight: 900; }
 .jargon-sub-game-term { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin-top: 4px; }
 
-/* ================= 🏛️ 總部首頁 專屬卡牌矩陣 ================= */
+/* 總部首頁 專屬卡牌 */
 .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; padding: 10px 40px 40px 40px; }
 .hub-card { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: 12px; padding: 40px 30px; text-decoration: none; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: flex-start; text-align: left; box-shadow: var(--shadow-tactical); position: relative; }
 .hub-card.active:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--text-main); background-color: #FFFDF2; }
 .hub-card.locked { background: repeating-linear-gradient(45deg, #FFFDF9, #FFFDF9 10px, #FDF2D0 10px, #FDF2D0 20px); opacity: 0.5; cursor: not-allowed; }
 .icon-box { width: 55px; height: 55px; background: var(--bg-color); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 25px; font-size: 1.8rem; }
 .hub-card.active .icon-box { background: #FDE047; }
-
-/* 👑 修正：浮水印置底剛性鎖定 */
 .bg-watermark { position: fixed; bottom: 20px; right: 20px; font-size: 10rem; font-weight: 900; color: rgba(253, 242, 208, 0.4); z-index: -1; user-select: none; font-family: monospace; }
 
 /* 右上角勳章蓋章 */
