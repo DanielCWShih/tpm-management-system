@@ -1,6 +1,6 @@
 /**
  * System TPM Guild - Global Navigation & Auth Injection Engine
- * 定版代碼代號: 0528-V2.1 // 帳戶登入沒收、全自適應分流版
+ * 定版代碼代號: 0528-V2.2 // 語法極限大修正、全網域綠燈對齊版
  */
 
 const globalUiTranslations = {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageName = pagePath.substring(pagePath.lastIndexOf('/') + 1) || 'index.html';
     const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
 
-    // 🚀 模式 A：如果是入口總部首頁 index.html
+    // 🚀 模式 A：首頁大廳
     if (pageName === 'index.html' || pageName === '') {
         let homeHeaderSection = document.getElementById('global-injected-home-header');
         if (!homeHeaderSection) {
@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
             homeHeaderSection.id = 'global-injected-home-header';
             homeHeaderSection.style.cssText = "text-align: center; margin-bottom: 30px; width: 100%; padding-top: 40px; position: relative; flex-shrink:0;";
             
-            // 👑 結構修正：Google 登入容器直接嵌入右上角控制列，原地安全渲染，絕不產生跳轉
             homeHeaderSection.innerHTML = `
                 <div class="index-floating-controls">
                     <div id="global-google-login-holder">
@@ -43,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageContainer) pageContainer.insertBefore(homeHeaderSection, pageContainer.firstChild);
         }
     } 
-    // 🚀 模式 B：如果是子功能功能分頁
+    // 🚀 模式 B：子頁面
     else {
         let targetNavbar = document.querySelector('.tactical-navbar');
         if (!targetNavbar) {
@@ -60,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         targetNavbar.innerHTML = `
             <div class="navbar-brand">
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.1</span>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.2</span>
                 <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
             </div>
             <div class="navbar-controls">
@@ -120,11 +119,11 @@ function syncGlobalLanguageState(lang) {
             let rankTag = cachedRank;
             if (rankTag === "冒險者" || rankTag === "Adventurer") { rankTag = (lang === 'tw') ? "冒險者" : "Adventurer"; }
             profileCard.innerHTML = `👤 ${rankTag}：${cachedName}`;
-            // 👑 認證成功時，右上角的 Google 登入卡片直接沒收，維持絕對純淨
-            if (holder) holder.style.style.display = 'none';
+            // 👑 修正：移除錯別字 style.style.display 恢復標準 DOM
+            if (holder) holder.style.display = 'none';
         } else {
             profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
-            if (holder) holder.style.style.display = 'block';
+            if (holder) holder.style.display = 'block';
         }
     }
 
