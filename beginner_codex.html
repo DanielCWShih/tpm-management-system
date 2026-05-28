@@ -313,13 +313,22 @@
             box-shadow: 2px 2px 0px var(--border-heavy);
             white-space: nowrap;
             text-align: center;
+            transition: all 0.1s;
         }
 
         .flow-node-block.highlight {
-            background: linear-gradient(135deg, #FFFDF2 0%, #FDE047 100%);
-            border-color: #B45309;
-            box-shadow: 2px 2px 0px #B45309;
-            color: #B45309;
+            background: #EFF6FF;
+            border-color: var(--color-available);
+            box-shadow: 2px 2px 0px var(--color-available);
+            color: #1D4ED8;
+        }
+
+        /* 👑 修正：當流程圖節點被選中時的高亮戰術外殼 👑 */
+        .flow-node-block.active-node {
+            background: #1A1A1A !important;
+            color: #FFFFFF !important;
+            border-color: #1A1A1A !important;
+            box-shadow: 3px 3px 0px var(--color-completed) !important;
         }
 
         .flow-arrow-split {
@@ -372,7 +381,7 @@
             color: #FFF;
         }
 
-        /* 大考考場 */
+        /* 大考場 */
         .exam-progress-bar {
             width: 100%;
             background: #E2E8F0;
@@ -413,7 +422,7 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V4.0</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V4.1</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -459,11 +468,15 @@
             </div>
 
             <div class="document-canvas" id="textbook-viewport" style="flex-direction:column; flex:1; overflow:hidden;">
+                
                 <div class="cdx-sub-nav-bar" id="cdx-sub-nav-wrapper" style="display:none;"></div>
+                
                 <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.15rem; margin: 0 0 15px 0;">📘 專業核心教材文獻 (Technical Textbook)</h3>
+                
+                <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
+
                 <div class="textbook-scroll-box">
                     <div id="lesson-content" class="scroll-text"></div>
-                    <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
                 </div>
             </div>
 
@@ -497,6 +510,7 @@
         let examCurrentQ = 0;
         let examScoreCount = 0;
         let activeSubMatrixIdx = 0;
+        let activeFlowNodeIdx = 0; // 👑 追蹤當前點選的流程圖節點
 
         const globalUiTranslations = {
             tw: { "nav-home": "首頁", "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者", "title": "初心者寶典大廳" },
@@ -535,7 +549,6 @@
         function syncNavbarState(lang) {
             localStorage.setItem('tpm-lang-pref', lang);
             document.getElementById('global-nav-home-btn').innerText = globalUiTranslations[lang]["nav-home"];
-            document.getElementById('global-inject-tag').innerText = lang === 'en' ? "SYS.BEGINNER_CODEX V4.0" : "SYS.BEGINNER_CODEX V4.0";
             document.getElementById('global-inject-title').innerText = globalUiTranslations[lang]["title"];
             document.title = globalUiTranslations[lang]["title"];
 
@@ -663,15 +676,29 @@
                     activeSubMatrixIdx = 0;
                 }
 
-                document.getElementById('lesson-content').innerText = targetedText;
+                // 👑 核心渲染邏輯：如果流程圖節點帶有專屬定義，則依據 activeFlowNodeIdx 進行分步抽換
+                if (targetedFlow && targetedFlow[activeFlowNodeIdx] && targetedFlow[activeFlowNodeIdx].text) {
+                    document.getElementById('lesson-content').innerText = targetedFlow[activeFlowNodeIdx].text;
+                } else {
+                    document.getElementById('lesson-content').innerText = targetedText;
+                }
 
+                // 渲染頂部流程圖畫布，並銲死節點 onclick 監聽
                 const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
                 if (flowRenderer && targetedFlow) {
                     flowRenderer.style.display = 'flex';
                     flowRenderer.innerHTML = '';
                     targetedFlow.forEach((node, nIdx) => {
-                        const highlightClass = node.highlight ? 'highlight' : '';
-                        flowRenderer.innerHTML += `<div class="flow-node-block ${highlightClass}">${node.name}</div>`;
+                        const isSelected = nIdx === activeFlowNodeIdx;
+                        let nodeClass = 'flow-node-block';
+                        
+                        if (isSelected) {
+                            nodeClass += ' active-node';
+                        } else if (node.highlight) {
+                            nodeClass += ' highlight';
+                        }
+                        
+                        flowRenderer.innerHTML += `<div class="${nodeClass}" style="cursor:pointer;" onclick="switchFlowNode(${nIdx})">${node.name}</div>`;
                         if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
                     });
                 } else if (flowRenderer) {
@@ -688,17 +715,24 @@
 
         function triggerMainPageChange(sIdx) {
             activeSubMatrixIdx = 0;
+            activeFlowNodeIdx = 0; // 👑 重置流程節點
             loadCourseState(activeCourseIdx, sIdx);
         }
 
-        // 👑 修正連動：切換二級選單時重新加載畫布
         function switchSubMatrixBranch(bIdx) {
             activeSubMatrixIdx = bIdx;
+            activeFlowNodeIdx = 0; // 👑 重置流程節點
             loadCourseState(activeCourseIdx, activePageIdx);
         }
 
-        function triggerCourseSelect(idx) { examActive = false; activeCourseIdx = idx; activePageIdx = 0; activeSubMatrixIdx = 0; renderLeftMenu(); loadCourseState(idx, 0); }
-        function exitExamToPage(pIdx) { examActive = false; activeSubMatrixIdx = 0; loadCourseState(activeCourseIdx, pIdx); }
+        // 👑 點擊流程圖方塊時的原地狀態變更器
+        function switchFlowNode(nIdx) {
+            activeFlowNodeIdx = nIdx;
+            loadCourseState(activeCourseIdx, activePageIdx);
+        }
+
+        function triggerCourseSelect(idx) { examActive = false; activeCourseIdx = idx; activePageIdx = 0; activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; renderLeftMenu(); loadCourseState(idx, 0); }
+        function exitExamToPage(pIdx) { examActive = false; activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; loadCourseState(activeCourseIdx, pIdx); }
         function enterExamMode() { examActive = true; examCurrentQ = 0; examScoreCount = 0; loadCourseState(activeCourseIdx, 0); }
         
         function runExamEngine() {
