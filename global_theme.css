@@ -1,7 +1,11 @@
-/**
- * System TPM Guild - Global Isolated Design System
- * 定版代碼代號: 0528-V3.0 // 介面架構完全隔離、天賦樹同心圓完全復活版
- */
+/* ========================================================================
+REVISION HISTORY / VERSION LOG
+========================================================================
+2026-05-28 V3.0: 徹底實施命名空間絕對隔離，銲死返回按鈕與語系按鈕防偏位防線。
+2026-05-28 V2.2: 修正變數語法空格錯誤，解鎖全自動組件預設隱藏機制。
+2026-05-28 V1.0: 創世視覺基因庫建立，收攏 Neubrutalism 戰術粗線條邊框美學。
+========================================================================
+*/
 
 :root {
     --bg-color: #FEF9E7; 
@@ -28,7 +32,7 @@ html, body {
 
 * { box-sizing: border-box; font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; color: var(--text-main); }
 
-/* 👑 修正：頂部控制列全面加裝剛性邊界防禦，確保絕對不超出螢幕右側 */
+/* 👑 修正：頂部導航控制列全面加裝剛性邊界防禦，確保絕對不超出螢幕右側 */
 .tactical-navbar {
     width: 100vw; height: 85px; display: flex; justify-content: space-between;
     align-items: center; border-bottom: 4px solid var(--border-heavy); padding: 0 40px;
@@ -37,13 +41,33 @@ html, body {
 .navbar-brand { display: flex; flex-direction: column; }
 .navbar-controls { display: flex; align-items: center; gap: 15px; }
 
-/* 共通組件組 */
+/* 首頁專屬獨立控制列 */
+.index-floating-controls {
+    position: absolute; top: 30px; right: 40px; display: flex;
+    align-items: center; gap: 15px; z-index: 2000;
+}
+
+/* 雙區塊工作主框架 */
+.workspace-container {
+    display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden;
+}
+/* 單區塊滾動框架 */
+.single-pane-canvas {
+    width: 100vw; height: calc(100vh - 85px); overflow-y: auto; padding: 40px;
+    display: flex; flex-direction: column; align-items: center;
+}
+.index-canvas {
+    width: 100vw; height: 100vh; overflow-y: auto; padding: 40px;
+    display: flex; flex-direction: column; align-items: center; position: relative;
+}
+
+/* 共用組件定義區 */
 .lang-switcher-wrapper { display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; }
 .lang-btn-core { width: 50px; height: 35px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; border-radius: 4px; }
 .lang-btn-core.active { background: var(--text-main) !important; color: white !important; }
 .auth-panel { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); white-space: nowrap; }
 
-/* 👑 修正：銲死返回按鈕最小寬度，中英文切換 0 像素偏位 */
+/* 👑 修正：銲死返回與首頁按鈕骨架寬度，中英文切換 0 像素偏位 */
 .back-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 15px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); display: inline-block; text-align: center; min-width: 95px; }
 .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
 
@@ -55,7 +79,7 @@ html, body {
 .teleport-gate-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--border-heavy); }
 .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; font-weight: 900; }
 
-/* 貼紙蓋章樣式 */
+/* 右上貼紙印章樣式 */
 .talent-grade-sticker-case { position: absolute; top: -25px; right: -25px; display: none; z-index: 3000; animation: stickerPasted 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 @keyframes stickerPasted { from { transform: scale(0) rotate(15deg); opacity: 0; } to { transform: scale(1) rotate(-8deg); opacity: 1; } }
 .talent-grade-stamp { width: 110px; height: 110px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Impact', sans-serif; font-size: 3rem; font-weight: 900; line-height: 1; text-shadow: 3px 3px 0px rgba(0,0,0,0.1); transform: rotate(-8deg); }
@@ -65,13 +89,23 @@ html, body {
 /* ================= 🗺️ 課程/手冊 專用隔離樣式表 (前綴 .cdx-) ================= */
 .cdx-workspace { display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden; }
 .cdx-sidebar { width: 340px; background-color: var(--sidebar-cream); border-right: 4px solid var(--border-heavy); padding: 30px 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; flex-shrink: 0; height: 100%; }
+.cdx-sidebar-header { border-bottom: 3px solid var(--border-heavy); padding-bottom: 15px; margin-bottom: 10px; }
 .cdx-main-content { flex: 1; height: 100%; padding: 40px; overflow-y: auto; background-color: var(--card-white); display: flex; flex-direction: column; }
 .cdx-chapter-tab { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 12px; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); font-weight: 900; font-size: 0.9rem; }
 .cdx-chapter-tab.active { background: var(--text-main) !important; color: white !important; }
 .cdx-chapter-tab.active * { color: white !important; }
+
+/* 👑 修正：在初始狀態下，將所有子組件預設隱藏，由 JS 路由掌控點亮，防堵並存垮台 */
+.dashboard-view-hall, .document-canvas, .exam-session-box, .sub-pagination-dots-zone { display: none; }
+
+/* 大廳卡牌網格 */
+.level-section { margin-bottom: 45px; width: 100%; }
+.level-title-divider { font-size: 1.5rem; font-weight: 900; border-bottom: 3px solid var(--border-heavy); padding-bottom: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
 .cdx-dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; width: 100%; }
 .cdx-dashboard-card { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 30px; cursor: pointer; box-shadow: var(--shadow-tactical); position: relative; transition: all 0.15s; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; }
 .cdx-dashboard-card:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0px var(--text-main); }
+.card-status-badge { position: absolute; top: 20px; right: 20px; font-size: 0.7rem; font-weight: 900; padding: 4px 10px; border-radius: 4px; border: 2px solid var(--border-heavy); font-family: monospace; background: white; }
+
 .cdx-chapter-tab.medal-gold, .cdx-dashboard-card.medal-gold { background: linear-gradient(135deg, #FFFDF4 0%, #FDE047 100%) !important; border-color: #B45309 !important; box-shadow: 4px 4px 0px #B45309 !important; }
 .cdx-chapter-tab.medal-gold *, .cdx-dashboard-card.medal-gold * { color: #B45309 !important; }
 .cdx-chapter-tab.medal-silver, .cdx-dashboard-card.medal-silver { background: linear-gradient(135deg, #F8FAFC 0%, #CBD5E1 100%) !important; border-color: #475569 !important; box-shadow: 4px 4px 0px #475569 !important; }
@@ -86,7 +120,7 @@ html, body {
 .tree-row::after { content: ''; position: absolute; bottom: -70px; left: 50%; width: 4px; height: 70px; background: var(--border-heavy); z-index: 1; }
 .tree-row:last-child::after { display: none; }
 
-/* 👑 完美復活：重塑您原本硬派的雙重鋼鐵同心圓技能節點 */
+/* 👑 完美復活：重塑您原本最愛的雙重鋼鐵同心圓技能節點樣式，徹底與課程大廳隔離 */
 .tree-node-circle { 
     width: 150px; height: 150px; background: var(--card-white); 
     border: 4px double var(--color-locked); border-radius: 50%; 
