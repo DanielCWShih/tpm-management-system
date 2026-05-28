@@ -16,7 +16,6 @@
             --shadow-tactical: 5px 5px 0px #1A1A1A;
             --radius-sm: 8px;
             --color-locked: #94A3B8;
-            --color-available: #3B82F6;
             --color-completed: #F59E0B;
             --color-fail: #DC2626;
         }
@@ -180,7 +179,14 @@
             color: white !important;
         }
 
-        /* 大廳選單 */
+        /* 預設區塊隱藏 */
+        .dashboard-view-hall, 
+        .document-canvas, 
+        .exam-session-box, 
+        .sub-pagination-dots-zone {
+            display: none;
+        }
+
         .level-section {
             margin-bottom: 45px;
             width: 100%;
@@ -230,7 +236,7 @@
             box-shadow: 4px 4px 0px #B45309 !important;
         }
 
-        /* 二級子導航條 */
+        /* 二級分支導航條 */
         .cdx-sub-nav-bar {
             display: flex;
             gap: 12px;
@@ -260,7 +266,7 @@
             box-shadow: 1px 1px 0px var(--border-heavy);
         }
 
-        /* 教材閱讀區與流程圖 */
+        /* 內文滾動 */
         .textbook-scroll-box {
             flex: 1;
             overflow-y: auto;
@@ -276,13 +282,14 @@
             margin-bottom: 20px;
         }
 
+        /* 👑 修正：流程圖畫布（全數更換為剛性黑色粗邊框與字體，徹底洗淨藍色） 👑 */
         .dynamic-flow-canvas {
             display: flex;
             align-items: center;
             justify-content: flex-start;
             gap: 12px;
             background: #F8FAFC;
-            border: 2px dashed var(--color-locked);
+            border: 2px dashed var(--border-heavy);
             padding: 20px;
             border-radius: var(--radius-sm);
             margin: 15px 0;
@@ -302,15 +309,18 @@
             white-space: nowrap;
             text-align: center;
             transition: all 0.1s;
+            color: var(--text-main);
         }
 
+        /* 👑 修正：高亮狀態默認切換為黑色剛性包殼 👑 */
         .flow-node-block.highlight {
             background: #EFF6FF;
-            border-color: var(--color-available);
-            box-shadow: 2px 2px 0px var(--color-available);
-            color: #1D4ED8;
+            border-color: var(--border-heavy);
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            color: var(--text-main);
         }
 
+        /* 👑 修正：被點選中激活狀態的外觀 👑 */
         .flow-node-block.active-node {
             background: #1A1A1A !important;
             color: #FFFFFF !important;
@@ -321,11 +331,11 @@
         .flow-arrow-split {
             font-weight: 900;
             font-size: 1rem;
-            color: var(--text-secondary);
+            color: var(--text-main);
             user-select: none;
         }
 
-        /* 分頁點點引導列 */
+        /* 分頁小點點點導航列 */
         .sub-pagination-dots-zone {
             justify-content: center;
             align-items: center;
@@ -381,7 +391,7 @@
 
         .exam-progress-fill {
             height: 100%;
-            background: var(--color-available);
+            background: var(--text-main);
             width: 0%;
             transition: width 0.2s;
         }
@@ -405,11 +415,11 @@
         }
     </style>
 </head>
-<body>
+<body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V4.2</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V4.8</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -470,7 +480,7 @@
             <div class="exam-session-box" id="exam-viewport">
                 <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
                     <span style="color:#B91C1C;">🔥 終極大會考進行中 (Exam Mode)</span>
-                    <span id="exam-counter" style="color:var(--color-available);">第 1 / 20 題</span>
+                    <span id="exam-counter" style="color:var(--text-secondary);">第 1 / 20 題</span>
                 </div>
                 <div class="exam-progress-bar">
                     <div class="exam-progress-fill" id="exam-progress"></div>
@@ -625,7 +635,7 @@
             
             const innerHeader = document.getElementById('cdx-page-header-zone');
             
-            // 👑 剛性除錯銲接防線：修正為單層標準 .style.display 👑
+            /* 👑 剛性修復：回歸標準單層 style.display 控制 👑 */
             if (innerHeader) {
                 innerHeader.style.display = 'block';
             }
@@ -702,6 +712,7 @@
             }
         }
 
+        /* 👑 剛性重置功能：切換大頁面、二級頁籤或流程節點時，預設一律強行鎖定在第一個（Index 0） 👑 */
         function triggerMainPageChange(sIdx) {
             activeSubMatrixIdx = 0;
             activeFlowNodeIdx = 0; 
