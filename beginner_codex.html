@@ -17,6 +17,11 @@
         </aside>
 
         <main class="cdx-main-content">
+            <div id="cdx-page-header-zone" style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px dashed var(--border-heavy); display: none;">
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;"></span>
+                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;"></h2>
+            </div>
+
             <div class="dashboard-view-hall" id="dashboard-menu-hall" style="width:100%;">
                 <div class="level-section">
                     <div class="level-title-divider">🌿 Level 1：基礎通識研修領域 (Foundations)</div>
@@ -67,6 +72,7 @@
             const urlParams = new URLSearchParams(window.location.search); const contentPackId = urlParams.get('c');
             if (!contentPackId) {
                 document.getElementById('shell-sidebar-area').style.display = 'none'; document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('universal-dots-bar').style.display = 'none'; document.getElementById('dashboard-menu-hall').style.display = 'block';
+                const innerHeader = document.getElementById('cdx-page-header-zone'); if(innerHeader) innerHeader.style.display = 'none';
                 document.getElementById('global-inject-title').innerText = localStorage.getItem('tpm-lang-pref') === 'en' ? "Beginner's Codex Hall" : "初心者寶典大廳";
                 renderDashboardHallCards();
             } else {
@@ -103,10 +109,9 @@
         }
         function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx; const course = codexCourseEngineData[cIdx]; const dotsBar = document.getElementById('universal-dots-bar'); dotsBar.innerHTML = '';
-            const isModuleCleared = localStorage.getItem(`codex-${course.courseId}-clear`) === 'true';
             
-            // 點亮控制
-            document.getElementById('dashboard-menu-hall').style.display = 'none';
+            // 解鎖顯現內頁標題防線
+            const innerHeader = document.getElementById('cdx-page-header-zone'); if(innerHeader) innerHeader.style.display = 'block';
 
             if (examActive) {
                 document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block';
@@ -144,7 +149,6 @@
         }
         function setLang(lang) { if (document.getElementById('dashboard-menu-hall').style.display === 'block') { renderDashboardHallCards(); } }
 
-        // 👑 銲死加載入口，解鎖 1-1.js 資料載入
         window.onload = () => {
             routeController();
         };
