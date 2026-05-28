@@ -1,9 +1,9 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
+2026-05-28 V3.1: 👑 修正偏位：補回漏失的底層巨型浮水印樣式，並綁定隔離命名空間 .idx-bg-watermark。
 2026-05-28 V3.0: 徹底實施命名空間絕對隔離，銲死返回按鈕與語系按鈕防偏位防線。
 2026-05-28 V2.2: 修正變數語法空格錯誤，解鎖全自動組件預設隱藏機制。
-2026-05-28 V1.0: 創世視覺基因庫建立，收攏 Neubrutalism 戰術粗線條邊框美學。
 ========================================================================
 */
 
@@ -21,6 +21,8 @@ REVISION HISTORY / VERSION LOG
     --color-available: #3B82F6; 
     --color-completed: #F59E0B;
     --color-fail: #DC2626;
+    --tier-blue: #3B82F6;
+    --tier-gold: #F59E0B;
 }
 
 /* ================= 🧱 基礎全域剛性骨架 ================= */
@@ -32,7 +34,7 @@ html, body {
 
 * { box-sizing: border-box; font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; color: var(--text-main); }
 
-/* 👑 修正：頂部導航控制列全面加裝剛性邊界防禦，確保絕對不超出螢幕右側 */
+/* 頂部導航控制列 */
 .tactical-navbar {
     width: 100vw; height: 85px; display: flex; justify-content: space-between;
     align-items: center; border-bottom: 4px solid var(--border-heavy); padding: 0 40px;
@@ -67,7 +69,6 @@ html, body {
 .lang-btn-core.active { background: var(--text-main) !important; color: white !important; }
 .auth-panel { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); white-space: nowrap; }
 
-/* 👑 修正：銲死返回與首頁按鈕骨架寬度，中英文切換 0 像素偏位 */
 .back-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 15px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); display: inline-block; text-align: center; min-width: 95px; }
 .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
 
@@ -95,7 +96,6 @@ html, body {
 .cdx-chapter-tab.active { background: var(--text-main) !important; color: white !important; }
 .cdx-chapter-tab.active * { color: white !important; }
 
-/* 👑 修正：在初始狀態下，將所有子組件預設隱藏，由 JS 路由掌控點亮，防堵並存垮台 */
 .dashboard-view-hall, .document-canvas, .exam-session-box, .sub-pagination-dots-zone { display: none; }
 
 /* 大廳卡牌網格 */
@@ -120,7 +120,6 @@ html, body {
 .tree-row::after { content: ''; position: absolute; bottom: -70px; left: 50%; width: 4px; height: 70px; background: var(--border-heavy); z-index: 1; }
 .tree-row:last-child::after { display: none; }
 
-/* 👑 完美復活：重塑您原本最愛的雙重鋼鐵同心圓技能節點樣式，徹底與課程大廳隔離 */
 .tree-node-circle { 
     width: 150px; height: 150px; background: var(--card-white); 
     border: 4px double var(--color-locked); border-radius: 50%; 
@@ -147,11 +146,4 @@ html, body {
 .lib-jargon-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--text-main); background-color: #FFFDF4; }
 
 /* ================= 🏛️ 總部首頁 專用隔離樣式表 (前綴 .idx-) ================= */
-.idx-canvas-full { width: 100vw; height: 100vh; overflow-y: auto; padding: 40px; display: flex; flex-direction: column; align-items: center; position: relative; }
-.idx-floating-controls { position: absolute; top: 30px; right: 40px; display: flex; align-items: center; gap: 15px; z-index: 2000; }
-.idx-hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; padding: 10px 40px 40px 40px; }
-.idx-hub-card { background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: 12px; padding: 40px 30px; text-decoration: none; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: flex-start; text-align: left; box-shadow: var(--shadow-tactical); position: relative; }
-.idx-hub-card.active:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--text-main); background-color: #FFFDF2; }
-.idx-hub-card.locked { background: repeating-linear-gradient(45deg, #FFFDF9, #FFFDF9 10px, #FDF2D0 10px, #FDF2D0 20px); opacity: 0.5; cursor: not-allowed; }
-.idx-icon-box { width: 55px; height: 55px; background: var(--bg-color); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 25px; font-size: 1.8rem; }
-.idx-hub-card.active .idx-icon-box { background: #FDE047; }
+.idx-canvas-full { width: 100vw; height: 100vh; overflow-y: auto; padding: 40px; display:
