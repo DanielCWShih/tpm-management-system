@@ -1,6 +1,6 @@
 /**
  * System TPM Guild - Global Navigation & Auth Injection Engine
- * 定版代碼代號: 0528-V1.1 // 智能首頁佈局識別除錯版
+ * 定版代碼代號: 0528-V1.1 // 30次極限除錯優化定版
  */
 
 const globalUiTranslations = {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageName = pagePath.substring(pagePath.lastIndexOf('/') + 1) || 'index.html';
     const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
 
-    // 👑 智能判定 A：如果目前是門戶首頁 index.html，採用大氣的中央置中巨型大堂 header 排版
+    // 智能判定 A：首頁大廳
     if (pageName === 'index.html' || pageName === '') {
         let homeHeaderSection = document.getElementById('global-injected-home-header');
         if (!homeHeaderSection) {
@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
             homeHeaderSection.id = 'global-injected-home-header';
             homeHeaderSection.style.cssText = "text-align: center; margin-bottom: 30px; width: 100%; padding-top: 40px; position: relative;";
             
-            // 將語言控制與身分卡以絕對剛性定位優雅掛載在首頁右上角，杜絕擠壓
             homeHeaderSection.innerHTML = `
                 <div class="lang-switcher-wrapper" style="position: absolute; top: 20px; right: 40px; z-index: 100;">
                     <button class="lang-btn-core" id="global-btn-tw" onclick="executeGlobalLangSwitch('tw')">TW</button>
@@ -34,14 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="subtitle" id="home-subtitle-text" style="font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; margin-top: 15px;">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
             `;
             
-            // 完美插入至首頁 page-container 的最前端
             const pageContainer = document.querySelector('.page-container');
-            if (pageContainer) {
-                pageContainer.insertBefore(homeHeaderSection, pageContainer.firstChild);
-            }
+            if (pageContainer) pageContainer.insertBefore(homeHeaderSection, pageContainer.firstChild);
         }
     } 
-    // 👑 智能判定 B：如果是子網頁（天賦樹、手冊等），維持高效緊湊的頂部水平控制列
+    // 智能判定 B：子網頁地圖
     else {
         let targetHeader = document.querySelector('.tactical-header');
         if (!targetHeader) {
@@ -50,9 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.insertBefore(targetHeader, document.body.firstChild);
         }
 
-        let sysTag = "SYS.MAIN_PORTAL";
-        let sysTitleTw = "System TPM 公會總部";
-
+        let sysTag = "SYS.MAIN_PORTAL"; let sysTitleTw = "System TPM 公會總部";
         if (pageName.includes('talent_tree')) { sysTag = "SYS.ATLAS_TREE"; sysTitleTw = "公會技能星盤天賦樹"; }
         else if (pageName.includes('beginner_codex')) { sysTag = "SYS.BEGINNER_CODEX"; sysTitleTw = "初心者寶典大廳"; }
         else if (pageName.includes('handbook')) { sysTag = "SYS.HANDBOOK"; sysTitleTw = "冒險者手冊大廳"; }
@@ -60,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         targetHeader.innerHTML = `
             <div>
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">${sysTag} V1.1</span>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">${sysTag} V1.2</span>
                 <h1 style="margin: 5px 0 0 0; font-size: 2.2rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
             </div>
             <div class="header-controls">
@@ -88,7 +82,6 @@ function syncGlobalLanguageState(lang) {
     const homeBtn = document.getElementById('global-nav-home-btn');
     if (homeBtn) homeBtn.innerText = globalUiTranslations[lang]["nav-home"];
 
-    // 首頁專屬的大標題雙語動態切換
     const homeMark = document.getElementById('home-logo-mark-text');
     const homeTitle = document.getElementById('home-main-title-text');
     const homeSub = document.getElementById('home-subtitle-text');
@@ -96,18 +89,19 @@ function syncGlobalLanguageState(lang) {
         homeMark.innerText = globalUiTranslations[lang]["logo-mark"];
         homeTitle.innerText = globalUiTranslations[lang]["main-title"];
         homeSub.innerText = globalUiTranslations[lang]["subtitle"];
+        // 👑 擴充：同步連動更新首頁瀏覽器分頁 Tab 標籤
+        document.title = globalUiTranslations[lang]["main-title"];
     }
 
     const titleEl = document.getElementById('global-inject-title');
     if (titleEl) {
         const pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
-        if (pageName.includes('talent_tree')) { titleEl.innerText = lang === 'tw' ? "公會技能星盤天賦樹" : "Adventurer Talent Tree"; }
-        else if (pageName.includes('beginner_codex')) { titleEl.innerText = lang === 'tw' ? "初心者寶典大廳" : "Beginner's Codex Hall"; }
-        else if (pageName.includes('handbook')) { titleEl.innerText = lang === 'tw' ? "冒險者手冊大廳" : "Adventurer's Handbook Hall"; }
-        else if (pageName.includes('Library')) { titleEl.innerText = lang === 'tw' ? "大圖書館術語圖鑑庫" : "Knowledge Lexicon Library"; }
+        if (pageName.includes('talent_tree')) { titleEl.innerText = lang === 'tw' ? "公會技能星盤天賦樹" : "Adventurer Talent Tree"; document.title = titleEl.innerText; }
+        else if (pageName.includes('beginner_codex')) { titleEl.innerText = lang === 'tw' ? "初心者寶典大廳" : "Beginner's Codex Hall"; document.title = titleEl.innerText; }
+        else if (pageName.includes('handbook')) { titleEl.innerText = lang === 'tw' ? "冒險者手冊大廳" : "Adventurer's Handbook Hall"; document.title = titleEl.innerText; }
+        else if (pageName.includes('Library')) { titleEl.innerText = lang === 'tw' ? "大圖書館術語圖鑑庫" : "Knowledge Lexicon Library"; document.title = titleEl.innerText; }
     }
 
-    // 全網域身分徽章高亮鎖定（強制屏蔽 email）
     const cachedName = localStorage.getItem('tpm-user-name');
     const cachedRank = localStorage.getItem('tpm-user-rank') || globalUiTranslations[lang]["rank-default"];
     const profileCard = document.getElementById('global-user-profile-card');
@@ -129,9 +123,11 @@ function executeGlobalLangSwitch(lang) {
     localStorage.setItem('tpm-lang-pref', lang);
     syncGlobalLanguageState(lang);
     const pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+    
+    // 👑 終極修正：大圖書館不再採取低效白閃重新整理，直接就地執行本地 setLang 渲染，保證體驗絲滑
     if ((pageName.includes('beginner_codex') || pageName.includes('handbook')) && typeof window.routeController === 'function') {
         window.routeController();
-    } else if (pageName.includes('Library')) {
-        location.reload();
+    } else if (pageName.includes('Library') && typeof window.setLang === 'function') {
+        window.setLang(lang); 
     }
 }
