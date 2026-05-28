@@ -1,9 +1,8 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-05-28 V3.4: 👑 終極平反：全數展開多行排版，嚴格校正標準單層 style.display 賦值防線，通過全綠燈編譯。
-2026-05-28 V3.2: 徹底斬除 holder.style.style 嚴重語法死鎖，恢復穩定 DOM 控制流。
-2026-05-28 V2.1: 實施 Google 原生帳戶登入沒收機制，全自動高亮右上角控制列。
+2026-05-28 V3.5: 👑 剛性修復：完美對齊首頁與 CSS 的 idx-floating-controls 類別名稱，沒收巨型水平黑框。
+2026-05-28 V3.4: 全數展開多行排版，嚴格校正標準單層 style.display 賦值防線。
 ========================================================================
 */
 
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageName = pagePath.substring(pagePath.lastIndexOf('/') + 1) || 'index.html';
     const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
 
-    // 🚀 模式 A：如果是入口總部首頁 index.html
     if (pageName === 'index.html' || pageName === '') {
         let homeHeaderSection = document.getElementById('global-injected-home-header');
         if (!homeHeaderSection) {
@@ -39,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             homeHeaderSection.id = 'global-injected-home-header';
             homeHeaderSection.style.cssText = "text-align: center; margin-bottom: 30px; width: 100%; padding-top: 40px; position: relative; flex-shrink:0;";
             
+            // 👑 精準扣合 .idx-floating-controls 樣式防線 👑
             homeHeaderSection.innerHTML = `
                 <div class="idx-floating-controls">
                     <div id="global-google-login-holder">
@@ -61,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     } 
-    // 🚀 模式 B：如果是子系統分頁控制列
     else {
         let targetNavbar = document.querySelector('.tactical-navbar');
         if (!targetNavbar) {
@@ -89,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         targetNavbar.innerHTML = `
             <div class="navbar-brand">
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V3.4</span>
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V3.5</span>
                 <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
             </div>
             <div class="navbar-controls">
