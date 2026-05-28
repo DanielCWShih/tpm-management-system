@@ -1,6 +1,6 @@
 /**
  * System TPM Guild - Global Navigation & Auth Injection Engine
- * 定版代碼代號: 0528-V1.1 // 30次極限除錯優化定版
+ * 定版代碼代號: 0528-V2.0 // 登入小按鈕沒收、右上角整合專用版
  */
 
 const globalUiTranslations = {
@@ -13,37 +13,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageName = pagePath.substring(pagePath.lastIndexOf('/') + 1) || 'index.html';
     const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
 
-    // 智能判定 A：首頁大廳
+    // 🚀 模式 A：如果是入口總部首頁
     if (pageName === 'index.html' || pageName === '') {
         let homeHeaderSection = document.getElementById('global-injected-home-header');
         if (!homeHeaderSection) {
             homeHeaderSection = document.createElement('header');
             homeHeaderSection.id = 'global-injected-home-header';
-            homeHeaderSection.style.cssText = "text-align: center; margin-bottom: 30px; width: 100%; padding-top: 40px; position: relative;";
+            homeHeaderSection.style.cssText = "text-align: center; margin-bottom: 30px; width: 100%; padding-top: 40px; position: relative; flex-shrink:0;";
             
+            // 👑 沒收改動：登入小方塊收歸右上角控制列，絕不突兀地擺在正中間
             homeHeaderSection.innerHTML = `
-                <div class="lang-switcher-wrapper" style="position: absolute; top: 20px; right: 40px; z-index: 100;">
-                    <button class="lang-btn-core" id="global-btn-tw" onclick="executeGlobalLangSwitch('tw')">TW</button>
-                    <button class="lang-btn-core" id="global-btn-en" onclick="executeGlobalLangSwitch('en')">EN</button>
+                <div class="index-floating-controls">
+                    <div id="global-google-login-holder"></div>
+                    <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
+                    <div class="lang-switcher-wrapper">
+                        <button class="lang-btn-core" id="global-btn-tw" onclick="executeGlobalLangSwitch('tw')">TW</button>
+                        <button class="lang-btn-core" id="global-btn-en" onclick="executeGlobalLangSwitch('en')">EN</button>
+                    </div>
                 </div>
-                <div id="global-user-profile-card" class="auth-panel" style="position: absolute; top: 20px; right: 160px; z-index: 100;">🔒 認證讀取中...</div>
                 
                 <div class="logo-mark" id="home-logo-mark-text" style="font-size: 0.9rem; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 12px; color: var(--text-secondary); font-family: monospace;">GUILD HQ / LEVEL 2026</div>
                 <h1 style="font-size: 3.2rem; margin: 0; font-weight: 900; letter-spacing: -1px;" id="home-main-title-text">System TPM 公會總部</h1>
                 <div class="subtitle" id="home-subtitle-text" style="font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; margin-top: 15px;">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
             `;
             
-            const pageContainer = document.querySelector('.page-container');
+            const pageContainer = document.querySelector('.index-canvas');
             if (pageContainer) pageContainer.insertBefore(homeHeaderSection, pageContainer.firstChild);
         }
     } 
-    // 智能判定 B：子網頁地圖
+    // 🚀 模式 B：如果是子功能頁面
     else {
-        let targetHeader = document.querySelector('.tactical-header');
-        if (!targetHeader) {
-            targetHeader = document.createElement('div');
-            targetHeader.className = 'tactical-header';
-            document.body.insertBefore(targetHeader, document.body.firstChild);
+        let targetNavbar = document.querySelector('.tactical-navbar');
+        if (!targetNavbar) {
+            targetNavbar = document.createElement('div');
+            targetNavbar.className = 'tactical-navbar';
+            document.body.insertBefore(targetNavbar, document.body.firstChild);
         }
 
         let sysTag = "SYS.MAIN_PORTAL"; let sysTitleTw = "System TPM 公會總部";
@@ -52,24 +56,35 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (pageName.includes('handbook')) { sysTag = "SYS.HANDBOOK"; sysTitleTw = "冒險者手冊大廳"; }
         else if (pageName.includes('Library')) { sysTag = "SYS.LEXICON_LIBRARY"; sysTitleTw = "大圖書館術語圖鑑庫"; }
 
-        targetHeader.innerHTML = `
-            <div>
-                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">${sysTag} V1.2</span>
-                <h1 style="margin: 5px 0 0 0; font-size: 2.2rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
+        targetNavbar.innerHTML = `
+            <div class="navbar-brand">
+                <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">${sysTag} V2.0</span>
+                <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">${sysTitleTw}</h1>
             </div>
-            <div class="header-controls">
+            <div class="navbar-controls">
+                <div id="global-google-login-holder"></div>
+                <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
                 <div class="lang-switcher-wrapper">
                     <button class="lang-btn-core" id="global-btn-tw" onclick="executeGlobalLangSwitch('tw')">TW</button>
                     <button class="lang-btn-core" id="global-btn-en" onclick="executeGlobalLangSwitch('en')">EN</button>
                 </div>
-                <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
                 <a href="index.html" class="back-btn" id="global-nav-home-btn">首頁</a>
             </div>
         `;
     }
 
+    // 跨頁面強制獵取 HTML 內的原始 Google 登入按鈕並塞入右上角掛載點
+    bindGoogleButtonToNavbar();
     syncGlobalLanguageState(currentLang);
 });
+
+function bindGoogleButtonToNavbar() {
+    const rawGoogleBtn = document.querySelector('.g_id_signin');
+    const holder = document.getElementById('global-google-login-holder');
+    if (rawGoogleBtn && holder) {
+        holder.appendChild(rawGoogleBtn);
+    }
+}
 
 function syncGlobalLanguageState(lang) {
     const twBtn = document.getElementById('global-btn-tw');
@@ -89,7 +104,6 @@ function syncGlobalLanguageState(lang) {
         homeMark.innerText = globalUiTranslations[lang]["logo-mark"];
         homeTitle.innerText = globalUiTranslations[lang]["main-title"];
         homeSub.innerText = globalUiTranslations[lang]["subtitle"];
-        // 👑 擴充：同步連動更新首頁瀏覽器分頁 Tab 標籤
         document.title = globalUiTranslations[lang]["main-title"];
     }
 
@@ -105,14 +119,18 @@ function syncGlobalLanguageState(lang) {
     const cachedName = localStorage.getItem('tpm-user-name');
     const cachedRank = localStorage.getItem('tpm-user-rank') || globalUiTranslations[lang]["rank-default"];
     const profileCard = document.getElementById('global-user-profile-card');
+    const holder = document.getElementById('global-google-login-holder');
     
     if (profileCard) {
         if (cachedName) {
             let rankTag = cachedRank;
             if (rankTag === "冒險者" || rankTag === "Adventurer") { rankTag = (lang === 'tw') ? "冒險者" : "Adventurer"; }
             profileCard.innerHTML = `👤 ${rankTag}：${cachedName}`;
+            // 👑 智能優化：既然已經認證成功，右上角的 Google 登入按鈕立刻隱藏
+            if (holder) holder.style.display = 'none';
         } else {
             profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
+            if (holder) holder.style.display = 'block';
         }
     }
 
@@ -123,8 +141,6 @@ function executeGlobalLangSwitch(lang) {
     localStorage.setItem('tpm-lang-pref', lang);
     syncGlobalLanguageState(lang);
     const pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
-    
-    // 👑 終極修正：大圖書館不再採取低效白閃重新整理，直接就地執行本地 setLang 渲染，保證體驗絲滑
     if ((pageName.includes('beginner_codex') || pageName.includes('handbook')) && typeof window.routeController === 'function') {
         window.routeController();
     } else if (pageName.includes('Library') && typeof window.setLang === 'function') {
