@@ -3,210 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大圖書館文檔庫 | System TPM Knowledge Library (0527-V1.1)</title>
-    <style>
-        :root {
-            --bg-color: #FEF9E7; 
-            --sidebar-cream: #FDF2D0;
-            --card-white: #FFFFFF;
-            --active-yellow: #FDE047;
-            --text-main: #1A1A1A;
-            --text-secondary: #475569;
-            --border-heavy: #1A1A1A;
-            --shadow-tactical: 5px 5px 0px #1A1A1A;
-            --radius-sm: 8px;
-            
-            --tier-blue: #3B82F6;
-            --tier-gold: #F59E0B;
-        }
-        
-        * { 
-            box-sizing: border-box; 
-            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; 
-            color: var(--text-main); 
-        }
-        
-        body { 
-            background-color: var(--bg-color); 
-            margin: 0; padding: 0;
-            width: 100vw; height: 100vh;
-            display: flex; flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* 👑 核心重構：頂部控制列改為與天賦樹完全一致的 Flex 剛性流，徹底杜絕中英切換時的佈局移位 Bug */
-        .tactical-header {
-            width: 100%; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 3px solid var(--border-heavy); padding: 30px 40px;
-            background-color: var(--bg-color); flex-shrink: 0;
-        }
-
-        .header-controls { display: flex; align-items: center; gap: 15px; }
-
-        /* 👑 剛性架構核心：語言切換外殼寬度焊死在 100px (每個按鈕固定 50px)，確保絕對 0 像素位移 */
-        .lang-switcher-wrapper {
-            display: flex;
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            padding: 2px;
-        }
-
-        .lang-btn-core {
-            width: 50px;
-            height: 35px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 900;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            transition: background 0.1s;
-        }
-
-        .lang-btn-core.active {
-            background: var(--text-main);
-            color: white;
-        }
-
-        /* 身分認證卡剛性化，防換行破版 */
-        .auth-panel {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem;
-            font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy);
-            white-space: nowrap;
-        }
-
-        /* 導航 Home 按鈕樣式對齊 */
-        .back-btn {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer;
-            font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy);
-        }
-        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
-
-        /* 圖書館主體佈局 */
-        .library-workspace {
-            flex: 1; width: 100%; display: flex; overflow: hidden;
-        }
-
-        /* 左側導航分類皮卷 */
-        aside {
-            width: 280px; background-color: var(--sidebar-cream);
-            border-right: 3px solid var(--border-heavy);
-            display: flex; flex-direction: column; padding: 25px;
-            overflow-y: auto; flex-shrink: 0;
-        }
-
-        .category-btn {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            padding: 14px 18px; border-radius: var(--radius-sm); font-weight: 900;
-            font-size: 0.95rem; text-align: left; cursor: pointer; margin-bottom: 15px;
-            box-shadow: 3px 3px 0px var(--border-heavy); transition: all 0.1s;
-        }
-        .category-btn:hover { transform: translateX(4px); }
-        .category-btn.active {
-            background: var(--text-main); color: white; transform: translateX(2px);
-            box-shadow: 1px 1px 0px var(--border-heavy);
-        }
-
-        /* 右側圖鑑畫布 */
-        main {
-            flex: 1; height: 100%; padding: 40px; overflow-y: auto;
-            background: var(--card-white); display: flex; flex-direction: column; gap: 30px;
-        }
-
-        /* 圖鑑矩陣網格 */
-        .jargon-lexicon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 25px; width: 100%;
-        }
-
-        /* 術語圖鑑卡牌 */
-        .jargon-card {
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            border-radius: var(--radius-sm); padding: 25px 20px; cursor: pointer;
-            box-shadow: 4px 4px 0px var(--border-heavy); transition: all 0.15s ease;
-            display: flex; flex-direction: column; justify-content: space-between;
-            position: relative; min-height: 140px;
-        }
-        .jargon-card:hover {
-            transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--text-main);
-            background-color: #FFFDF4;
-        }
-
-        .jargon-tag-box {
-            font-family: monospace; font-size: 0.75rem; font-weight: 900;
-            color: var(--tier-blue); text-transform: uppercase;
-        }
-        .jargon-main-term { font-size: 1.15rem; font-weight: 900; margin-top: 8px; letter-spacing: -0.5px; }
-        .jargon-sub-game-term { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-top: 4px; }
-
-        /* 圖鑑動態展開詳細面板彈窗 */
-        .lexicon-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 2000;
-            justify-content: center; align-items: center; padding: 20px;
-        }
-
-        .modal-content {
-            background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm);
-            width: 100%; max-width: 700px; box-shadow: 10px 10px 0px var(--border-heavy);
-            display: flex; flex-direction: column; overflow: hidden; animation: lexiconZoom 0.15s ease-out;
-        }
-
-        @keyframes lexiconZoom { from { transform: scale(0.96); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .modal-header {
-            background: var(--sidebar-cream); padding: 20px 30px;
-            border-bottom: 3px solid var(--border-heavy); display: flex;
-            justify-content: space-between; align-items: center;
-        }
-
-        .modal-body { padding: 35px; display: flex; flex-direction: column; gap: 25px; overflow-y: auto; max-height: 70vh; }
-
-        .lexicon-section-block {
-            border: 2px solid var(--border-heavy); border-radius: var(--radius-sm);
-            padding: 20px; background: #FAFAFA;
-        }
-        .lexicon-block-label {
-            font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);
-            font-family: monospace; text-transform: uppercase; border-bottom: 1px dashed var(--border-heavy);
-            padding-bottom: 5px; margin-bottom: 10px;
-        }
-        .lexicon-block-text { font-size: 1rem; font-weight: 600; line-height: 1.7; white-space: pre-line; }
-
-        .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; font-weight: 900; }
-    </style>
+    <title>大圖書館文檔庫 | System TPM Knowledge Library</title>
+    <link rel="stylesheet" href="global_theme.css">
 </head>
-<body>
+<body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
-    <div class="tactical-header">
-        <div>
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary);">SYS.LEXICON_LIBRARY V1.1</span>
-            <h1 style="margin: 5px 0 0 0; font-size: 2.2rem;" data-i18n="library-main-title">大圖書館術語圖鑑庫</h1>
-        </div>
-        
-        <div class="header-controls">
-            <div class="lang-switcher-wrapper">
-                <button class="lang-btn-core active" id="btn-tw" onclick="setLang('tw')">TW</button>
-                <button class="lang-btn-core" id="btn-en" onclick="setLang('en')">EN</button>
-            </div>
-            
-            <div id="user-profile" class="auth-panel" data-i18n="auth-unlocked">🔒 未讀取公會憑證</div>
-            
-            <a href="index.html" class="back-btn" id="nav-home-text">首頁</a>
-        </div>
-    </div>
-
-    <div class="library-workspace">
-        
+    <div style="display: flex; flex: 1; width: 100%; overflow: hidden;">
         <aside>
             <button class="category-btn active" id="btn-all" onclick="filterLexicon('all')" data-i18n="cat-all">【 顯示全部圖鑑 】</button>
             <button class="category-btn" id="btn-abyss" onclick="filterLexicon('abyss')" data-i18n="cat-abyss">⚙️ 物質深淵 (工廠製程)</button>
@@ -214,176 +16,65 @@
             <button class="category-btn" id="btn-phantom" onclick="filterLexicon('phantom')" data-i18n="cat-phantom">🔮 幻界位面 (供應鏈)</button>
         </aside>
 
-        <main>
+        <main style="padding: 40px;">
             <div class="jargon-lexicon-grid" id="lexicon-canvas"></div>
         </main>
-
     </div>
 
     <div id="lexicon-modal" class="lexicon-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div>
-                    <span id="modal-jargon-tag" style="font-family: monospace; font-weight: 900; color: var(--tier-blue);">TAG</span>
-                    <h2 id="modal-jargon-term" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">專有名詞</h2>
-                </div>
+                <div><span id="modal-jargon-tag" style="font-family: monospace; font-weight: 900; color: var(--tier-blue);">TAG</span><h2 id="modal-jargon-term" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">專有名詞</h2></div>
                 <button class="close-btn" onclick="closeLexicon()">✕</button>
             </div>
             <div class="modal-body">
-                
                 <div class="lexicon-section-block" style="background-color: #FFFDF2; border-color: var(--tier-gold);">
                     <div class="lexicon-block-label" style="color: #B45309;" data-i18n="modal-lore-label">🌌 異世界奇幻包裝 (Guild Lore Translation)</div>
                     <div id="modal-jargon-lore" class="lexicon-block-text" style="color: #B45309; font-weight: 800;"></div>
                 </div>
-
                 <div class="lexicon-section-block">
                     <div class="lexicon-block-label" data-i18n="modal-def-label">📘 正統實務工程學定義 (Technical Definition)</div>
                     <div id="modal-jargon-def" class="lexicon-block-text"></div>
                 </div>
-
                 <div class="lexicon-section-block" style="background-color: #FEF2F2; border-color: #EF4444;">
                     <div class="lexicon-block-label" style="color: #B91C1C;" data-i18n="modal-lessons-label">🔥 歷代英雄血淚戰役史詩 (Lessons Learned / Post-Mortem)</div>
                     <div id="modal-jargon-lessons" class="lexicon-block-text" style="line-height: 1.6;"></div>
                 </div>
-
             </div>
         </div>
     </div>
 
+    <script src="global_ui.js"></script>
     <script>
-        // 靜態語言配置字典
         const translations = {
-            tw: {
-                "library-main-title": "大圖書館術語圖鑑庫", "auth-unlocked": "冒險者認證成功", "nav-home": "首頁",
-                "cat-all": "【 顯示全部圖鑑 】", "cat-abyss": "⚙️ 物質深淵 (工廠製程)", "cat-pantheon": "🏛️ 眾神殿 (研發設計)", "cat-phantom": "🔮 幻界位面 (供應鏈)",
-                "modal-lore-label": "🌌 異世界奇幻包裝 (Guild Lore Translation)", "modal-def-label": "📘 正統實務工程學定義 (Technical Definition)", "modal-lessons-label": "🔥 歷代英雄血淚戰役史詩 (Lessons Learned / Post-Mortem)"
-            },
-            en: {
-                "library-main-title": "Knowledge Lexicon Library", "auth-unlocked": "Adventurer Authenticated", "nav-home": "Home",
-                "cat-all": "[ Show All Lexicons ]", "cat-abyss": "⚙️ The Abyss (Factory Process)", "cat-pantheon": "🏛️ The Pantheon (R&D Design)", "cat-phantom": "🔮 The Phantom (Supply Chain)",
-                "modal-lore-label": "🌌 Guild Lore Translation", "modal-def-label": "📘 Technical Engineering Definition", "modal-lessons-label": "🔥 Guild Historical Post-Mortem Logs"
-            }
+            tw: { "cat-all": "【 顯示全部圖鑑 】", "cat-abyss": "⚙️ 物質深淵 (工廠製程)", "cat-pantheon": "🏛️ 眾神殿 (研發設計)", "cat-phantom": "🔮 幻界位面 (供應鏈)", "modal-lore-label": "🌌 異世界奇幻包裝 (Guild Lore)", "modal-def-label": "📘 正統實務工程學定義 (Technical Definition)", "modal-lessons-label": "🔥 歷代英雄血淚戰役史詩 (Lessons Learned)" },
+            en: { "cat-all": "[ Show All Lexicons ]", "cat-abyss": "⚙️ Factory Process", "cat-pantheon": "🏛️ R&D Design", "cat-phantom": "🔮 Supply Chain", "modal-lore-label": "🌌 Guild Lore Translation", "modal-def-label": "📘 Technical Definition", "modal-lessons-label": "🔥 Guild Historical Post-Mortem Logs" }
         };
-
-        // 大圖書館術語大數據庫
         const libraryLexicon = [
-            {
-                id: "J-01", category: "abyss", tag: "FATP / Process",
-                term: "FPY (直通率)", en: "First Pass Yield", gameTerm: "純淨血統鐵律",
-                lore: "【純淨血統鐵律】指的是一個神器在深淵流水線中，從第一站鑄造到最後一站測試，『完全沒有觸發任何警報、未曾被拔下來手工維修』，一氣呵成順利通關的完美機率。",
-                def: "First Pass Yield。指生產線第一次就製造出合格產品的比例。公式為：(完全不需重工即合格的產品數 / 投入生產總數) × 100%。這是衡量製程健康度與隱形成本的終極指標。",
-                lessons: "某歷史手機專案試產時，工廠宣稱良率高達 98%。但 TPM 調閱數據發現 FPY 只有 45%！這代表有超過一半的機器是『拆開重修、手工銲接三次』才勉強過關的。這些帶有物理內傷的機器運到市場後，開箱 DOA 直接炸裂。此役後公會確立鐵律：不看良率，只斬直通率！"
-            },
-            {
-                id: "J-02", category: "abyss", tag: "SMT / Production",
-                term: "AOI (自動光學檢測)", en: "Automated Optical Inspection", gameTerm: "深淵第一審判之門",
-                lore: "【深淵第一審判之門】架設在 SMT 火山熔爐出口。利用神聖高頻光學天眼，在毫秒間掃描剛出爐的電路板，判斷晶片符文是否有印歪、短路或偏移浮起。",
-                def: "Automated Optical Inspection。利用光學攝影機與影像處理演算法，自動檢測 PCB 組裝（PCBA）上零件的缺件、偏位、墓碑（Tombstoning）、橋接短路等外觀缺陷。",
-                lessons: "在 KSH5 專案的 EVT 階段，過迴流焊爐後集體出現特定電阻浮起（墓碑效應）。工廠黑手堅持是客戶設計問題，但 TPM 調閱第一道審判之門（SPI 錫膏檢查）與 AOI 數據，精確抓到是工廠鋼網（Stencil）厚度磨損導致錫膏量不均。工廠當場低頭，賠償整批板費。"
-            },
-            {
-                id: "J-03", category: "pantheon", tag: "Design / CMF",
-                term: "Anodization (陽極氧化)", en: "Anodization", gameTerm: "金屬幻化護甲術",
-                lore: "【金屬幻化護甲術】利用電化學魔力，在鋁合金骨架表面強行鍍上一層高硬度、抗刮、且能吸附神聖色彩的半透明防禦皮層。",
-                def: "一種電化學製程，將金屬（主要是鋁合金）物件作為陽極，置於電解液中施加電流，使其表面形成一層具保護性與裝飾性的氧化膜。涉及極度敏感的酸鹼度、電流工藝控制。",
-                lessons: "天界女神（ID設計師）要求高階無人機外殼必須呈現深邃極光藍。然而深淵工廠回報：該陽極氧化藥水在量產線上的色差（Delta E）極難控制，直通率雪崩。TPM 緊急介入，在圖紙端妥協微調噴砂顆粒度（120號改為150號），增加光線漫反射，完美遮蓋色差，拯救了大量生產時程。"
-            },
-            {
-                id: "J-04", category: "phantom", tag: "Supply Chain / Logistics",
-                term: "Lead Time (長料期/交期)", en: "Lead Time", gameTerm: "長料期的沉沒詛咒",
-                lore: "【長料期的沉沒詛咒】指的是從你向幻界供應商下達召喚聖旨那一刻起，到零件原料真正穿越時空跨海送進深淵倉庫，所需要耗費的時間沙漏總長度。",
-                def: "從訂單確認下達，到物料或成品實際交付到指定地點的這段總時間。包含晶圓排產、封裝測試、跨國海空運通關時間。在晶圓或感測器晶片上，長料期通常高達 12 至 16 週。",
-                lessons: "某次 DVT 階段前夕，幻界晶圓廠遭遇地震，特定光學 IC 的 Lead Time 瞬間暴增一倍。System TPM 發動時空扭曲魔法（Schedule Matrix Analysis），大膽決定：試產不延期，前半段空板（Dummy Board）上線過爐，等 4 週後晶片運抵，再在工廠後段架設手工專屬工位（Rework Station）進行後補後焊。專案因此毫秒未差，如期 Exit！"
-            }
+            { id: "J-01", category: "abyss", tag: "FATP / Process", term: "FPY (直通率)", en: "First Pass Yield", gameTerm: "純淨血統鐵律", lore: "【純淨血統鐵律】一個神器在深淵流水線中，完全沒有重工修復、一氣呵成順利通關的完美機率。", def: "First Pass Yield。第一次就製造出合格產品的比例。公式為：(不需重工合格數 / 投入總數) × 100%。", lessons: "某手機試產良率 98%，但 FPY 只有 45%！代表過半都是手工重修三次勉強過關。運到市場開箱 DOA 良率炸裂。確立鐵律：不斬良率，只斬直通率！" },
+            { id: "J-02", category: "abyss", tag: "SMT / Production", term: "AOI (自動光學檢測)", en: "Automated Optical Inspection", gameTerm: "深淵第一審判之門", lore: "【深淵第一審判之門】架設在 SMT 火山熔爐出口，毫秒間高速掃描晶片符文是否有印歪、短路或偏移浮起。", def: "Automated Optical Inspection。利用光學攝影機與影像演算法，自動檢測 PCBA 上零件的缺件、墓碑（Tombstoning）、短路等外觀缺陷。", lessons: "EVT 出現集體電阻浮起（墓碑效應）。工廠黑手堅持是設計問題，TPM 調閱第一道審判之門（SPI 錫膏檢查）與 AOI 數據，精確抓到是鋼網（Stencil）厚度磨損。工廠當場認賠。" }
         ];
-
-        // 圖鑑卡牌渲染引擎
         function renderLexicon(data) {
-            const canvas = document.getElementById('lexicon-canvas');
-            canvas.innerHTML = '';
+            const canvas = document.getElementById('lexicon-canvas'); canvas.innerHTML = '';
             data.forEach(item => {
-                canvas.innerHTML += `
-                    <div class="jargon-card" onclick="openLexiconDetail('${item.id}')">
-                        <div class="jargon-tag-box">🏷️ ${item.tag}</div>
-                        <div class="jargon-main-term">${item.term}</div>
-                        <div class="jargon-sub-game-term">(${item.gameTerm})</div>
-                        <div style="font-family: monospace; font-size: 0.7rem; opacity: 0.5; margin-top: 10px; text-transform: uppercase;">${item.en}</div>
-                    </div>
-                `;
+                canvas.innerHTML += `<div class="jargon-card" onclick="openLexiconDetail('${item.id}')"><div class="jargon-tag-box">🏷️ ${item.tag}</div><div class="jargon-main-term">${item.term}</div><div class="jargon-sub-game-term">(${item.gameTerm})</div><div style="font-family: monospace; font-size: 0.7rem; opacity: 0.5; margin-top: 10px; text-transform: uppercase;">${item.en}</div></div>`;
             });
         }
-
-        // 分類過濾路由
         function filterLexicon(category) {
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            let btnId = 'btn-all';
-            if (category === 'abyss') btnId = 'btn-abyss';
-            if (category === 'pantheon') btnId = 'btn-pantheon';
-            if (category === 'phantom') btnId = 'btn-phantom';
-            const tgtBtn = document.getElementById(btnId);
-            if(tgtBtn) tgtBtn.classList.add('active');
-
-            if (category === 'all') {
-                renderLexicon(libraryLexicon);
-            } else {
-                const filtered = libraryLexicon.filter(item => item.category === category);
-                renderLexicon(filtered);
-            }
+            let btnId = category === 'all' ? 'btn-all' : 'btn-' + category; const tgtBtn = document.getElementById(btnId); if(tgtBtn) tgtBtn.classList.add('active');
+            if (category === 'all') { renderLexicon(libraryLexicon); } else { renderLexicon(libraryLexicon.filter(item => item.category === category)); }
         }
-
-        // 開啟詳細彈窗視窗
         function openLexiconDetail(id) {
-            const data = libraryLexicon.find(item => item.id === id);
-            if (!data) return;
-
-            document.getElementById('modal-jargon-tag').innerText = `🏷️ ${data.tag} [ ${data.en} ]`;
-            document.getElementById('modal-jargon-term').innerText = data.term;
-            document.getElementById('modal-jargon-lore').innerText = data.lore;
-            document.getElementById('modal-jargon-def').innerText = data.def;
-            document.getElementById('modal-jargon-lessons').innerText = data.lessons;
-
+            const data = libraryLexicon.find(item => item.id === id); if (!data) return;
+            document.getElementById('modal-jargon-tag').innerText = `🏷️ ${data.tag} [ ${data.en} ]`; document.getElementById('modal-jargon-term').innerText = data.term; document.getElementById('modal-jargon-lore').innerText = data.lore; document.getElementById('modal-jargon-def').innerText = data.def; document.getElementById('modal-jargon-lessons').innerText = data.lessons;
             document.getElementById('lexicon-modal').style.display = 'flex';
         }
-
-        function closeLexicon() {
-            document.getElementById('lexicon-modal').style.display = 'none';
-        }
-
-        // 👑 剛性語系切換與身分卡同步引擎
+        function closeLexicon() { document.getElementById('lexicon-modal').style.display = 'none'; }
         function setLang(lang) {
-            document.querySelectorAll('.lang-btn-core').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById(`btn-${lang}`);
-            if (activeBtn) activeBtn.classList.add('active');
-            
-            // 分發翻譯
-            document.querySelectorAll('[data-i18n]').forEach(el => { 
-                const key = el.getAttribute('data-i18n'); 
-                if(translations[lang][key]) el.innerText = translations[lang][key]; 
-            });
-
-            // Home鍵同步
-            document.getElementById('nav-home-text').innerText = translations[lang]["nav-home"];
-
-            // 身分識別同步（頭銜＋名稱，0 移位）
-            const cachedName = localStorage.getItem('tpm-user-name');
-            const cachedRank = localStorage.getItem('tpm-user-rank') || "冒險者";
-            
-            let displayRank = (lang === 'tw') ? "冒險者" : "Adventurer";
-            if (cachedRank === "G.M.") displayRank = "G.M.";
-
-            if (cachedName) {
-                document.getElementById('user-profile').innerHTML = `👤 ${displayRank}：${cachedName}`;
-            } else {
-                document.getElementById('user-profile').innerText = (lang === 'tw') ? "🔒 未讀取公會憑證" : "🔒 No Credentials";
-            }
-
-            localStorage.setItem('tpm-lang-pref', lang);
+            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if(translations[lang][key]) el.innerText = translations[lang][key]; });
+            renderLexicon(libraryLexicon);
         }
-
-        window.onload = () => {
-            setLang(localStorage.getItem('tpm-lang-pref') || 'tw');
-            renderLexicon(libraryLexicon); 
-        };
     </script>
 </body>
 </html>
