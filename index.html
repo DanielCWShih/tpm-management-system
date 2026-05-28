@@ -32,7 +32,7 @@
             box-sizing: border-box;
         }
 
-        /* 剛性首頁畫布外殼：解鎖底層高度，卡牌超出時出現垂直滾動條，絕對不裁剪 */
+        /* 剛性首頁畫布外殼：允許卡牌超出時自然出現垂直滾動條，絕對不裁剪 */
         .idx-canvas-full {
             width: 100vw;
             height: 100vh;
@@ -213,7 +213,6 @@
             pointer-events: none;
         }
 
-        /* 👑 修正隱藏框架：用來修正 Google Iframe 初始化渲染的安全佔位 */
         #google-native-icon-wrapper {
             display: flex;
             align-items: center;
@@ -229,7 +228,7 @@
         
         <div style="display: none;">
             <div id="g_id_onload"
-                 data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                 data-client_id="714448595856-i1nkps3f08arusf8fdfguj3gpnnu69uf.apps.googleusercontent.com"
                  data-context="signin"
                  data-ux_mode="popup"
                  data-callback="handlePortalLogin"
@@ -312,7 +311,7 @@
         </div>
         
         <footer style="margin-top: auto; padding: 40px 0; text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); font-family: monospace;">
-            <span>GUILD.REVISION: 0528-V4.1 | @2026 | OPERATOR: DANIEL SHIH</span>
+            <span>GUILD.REVISION: 0528-V4.2 | @2026 | OPERATOR: DANIEL SHIH</span>
         </footer>
         
     </div>
@@ -385,7 +384,6 @@
             const unloggedZone = document.getElementById('auth-unlogged-zone');
             const loggedZone = document.getElementById('auth-logged-zone');
 
-            // 👑 狀態機判定切換：未登入顯示內嵌 G Logo，登入成功姓名直接覆蓋取代
             if (cachedName) {
                 if (unloggedZone) {
                     unloggedZone.style.display = 'none';
