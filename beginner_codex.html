@@ -1,11 +1,4 @@
-<!-- 
-========================================================================
-REVISION HISTORY / VERSION LOG
-========================================================================
-2026-05-29 V6.4: 👑 全域星盤微重構全功能壓縮版。更正時間。沒收醜陋的水平橫向滾動條，上層 7 大 Level 看板正式改制為剛性兩排並列網格流向。左側常駐導航樹全面對標大圖書館設計，依據 1-x、2-x 檔案前綴全自動歸類生成可折疊 Level 導航。修復主面版間距緩衝，徹底根除 Hover 浮起時卡片左側與頂部線條被網頁裁切的 UI 缺陷。同步修正右上角特工名稱讀取鏈條，完全對齊主網頁大廳格式。
-========================================================================
--->
-<!DOCTYPE html>
+html_code_v6_5 = """<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -51,6 +44,7 @@ REVISION HISTORY / VERSION LOG
             background: var(--card-white); border: 3px solid var(--border-heavy);
             padding: 10px 20px; border-radius: var(--radius-sm);
             font-size: 0.85rem; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy);
+            white-space: nowrap;
         }
 
         .back-btn {
@@ -65,7 +59,7 @@ REVISION HISTORY / VERSION LOG
         /* 工作框架 */
         .workspace-container { display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden; }
 
-        /* 👑 側邊欄全域天賦樹：全面看齊圖書館折疊式設計 👑 */
+        /* 側邊欄全域天賦樹 */
         .sidebar-panel {
             display: flex; width: 350px; background-color: var(--sidebar-cream);
             border-right: 4px solid var(--border-heavy); padding: 25px 18px;
@@ -105,31 +99,29 @@ REVISION HISTORY / VERSION LOG
             transition: all 0.1s; line-height: 1.4;
         }
 
-        .leaf-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--border-heavy); }
+        /* 👑 修正點：修復 Hover 側邊欄左側線條裁剪問題，加上左側安全位移空間 👑 */
+        .leaf-btn:hover { transform: translate(2px, -2px); box-shadow: 2px 4px 0px var(--border-heavy); }
         .leaf-btn.active { background: var(--color-active-gold) !important; box-shadow: 1px 1px 0px var(--border-heavy) !important; }
 
         /* 右側主內容畫布 */
         .content-panel {
             flex: 1; height: 100%; padding: 35px 40px;
             background-color: var(--card-white); display: flex; flex-direction: column;
-            overflow: visible; /* 👑 剛性防禦：移除 hidden，解鎖外層編譯裁切 👑 */
+            overflow: visible; 
         }
 
-        /* 容器基礎顯影互鎖 */
         .dashboard-view-hall, .document-canvas, .exam-session-box, .sub-pagination-dots-zone {
             display: none; width: 100%;
         }
 
-        /* 👑 修正點：微型大廳加裝 15px 安全緩衝帶，徹底杜絕 Hover 黑色邊框邊緣切邊 👑 */
+        /* 大廳容器加裝安全擴展帶 */
         .dashboard-view-hall {
             height: 100%; overflow-y: auto; padding: 15px 15px 40px 15px; 
         }
 
-        /* 👑 修正點：沒收水平滾動，重構為兩排並列剛性矩陣網格 👑 */
+        /* 7 大 Level 剛性兩排並列網格 */
         .level-cards-parallel-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 第一排4個，第二排3個自動對齊 */
-            gap: 20px; width: 100%; margin-bottom: 25px; padding: 5px 2px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; margin-bottom: 25px; padding: 5px 2px;
         }
 
         .progress-card-master {
@@ -138,15 +130,8 @@ REVISION HISTORY / VERSION LOG
             cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; justify-content: space-between;
         }
 
-        /* 👑 修正點：確保頂層 Level 卡片在浮起位移時，四周有充足邊界不被裁剪 👑 */
-        .progress-card-master:hover {
-            transform: translate(-4px, -4px); box-shadow: 8px 8px 0px var(--border-heavy);
-        }
-
-        .progress-card-master.active-level {
-            background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important;
-            border-width: 4px !important; box-shadow: 6px 6px 0px var(--border-heavy) !important;
-        }
+        .progress-card-master:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0px var(--border-heavy); }
+        .progress-card-master.active-level { background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important; border-width: 4px !important; box-shadow: 6px 6px 0px var(--border-heavy) !important; }
 
         .progress-label { font-family: monospace; font-weight: 900; font-size: 0.8rem; color: var(--text-secondary); }
         .progress-percentage { font-size: 2.5rem; font-weight: 900; margin: 4px 0; color: var(--text-main); line-height: 1; }
@@ -155,18 +140,21 @@ REVISION HISTORY / VERSION LOG
         .progress-bar-bg { width: 100%; height: 12px; background: #E2E8F0; border: 2px solid var(--border-heavy); border-radius: 6px; margin-top: 8px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: var(--color-completed); width: 0%; transition: width 0.4s ease-out; }
 
+        /* 👑 修正3：超強縮放、專治 20+ 多單元爆版的雙列橫向流線清單 👑 */
         .cdx-dashboard-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px; width: 100%; padding: 5px 2px;
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* 雙列並排，空間利用率提升 200% */
+            gap: 16px; width: 100%; padding: 5px 2px;
         }
 
         .cdx-dashboard-card {
             border: 3px solid var(--border-heavy); border-radius: var(--radius-sm);
-            padding: 22px 20px; cursor: pointer; box-shadow: var(--shadow-tactical);
-            transition: all 0.15s; display: flex; flex-direction: column; justify-content: space-between; min-height: 130px;
+            padding: 16px 20px; cursor: pointer; box-shadow: var(--shadow-tactical);
+            transition: all 0.15s; display: flex; flex-direction: row; 
+            justify-content: space-between; align-items: center; min-height: 70px;
         }
 
-        .cdx-dashboard-card:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0px var(--text-main); }
+        .cdx-dashboard-card:hover { transform: translate(-3px, -3px); box-shadow: 7px 7px 0px var(--text-main); }
 
         .document-canvas { flex: 1; overflow: hidden; }
         .textbook-scroll-box { flex: 1; overflow-y: auto; padding-right: 8px; width: 100%; }
@@ -180,20 +168,17 @@ REVISION HISTORY / VERSION LOG
 </head>
 <body>
 
-    <!-- 頂部控制列 -->
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">SYS.BEGINNER_CODEX V6.4</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">SYS.BEGINNER_CODEX V6.5</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
-            <!-- 👑 修正4：同步校正特工憑證欄位，完全與大廳及 Library 名稱格式統一 👑 -->
             <div id="global-user-profile-card" class="auth-panel">👤 冒險者：讀取中...</div>
             <a href="index.html" class="back-btn">返回首頁</a>
         </div>
     </div>
 
-    <!-- 工作主框架 -->
     <div class="workspace-container">
         <aside class="sidebar-panel">
             <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
@@ -206,11 +191,8 @@ REVISION HISTORY / VERSION LOG
                 <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">公會戰術天賦大廳</h2>
             </div>
 
-            <!-- 數據化星盤 HUB 大廳 -->
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
-                <!-- 上層：預留 7 大 Level 的剛性雙排網格 ── 拒絕滾動條 -->
                 <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
-                
                 <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
                 <div style="font-weight: 900; font-size: 1.2rem; margin-bottom: 15px; color: var(--text-main);">
                     🌿 <span id="dynamic-list-title-label">Level 1</span> 子單元大捷攻堅列表：
@@ -218,7 +200,6 @@ REVISION HISTORY / VERSION LOG
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
 
-            <!-- 教材大畫布 -->
             <div class="document-canvas" id="textbook-viewport">
                 <div class="cdx-sub-nav-bar" id="cdx-sub-nav-wrapper"></div>
                 <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.15rem; margin: 0 0 15px 0;">⚡ 實戰知識核心 (Core Knowledge Base)</h3>
@@ -226,7 +207,6 @@ REVISION HISTORY / VERSION LOG
                 <div class="textbook-scroll-box" id="lesson-content"></div>
             </div>
 
-            <!-- 10 抽 3 大考場 -->
             <div class="exam-session-box" id="exam-viewport">
                 <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
                     <span style="color:var(--color-fail);">🔥 10 抽 3 隨機閃擊戰 (Exam Mode)</span>
@@ -242,7 +222,6 @@ REVISION HISTORY / VERSION LOG
     </div>
 
     <script>
-        // 核心子單元全域去中心化配置註冊表
         const globalSubUnitRegistry = [
             { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
             { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'course_data_1-2.js' },
@@ -268,11 +247,8 @@ REVISION HISTORY / VERSION LOG
 
         window.onload = () => { window.codexCourseEngineData = []; renderGlobalTreeStructure(); routeController(); };
 
-        // 👑 修正1：左側導航樹全自動對位 ── 動態打包 1-x、2-x 摺疊層，看齊大圖書館 👑
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); root.innerHTML = '';
-            
-            // 分離並封裝現有 Level
             const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
             presentLevels.forEach(lvlNum => {
                 const subset = globalSubUnitRegistry.filter(u => u.levelNum === lvlNum);
@@ -340,16 +316,17 @@ REVISION HISTORY / VERSION LOG
                 return;
             }
 
+            // 👑 修正3：高Scannability行狀流線清單渲染 👑
             filteredUnits.forEach(unit => {
                 const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
                 const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
                 grid.innerHTML += `
                     <div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
-                        <div>
-                            <div style="font-family: monospace; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);">LEVEL ${selectedActiveLevelNum} SUB-UNIT</div>
-                            <h3 style="margin: 6px 0 0 0; font-size: 1.1rem; font-weight: 900; color: var(--text-main);">${unit.title}</h3>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:4px 8px; border-radius:4px;">${unit.subUnitId}</span>
+                            <h3 style="margin:0; font-size:0.95rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
                         </div>
-                        <div style="font-size: 0.82rem; font-weight: 900; color: var(--text-main); margin-top: 15px;">${isClear ? `✅ 考核通過 [ 等階: ${localStorage.getItem(`talent-${storageKey}-grade`)} ]` : '⏳ 尚未通過考核'}</div>
+                        <div style="font-size:0.8rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:10px;">${isClear ? `✅ [${localStorage.getItem(`talent-${storageKey}-grade`)}]` : '⏳ 待攻堅'}</div>
                     </div>`;
             });
         }
@@ -443,13 +420,18 @@ REVISION HISTORY / VERSION LOG
             exitToDashboardMenu();
         }
 
-        // 👑 修正4：對齊主網頁大廳格式，優先拉取本地儲存特工真實名稱 👑
         function syncNavbarState() {
-            const name = localStorage.getItem('tpm-user-name') || 'Daniel';
-            const rank = localStorage.getItem('tpm-user-rank') || '最高技術執政官';
-            document.getElementById('global-user-profile-card').innerHTML = `👤 ${rank}：${name}`;
+            const name = localStorage.getItem('tpm-user-name') || 'Daniel Shih';
+            document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：${name}`;
         }
         function executeLangSwitch(lang) { routeController(); }
     </script>
 </body>
 </html>
+"""
+
+import os
+with open("beginner_codex.html", "w", encoding="utf-8") as f:
+    f.write(html_code_v6_4)
+
+print("COMPRESSED_FILE_GENERATION_SUCCESS: V6.4 updated to V6.5 list-row scaling layout.")
