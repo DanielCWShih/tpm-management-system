@@ -127,7 +127,7 @@
             overflow: hidden;
         }
 
-        /* 側邊欄預設完全隱藏，只有進入特定單元才點亮 */
+        /* 側邊欄預設不顯示，路由接入才開閘 */
         .sidebar-panel {
             display: none;
             width: 340px;
@@ -180,7 +180,7 @@
             color: white !important;
         }
 
-        /* 大廳目錄首頁預設直接點亮 */
+        /* 大廳目錄首頁預設直接開啟點亮 */
         .dashboard-view-hall {
             display: block;
             width: 100%;
@@ -477,7 +477,7 @@
             user-select: none;
         }
 
-        /* 分頁小點點引導導航列 */
+        /* 分頁點點引導導航列 */
         .sub-pagination-dots-zone {
             justify-content: center;
             align-items: center;
@@ -561,7 +561,7 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.6</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.7</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -637,7 +637,6 @@
     </div>
 
     <script>
-        // 👑 剛性防禦焊接：將語系大腦文字包宣告直接焊回本機，確保 100% 綠燈不崩盤 👑
         const globalUiTranslations = {
             tw: { "nav-home": "首頁", "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者", "title": "初心者寶典大廳" },
             en: { "nav-home": "Home", "auth-locked": "🔒 No Credentials", "rank-default": "Adventurer", "title": "Beginner's Codex Hall" }
@@ -763,11 +762,18 @@
             window.location.search = '';
         }
 
+        /* 👑 核心加裝：V5.7 異步 Cache-Busting 注入器防線 👑 */
         function injectContentPackScript(packId) {
             const script = document.createElement('script');
-            script.src = `course_data_${packId}.js`;
-            script.onload = () => { initEngine(); };
-            script.onerror = () => { alert(`無法載入 course_data_${packId}.js 資料包。`); exitToDashboardMenu(); };
+            // 銲死防線：追加當前微秒微秒時間戳 (?v=timestamp)，強制伺服器與瀏覽器剔除舊快取，擁抱新代碼！
+            script.src = `course_data_${packId}.js?v=${Date.now()}`;
+            script.onload = () => { 
+                initEngine(); 
+            };
+            script.onerror = () => { 
+                alert(`無法載入 course_data_${packId}.js 資料包。`); 
+                exitToDashboardMenu(); 
+            };
             document.head.appendChild(script);
         }
 
