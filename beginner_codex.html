@@ -275,7 +275,7 @@
             flex-direction: column;
         }
 
-        /* 剛性隱藏預設，交給 JS 動態調配 */
+        /* 剛性防禦：所有檢視容器預設底層通通鎖死隱藏 */
         .dashboard-view-hall,
         .document-canvas,
         .exam-session-box,
@@ -594,7 +594,7 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.16</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.17</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -652,7 +652,7 @@
     </div>
 
     <script>
-        // 去中心化單元結構註冊表
+        // 去中心化配置註冊表
         const globalSubUnitRegistry = [
             { 
                 type: 'codex', 
@@ -692,8 +692,6 @@
             }
         ];
 
-        let codexCourseEngineData = [];
-        let activeSubUnitKey = ''; 
         let activeCourseIdx = 0;
         let activePageIdx = 0;
         let activeSubMatrixIdx = 0;
@@ -713,6 +711,7 @@
         };
 
         window.onload = () => {
+            window.codexCourseEngineData = []; // 👑 封裝防線：初始化焊接全域 window 大腦 👑
             renderGlobalTreeStructure();
             routeController();
         };
@@ -762,16 +761,19 @@
             }
         }
 
-        function routeController() {
+        // 👑 剛性修復2：支援直接參數注入，實時秒殺 window.location.search 不同步延遲黑洞 👑
+        function routeController(directType, directC) {
             const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
             const urlParams = new URLSearchParams(window.location.search);
-            const paramC = urlParams.get('c');
-            const paramType = urlParams.get('type') || 'codex';
+            
+            // 優先吃點擊注入的實體參數，無參數才降級抓網址
+            const paramC = directC || urlParams.get('c');
+            const paramType = directType || urlParams.get('type') || 'codex';
 
             syncNavbarState(currentLang);
 
             if (!paramC) {
-                // 大廳狀態激活
+                // 大廳整備狀態點亮
                 document.getElementById('cdx-page-header-zone').style.display = 'block';
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD";
                 document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
@@ -784,12 +786,12 @@
                 document.querySelectorAll('.leaf-btn').forEach(btn => btn.classList.remove('active'));
                 renderMicroDashboard();
             } else {
-                // 單元教材狀態激活
+                // 特定單元狀態點亮
                 document.getElementById('dashboard-menu-hall').style.display = 'none';
 
-                activeSubUnitKey = `${paramType}-${paramC}`;
+                const subUnitKey = `${paramType}-${paramC}`;
                 document.querySelectorAll('.leaf-btn').forEach(btn => btn.classList.remove('active'));
-                const activeLeaf = document.getElementById(`lf-node-${activeSubUnitKey}`);
+                const activeLeaf = document.getElementById(`lf-node-${subUnitKey}`);
                 if (activeLeaf) activeLeaf.classList.add('active');
 
                 injectContentPackScript(paramType, paramC);
@@ -840,26 +842,29 @@
             activePageIdx = 0;
             activeSubMatrixIdx = 0;
             activeFlowNodeIdx = 0;
+            
             const newUrl = `${window.location.pathname}?type=${type}&c=${subUnitId}`;
-            window.history.pushState({ path: newUrl }, '', newUrl);
-            routeController();
+            window.history.pushState(null, '', newUrl);
+            
+            // 👑 銲死控制：原地參數直發，不給 pushState 任何卡頓反應時間 👑
+            routeController(type, subUnitId);
         }
 
         function exitToDashboardMenu() {
             examActive = false;
             const newUrl = window.location.pathname;
-            window.history.pushState({ path: newUrl }, '', newUrl);
-            routeController();
+            window.history.pushState(null, '', newUrl);
+            routeController(null, null); // 降級還原微型大廳
         }
 
-        /* 👑 剛性熱修復：動態掛載與排他防線 👑 */
+        /* 👑 剛性修復3：appendChild 歸位，並加裝舊節點排他自我清空解構器 👑 */
         function injectContentPackScript(type, packId) {
             const found = globalSubUnitRegistry.find(item => item.type === type && item.subUnitId === packId);
             if (!found) return;
 
-            codexCourseEngineData = [];
+            window.codexCourseEngineData = []; // 重置 window Namespace 緩衝區
             
-            // 清理舊有殘留節點
+            // 剛性排他：掃除舊有 Script 標籤防止干擾
             const oldScript = document.getElementById('dynamic-course-pack');
             if (oldScript) {
                 oldScript.remove();
@@ -883,18 +888,19 @@
                 document.getElementById('universal-dots-bar').innerHTML = '';
             };
             
-            // 銲死防線：將生成好的腳本節點推入 DOM 流水線
+            // 👑 鐵血對位：正式將生好的節點推入 head 頂層，發動實體下載！ 👑
             document.head.appendChild(script);
         }
 
         function initEngine() {
-            if (!codexCourseEngineData || codexCourseEngineData.length === 0) return;
+            // 👑 剛性對位：改向 window 頂層直接清查數據包 👑
+            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) return;
             loadCourseState(activeCourseIdx, activePageIdx);
         }
 
         function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx;
-            const course = codexCourseEngineData[cIdx];
+            const course = window.codexCourseEngineData[cIdx];
             const dotsBar = document.getElementById('universal-dots-bar');
             dotsBar.innerHTML = '';
 
@@ -985,7 +991,7 @@
         function executeLangSwitch(lang) { syncNavbarState(lang); routeController(); }
 
         function runExamEngine() {
-            const course = codexCourseEngineData[activeCourseIdx];
+            const course = window.codexCourseEngineData[activeCourseIdx];
             if (examCurrentQ >= course.examVault.length) { settleExamPayload(); return; }
             const qData = course.examVault[examCurrentQ];
             document.getElementById('current-chapter-id').innerText = "EXAM MODE";
@@ -1004,7 +1010,7 @@
         }
 
         function submitAnswer(idx) {
-            const course = codexCourseEngineData[activeCourseIdx];
+            const course = window.codexCourseEngineData[activeCourseIdx];
             if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; }
             examCurrentQ++;
             runExamEngine();
@@ -1012,7 +1018,7 @@
 
         function settleExamPayload() {
             examActive = false;
-            const course = codexCourseEngineData[activeCourseIdx];
+            const course = window.codexCourseEngineData[activeCourseIdx];
             const finalPct = (examScoreCount / course.examVault.length) * 100;
             let grade = finalPct === 100 ? "S" : finalPct >= 90 ? "A" : finalPct >= 80 ? "B" : finalPct >= 70 ? "C" : finalPct >= 60 ? "D" : "Fail";
 
