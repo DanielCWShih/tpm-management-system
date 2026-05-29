@@ -180,7 +180,7 @@
             color: white !important;
         }
 
-        /* 大廳目錄首頁預設直接點亮 */
+        /* 大廳選單 */
         .dashboard-view-hall {
             display: block;
             width: 100%;
@@ -557,7 +557,22 @@
         }
     </style>
 </head>
-<body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
+<body style="display: flex; flex-direction: column; height: 100vw; height: 100vh; overflow: hidden;">
+
+    <div class="tactical-navbar">
+        <div class="navbar-brand">
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.9</span>
+            <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
+        </div>
+        <div class="navbar-controls">
+            <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
+            <div class="lang-switcher-wrapper">
+                <button class="lang-btn-core" id="global-btn-tw" onclick="executeLangSwitch('tw')">TW</button>
+                <button class="lang-btn-core" id="global-btn-en" onclick="executeLangSwitch('en')">EN</button>
+            </div>
+            <a href="index.html" class="back-btn" id="global-nav-home-btn">首頁</a>
+        </div>
+    </div>
 
     <div class="workspace-container">
         
@@ -747,10 +762,8 @@
             window.location.search = '';
         }
 
-        /* 👑 核心優化：加裝雙協議環境感測器 👑 */
         function injectContentPackScript(packId) {
             const script = document.createElement('script');
-            // 👑 剛性防禦：感測如果是本機雙擊開啟（file: 協議），強行移除 query string，否則在伺服器上則追加時間戳防快取死鎖！
             const isLocalFile = window.location.protocol === 'file:';
             script.src = isLocalFile ? `course_data_${packId}.js` : `course_data_${packId}.js?v=${Date.now()}`;
             
@@ -758,7 +771,7 @@
                 initEngine(); 
             };
             script.onerror = () => { 
-                alert(`無法載入 course_data_${packId}.js 資料包。請確認檔案是否放置於與網頁外殼相同的資料夾目錄下。`); 
+                alert(`無法載入 course_data_${packId}.js 資料包。請確認檔案是否與網頁置於同一目錄夾內。`); 
                 exitToDashboardMenu(); 
             };
             document.head.appendChild(script);
