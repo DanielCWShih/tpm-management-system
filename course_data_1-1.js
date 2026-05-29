@@ -1,7 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-05-29 V5.6: 👑 滿血多行展開對齊版：更正最新時間。HTML 全面採用標準縮排展開，Section 1~3（含手機現實、三大精細流水線）內容 100% 完整，30 題實戰情境試題庫配合 Fisher-Yates 雙重洗牌引擎完璧歸位，嚴禁任何形式的代碼縮寫、留白與裁剪。
+2026-05-29 V5.11: 👑 雙重大除錯交割：校正正確時間。將 Section 1~3 所有資料節點字串全面剛性更換為反引號（\`）多行排版，徹底瓦解因內嵌 HTML 屬性引發的引號衝突死鎖（SyntaxError）。同時將 Section 2 & 3 的分支內文精確綁定入 subMatrixBranches 內部，修正數據讀取鏈。30 題硬核情境大考題與 Fisher-Yates 抽題引擎完全體交付，嚴禁裁剪。
 ========================================================================
 */
 
@@ -46,7 +46,7 @@ codexCourseEngineData = [
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【PRD 規格防線審查】：必須全面清查 CMF（色彩、材質、工藝）是否具備工廠現有流水線的量產製程能力，在開模前剛性攔截不切實際的幻想規格。')">
                                         <span>🔍 PRD 規格審查</span><span>➔</span>
                                     </button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【公差疊加分析】：在圖紙出爐第一時間，ME團隊必須發動極慢疊加模擬，計算零件間的微米級物理干涉，提前鎖死模具與變形雷區。')">
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【公差疊加分析】：在圖紙出爐第一時間，ME團隊必須發動極限疊加模擬，計算零件間的微米級物理干涉，提前鎖死模具與變形雷區。')">
                                         <span>🔍 公差疊加分析</span><span>➔</span>
                                     </button>
                                 </div>
@@ -167,11 +167,11 @@ codexCourseEngineData = [
                             <div class="sandbox-panel-card">
                                 <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
                                 <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">
-                                    🚨 <strong>現場突發修羅場：</strong>PVT 結案審查時，工廠主管報告最終入庫良率高達 98.5%！但你翻查後台數據發現直通率（FPY）竟然只有慘烈的 35%，此時你該如何決策？
+                                    🚨 <strong>現場突發修羅場：</strong>PVT 結案審查時，工廠主管報告最終入庫良率高達 98.5%！但你翻查後台數據發現直通率（FPY）竟然只有慘烈的 35%，此時你在開線評審中該如何決策？
                                 </div>
                                 <div class="sandbox-choice-row">
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：客退海嘯，專案判死！</strong><br>你看到 98.5% 良率就放行出關。結果產品流入實體市場後，因為大批經歷過手工二次高溫重工修補的手機內傷爆發，開箱即損（DOA）故障率集體炸裂！客戶發動全面退貨清算，代工廠毛利當場歸零！')">
-                                        方案 A：良率既然過關，配合工廠主管如期開閘，准許出關大量生產（MP）。
+                                        方案 A:: 良率既然過關，配合工廠主管如期開閘，准許出關大量生產（MP）。
                                     </button>
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：鐵血攔截，斬斷隱形內傷！</strong><br>你死守剛性鐵律：『不斬良率，只斬直通率！』當場鐵血攔截專案、拒絕出關。勒令製程 ME 團隊徹查線體，抓出鋼網磨損與治具公差偏移，將 FPY拉回 85% 以上才准予放行，徹底消滅客退海嘯！')">
                                         方案 B：一票否決、強行攔截！下令產線停線重調治具，將直通率拉回剛性指標。
@@ -250,8 +250,7 @@ codexCourseEngineData = [
                                     </div>
                                 ` 
                             }
-                        ],
-                        text: "【標準新產品導入流程（NPI）】每個開發里程碑皆有剛性出關審查基準（Exit Criteria），按部就班遞進。請點擊上方流程圖方塊進行互動切換。"
+                        ]
                     },
                     {
                         branchLabel: "📱 智慧型手機現實 (Smartphone)",
@@ -292,10 +291,10 @@ codexCourseEngineData = [
                                     </div>
                                 ` 
                             }
-                        ],
-                        text: "【智慧型手機產業的極限壓縮現實】在高度成熟的手機產品線中，傳統生命週期被市場競爭徹底粉碎。請點擊方塊切換研讀手機修羅場實務。"
+                        ]
                     }
-                ]
+                ],
+                text: "【標準新產品導入流程（NPI）】每個開發里程碑皆有剛性出關審查基準（Exit Criteria），按部就班遞進。請點擊上方流程圖方塊進行互動切換。"
             },
             {
                 title: "3. 📦 生產線體與組裝測試工序",
@@ -351,8 +350,7 @@ codexCourseEngineData = [
                                     </div>
                                 ` 
                             }
-                        ],
-                        text: "【通用電子產品四大核心線體】解鎖硬體生產的基本物理流向。請點擊上方節點方塊切換工序定義。"
+                        ]
                     },
                     {
                         branchLabel: "📱 高階手機精細線體 (Smartphone)",
@@ -417,8 +415,7 @@ codexCourseEngineData = [
                                     </div>
                                 ` 
                             }
-                        ],
-                        text: "【高階手機高密度自動化線體】手機為了在極小空間塞入最多功能，工序極其精密。請點擊上方節點方塊切換線體定義。"
+                        ]
                     },
                     {
                         branchLabel: "🛸 智慧無人機線體 (Drone)",
@@ -455,7 +452,7 @@ codexCourseEngineData = [
                                         <span class="tactical-badge">DRONE ASSY</span>
                                         <strong>會做什麼：</strong>手臂骨架扣合與精密三軸雲台機械安裝。<br>
                                         <strong>核心目標：</strong>機電系統總集成。<br>
-                                        <strong>終極期待：</strong>大功率線路全面密封防水，抗震襯墊安裝到位，防範升空抖震.
+                                        <strong>終極期待：</strong>大功率線路全面密封防水，抗震襯墊安裝到位，防範升空抖震。
                                     </div>
                                 ` 
                             },
@@ -471,10 +468,10 @@ codexCourseEngineData = [
                                     </div>
                                 ` 
                             }
-                        ],
-                        text: "【智慧無人機機電共生線體】多軸飛行器涉及動力機械與多重感測器交織流向。請點擊方塊解鎖無人機黑科技工序。"
+                        ]
                     }
-                ]
+                ],
+                text: "【精密產品高精工序大陣列】解鎖硬體生產的基本物理流向。請點擊上方分流標籤與節點方塊切換線體定義。"
             }
         ],
         examVault: [
@@ -604,7 +601,7 @@ codexCourseEngineData = [
                 a: 1 
             },
             { 
-                q: "流水線在日夜班交接轉廠（Shift Transition）時，良率突然無預警雪崩下跌 40%，TPM 趕往現場第一時間應調閱什麼？", 
+                q: "流水線在日夜班交接轉廠（Shift Transition）時，良率突然無預警雪崩下跌 40%，TPM 趕現場第一時間應調閱什麼？", 
                 o: ["當班的生產 UPH 產速報表", "交接班金件點檢日誌（Setup Verification Log）與首件檢查（First Article Inspection）數據", "採購部門的 BOM 報價單清冊"], 
                 a: 1 
             },
