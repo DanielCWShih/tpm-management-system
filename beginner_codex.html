@@ -18,6 +18,7 @@
             --color-locked: #94A3B8;
             --color-completed: #F59E0B;
             --color-fail: #DC2626;
+            --color-active-gold: #FDE047;
         }
 
         html, 
@@ -127,25 +128,120 @@
             overflow: hidden;
         }
 
+        /* 側邊欄常駐：全域剛性可折疊天賦導航列 */
         .sidebar-panel {
-            display: none;
-            width: 340px;
+            display: flex;
+            width: 350px;
             background-color: var(--sidebar-cream);
             border-right: 4px solid var(--border-heavy);
-            padding: 30px 20px;
+            padding: 25px 18px;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             overflow-y: auto;
             flex-shrink: 0;
             height: 100%;
         }
 
-        .cdx-sidebar-header {
-            border-bottom: 3px solid var(--border-heavy);
-            padding-bottom: 15px;
-            margin-bottom: 10px;
+        .menu-category-block {
+            width: 100%;
+            margin-bottom: 4px;
         }
 
+        .tree-main-toggle {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.95rem;
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            width: 100%;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .tree-main-toggle::after {
+            content: '▼';
+            font-size: 0.7rem;
+            transition: transform 0.15s;
+        }
+
+        .tree-main-toggle.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .tree-sub-group {
+            padding-left: 10px;
+            border-left: 3px solid var(--border-heavy);
+            margin-left: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tree-level-label {
+            font-size: 0.85rem;
+            font-weight: 900;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tree-level-label::after {
+            content: '▼';
+            font-size: 0.6rem;
+            transition: transform 0.15s;
+        }
+
+        .tree-level-label.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .tree-leaf-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-left: 6px;
+        }
+
+        .leaf-btn {
+            background: var(--card-white);
+            border: 2px solid var(--border-heavy);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-weight: 800;
+            font-size: 0.82rem;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
+            color: var(--text-main);
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            transition: all 0.1s;
+            line-height: 1.4;
+        }
+
+        .leaf-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+        }
+
+        .leaf-btn.active {
+            background: var(--color-active-gold) !important;
+            color: var(--text-main) !important;
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px var(--border-heavy) !important;
+        }
+
+        /* 右側主內容面板 */
         .content-panel {
             flex: 1;
             height: 100%;
@@ -156,77 +252,33 @@
             flex-direction: column;
         }
 
-        .chapter-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .chapter-tab {
-            background: var(--card-white);
-            border: 2px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            padding: 15px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            font-weight: 900;
-            font-size: 0.9rem;
-        }
-
-        .chapter-tab.active {
-            background: var(--text-main) !important;
-            color: white !important;
-        }
-
-        /* 大廳目錄首頁預設直接點亮 */
+        /* 超小型大廳佈局 */
         .dashboard-view-hall {
-            display: block;
-            width: 100%;
-        }
-
-        .document-canvas, 
-        .exam-session-box, 
-        .sub-pagination-dots-zone {
             display: none;
-        }
-
-        .level-section {
-            margin-bottom: 45px;
             width: 100%;
-        }
-
-        .level-title-divider {
-            font-size: 1.5rem;
-            font-weight: 900;
-            border-bottom: 3px solid var(--border-heavy);
-            padding-bottom: 8px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            height: 100%;
+            overflow-y: auto;
         }
 
         .cdx-dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px;
             width: 100%;
+            padding-top: 10px;
         }
 
         .cdx-dashboard-card {
-            background: var(--card-white);
             border: 3px solid var(--border-heavy);
             border-radius: var(--radius-sm);
-            padding: 30px;
+            padding: 25px 22px;
             cursor: pointer;
             box-shadow: var(--shadow-tactical);
-            position: relative;
             transition: all 0.15s;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 180px;
+            min-height: 150px;
         }
 
         .cdx-dashboard-card:hover {
@@ -234,13 +286,15 @@
             box-shadow: 8px 8px 0px var(--text-main);
         }
 
-        .cdx-dashboard-card.medal-gold {
-            background: linear-gradient(135deg, #FFFDF4 0%, #FDE047 100%) !important;
-            border-color: #B45309 !important;
-            box-shadow: 4px 4px 0px #B45309 !important;
+        /* 核心內文大畫布 */
+        .document-canvas {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
         }
 
-        /* 二級分支導航條 */
+        /* 二級分支導航頁籤列 */
         .cdx-sub-nav-bar {
             display: flex;
             gap: 12px;
@@ -265,13 +319,12 @@
         }
 
         .sub-nav-btn.active {
-            background: #FDE047;
-            color: var(--text-main);
+            background: var(--text-main);
+            color: white;
             transform: translate(1px, 1px);
             box-shadow: 1px 1px 0px var(--border-heavy);
         }
 
-        /* 內文教材區 */
         .textbook-scroll-box {
             flex: 1;
             overflow-y: auto;
@@ -279,7 +332,7 @@
             width: 100%;
         }
 
-        /* 互動型卡牌佈局組件 */
+        /* 互動型卡牌結構組件 */
         .edu-overview-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -315,7 +368,6 @@
             color: var(--text-main);
         }
 
-        /* 互動字典按鈕網格 */
         .dict-btn-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -359,7 +411,6 @@
             animation: fadeInBox 0.15s ease-out;
         }
 
-        /* 決策模擬沙盒卡牌 */
         .sandbox-panel-card {
             background: #FFFFFF;
             border: 2px solid var(--border-heavy);
@@ -421,11 +472,7 @@
             box-shadow: 3px 3px 0px #DC2626;
         }
 
-        @keyframes fadeInBox {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* 流程圖大畫布 */
         .dynamic-flow-canvas {
             display: flex;
             align-items: center;
@@ -476,8 +523,9 @@
             user-select: none;
         }
 
-        /* 分頁小點點導航列 */
+        /* 核心分頁底部點點 */
         .sub-pagination-dots-zone {
+            display: flex;
             justify-content: center;
             align-items: center;
             gap: 14px;
@@ -519,7 +567,6 @@
             color: #FFF;
         }
 
-        /* 大考場 */
         .exam-progress-bar {
             width: 100%;
             background: #E2E8F0;
@@ -554,65 +601,51 @@
             box-shadow: 5px 5px 0px #000;
             background: var(--sidebar-cream);
         }
+
+        @keyframes fadeInBox {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
+<body>
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.10</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.14</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
-            <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
+            <div id="global-user-profile-card" class="auth-panel">🔒 未讀取公會憑證</div>
             <div class="lang-switcher-wrapper">
-                <button class="lang-btn-core" id="global-btn-tw" onclick="executeLangSwitch('tw')">TW</button>
+                <button class="lang-btn-core active" id="global-btn-tw" onclick="executeLangSwitch('tw')">TW</button>
                 <button class="lang-btn-core" id="global-btn-en" onclick="executeLangSwitch('en')">EN</button>
             </div>
-            <a href="index.html" class="back-btn" id="global-nav-home-btn">首頁</a>
+            <button class="back-btn" id="global-nav-home-btn" onclick="exitToDashboardMenu()">返回目錄</button>
         </div>
     </div>
 
     <div class="workspace-container">
         
-        <aside class="sidebar-panel" id="shell-sidebar-area">
-            <div class="cdx-sidebar-header">
-                <button class="back-btn" onclick="exitToDashboardMenu()" style="width:100%; cursor:pointer;">↩ 返回目錄</button>
-            </div>
-            <ul class="chapter-list" id="dynamic-course-menu"></ul>
+        <aside class="sidebar-panel">
+            <div id="global-tree-root" style="width: 100%; display: flex; flex-direction: column; gap: 12px;"></div>
         </aside>
 
         <main class="content-panel">
             
-            <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); display: none; flex-shrink:0;">
-                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;"></span>
-                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;"></h2>
+            <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
+                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">公會戰術天賦大廳</h2>
             </div>
 
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
-                <div class="level-section">
-                    <div class="level-title-divider">🌿 Level 1：基礎通識研修領域 (Foundations)</div>
-                    <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
-                </div>
-                <div class="level-section" style="margin-top: 40px;">
-                    <div class="level-title-divider" style="opacity: 0.4;">🔒 Level 2：進階專科領域 (Staging)</div>
-                    <div class="cdx-dashboard-grid" style="opacity: 0.4; pointer-events: none;">
-                        <div class="cdx-dashboard-card">
-                            <h3>精細防水防護與氣密 DOE 研修</h3>
-                            <p>專修 IPX8 膠路、O-Ring 壓縮比與氣密防線調校。</p>
-                        </div>
-                    </div>
-                </div>
+                <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
 
-            <div class="document-canvas" id="textbook-viewport" style="flex-direction:column; flex:1; overflow:hidden;">
-                
+            <div class="document-canvas" id="textbook-viewport">
                 <div class="cdx-sub-nav-bar" id="cdx-sub-nav-wrapper" style="display:none;"></div>
-                
                 <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.15rem; margin: 0 0 15px 0;">⚡ 實戰知識核心 (Core Knowledge Base)</h3>
-                
                 <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
-
                 <div class="textbook-scroll-box">
                     <div id="lesson-content" class="scroll-text"></div>
                 </div>
@@ -636,162 +669,229 @@
     </div>
 
     <script>
-        const globalUiTranslations = {
-            tw: { "nav-home": "首頁", "auth-locked": "🔒 未讀取公會憑證", "rank-default": "冒險者", "title": "初心者寶典大廳" },
-            en: { "nav-home": "Home", "auth-locked": "🔒 No Credentials", "rank-default": "Adventurer", "title": "Beginner's Codex Hall" }
-        };
-
-        const beginnerCourseManifest = [
-            { id: "1-1", level: "l1", title: "基本世界觀與 NPI 鏈條", desc: "打通硬體產品從研發端到代工製造廠的巨觀因果鏈與生命週期。", isNew: true },
-            { id: "1-2", level: "l1", title: "工廠基礎與良率鐵律", desc: "主攻 SMT 焊接製程、直通率（FPY）雷區排除與線平衡調校。", isNew: true }
+        // 全域去中心化數據單元配置註冊表
+        const globalSubUnitRegistry = [
+            { 
+                type: 'codex', 
+                level: 'l1', 
+                levelTitle: '🌿 Level 1：基礎通識研修領域',
+                mainToggleId: 'tg-main-codex',
+                mainToggleName: '🗺️ 初心者寶典',
+                lvlGroupId: 'group-codex-l1',
+                leafContainerId: 'leaf-codex-l1',
+                subUnitId: '1-1', 
+                title: '單元 1-1: 基礎通識世界觀模型', 
+                file: 'course_data_1-1.js' 
+            },
+            { 
+                type: 'codex', 
+                level: 'l1', 
+                levelTitle: '🌿 Level 1：基礎通識研修領域',
+                mainToggleId: 'tg-main-codex',
+                mainToggleName: '🗺️ 初心者寶典',
+                lvlGroupId: 'group-codex-l1',
+                leafContainerId: 'leaf-codex-l1',
+                subUnitId: '1-2', 
+                title: '單元 1-2: 工廠基礎與良率鐵律', 
+                file: 'course_data_1-2.js' 
+            },
+            { 
+                type: 'handbook', 
+                level: 'l2', 
+                levelTitle: '🌊 Level 2：進階跨功能技術支線',
+                mainToggleId: 'tg-main-handbook',
+                mainToggleName: '📜 冒險者手冊',
+                lvlGroupId: 'group-handbook-l2',
+                leafContainerId: 'leaf-handbook-l2',
+                subUnitId: '1-1', 
+                title: '單元 1-1: 防水設計與環境防護結界', 
+                file: 'course_data_2-1.js' 
+            }
         ];
 
         let codexCourseEngineData = [];
         let activeCourseIdx = 0;
         let activePageIdx = 0;
+        let activeSubMatrixIdx = 0;
+        let activeFlowNodeIdx = 0;
         let examActive = false;
         let examCurrentQ = 0;
         let examScoreCount = 0;
-        let activeSubMatrixIdx = 0;
-        let activeFlowNodeIdx = 0; 
 
-        // 全域動態字典引擎
         window.showTacticalDict = function(textPayload) {
             const box = document.getElementById('runtime-dict-box');
-            if (box) {
-                box.style.display = 'block';
-                box.innerHTML = `💡 <strong>公會特工字典反饋：</strong><br>${textPayload}`;
-            }
+            if (box) { box.style.display = 'block'; box.innerHTML = `💡 <strong>公會特工字典反饋：</strong><br>${textPayload}`; }
         };
 
-        // 全域決策模擬引擎
         window.triggerSimDecision = function(isSuccess, feedbackText) {
             const box = document.getElementById('runtime-sandbox-fallout');
-            if (box) {
-                box.style.display = 'block';
-                box.className = isSuccess ? 'sandbox-fallout-box success' : 'sandbox-fallout-box fail';
-                box.innerHTML = feedbackText;
-            }
+            if (box) { box.style.display = 'block'; box.className = isSuccess ? 'sandbox-fallout-box success' : 'sandbox-fallout-box fail'; box.innerHTML = feedbackText; }
         };
 
         window.onload = () => {
+            renderGlobalTreeStructure();
             routeController();
         };
 
+        // 常常駐左側樹狀導航列生成器
+        function renderGlobalTreeStructure() {
+            const root = document.getElementById('global-tree-root');
+            root.innerHTML = '';
+            const categories = ['codex', 'handbook'];
+            categories.forEach(catText => {
+                const subset = globalSubUnitRegistry.filter(item => item.type === catText);
+                if (subset.length === 0) return;
+                const first = subset[0];
+                const catBlock = document.createElement('div');
+                catBlock.className = 'menu-category-block';
+                catBlock.innerHTML = `
+                    <button class="tree-main-toggle" id="${first.mainToggleId}" onclick="toggleMenuSection('${first.lvlGroupId}', '${first.mainToggleId}')">${first.mainToggleName}</button>
+                    <div id="${first.lvlGroupId}" class="tree-sub-group" style="display: flex;">
+                        <div style="width: 100%; flex-direction: column; display: flex; gap: 8px;">
+                            <div class="tree-level-label" id="lbl-${first.lvlGroupId}" onclick="toggleMenuSection('${first.leafContainerId}', 'lbl-${first.lvlGroupId}')">${first.levelTitle}</div>
+                            <div id="${first.leafContainerId}" class="tree-leaf-container" style="display: flex;"></div>
+                        </div>
+                    </div>
+                `;
+                root.appendChild(catBlock);
+                const leafContainer = catBlock.querySelector(`#${first.leafContainerId}`);
+                subset.forEach(unit => {
+                    const btnKey = `${unit.type}-${unit.subUnitId}`;
+                    leafContainer.innerHTML += `
+                        <button class="leaf-btn" id="lf-node-${btnKey}" onclick="switchActiveSubUnit('${unit.type}', '${unit.subUnitId}')">
+                            ${unit.title}
+                        </button>
+                    `;
+                });
+            });
+        }
+
+        function toggleMenuSection(containerId, toggleId) {
+            const container = document.getElementById(containerId);
+            const toggleBtn = document.getElementById(toggleId);
+            if (!container || !toggleBtn) return;
+            if (container.style.display === 'none') {
+                container.style.display = 'flex';
+                toggleBtn.classList.remove('collapsed');
+            } else {
+                container.style.display = 'none';
+                toggleBtn.classList.add('collapsed');
+            }
+        }
+
+        // 👑 核心優化：大廳與子單元分支路由控制器 👑
         function routeController() {
             const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
             const urlParams = new URLSearchParams(window.location.search);
-            const contentPackId = urlParams.get('c');
+            const paramC = urlParams.get('c');
+            const paramType = urlParams.get('type') || 'codex';
 
             syncNavbarState(currentLang);
 
-            if (!contentPackId) {
-                document.getElementById('shell-sidebar-area').style.display = 'none';
+            if (!paramC) {
+                // 👑 沒帶參數：渲染顯示超小型戰術大廳 👑
+                document.getElementById('cdx-page-header-zone').style.display = 'block';
+                document.getElementById('current-chapter-id').innerText = "DASHBOARD";
+                document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
+
                 document.getElementById('textbook-viewport').style.display = 'none';
                 document.getElementById('exam-viewport').style.display = 'none';
                 document.getElementById('universal-dots-bar').style.display = 'none';
                 document.getElementById('dashboard-menu-hall').style.display = 'block';
-                
-                const innerHeader = document.getElementById('cdx-page-header-zone');
-                if (innerHeader) innerHeader.style.display = 'none';
-                
-                renderDashboardHallCards();
+
+                document.querySelectorAll('.leaf-btn').forEach(btn => btn.classList.remove('active'));
+                renderMicroDashboard();
             } else {
+                // 帶參數：關閉大廳，拉出實體教材畫布
+                document.getElementById('cdx-page-header-zone').style.display = 'block';
                 document.getElementById('dashboard-menu-hall').style.display = 'none';
-                document.getElementById('shell-sidebar-area').style.display = 'flex';
-                injectContentPackScript(contentPackId);
+
+                const subUnitKey = `${paramType}-${paramC}`;
+                document.querySelectorAll('.leaf-btn').forEach(btn => btn.classList.remove('active'));
+                const activeLeaf = document.getElementById(`lf-node-${subUnitKey}`);
+                if (activeLeaf) activeLeaf.classList.add('active');
+
+                injectContentPackScript(paramType, paramC);
             }
         }
 
-        function syncNavbarState(lang) {
-            localStorage.setItem('tpm-lang-pref', lang);
-            document.getElementById('global-nav-home-btn').innerText = globalUiTranslations[lang]["nav-home"];
-            document.getElementById('global-inject-title').innerText = globalUiTranslations[lang]["title"];
-            document.title = globalUiTranslations[lang]["title"];
-
-            const twBtn = document.getElementById('global-btn-tw');
-            const enBtn = document.getElementById('global-btn-en');
-            if (twBtn && enBtn) {
-                twBtn.classList.remove('active');
-                enBtn.classList.remove('active');
-                document.getElementById(`global-btn-${lang}`).classList.add('active');
-            }
-
-            const cachedName = localStorage.getItem('tpm-user-name');
-            const cachedRank = localStorage.getItem('tpm-user-rank') || globalUiTranslations[lang]["rank-default"];
-            const profileCard = document.getElementById('global-user-profile-card');
-            if (profileCard) {
-                if (cachedName) {
-                    profileCard.innerHTML = `👤 ${cachedRank}：${cachedName}`;
-                } else {
-                    profileCard.innerText = globalUiTranslations[lang]["auth-locked"];
-                }
-            }
-        }
-
-        function executeLangSwitch(lang) {
-            syncNavbarState(lang);
-            routeController();
-        }
-
-        function renderDashboardHallCards() {
+        // 👑 核心優化：動態視覺反饋大廳生成器（黃、綠雙重判定） 👑
+        function renderMicroDashboard() {
             const grid = document.getElementById('l1-cards-grid');
             grid.innerHTML = '';
-            beginnerCourseManifest.forEach(course => {
-                const targetNodeId = "L1-A" + course.id.split('-')[1];
-                const savedGrade = localStorage.getItem(`talent-${targetNodeId}-grade`);
-                let medalClass = "";
-                if (savedGrade === "S") medalClass = "medal-gold";
-                else if (savedGrade && savedGrade !== "Fail") medalClass = "medal-silver";
+
+            globalSubUnitRegistry.forEach(unit => {
+                let storageKey = "";
+                let prefixLabel = "";
+                if (unit.type === 'codex') {
+                    storageKey = "L1-A" + unit.subUnitId.split('-')[1];
+                    prefixLabel = "Level 1 通識大單元";
+                } else {
+                    storageKey = "L2-W" + unit.subUnitId.split('-')[1];
+                    prefixLabel = "Level 2 專科支線";
+                }
+
+                const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
+                const savedGrade = localStorage.getItem(`talent-${storageKey}-grade`);
+
+                // 剛性配色防線：未通過鎖死戰術黃背景，通過點亮安全綠背景
+                let cardStyle = "background-color: #FEF08A; border-color: var(--border-heavy);"; 
+                let statusBadge = "⏳ 尚未通過考核";
+                if (isClear && savedGrade !== "Fail") {
+                    cardStyle = "background-color: #DCFCE7; border-color: var(--border-heavy);"; 
+                    statusBadge = `✅ 考核通過 [ 位階核定: ${savedGrade} ]`;
+                }
 
                 grid.innerHTML += `
-                    <div class="cdx-dashboard-card ${medalClass}" onclick="navigateToCourse('${course.id}')">
-                        <h3 style="margin-top:0; font-size:1.2rem; font-weight:900;">L1-${course.id} ${course.title}</h3>
-                        <p style="font-size:0.85rem; margin-top:10px; font-weight:600; line-height:1.5;">${course.desc}</p>
+                    <div class="cdx-dashboard-card" style="${cardStyle}" onclick="switchActiveSubUnit('${unit.type}', '${unit.subUnitId}')">
+                        <div>
+                            <div style="font-family: monospace; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);">${prefixLabel}</div>
+                            <h3 style="margin: 8px 0 0 0; font-size: 1.15rem; font-weight: 900; color: var(--text-main);">${unit.title}</h3>
+                        </div>
+                        <div style="font-size: 0.82rem; font-weight: 900; color: var(--text-main); letter-spacing: -0.2px;">${statusBadge}</div>
                     </div>
                 `;
             });
         }
 
-        function navigateToCourse(courseId) {
-            window.location.search = `?c=${courseId}`;
+        function switchActiveSubUnit(type, subUnitId) {
+            examActive = false;
+            activeCourseIdx = 0;
+            activePageIdx = 0;
+            activeSubMatrixIdx = 0;
+            activeFlowNodeIdx = 0;
+            const newUrl = `${window.location.pathname}?type=${type}&c=${subUnitId}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+            routeController();
         }
 
         function exitToDashboardMenu() {
-            window.location.search = '';
+            examActive = false;
+            window.location.search = ''; // 清除網址參數，回歸微型大廳
         }
 
-        function injectContentPackScript(packId) {
+        function injectContentPackScript(type, packId) {
+            const found = globalSubUnitRegistry.find(item => item.type === type && item.subUnitId === packId);
+            if (!found) return;
             const script = document.createElement('script');
             const isLocalFile = window.location.protocol === 'file:';
-            script.src = isLocalFile ? `course_data_${packId}.js` : `course_data_${packId}.js?v=${Date.now()}`;
-            
-            script.onload = () => { 
-                initEngine(); 
-            };
+            script.src = isLocalFile ? found.file : `${found.file}?v=${Date.now()}`;
+            script.onload = () => { initEngine(); };
             script.onerror = () => { 
-                alert(`無法載入 course_data_${packId}.js 資料包。請確認檔案是否與網頁置於同一目錄夾內。`); 
-                exitToDashboardMenu(); 
+                document.getElementById('current-chapter-name').innerText = "數據包載入失敗";
+                document.getElementById('lesson-content').innerHTML = `
+                    <div style="padding: 30px; border: 2px dashed var(--border-heavy); border-radius: var(--radius-sm); text-align: center; font-weight: 900; color: var(--color-fail);">
+                        💥 找不到數據檔案 [ ${found.file} ]。
+                    </div>`;
+                document.getElementById('dynamic-flow-renderer-box').style.display = 'none';
+                document.getElementById('universal-dots-bar').innerHTML = '';
             };
             document.head.appendChild(script);
         }
 
         function initEngine() {
-            renderLeftMenu();
+            if (!codexCourseEngineData || codexCourseEngineData.length === 0) return;
             loadCourseState(activeCourseIdx, activePageIdx);
-        }
-
-        function renderLeftMenu() {
-            const menu = document.getElementById('dynamic-course-menu');
-            menu.innerHTML = '';
-            codexCourseEngineData.forEach((course, idx) => {
-                const savedGrade = localStorage.getItem(`talent-${course.courseId}-grade`);
-                let medalClass = "";
-                if (savedGrade === "S") medalClass = "medal-gold";
-                else if (savedGrade && savedGrade !== "Fail") medalClass = "medal-silver";
-                const activeClass = idx === activeCourseIdx ? "active" : "";
-                menu.innerHTML += `<li class="chapter-tab ${activeClass} ${medalClass}" onclick="triggerCourseSelect(${idx})">${course.menuTitle}</li>`;
-            });
         }
 
         function loadCourseState(cIdx, pIdx) {
@@ -799,16 +899,10 @@
             const course = codexCourseEngineData[cIdx];
             const dotsBar = document.getElementById('universal-dots-bar');
             dotsBar.innerHTML = '';
-            
-            const innerHeader = document.getElementById('cdx-page-header-zone');
-            if (innerHeader) {
-                innerHeader.style.display = 'block';
-            }
 
             if (examActive) {
                 document.getElementById('textbook-viewport').style.display = 'none';
                 document.getElementById('exam-viewport').style.display = 'block';
-                document.getElementById('universal-dots-bar').style.display = 'flex';
                 course.subPages.forEach((_, sIdx) => {
                     dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`;
                 });
@@ -817,14 +911,12 @@
             } else {
                 document.getElementById('textbook-viewport').style.display = 'flex';
                 document.getElementById('exam-viewport').style.display = 'none';
-                document.getElementById('universal-dots-bar').style.display = 'flex';
                 activePageIdx = pIdx;
                 const page = course.subPages[pIdx];
 
                 document.getElementById('current-chapter-id').innerText = `SECTION ${pIdx + 1} / ${course.subPages.length}`;
                 document.getElementById('current-chapter-name').innerText = page.title;
 
-                // 👑 修正鎖定線：精確對齊 HTML 內宣告的 'cdx-sub-nav-wrapper' 節點，拔除 null 指標 👑
                 const subNavWrapper = document.getElementById('cdx-sub-nav-wrapper');
                 let targetedText = page.text;
                 let targetedFlow = page.diagramFlowArray;
@@ -841,9 +933,7 @@
                     targetedText = page.subMatrixBranches[activeSubMatrixIdx].text;
                     targetedFlow = page.subMatrixBranches[activeSubMatrixIdx].diagramFlowArray;
                 } else {
-                    if (subNavWrapper) {
-                        subNavWrapper.style.display = 'none';
-                    }
+                    if (subNavWrapper) subNavWrapper.style.display = 'none';
                     activeSubMatrixIdx = 0;
                 }
 
@@ -860,13 +950,8 @@
                     targetedFlow.forEach((node, nIdx) => {
                         const isSelected = nIdx === activeFlowNodeIdx;
                         let nodeClass = 'flow-node-block';
-                        
-                        if (isSelected) {
-                            nodeClass += ' active-node';
-                        } else if (node.highlight) {
-                            nodeClass += ' highlight';
-                        }
-                        
+                        if (isSelected) nodeClass += ' active-node';
+                        else if (node.highlight) nodeClass += ' highlight';
                         flowRenderer.innerHTML += `<div class="${nodeClass}" style="cursor:pointer;" onclick="switchFlowNode(${nIdx})">${node.name}</div>`;
                         if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
                     });
@@ -882,27 +967,27 @@
             }
         }
 
-        function triggerMainPageChange(sIdx) {
-            activeSubMatrixIdx = 0;
-            activeFlowNodeIdx = 0; 
-            loadCourseState(activeCourseIdx, sIdx);
-        }
-
-        function switchSubMatrixBranch(bIdx) {
-            activeSubMatrixIdx = bIdx;
-            activeFlowNodeIdx = 0; 
-            loadCourseState(activeCourseIdx, activePageIdx);
-        }
-
-        function switchFlowNode(nIdx) {
-            activeFlowNodeIdx = nIdx;
-            loadCourseState(activeCourseIdx, activePageIdx);
-        }
-
-        function triggerCourseSelect(idx) { examActive = false; activeCourseIdx = idx; activePageIdx = 0; activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; renderLeftMenu(); loadCourseState(idx, 0); }
+        function triggerMainPageChange(sIdx) { activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; loadCourseState(activeCourseIdx, sIdx); }
+        function switchSubMatrixBranch(bIdx) { activeSubMatrixIdx = bIdx; activeFlowNodeIdx = 0; loadCourseState(activeCourseIdx, activePageIdx); }
+        function switchFlowNode(nIdx) { loadCourseState(activeCourseIdx, activePageIdx); }
         function exitExamToPage(pIdx) { examActive = false; activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; loadCourseState(activeCourseIdx, pIdx); }
         function enterExamMode() { examActive = true; examCurrentQ = 0; examScoreCount = 0; loadCourseState(activeCourseIdx, 0); }
-        
+
+        function syncNavbarState(lang) {
+            localStorage.setItem('tpm-lang-pref', lang);
+            document.getElementById('global-nav-home-btn').innerText = globalUiTranslations[lang]["nav-home"];
+            document.getElementById('global-inject-title').innerText = globalUiTranslations[lang]["title"];
+            document.title = globalUiTranslations[lang]["title"];
+            
+            const cachedName = localStorage.getItem('tpm-user-name');
+            const cachedRank = localStorage.getItem('tpm-user-rank') || globalUiTranslations[lang]["rank-default"];
+            if (cachedName) {
+                document.getElementById('global-user-profile-card').innerHTML = `👤 ${cachedRank}：${cachedName}`;
+            }
+        }
+
+        function executeLangSwitch(lang) { syncNavbarState(lang); routeController(); }
+
         function runExamEngine() {
             const course = codexCourseEngineData[activeCourseIdx];
             if (examCurrentQ >= course.examVault.length) { settleExamPayload(); return; }
@@ -933,25 +1018,16 @@
             examActive = false;
             const course = codexCourseEngineData[activeCourseIdx];
             const finalPct = (examScoreCount / course.examVault.length) * 100;
-            let grade = "Fail";
-            if (finalPct === 100) grade = "S";
-            else if (finalPct >= 90) grade = "A";
-            else if (finalPct >= 80) grade = "B";
-            else if (finalPct >= 70) grade = "C";
-            else if (finalPct >= 60) grade = "D";
+            let grade = finalPct === 100 ? "S" : finalPct >= 90 ? "A" : finalPct >= 80 ? "B" : finalPct >= 70 ? "C" : finalPct >= 60 ? "D" : "Fail";
 
             if (grade === "Fail") {
-                alert(`💥【考核失敗】\n判定為 Fail！通行證已鎖定，強退重考！`);
-                localStorage.setItem(`codex-${course.courseId}-clear`, 'false');
-                localStorage.removeItem(`talent-${course.courseId}-grade`);
-                triggerCourseSelect(activeCourseIdx);
+                alert(`💥【考核失敗】判定為 Fail！通行證已鎖定，強退重考！`);
             } else {
                 alert(`🏆【考核通過】戰力位階核定為：【 ${grade} 】級！`);
                 localStorage.setItem(`codex-${course.courseId}-clear`, 'true');
                 localStorage.setItem(`talent-${course.courseId}-grade`, grade);
-                localStorage.setItem(`talent-${course.courseId}-date`, new Date().toLocaleDateString());
-                triggerCourseSelect(activeCourseIdx);
             }
+            exitToDashboardMenu();
         }
     </script>
 </body>
