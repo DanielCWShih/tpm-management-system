@@ -1,48 +1,172 @@
-/**
- * System TPM Guild - Module Content Pack
- * 定版代碼代號: 0527-V1.5
- * 單元代號: 1-2 (初心者寶典 - 工廠基礎與良率鐵律)
- */
+/* ========================================================================
+REVISION HISTORY / VERSION LOG
+========================================================================
+2026-05-29 V6.0: 👑 子單元 1-2 滿血全量版。專注於「硬體生命週期與 NPI 交付」。全面導入「會做什麼、核心目標、終極期待」三維戰術矩陣。10 題核心庫經由 Fisher-Yates 洗牌引擎動態 Slice(0,3) 進行微學習抽題。
+========================================================================
+*/
 
-codexCourseEngineData = [
+window.codexCourseEngineData = [
     {
-        courseId: "L1-A2", // 精準聯動天賦樹市場調查術 Node ID
-        menuTitle: "單元 1-2: 工廠基礎與良率鐵律",
+        courseId: "L1-A2", 
+        menuTitle: "1-2: 硬體生命週期與 NPI 交付",
         subPages: [
             {
-                title: "1. 鋼網印刷與 SPI 防護盾",
-                diagram: "【 SMT 漏斗防線：裸板 ──> Stencil 鋼網印刷 ──> SPI 錫膏量測 (攔截歪斜) 】",
-                text: "在深淵工廠的製造流程中，SMT 的起點是極其脆弱的。\n\n裸電路板進入熔爐前，首先必須透過「鋼網（Stencil）」進行錫膏印刷。錫膏量（Volume）太多會引發錫橋短路，太少則會導致空焊。此時，緊跟在後的「SPI（錫膏檢查儀）」就是第一道硬核防護盾，它會即時進行三維立體掃描，將印刷偏移的瑕疵板在過爐前直接攔截重刷，拯救開模成本。"
+                title: "1. 標準 NPI 時程里程碑 (Proto ~ MP)",
+                diagramFlowArray: [
+                    { 
+                        name: "Proto 原型機", 
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 研會做什麼</div>
+                                    <div class="edu-card-body-text">利用 3D 列印或 CNC 手工打樣外殼。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 核心戰術目標</div>
+                                    <div class="edu-card-body-text">快速驗證產品的概念巨觀美學與結構可行性。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                    <div class="edu-card-body-text">完成整機物理堆疊（Stack-up）微觀檢視，清空干涉。</div>
+                                </div>
+                            </div>
+                            <button onclick="showTacticalDict('【Proto 防線】：此階段不開鋼模，專注用最低成本打樣抓出嚴重的結構撞車。')">🔍 解鎖戰術細節</button>
+                        `
+                    },
+                    { 
+                        name: "EVT 工程驗證", 
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 研會做什麼</div>
+                                    <div class="edu-card-body-text">發動首版主機板 PCB 的實體化無塵貼片與總裝。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 核心戰術目標</div>
+                                    <div class="edu-card-body-text">實現主機板的歷史首次通電打通（Power-on）。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                    <div class="edu-card-body-text">確認基本電路訊號完整，除錯接口順理抓到 Log 訊號。</div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    { 
+                        name: "DVT 設計驗證", 
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 研會做什麼</div>
+                                    <div class="edu-card-body-text">量產鋼模（Hard Tooling）正式開模，進行完整拼裝。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 核心戰術目標</div>
+                                    <div class="edu-card-body-text">全面送入高強度摔落、熱衝擊與防水可靠性拷問。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                    <div class="edu-card-body-text">強制暴露設計限制（Design Limit）並對模具細微修正。</div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    { 
+                        name: "PVT 生產驗證", 
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 工廠會做什麼</div>
+                                    <div class="edu-card-body-text">研發圖紙剛性凍結，在正式量產線上開闢流水線。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 核心戰術目標</div>
+                                    <div class="edu-card-body-text">測試大批量複製組裝能力，優化操作工位與拉速 UPH。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                    <div class="edu-card-body-text">驗證治具複製精準度，清空維修室在製品（WIP）呆料。</div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    { 
+                        name: "MP 大量量產", 
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 工廠會做什麼</div>
+                                    <div class="edu-card-body-text">流水線日夜並行全面啟動大規模複製組裝。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 核心戰術目標</div>
+                                    <div class="edu-card-body-text">以極高的直通率（FPY）大批量出貨，死守代工毛利。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                    <div class="edu-card-body-text">配合動態工程變更（ECO），安全將神器導入實體市場。</div>
+                                </div>
+                            </div>
+                        `
+                    }
+                ]
             },
             {
-                title: "2. 貼片吸嘴速率與 Reflow 火山",
-                diagram: "【 Reflow 火山溫度曲線：預熱區 ──> 恆溫浸潤 ──> 迴流焊接 (260°C 極限) ──> 冷卻 】",
-                text: "通過 SPI 檢查後，電路板將進入高速貼片機。吸嘴以毫秒級的飛速抓取主晶片與微型電阻，精準拍打在電路板上。\n\n隨後，板子將推入高壓的「Reflow（迴流焊火山）」。Reflow 內部細分 8 到 12 個溫區，TPM 必須主導審查其「溫度曲線（Reflow Profile）」。焊接峰值溫度通常焊死在 240°C 至 260°C 之間。溫度過高會導致元件燒毀、主板焦黑變形；過低則會引發冷焊與虛焊（Cold Solder）隱形詛咒。"
+                title: "2. 手機線重疊現實 (Reality Overlap)",
+                diagramFlowArray: [
+                    { 
+                        name: "並行 Proto", 
+                        text: `<div class="edu-overview-card"><strong>時間壓縮現況：</strong>研發試產被壓縮至 6-9 個月。在 EE 還在通電調試主板 Debug 時，ME 被迫同步提前開啟量產鋼模（Hard Tooling）以搶佔市場空窗。</div>`
+                    },
+                    { 
+                        name: "階段高度重疊", 
+                        text: `<div class="edu-overview-card"><strong>長料期雷區：</strong>市場時程 Time-to-Market 卡死，EVT 階段的出關審查尚未開完，DVT 階段的長料期元件（如稀缺主晶片）就必須提前強制下單（Pre-order）。</div>`
+                    },
+                    { 
+                        name: "PVT 極速拉速", 
+                        text: `<div class="edu-overview-card"><strong>線體拷問：</strong>大流水線上通常只有 3 至 5 天的試產拉速期。任何治具公差偏移都會引發全盤癱瘓，極度考驗現場即時拆彈防線。</div>`
+                    }
+                ]
+            },
+            {
+                title: "3. 變更工程管理 (ECO 投產防線)",
+                diagramFlowArray: [
+                    { 
+                        name: "ECO 變更發起", 
+                        text: `<div class="edu-overview-card"><strong>定義：</strong>Engineering Change Order。當量產爬坡期遭遇重大缺陷或設計優化時，由研發端發起的神聖設計變更指令。</div>`
+                    },
+                    { 
+                        name: "庫存呆料結算", 
+                        text: `<div class="edu-overview-card"><strong>核算防線：</strong>TPM 必須在 24 小時內凍結線體物料，精算線上舊版零件、在製品（WIP）以及長料期在途物料的呆料財務總成本，向客戶索賠。</div>`
+                    },
+                    { 
+                        name: "線體動態導入", 
+                        text: `<div class="edu-overview-card"><strong>實體上線：</strong>主導新版鋼網與自動化治具現地對位，並追蹤新舊版切換批次（Cut-in Batch），確保全球 IMEI 追溯鏈條不斷線。</div>`
+                    }
+                ]
             }
         ],
-        // 20題 1-2 專屬題庫 (範例前3題，其餘格式完美咬合)
         examVault: [
-            { q: "在 SMT 第一站，用來在過爐前即時攔截錫膏印偏、厚度不均的立體光學天眼設備是？", o: ["AOI", "SPI (錫膏檢查儀)", "X-Ray"], a: 1 },
-            { q: "當 Reflow 迴流焊火山的峰值溫度調校過低時，產線大機率會集體爆發什麼物理內傷？", o: ["主板燒毀變形", "冷焊與虛焊隱形詛咒（Cold Solder）", "晶片凌空爆炸"], a: 1 },
-            { q: "學員在 1-2 大考考完並獲得滿分 S 級後，寶典大廳的 1-2 卡牌會動態呈現何種狀態？", o: ["維持暗灰色不動", "瞬間高亮演化為【 淺黃金金屬質感勳章底色 】", "網頁直接當機"], a: 1 },
-            // 為了嚴格執行「20題剛性大考」的閉環，以下題庫矩陣完全補滿
-            { q: "製程中的 FPY 指標，其全名是？", o: ["First Pass Yield (直通率)", "Final Product Yard", "Fast Process Yield"], a: 0 },
-            { q: "線平衡率（Line Balance）如果過低，在工廠流水線上會直接引發什麼詛咒？", o: ["外殼色差", "工位產能堆積與瓶頸窒礙", "天線訊號短路"], a: 1 },
-            { q: "工廠最終入庫良率與直通率（FPY）的根本差異在於？", o: ["完全沒差異", "直通率嚴格剔除所有手工拆解重修過的『帶傷機器』", "直通率只算開火電費"], a: 1 },
-            { q: "貼片機吸嘴在進行毫秒級飛速貼片時發生偏位，出爐後會被架設在Reflow出口處的哪道門攔截？", o: ["SPI", "AOI (自動光學檢測審判門)", "FCT 針床"], a: 1 },
-            { q: "當專案處於 PVT 階段，TPM 發現代工廠的某個關鍵治具公差太大，你應該？", o: ["不管它直接量產", "強行拦截，要求工廠修正治具並重新驗證製程能力 Cpk", "叫工程師用銼刀手工磨"], a: 1 },
-            { q: "以下何者不是 DFM（製造設計審查）的核心防禦範疇？", o: ["外殼拔模角設計", "點膠溢膠安全邊界", "客戶公司的季度財務報表"], a: 2 },
-            { q: "新產品導入流程中，PVT 階段的最核心戰術任務是？", o: ["決定產品顏色與市場定價", "進行大規模產線拉速、治具複製與良率製程能力驗證", "撰寫第一版 PRD 規格書"], a: 1 },
-            { q: "若產品在凡間開箱就發生 DOA 無法開機，這大機率是漏檢了哪一站？", o: ["市場調研站", "FCT / OBA 出貨前功能抽檢站", "ID 幻化站"], a: 1 },
-            { q: "當代工廠因為產線平衡崩潰導致直通率雪崩，TPM 的核心溝通對象是？", o: ["ID 設計師", "工廠產線製程與製程工程師 (PE/IE)", "運營商法規專員"], a: 1 },
-            { q: "在 SMT 火山熔爐製程中，鋼網（Stencil）厚度如果因為大量磨損而變薄，會直接導致？", o: ["印刷錫膏量不足引發虛焊", "膠水固化時間變長", "外殼出現毛邊"], a: 0 },
-            { q: "BOM Cost 控制不當，會直接導致產品在凡間市場發生什麼災難？", o: ["無法通電", "利潤空間被無情壓縮、專案財務破產", "顏色變淡"], a: 1 },
-            { q: "當學員在 1-2 階段大考中不幸獲得 Fail，初心者大廳會執行什麼嚴格懲罰？", o: ["送他金牌", "強退回溯，清空進度並逼迫重新研讀教材重考", "直接算他及格"], a: 1 },
-            { q: "TPM 進行決策代價矩陣（Trade-off Matrix）時，天平的兩端通常是在權衡？", o: ["午餐吃什麼", "技術規格極限美學與工廠量產良率成本的無情權衡", "藍色與綠色"], a: 1 },
-            { q: "在 SMT 貼片製程中，用來檢測晶片內部銲腳是否發生短路橋接的無損高階射線設備是？", o: ["AOI", "X-Ray 檢查儀", "千分尺"], a: 1 },
-            { q: "下列何者屬於 NPI 生命週期流程中不可逆的時間長河順序？", o: ["MP->EVT->DVT", "EVT->DVT->PVT->MP", "PVT->EVT->MP"], a: 1 },
-            { q: "公會技能星盤天賦樹在 V2.0 重構後，右上角的 SABCD 認證印章呈現何種視覺風格？", o: ["文字方塊", "斜貼、突出視窗邊緣的巨大鋼鐵同心圓硬派蓋章", "完全透明隱形"], a: 1 },
-            { q: "最後一題：本套 0527-V1.5 全中央解耦套件的最高代碼天條是？", o: ["隨便優化程式碼並刪減行數", "100% 完整產出、格式嚴格對齊、資料與外殼徹底解耦", "全部寫在同一個 HTML 裡面"], a: 1 }
+            { q: "在 NPI 生命週期模型中，哪一個里程碑的 Exit Criteria 是『實現電路原理圖與 PCB Layout 的首版通電打通（Power-on）』？", o: ["EVT 工程驗證生命週期", "PVT 生產驗證生命週期", "MP 大量量產階段"], a: 0 },
+            { q: "專案進度正式跨入 PVT 里程碑時，代表以下何種硬體狀態已經發生？", o: ["產品還在進行最初步的市場概念與 ID 美學調研", "研發設計檔案與 CMF 貼圖全面剛性凍結（Freeze），重心全力轉移至工廠量產複製與拉速", "外殼鋼模尚未開模，還在等待結構 ME 出圖"], a: 1 },
+            { q: "量產五金與塑膠硬模具（Hard Tooling）正式開啟通常是在哪一個生命週期階段？", o: ["Proto 階段", "EVT 階段", "DVT 階段"], a: 2 },
+            { q: "當客戶為趕時程強行要求在 EVT 未過關前直接下單開啟量產鋼模，TPM 的最佳防禦路徑是？", o: ["盲目簽字，放行不切實際的政治幻想", "出示極限公差疊加分析與 DFM 報告，用良率懲罰危險度讓數據說話", "直接向客戶研發團隊發起罵戰"], a: 1 },
+            { q: "在 PVT 試產拉速結案前，維修室（Repair Room）大量堆積在製品（WIP），TPM 應採取何種剛性行動？", o: ["放任不管，直接宣布進入大量量產 (MP)", "強行勒令執行維修室 WIP 清空計劃，徹底清查故障 Root Cause", "將這批 WIP 直接偷偷打包出貨給客戶"], a: 1 },
+            { q: "什麼是 ECO (Engineering Change Order)？", o: ["工廠的生產開線排班表", "工程變更管理指令", "採購部門的成本物料單"], a: 1 },
+            { q: "在手機案中，因時程壓縮導致 EVT 出關評審尚未開完，就必須提前對 DVT 的長料期原件進行 Pre-order。此現象被稱作？", o: ["階段高度重疊與並行現實", "地毯式全面覆蓋", "常規化預設時程"], a: 0 },
+            { q: "當發起 ECO 設計變更時，TPM 職責在財務範疇上最核心的一動是？", o: ["要求電子工程師去改原理圖", "在 24 小時內結算、凍結線體舊物料，完成庫存呆料財務結算與索賠防線", "坐在辦公室等工廠提報費用"], a: 1 },
+            { q: "DVT 階段進行可靠性高低溫環境衝擊測試後，外殼螺絲孔發生應力斷裂。此失效最可能屬於？", o: ["工廠操作工的組裝手法問題", "設計限制 (Design Limit) 的結構強度缺陷", "測試治具漏電所致"], a: 1 },
+            { q: "如何確保在 MP 量產期導入 ECO 變更後，客退品依然具備精確的可追溯性？", o: ["口頭交代工廠注意新舊切換即可", "在包裝線上精確綁定並追蹤新舊版切換批次（Cut-in Batch）與 IMEI 碼鏈條", "直接在機器外殼用簽字筆做標記"], a: 1 }
         ]
     }
 ];
+
+// 👑 Fisher-Yates 抽題引擎：10 抽 3 👑
+(function() {
+    const v = window.codexCourseEngineData[0].examVault;
+    for (let i = v.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [v[i], v[j]] = [v[j], v[i]];
+    }
+    window.codexCourseEngineData[0].examVault = v.slice(0, 3);
+})();
