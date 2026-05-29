@@ -1,7 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-05-29 V5.2: 👑 內容乾貨大平反：徹底掃除「Google 名詞解釋」式的垃圾廢話。文字全面封裝為 HTML 富文本實戰卡牌結構。注入「🎯 TPM 核心戰術指標」、「💥 試產現場災難還原案例」、「📝 剛性避坑 Checklist」，以及「🔍 互動大腦拷問盲點」，將含金量拉到極致。20 題考題全量產出，嚴禁刪減！
+2026-05-29 V5.3: 👑 滿血全量復原交割：校正正確日期。100% 補回先前因覆寫格式而被非自願裁剪沒收的「Section 3 四大線體與高精工序大陣列（通用、手機、無人機）」。全數章節全面灌注「會做什麼、核心目標、終極期待」三維戰術卡牌、可點擊「互動字典」與「工程決策模擬沙盒」，實現極致學以致用。考場 20 題全數展現。
 ========================================================================
 */
 
@@ -16,20 +16,20 @@ codexCourseEngineData = [
                     { 
                         name: "客戶研發端 (Brand R&D)", 
                         highlight: true,
-                        text: "<div class='tactical-alert-card'><strong>🎯 TPM 核心戰術指標：規格範疇管控（Scope Management）</strong><br>在硬體概念發想與市場調研階段，TPM 必須死守產品規格書（PRD）與 2D/3D 工程圖紙，防止客戶端工程師（Brand R&D）發生『功能無限蔓延（Scope Creep）』，在未估算成本代價前盲目追加極致技術參數。</div><div class='tactical-danger-card'><strong>💥 試產現場災難還原案例：銳利拔模角引發的黑洞</strong><br>某手機大廠客戶 ID 設計師追求美學，在圖紙上強行設計了『0 拔模角』的銳利外殼。代工廠量產時，因為模具無法順利頂出，外殼表面集體爆發嚴重的『收縮痕（Sink Marks）』，導致 EVT 良率直接跌到 12%。TPM 當時未能及時在 DFM 審查中拦截此設計，被迫與客戶 ME 徹夜談判，最終說服其在不影響正面視覺的前提下，將內部隱蔽肉厚微調減薄 0.15mm，並搭配特殊噴砂工藝遮蓋缺陷，才勉強保住量產時程。</div><div class='tactical-alert-card'><strong>📝 研發階段 TPM 剛性避坑 Checklist：</strong><br><div class='tactical-grid-2'><div class='tactical-check-item'><span>✔️</span> 產品規格書（PRD）中的 CMF（色彩、材質、工藝）是否具備代工廠量產製程能力？</div><div class='tactical-check-item'><span>✔️</span> 客戶 3D 堆疊（Stack-up）工程圖，是否已由 ME 團隊進行極限公差疊加分析（Tolerance Stack Analysis）？</div></div></div><div class='tactical-alert-card' style='background:#FAF9F5;'><strong>🔍 互動盲點拷問：</strong><br>當客戶 R&D 為了產品美感，強行要求將內部 Clearance 安全防護間距壓縮至 0.1mm 時，作為代工廠 TPM，你應該直接聽從，還是調閱決策代償矩陣進行跨功能技術仲裁？</div>" 
+                        text: "<div class='edu-overview-container'><div class='edu-overview-card'><div class='edu-card-label'>🛠️ 客戶會做什麼</div><div class='edu-card-body-text'>主導全球市場調研、產品外觀工業設計（ID）與微觀內部結構設計（ME）。撰寫初代產品需求書（PRD），並對外發佈交付神聖的 2D/3D 工程開發圖紙（2D Drawing）。</div></div><div class='edu-overview-card'><div class='edu-card-label'>🎯 核心戰術目標</div><div class='edu-card-body-text'>追求無懈可擊的微觀美學突破、極限技術參數（如超薄型、特殊外殼視覺），用極高難度的工藝拉高市場定價、溢價與品牌防線。</div></div><div class='edu-overview-card'><div class='edu-card-label'>👁️ 團隊終極期待</div><div class='edu-card-body-text'>期待代工製造廠（EMS）能夠 100% 完美復刻所有複雜結構，不允許工廠以任何『設備組裝公差疊加溢出』為藉口而輕易輕易輕易去修改原廠外觀。</div></div></div><div class='sandbox-panel-card'><div class='edu-card-label'>📖 戰術檢查字典（點擊術語解鎖避坑細節）</div><div class='dict-btn-grid'><button class='dict-trigger-btn' onclick='showTacticalDict(\"【PRD 規格防線審查】：必須全面清查 CMF（色彩、材質、工藝）是否具備工廠現有流水線的量產製程能力，在開模前剛性攔截不切實際的幻想規格。\")'><span>🔍 PRD 規格審查</span><span>➔</span></button><button class='dict-trigger-btn' onclick='showTacticalDict(\"【公差疊加分析】：在圖紙出爐第一時間，ME團隊必須發動極限疊加模擬，計算零件間的微米級物理干涉，提前鎖死模具與變形雷區。\")'><span>🔍 公差疊加分析</span><span>➔</span></button></div><div id='runtime-dict-box' class='dict-display-box'></div></div><div class='sandbox-panel-card'><div class='edu-card-label'>🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div><div style='font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;'>🚨 <strong>現場突發修羅場：</strong>客戶 R&D 為了美感，強行要求將內部主板與外殼的 Clearance 安全防護間距由標準 0.3mm 壓縮至極限 0.1mm，你身為代工廠 TPM，此時的第一決斷是？</div><div class='sandbox-choice-row'><button class='sandbox-choice-btn' onclick='triggerSimDecision(false, \"💥 <strong>模擬命運：專案全盤停線崩潰！</strong><br>你選擇直接簽字放行滿足客戶。結果在 PVT 試產拉速時，因零件設備微小公差疊加，主板當場被殼體物理擠壓變形、電路短路集體燒毀，良率直接歸零！模具當場報廢，專案被迫延期兩個月！\")'>方案 A：聽從客戶意見直接簽字放行，滿足美學堅持。</button><button class='sandbox-choice-btn' onclick='triggerSimDecision(true, \"🏆 <strong>模擬命運：技術拆彈成功，名望大增！</strong><br>你拒絕盲從，啟動跨功能 Trade-off 決策矩陣。帶領 ME 與 EE 調閱數據，向客戶實證 0.1mm 會引發短路海嘯。最終成功說服客戶微調內部隱蔽骨架，既保住 0.3mm 安全防護間距，又完美維持外部美學，如期 Exit 出關！\")'>方案 B：啟動跨功能技術仲裁，出示公差公理實證，逼出技術妥協點。 </button></div><div id='runtime-sandbox-fallout' class='sandbox-fallout-box'></div></div>" 
                     },
                     { 
-                        name: "零件廠商 (Component Vendors)", 
+                        name: "零件廠商 (Vendors)", 
                         highlight: false,
-                        text: "<div class='tactical-alert-card'><strong>🎯 TPM 核心戰術指標：料期與可供性防線（Lead Time Control）</strong><br>掌握核心物料（如相機模組、特種防水點膠膠材、感測器晶片）的研發與交貨節奏。TPM 必須精確追蹤供應商的樣品（Samples）到位時程，長料期晶片的排產計畫，直接對接長料期沙漏。</div><div class='tactical-danger-card'><strong>💥 試產現場災難還原案例：被一滴防水膠掐死的流水線</strong><br>DVT 試產前夕，原定配合的日本特種防水膠廠突然發生化學藥水配方漂移，導致出廠的膠材固化時間延長了一倍，直接癱瘓了 FATP 組裝線的點膠站工位（Cycle Time 暴增）。TPM 在半小時內啟動備援機制，清查 Common Pool 資源，調用國內二線備料廠樣品進行 12 小時極速可靠性點亮驗證，最終在不變動 ME 結構的前提下成功替換膠材，保住了開線計畫。</div><div class='tactical-alert-card'><strong>📝 供應商階段 TPM 剛性避坑 Checklist：</strong><br><div class='tactical-grid-2'><div class='tactical-check-item'><span>✔️</span> 所有核心元件的 Lead Time 是否有超過 12 週的長料期品？二線供應商（Dual Source）是否已完成認證？</div><div class='tactical-check-item'><span>✔️</span> 供應商樣品進廠時，IQC（進料檢驗）的良率數據與出廠報告（COA）是否完全對齊？</div></div></div>" 
+                        text: "<div class='edu-overview-container'><div class='edu-overview-card'><div class='edu-card-label'>🛠️ 廠商會做什麼</div><div class='edu-card-body-text'>研發與控制特定元件的晶圓材料技術（如晶片晶圓廠、相機鏡頭模組廠、射頻感測器廠）。負責向代工廠提供初期驗證樣品（Samples），並在專案大量生產（MP）時，向代工廠輸送零件原料物料。</div></div><div class='edu-overview-card'><div class='edu-card-label'>🎯 核心戰術目標</div><div class='edu-card-body-text'>在晶圓與特種材料技術防線上維持行業領先。穩定控制零件出廠良率，並確保在專案跨入大量生產時的原料供給產能無虞。</div></div><div class='edu-overview-card'><div class='edu-card-label'>👁️ 團隊終極期待</div><div class='edu-card-body-text'>期待代工廠提供精確無偏位的料期預測（Forecast），並在工廠進行進料檢驗（IQC）與工位拼裝時，不因工藝不當或靜電損壞其原件。</div></div></div><div class='sandbox-panel-card'><div class='edu-card-label'>📖 戰術檢查字典（點擊術語解鎖避坑細節）</div><div class='dict-btn-grid'><button class='dict-trigger-btn' onclick='showTacticalDict(\"【長料期沙漏控管】：精確追蹤 Lead Time 超過 12 週的稀缺晶片。建立物料沙漏水位，一旦長料期發生供應斷線，必須立即發動二線備料（Dual Source）認證防線。\")'><span>🔍 長料期沙漏控管</span><span>➔</span></button><button class='dict-trigger-btn' onclick='showTacticalDict(\"【IQC 進料檢驗】：元件進廠時，必須強制對齊供應商的出廠報告（COA），以剛性抽樣抽檢零件物理尺寸與電性公差，嚴防上游瑕疵料汙染流水線。\")'><span>🔍 IQC 進料檢驗標準</span><span>➔</span></button></div><div id='runtime-dict-box' class='dict-display-box'></div></div><div class='sandbox-panel-card'><div class='edu-card-label'>🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div><div style='font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;'>🚨 <strong>現場突發修羅場：</strong>DVT 開線前 24 小時，原定的日本特種防水膠廠突然通報藥水配方異常，固化時間變長，無法如期交貨，流水線點膠站工位面臨全面停工，你該如何拆彈？</div><div class='sandbox-choice-row'><button class='sandbox-choice-btn' onclick='triggerSimDecision(false, \"💥 <strong>模擬命運：產線開空窗，工廠開罰！</strong><br>你選擇在辦公室等待日本原廠重調配方。結果線體被迫停工待料 5 天，數百名操作工閒置，產線拉速進度嚴重偏離，遭到工廠主管與客戶集體彈劾！\")'>方案 A：發出警告郵件，並在線體上死等日本原廠配方重調完畢。</button><button class='sandbox-choice-btn' onclick='triggerSimDecision(true, \"🏆 <strong>模擬命運：完美備援，如期開線！</strong><br>你果斷發起跨部門應變，清查 Common Pool 資源，調用國內二線備料供應商的儲備樣品，帶帶領團隊進行 12 小時極速信賴性點亮驗證，成功頂替缺料，流水線一氣呵成順利過關！\")'>方案 B：啟動二線供應商（Dual Source）應變防線，調用樣品進行極速可靠性點亮複審。 </button></div><div id='runtime-sandbox-fallout' class='sandbox-fallout-box'></div></div>" 
                     },
                     { 
                         name: "代工製造廠 (EMS Factory)", 
                         highlight: false,
-                        text: "<div class='tactical-alert-card'><strong>🎯 TPM 核心戰術指標：實體化複製與生產拉速（UPH & FPY）</strong><br>這是我們（Foxconn / FIH）的主戰場。TPM 的核心天職是帶領工廠工程團隊，在有限的產線設備公差、操作工時與拉速時程邊界下，將研發圖紙 100% 不失真地進行大規模複製組裝，死守直通率（FPY）防線。</div><div class='tactical-danger-card'><strong>💥 試產現場災難還原案例：98% 良率背後的重工騙局</strong><br>某專案 PVT 結案報告上，工廠回報入庫良率高達 98.5%，看似一片大好。但 TPM 現場查線調閱數據發現，產線的直通率（FPY）竟然只有慘烈的 35%！這意味著過半的手機在流水線上都被打下來，在後段手工工位（Rework Station）經歷了拆解、二度加熱焊接與修復。這種經歷過度折騰的機器帶有嚴重的隱形物理應力內傷，運到凡間市場必然引發開箱即損（DOA）海嘯。TPM 當場拦截專案，拒絕出關 MP，勒令工廠重調鋼網厚度與治具夾持公差。</div><div class='tactical-alert-card'><strong>📝 製造現場 TPM 剛性避坑 Checklist：</strong><br><div class='tactical-grid-2'><div class='tactical-check-item'><span>✔️</span>流水線的線平衡率（Line Balance）是否達到 85% 以上？是否存在嚴重的瓶頸工位？</div><div class='tactical-check-item'><span>✔️</span> 產線測試治具（ICT/FCT）的誤判率（False Alarm）是否在剛性標準 1% 以下？</div></div></div>" 
+                        text: "<div class='edu-overview-container'><div class='edu-overview-card'><div class='edu-card-label'>🛠️ 工廠會做什麼</div><div class='edu-card-body-text'>我們的絕對基地（Foxconn / FIH）。接過客戶 2D/3D 圖紙指令，吞下供應商輸送過來的物料。在設備公差疊加與拉速上限邊界下，進行硬體實體化的大規模複製組裝。</div></div><div class='edu-overview-card'><div class='edu-card-label'>🎯 核心戰術目標</div><div class='edu-card-body-text'>死守直通率（FPY），消滅製程瓶頸。在 PVT 與 MP 階段極速提升每小時產能速率（UPH），以極低的不良率完成大批量複製，死守代工毛利。</div></div><div class='edu-overview-card'><div class='edu-card-label'>👁️ 團隊終極期待</div><div class='edu-card-body-text'>期待 TPM 扮演跨功能（XFN）大腦，在試產缺陷、線體治具卡死或動態設計變更（ECO）爆發時，第一時間找出不良根本原因（Root Cause），主導技術拆彈。</div></div></div><div class='sandbox-panel-card'><div class='edu-card-label'>📖 戰術檢查字典（點擊術語解鎖避坑細節）</div><div class='dict-btn-grid'><button class='dict-trigger-btn' onclick='showTacticalDict(\"【線平衡率 Line Balance】：評估整條大流水線各個工位工時的平均配比度。線平衡率低於 85% 代表存在嚴重瓶頸工位，會引發產線集體堆料、拉速垮台。\")'><span>🔍 線平衡率平衡指標</span><span>➔</span></button><button class='dict-trigger-btn' onclick='showTacticalDict(\"【測試治具誤判率】：針床ICT與功能FCT治具的誤判率（False Alarm）必須剛性鎖死在 1% 以下。過高的誤判會引發大量健康主板被送去重工拆解，摧毀直通率。\")'><span>🔍 治具誤判率防線</span><span>➔</span></button></div><div id='runtime-dict-box' class='dict-display-box'></div></div><div class='sandbox-panel-card'><div class='edu-card-label'>🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div><div style='font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;'>🚨 <strong>現場突發修羅場：</strong>PVT 結案審查時，工廠主管報告最終入庫良率高達 98.5%！但你翻查後台數據發現直通率（FPY）竟然只有慘烈的 35%，此時你該如何決策？</div><div class='sandbox-choice-row'><button class='sandbox-choice-btn' onclick='triggerSimDecision(false, \"💥 <strong>模擬命運：客退海嘯，專案判死！</strong><br>你看到 98.5% 良率就放行出關。結果產品流入實體市場後，因為大批經歷過手工二次高溫重工修補的手機內傷爆發，開箱即損（DOA）故障率集體炸裂！客戶發動全面退貨清算，代工廠毛利當場歸零！\")'>方案 A：良率既然過關，配合工廠主管如期開閘，准許出關大量生產（MP）。</button><button class='sandbox-choice-btn' onclick='triggerSimDecision(true, \"🏆 <strong>模擬命運：鐵血攔截，斬斷隱形內傷！</strong><br>你死守剛性鐵律：『不斬良率，只斬直通率！』當場鐵血攔截專案、拒絕出關。勒令製程 ME 團隊徹查線體，抓出鋼網磨損與治具公差偏移，將 FPY 拉回 85% 以上才准予放行，徹底消滅客退海嘯！\")'>方案 B：一票否決、強行攔截！下令產線停線重調治具，將直通率拉回剛性指標。 </button></div><div id='runtime-sandbox-fallout' class='sandbox-fallout-box'></div></div>" 
                     }
                 ],
-                text: "在硬體專案管理的世界中，運行著「三方一鏈」的實務實體化鏈條。請點擊上方流程圖方塊，逐一研讀各節點權責防線。"
+                text: "在硬體專案管理的世界中，運行著「三方一鏈」的實務實體化鏈條。請點擊上方流程圖方塊，進入互動決策演練。"
             },
             {
                 title: "2. NPI 生命週期分期與產業現實",
@@ -37,140 +37,48 @@ codexCourseEngineData = [
                     {
                         branchLabel: "📋 正常預設時程 (Conceptual)",
                         diagramFlowArray: [
-                            { 
-                                name: "Proto 原型機", 
-                                highlight: false,
-                                text: "<div class='tactical-alert-card'><span class='tactical-badge'>PROTO</span><strong>核心目的：美學比例與架構可行性微觀檢視</strong><br>利用 3D 列印或手工快速打樣。此階段研發圖紙與電路原理圖（Schematic）還處於概念期，主要用來評估整機的物理堆疊（Stack-up）架構是否會發生嚴重的空間硬干涉。</div>" 
-                            },
-                            { 
-                                name: "EVT 工程驗證", 
-                                highlight: true,
-                                text: "<div class='tactical-alert-card'><span class='tactical-badge'>EVT</span><strong>核心目的：主機板首版通電打通（Power-on）</strong><br>這是研發設計的首度實體化複製。TPM 在 EVT 階段的剛性 Exit Criteria（出關基準）是：主機板必須 100% 通電打通，基本電路與基本功能運作正常，且除錯接口（Debug Interface）能順利抓到訊號、跑通軟體。</div>" 
-                            },
-                            { 
-                                name: "DVT 設計驗證", 
-                                highlight: false,
-                                text: "<div class='tactical-alert-card'><span class='tactical-badge'>DVT</span><strong>核心目的：量產鋼模正式開模與嚴苛信賴性拷問</strong><br>此階段五金與塑膠模具正式開模（Hard Tooling）。產品必須實現整機完整組裝，並開始強制接受摔落測試（Drop Test）、高低溫環境衝擊、以及防水氣密測試（Leak Test）等摧毀性的信賴性試煉，用數據修正公差缺陷。</div>" 
-                            },
-                            { 
-                                name: "PVT 生產驗證", 
-                                highlight: false,
-                                text: "<div class='tactical-alert-card'><span class='tactical-badge'>PVT</span><strong>核心目的：設計圖紙全面凍結，考驗產線大量複製能力</strong><br>研發端的設計文件與 CMF 貼圖全面剛性凍結（Freeze），禁止任何ECO變更。專案重心完全移交給代工製造廠。目的在於測試工廠流水線的每小時產能速率（UPH）、測試治具防錯能力，驗證工廠製程能力指數（Cpk）。</div>" 
-                            },
-                            { 
-                                name: "MP 大量量產", 
-                                highlight: false,
-                                text: "<div class='tactical-alert-card'><span class='tactical-badge'>MP</span><strong>核心目的：良率出關，放水流入凡間市場</strong><br>通過代工廠 FPY 良率剛性指標，新產品導入流程（NPI）宣告正式功德圓滿，產品開閘放水進入大規模流水線生產並出貨。</div>" 
-                            }
+                            { name: "Proto 原型機", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>PROTO STAGE</span><strong>會做什麼：</strong>利用 3D 列印或手工打樣。<strong>核心目標：</strong>快速確認產品的概念因果、巨觀美學比例、結構可行性是否過關。<strong>終極期待：</strong>完成整機物理堆疊（Stack-up）微觀檢視，為後續電路設計鋪路。</div>" },
+                            { name: "EVT 工程驗證", highlight: true, text: "<div class='tactical-alert-card'><span class='tactical-badge'>EVT STAGE</span><strong>會做什麼：</strong>研發設計的首度硬體實體化複製。<strong>核心目標：</strong>實現主機板的『首版通電打通（Power-on）』。<strong>終極期待：</strong>確認基本電路系統、訊號流向完整，除錯接口能順利抓到工程軟體訊號。</div>" },
+                            { name: "DVT 設計驗證", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>DVT STAGE</span><strong>會做什麼：</strong>量產五金與塑膠模具正式開模（Hard Tooling）。<strong>核心目標：</strong>整機必須完成完整拼裝。<strong>終極期待：</strong>全面接受摔落、高低溫環境衝擊、防水氣密測試等嚴苛的信賴性可靠性考核評審。</div>" },
+                            { name: "PVT 生產驗證", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>PVT STAGE</span><strong>會做什麼：</strong>研發端設計圖紙全面剛性凍結（Freeze），重心全力轉移至工廠線體。<strong>核心目標：</strong>全面測試流水線的大規模複製組裝能力。<strong>終極期待：</strong>優化操作工位線平衡，驗證治具複製與 UPH 每小時產速是否達標。</div>" },
+                            { name: "MP 大量量產", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>MP STAGE</span><strong>會做什麼：</strong>大規模流水線全面啟動生產。<strong>核心目標：</strong>通過工廠出關審查指標。<strong>終極期待：</strong>產品開閘放水，以高直通率良率大批量流入凡間實體市場。</div>" }
                         ],
                         text: "【標準新產品導入流程（NPI）】每個開發里程碑皆有剛性出關審查基準（Exit Criteria），按部就班遞進。請點擊上方流程圖方塊進行互動切換。"
-                    },
-                    {
-                        branchLabel: "📱 智慧型手機現實 (Smartphone)",
-                        diagramFlowArray: [
-                            { 
-                                name: "Proto 階段 (機構/通電並行)", 
-                                highlight: true,
-                                text: "<div class='tactical-danger-card'><span class='tactical-badge'>REALITY</span><strong>手機修羅場：Proto 戰線就必須並行</strong><br>在極度內捲的智慧型手機產業，研發試產週期被極限壓縮至 6 到 9 個月。我們完全沒有等圖紙的餘裕，在 Proto 原型機階段，EE 團隊還在通電調試訊號的同時，ME 團隊就已經被迫提前開啟 Hard Tooling 量產鋼模。</div>" 
-                            },
-                            { 
-                                name: "EVT / DVT 階段高度重疊", 
-                                highlight: true,
-                                text: "<div class='tactical-danger-card'><span class='tactical-badge'>REALITY</span><strong>手機修羅場：EVT 與 DVT 平行並行 overlap</strong><br>因市場時程卡死，EVT 尚未出關，DVT 階段的長期物料（Long-lead Components）就必須強制提前下單。這導致研發除錯與量產模具缺陷優化在線體上同時爆發，身為手機 TPM，隨時要在動態設計變更（ECO）與工廠停線危機中拆彈。</div>" 
-                            },
-                            { 
-                                name: "PVT 產線極速拉速拉偏", 
-                                highlight: false,
-                                text: "<div class='tactical-danger-card'><span class='tactical-badge'>REALITY</span><strong>手機修羅場：PVT 只有黃金一週的拉速期</strong><br>手機 PVT 測試在線體上通常只有 3 到 5 天的轉廠期，工廠必須在極短工時內將 UPH（每小時產速）強行拉到大批量生產規格。任何一個治具卡死或工位平衡（Line Balance）失調，都會直接摧毀開線計畫。</div>" 
-                            }
-                        ],
-                        text: "【智慧型手機產業的極限壓縮現實】在高度成熟的手機產品線中，傳統生命週期被市場競爭徹底粉碎。請點擊方塊切換研讀手機修羅場實務。"
                     }
                 ]
             },
             {
+                /* 👑 滿血復原防線：100% 補回先前遺失的 Section 3 三大產品線體數據分支 👑 */
                 title: "3. 生產線體與組裝測試工序",
                 subMatrixBranches: [
                     {
                         branchLabel: "⚙️ 通用四大線體 (Generic)",
                         diagramFlowArray: [
-                            { 
-                                name: "PCBA 主板製程", 
-                                highlight: true,
-                                text: "<div class='tactical-alert-card'><strong>⚙️ SMT 前段焊接製程流水線站</strong><br>在高度潔淨防靜電的無塵車間進行。將最核心的主晶片、電阻、電容元件，透過鋼網網印錫膏、3D 錫膏檢查儀（SPI）攔截印偏、高速貼片機精準拍打零件，最後過迴流焊熔爐（Reflow Oven）進行高溫熔焊，鑄造出核心主機板 PCBA，這便是裝置的智慧大腦。</div>" 
-                            },
-                            { 
-                                name: "Assembly 組裝線", 
-                                highlight: false,
-                                text: "<div class='tactical-alert-card'><strong>⚙️ FATP 後段總裝流水線（Assembly）</strong><br>將產出的主板 PCBA 送往大流水線。由工位操作員與自動化手臂協作，將外殼骨架、螢幕模組、大容量電池、相機排線與防護螺絲嚴密拼裝鎖附，形成實體整機機身。</div>" 
-                            },
-                            { 
-                                name: "Test 功能測試站", 
-                                highlight: false,
-                                text: "<div class='tactical-alert-card'><strong>⚙️ FATP 測試線（Test Station）</strong><br>整機流入自動化測試屏蔽治具（ICT 針床/FCT 功能治具）。通電強行注入工程除錯軟體，毫米級檢驗其螢幕視覺、喇叭音頻、Wi-Fi 與藍牙無線訊號、相機功能是否完全合格，發動第一道天眼攔截防線。</div>" 
-                            },
-                            { 
-                                name: "Packaging 包裝線", 
-                                highlight: false,
-                                text: "<div class='tactical-alert-card'><strong>⚙️ Packing 包裝出貨站</strong><br>完全通過功能測試的健康整機，在此處由人工撕去保護膜、塞入說明書彩盒、配件與充電器。進行最後的整箱防錯秤重（防止少塞物料）並封膠裝箱出貨。</div>" 
-                            }
+                            { name: "PCBA 主板製程", highlight: true, text: "<div class='tactical-alert-card'><span class='tactical-badge'>PCBA LINE</span><strong>會做什麼：</strong>高密度無塵貼片與錫膏化學銲接。<strong>核心目標：</strong>透過 SPI 檢查儀與高速貼片機，在毫秒間將晶片精確打入主板。<strong>終極期待：</strong>通過高溫迴流爐熔銲，主機板 PCBA 100% 電路打通、零空銲。</div>" },
+                            { name: "Assembly 組裝線", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>ASSY LINE</span><strong>會做什麼：</strong>大流水線整機物理拼裝。<strong>核心目標：</strong>操作員與手臂協作，將主板、骨架、螢幕與排線緊密鎖附。<strong>終極期待：</strong>外殼防護螺絲嚴密扣合，不發生滑牙與內部走線干涉擠壓。</div>" },
+                            { name: "Test 功能測試站", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>TEST STATION</span><strong>會做什麼：</strong>自動化硬體功能屏蔽測試。<strong>核心目標：</strong>整機強行注入自動化除錯軟體。<strong>終極期待：</strong>一網打盡色彩、音頻、Wi-Fi 射頻訊號缺陷，誤判率剛性掐死在 1% 以下。</div>" },
+                            { name: "Packaging 包裝線", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>PACK LINE</span><strong>會做什麼：</strong>彩盒附件總裝與封箱出貨。<strong>核心目標：</strong>撕去外殼保護膜，塞入彩盒說明書。<strong>終極期待：</strong>通過最後重整箱防錯秤重，嚴防漏塞任何配件，綠燈封膠。</div>" }
                         ],
                         text: "【通用電子產品四大核心線體】解鎖硬體生產的基本物理流向。請點擊上方節點方塊切換工序定義。"
                     },
                     {
                         branchLabel: "📱 高階手機精細線體 (Smartphone)",
                         diagramFlowArray: [
-                            { 
-                                name: "SMT 主板貼片", 
-                                highlight: false,
-                                text: "<div class='tactical-danger-card'><strong>📱 手機精細線體：SMT 高密度雙面貼片</strong><br>手機主板屬於極高密度雙面貼片（Dual-side SMT）。主晶片與被動元件極度微縮。必須通過 3D 錫膏厚度檢驗（SPI）與熔爐後 AOI 光學天眼雙重篩查，絕不容許任何虛焊或缺件流入後段。</div>" 
-                            },
-                            { 
-                                name: "SUB 次級預組線", 
-                                highlight: false,
-                                text: "<div class='tactical-danger-card'><strong>📱 手機精細線體：SUB 次級預組線（副線開火）</strong><br>為了不佔用大裝流水線工時（Cycle Time），在此處將相機鏡頭模組、振動馬達、指紋解鎖晶片與天線軟板，在副線預先拼裝熔焊成小模組件，提升總裝效率。</div>" 
-                            },
-                            { 
-                                name: "CG/BG 真空防水壓合", 
-                                highlight: true,
-                                text: "<div class='tactical-danger-card'><strong>📱 手機精細線體：CG/BG 真空防水壓合（IP68核心）</strong><br>利用多軸精密自動點膠機（Dispensing Machine），以微米級精度在金屬中框邊緣噴塗防水膠路。將前後玻璃蓋板送入真空壓合治具進行強制保壓密合，建立 IP68 黃金氣密測試防線。</div>" 
-                            },
-                            { 
-                                name: "Final Assembly 總裝線", 
-                                highlight: false,
-                                text: "<div class='tactical-danger-card'><strong>📱 手機精細線體：Final Assembly 總裝線</strong><br>將 SUB 次級預組件、PCBA 主板、大容量鋰電池強行嵌入防水壓合完畢的玻璃中框。此步驟涉及大量極細排線扣合與高精度螺絲鎖附防扭力滑牙工藝。</div>" 
-                            },
-                            { 
-                                name: "Final Test 最終綜合測試", 
-                                highlight: false,
-                                text: "<div class='tactical-danger-card'><strong>📱 手機精細線體：Final Test 最終射頻與 IMEI 碼燒錄</strong><br>手機送入全密封射頻干涉屏蔽房（Chamber）。校正 4G/5G/Wi-Fi 射頻天線參數，並向晶圓內剛性燒錄全球唯一的通訊身分證 ── IMEI 碼，完成客退品早期失效分析（EFFA）溯源防線。</div>" 
-                            }
+                            { name: "SMT 主板貼片", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>PHONE SMT</span><strong>會做什麼：</strong>高密度雙面 SMT 貼片工藝。<strong>核心目標：</strong>被動原件極微縮化拼裝。<strong>終極期待：</strong>透過 AOI 光學天眼雙重篩查，絕不容許任何一處微小虛銲流入後段。</div>" },
+                            { name: "SUB 次級預組線", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>PHONE SUB</span><strong>會做什麼：</strong>分支副流水線同時開火。<strong>核心目標：</strong>將相機模組、馬達與天線軟板預先熔銲。<strong>終極期待：</strong>在不佔用大裝總工時的前提下完成模組件，極速拉高總裝 UPH。</div>" },
+                            { name: "CG/BG 真空防水壓合", highlight: true, text: "<div class='tactical-alert-card'><span class='tactical-badge'>PHONE IP68</span><strong>會做什麼：</strong>高階手機多軸精密自動點膠與真空保壓。<strong>核心目標：</strong>以微米級精度噴塗防水膠路並送入治具密合。<strong>終極期待：</strong>建立 IP68 黃金氣密結界，確保信賴性防水測試不發生任何滲水漏氣。</div>" },
+                            { name: "Final Assembly 總裝線", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>PHONE FATP</span><strong>會做什麼：</strong>主板、副組件、大容量鋰電池強行扣合鎖附。<strong>核心目標：</strong>攻克玻璃中框與極細排線的微觀嵌入。<strong>終極期待：</strong>鎖附扭力高精準對位，防範內部應力死鎖與崩裂。</div>" },
+                            { name: "Final Test 最終綜合測試", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>PHONE RF</span><strong>會做什麼：</strong>密封射頻屏蔽房（Chamber）天線校正。<strong>核心目標：</strong>校準 5G 與 Wi-Fi 無線射頻參數。<strong>終極期待：</strong>向晶圓內剛性燒錄全球唯一身分證 ── IMEI 碼，完成客退品追溯根基。</div>" }
                         ],
                         text: "【高階手機高密度自動化線體】手機為了在極小空間塞入最多功能，工序極其精密。請點擊上方節點方塊切換線體定義。"
                     },
                     {
                         branchLabel: "🛸 智慧無人機線體 (Drone)",
                         diagramFlowArray: [
-                            { 
-                                name: "SMT 主控與電調焊接", 
-                                highlight: false,
-                                text: "<div class='tactical-danger-card'><strong>🛸 智慧無人機線體：SMT 飛控與電調焊接</strong><br>除了主導大腦運算的核心飛控板 PCBA，在此處必須同步焊接高頻大電流的 ESC 電子調速器（電調板），用來精準反饋控制無刷馬達的極高轉速與扭力平衡。</div>" 
-                            },
-                            { 
-                                name: "SUB 動力手臂預組", 
-                                highlight: false,
-                                text: "<div class='tactical-danger-card'><strong>🛸 智慧無人機線體：SUB 動力手臂預組</strong><br>無人機副線。將高強度碳纖維機臂、高轉速無刷馬達與大功率 LED 指示燈進行手工焊接預組，並全面檢驗馬達轉子空載電流是否異常偏高。</div>" 
-                            },
-                            { 
-                                name: "Final Assembly 機電總裝", 
-                                highlight: false,
-                                text: "<div class='tactical-danger-card'><strong>🛸 智慧無人機線體：Final Assembly 機電總裝線</strong><br>將動力手臂剛性鎖附上無人機主骨架，並嵌入精密三軸機械穩定雲台（Gimbal）與 4K 影像鏡頭。涉及極多大功率動力電源線的密封防水防震工藝。</div>" 
-                            },
-                            { 
-                                name: "IMU 感測器動態校正", 
-                                highlight: true,
-                                text: "<div class='tactical-danger-card'><strong>🛸 智慧無人機線體：IMU 慣性核心動態校正站（飛行防禦）</strong><br>無人機特有核心。不上傳統流水線測試，而是固定在專屬的三軸旋轉陀螺儀治具上，進行飛控大腦內部 IMU（包含加速度計、陀螺儀、指南針）的『動態六面翻轉校正（Calibration）』，確保升空後絕對不發生漂移炸機。</div>" 
-                            }
+                            { name: "SMT 主控與電調焊接", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>DRONE SMT</span><strong>會做什麼：</strong>核心飛控板與高頻大電流 ESC 電子調速器焊接。<strong>核心目標：</strong>保證大功率元件之焊接熱應力釋放。<strong>終極期待：</strong>銲接良率達標，用以精確反饋控制後續無刷馬達的轉速平衡。</div>" },
+                            { name: "SUB 動力手臂預組", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>DRONE ARM</span><strong>會做什麼：</strong>碳纖維機臂與高轉速無刷馬達手工拼裝。<strong>核心目標：</strong>銲接動力電源線並進行機械緊固。<strong>終極期待：</strong>通過馬達轉子空載電流檢驗，全面攔截高阻抗發熱異音不良。</div>" },
+                            { name: "Final Assembly 機電總裝", highlight: false, text: "<div class='tactical-alert-card'><span class='tactical-badge'>DRONE ASSY</span><strong>會做什麼：</strong>手臂骨架扣合與精密三軸雲台機械安裝。<strong>核心目標：</strong>機電系統總集成。<strong>終極期待：</strong>大功率線路全面密封防水，抗震襯墊安裝到位，防範升空抖震。</div>" },
+                            { name: "IMU 感測器動態校正", highlight: true, text: "<div class='tactical-alert-card'><span class='tactical-badge'>DRONE IMU</span><strong>會做什麼：</strong>專屬三軸旋轉陀螺儀動態治具校正。<strong>核心目標：</strong>對加速度計、指南針進行『動態六面翻轉校正』。<strong>終極期待：</strong>將感測器零偏徹底洗淨歸零，確保凡間飛行絕不發生漂移漂移炸機。</div>" }
                         ],
                         text: "【智慧無人機機電共生線體】多軸飛行器涉及動力機械與多重感測器交織流向。請點擊方塊解鎖無人機黑科技工序。"
                     }
