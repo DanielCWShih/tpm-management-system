@@ -152,7 +152,7 @@
             flex-direction: column;
         }
 
-        /* 樹狀導航專用剛性組件 */
+        /* 樹狀導航樣式組件 */
         .menu-category-block {
             width: 100%;
             margin-bottom: 5px;
@@ -285,7 +285,7 @@
             background: #FAF9F5;
         }
 
-        /* 頂部二級導航條（轉換為專業範疇內文過濾器） */
+        /* 頂部二級導航條（技術範疇過濾器） */
         .cdx-sub-nav-bar {
             display: flex;
             gap: 12px;
@@ -453,14 +453,14 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.LEXICON_LIBRARY V5.1</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.LEXICON_LIBRARY V5.2</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">大圖書館術語圖鑑庫</h1>
         </div>
         <div class="navbar-controls">
             <div id="global-user-profile-card" class="auth-panel">🔒 認證讀取中...</div>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core" id="global-btn-tw" onclick="executeLangSwitch('tw')">TW</button>
-                <button class="lang-btn-core" id="global-btn-en" onclick="executeLangSwitch('en')">EN</button>
+                <button class="lang-btn-core" id="global-btn-en" onclick="executeGlobalLangSwitch('en')">EN</button>
             </div>
             <a href="index.html" class="back-btn" id="global-nav-home-btn">首頁</a>
         </div>
@@ -522,22 +522,19 @@
             en: { "nav-home": "Home", "auth-locked": "🔒 No Credentials", "rank-default": "Adventurer", "title": "Knowledge Lexicon Library" }
         };
 
-        /* 👑 剛性對標：直接宣告與寶典、手冊完全相同的 Manifest 資料結構 👑 */
-        const beginnerCourseManifest = [
-            { id: "1-1", level: "l1", title: "基本世界觀與 NPI 鏈條" },
-            { id: "1-2", level: "l1", title: "工廠基礎與良率鐵律" }
+        /* 👑 聯動防線：外掛單元註冊表，宣告需要實體連動載入解析的資料檔 👑 */
+        const libraryDataRegistry = [
+            { type: 'codex', unit: '1-1', file: 'course_data_1-1.js', defaultTitle: '1-1 世界觀與 NPI 鏈條', level: 'l1' },
+            { type: 'codex', unit: '1-2', file: 'course_data_1-2.js', defaultTitle: '1-2 工廠基礎與良率鐵律', level: 'l1' },
+            { type: 'handbook', unit: '1-1', file: 'handbook_data_1-1.js', defaultTitle: '1-1 防水設計與防護結界', level: 'l2' }
         ];
 
-        const handbookCourseManifest = [
-            { id: "1-1", level: "l2", title: "防水設計與環境防護結界" }
-        ];
-
-        /* 核心文獻術語資料庫 */
+        /* 術語核心文獻資料庫 */
         const libraryLexicon = [
-            { id: "J-01", type: "codex", unit: "1-2", category: "abyss", tag: "FATP / Process", term: "FPY (直通率)", en: "First Pass Yield", gameTerm: "製造防線鐵律", lore: "一個產品在流水線中，完全沒有重工修復、一氣合成順利通關的完美機率。", def: "First Pass Yield。第一次就製造出合格產品的比例。公式為：(不需重工合格數 / 投入總數) × 100%。", lessons: "某手機試產良率 98%，但 FPY 只有 45%！代表過半都是手工重修三次勉強過關。運到市場開箱 DOA 良率炸裂。確立鐵律：不斬良率，只斬直通率！" },
-            { id: "J-02", type: "codex", unit: "1-2", category: "abyss", tag: "SMT / Production", term: "AOI (自動光學檢測)", en: "Automated Optical Inspection", gameTerm: "第一審判之門", lore: "架設在 SMT 火山熔爐出口，毫秒間高速掃描主板是否有印歪、短路 or 偏移浮起。", def: "Automated Optical Inspection。利用光學攝影機與影像演算法，自動檢測 PCBA 上零件的缺件、墓碑（Tombstoning）、短路等外觀缺陷。", lessons: "EVT 出現集體電阻浮起（墓碑效應）。工廠堅持是設計問題，TPM 調閱第一道審判（SPI 錫膏檢查）與 AOI 數據，精確抓到是鋼網（Stencil）厚度磨損。工廠當場認賠經營。" },
-            { id: "J-03", type: "handbook", unit: "1-1", category: "pantheon", tag: "Design / CMF", term: "Anodization (陽極氧化)", en: "Anodization", gameTerm: "表面保護皮層", lore: "利用電化學製程，在鋁合金骨架表面形成一層高硬度、抗刮、且能吸附色彩的防禦皮層。", def: "一種電化學製程，將金屬（主要是鋁合金）物件作為陽極，置於電解液中施加電流，使其表面形成一層具保護性與裝飾性的氧化膜。涉及極度敏感的酸鹼度控制。", lessons: "設計師要求高階無人機外殼必須呈現深邃極光藍。然而工廠回報：該電化學製程色差極難控制，直通率雪崩。TPM 緊急介入，在圖紙端妥協微調噴砂顆粒度，增加光線漫反射，完美遮蓋色差，拯救了大量專案時程。" },
-            { id: "J-04", type: "codex", unit: "1-1", category: "phantom", tag: "Supply Chain / Logistics", term: "Lead Time (料期)", en: "Lead Time", gameTerm: "下單到交貨時程", lore: "指的是從你向廠商下達下單指令那一刻起，到零件原料真正送進代工廠倉庫，所需耗費的時間總長度。", def: "從訂單確認下達，到物料或成品實際交付到指定地點的這段總時間。在特定晶片上，長料期通常高達 12 至 16 週。", lessons: "某次 DVT 階段前夕，特定光學 IC 的 Lead Time 瞬間暴增一倍。TPM 大膽決定：試產不延期，前半段空板（Dummy Board）上線過爐，等 4 週後晶片運抵，再在工廠後段架設手工專屬工位進行後補後焊，如期 Exit！" }
+            { id: "J-01", type: "codex", unit: "1-2", defaultLabel: "📦 初心者寶典 ── SECTION 1-2 工廠基礎與良率鐵律", category: "abyss", tag: "FATP / Process", term: "FPY (直通率)", en: "First Pass Yield", gameTerm: "製造防線鐵律", lore: "一個產品在流水線中，完全沒有重工修復、一氣合成順利通關的完美機率。", def: "First Pass Yield。第一次就製造出合格產品的比例。公式為：(不需重工合格數 / 投入總數) × 100%。", lessons: "某手機試產良率 98%，但 FPY 只有 45%！代表過半都是手工重修三次勉強過關。運到市場開箱 DOA 良率炸裂。確立鐵律：不斬良率，只斬直通率！" },
+            { id: "J-02", type: "codex", unit: "1-2", defaultLabel: "📦 初心者寶典 ── SECTION 1-2 工廠基礎與良率鐵律", category: "abyss", tag: "SMT / Production", term: "AOI (自動光學檢測)", en: "Automated Optical Inspection", gameTerm: "第一審判之門", lore: "架設在 SMT 火山熔爐出口，毫秒間高速掃描主板是否有印歪、短路 or 偏移浮起。", def: "Automated Optical Inspection。利用光學攝影機與影像演算法，自動檢測 PCBA 上零件的缺件、墓碑（Tombstoning）、短路等外觀缺陷。", lessons: "EVT 出現集體電阻浮起（墓碑效應）。工廠堅持是設計問題，TPM 調閱第一道審判（SPI 錫膏檢查）與 AOI 數據，精確抓到是鋼網（Stencil）厚度磨損。工廠當場認賠經營。" },
+            { id: "J-03", type: "handbook", unit: "1-1", defaultLabel: "📦 冒險者手冊 ── SECTION 1-1 防水設計與環境防護結界", category: "pantheon", tag: "Design / CMF", term: "Anodization (陽極氧化)", en: "Anodization", gameTerm: "表面保護皮層", lore: "利用電化學製程，在鋁合金骨架表面形成一層高硬度、抗刮、且能吸附色彩的防禦皮層。", def: "一種電化學製程，將金屬（主要是鋁合金）物件作為陽極，置於電解液中施加電流，使其表面形成一層具保護性與裝飾性的氧化膜。涉及極度敏感的酸鹼度控制。", lessons: "設計師要求高階無人機外殼必須呈現深邃極光藍。然而工廠回報：該電化學製程色差極難控制，直通率雪崩。TPM 緊急介入，在圖紙端妥協微調噴砂顆粒度，增加光線漫反射，完美遮蓋色差，拯救了大量專案時程。" },
+            { id: "J-04", type: "codex", unit: "1-1", defaultLabel: "📦 初心者寶典 ── SECTION 1-1 基本世界觀與 NPI 鏈條", category: "phantom", tag: "Supply Chain / Logistics", term: "Lead Time (料期)", en: "Lead Time", gameTerm: "下單到交貨時程", lore: "指的是從你向廠商下達下單指令那一刻起，到零件原料真正送進代工廠倉庫，所需耗費的時間總長度。", def: "從訂單確認下達，到物料或成品實際交付到指定地點的這段總時間。在特定晶片上，長料期通常高達 12 至 16 週。", lessons: "某次 DVT 階段前夕，特定光學 IC 的 Lead Time 瞬間暴增一倍。TPM 大膽決定：試產不延期，前半段空板（Dummy Board）上線過爐，等 4 週後晶片運抵，再在工廠後段架設手工專屬工位進行後補後焊，如期 Exit！" }
         ];
 
         let activeType = 'all';     
@@ -546,17 +543,45 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
-            // 👑 初始化：動態建立目錄樹 👑
-            generateAutoSidebar();
-            syncNavbarState(currentLang);
+            // 👑 第一步：異步連動排隊讀取外部資料腳本包 👑
+            sequentialScriptLoader(0, () => {
+                generateAutoSidebar();
+                syncNavbarState(currentLang);
+            });
         });
+
+        /* 👑 核心加裝：外部資料包異步快照擷取引擎（解鎖跨檔案聯動） 👑 */
+        function sequentialScriptLoader(index, callback) {
+            if (index >= libraryDataRegistry.length) {
+                callback();
+                return;
+            }
+            const registry = libraryDataRegistry[index];
+            const script = document.createElement('script');
+            script.src = registry.file;
+            script.onload = () => {
+                // 當外部腳本成功流入，立即快照提取其 Title 標頭文字
+                if (window.codexCourseEngineData && window.codexCourseEngineData.length > 0) {
+                    registry.runtimeTitle = window.codexCourseEngineData[0].menuTitle || registry.defaultTitle;
+                }
+                // 清理快取，防範下一個資料包覆蓋發生混淆
+                window.codexCourseEngineData = undefined;
+                sequentialScriptLoader(index + 1, callback);
+            };
+            script.onerror = () => {
+                registry.runtimeTitle = registry.defaultTitle;
+                window.codexCourseEngineData = undefined;
+                sequentialScriptLoader(index + 1, callback);
+            };
+            document.head.appendChild(script);
+        }
 
         /* 👑 核心重構：全自動動態對標目錄生成器 👑 */
         function generateAutoSidebar() {
             const treeContainer = document.getElementById('dynamic-sidebar-tree');
             treeContainer.innerHTML = '';
 
-            // --- 1. 初心者寶典目錄板塊 ---
+            // --- 1. 初心者寶典目錄組件外殼 ---
             const codexBlock = document.createElement('div');
             codexBlock.className = 'menu-category-block';
             codexBlock.innerHTML = `
@@ -575,14 +600,17 @@
             `;
             treeContainer.appendChild(codexBlock);
 
-            // 👑 全自動動態對標：遍歷讀取寶典 Manifest 清單灌注小單元葉子節點
+            // 👑 全自動對標：動態讀取註冊表灌注小單元葉子按鈕
             const codexL1Container = codexBlock.querySelector('#leaf-codex-l1');
-            beginnerCourseManifest.forEach(course => {
-                codexL1Container.innerHTML += `
-                    <button class="leaf-btn" id="lf-codex-${course.id}" onclick="selectLibraryUnit('codex', '${course.id}')">
-                        單元 ${course.id} ${course.title}
-                    </button>
-                `;
+            libraryDataRegistry.forEach(registry => {
+                if (registry.type === 'codex' && registry.level === 'l1') {
+                    const displayTitle = registry.runtimeTitle || registry.defaultTitle;
+                    codexL1Container.innerHTML += `
+                        <button class="leaf-btn" id="lf-codex-${registry.unit}" onclick="selectLibraryUnit('codex', '${registry.unit}')">
+                            ${displayTitle}
+                        </button>
+                    `;
+                }
             });
 
             // 剛性水平虛線分隔線
@@ -590,7 +618,7 @@
             hrDivider.style.cssText = "border-bottom: 2px dashed var(--border-heavy); margin: 5px 0; width: 100%;";
             treeContainer.appendChild(hrDivider);
 
-            // --- 2. 冒險者手冊目錄板塊 ---
+            // --- 2. 冒險者手冊目錄組件外殼 ---
             const handbookBlock = document.createElement('div');
             handbookBlock.className = 'menu-category-block';
             handbookBlock.innerHTML = `
@@ -604,14 +632,17 @@
             `;
             treeContainer.appendChild(handbookBlock);
 
-            // 👑 全自動動態對標：遍歷讀取手冊 Manifest 清單灌注小單元葉子節點
+            // 👑 全自動對標：動態讀取註冊表灌注小單元葉子按鈕
             const handbookL2Container = handbookBlock.querySelector('#leaf-handbook-l2');
-            handbookCourseManifest.forEach(course => {
-                handbookL2Container.innerHTML += `
-                    <button class="leaf-btn" id="lf-handbook-${course.id}" onclick="selectLibraryUnit('handbook', '${course.id}')">
-                        單元 ${course.id} ${course.title}
-                    </button>
-                `;
+            libraryDataRegistry.forEach(registry => {
+                if (registry.type === 'handbook') {
+                    const displayTitle = registry.runtimeTitle || registry.defaultTitle;
+                    handbookL2Container.innerHTML += `
+                        <button class="leaf-btn" id="lf-handbook-${registry.unit}" onclick="selectLibraryUnit('handbook', '${registry.unit}')">
+                            ${displayTitle}
+                        </button>
+                    `;
+                }
             });
         }
 
@@ -651,7 +682,9 @@
         function toggleMenuSection(containerId, toggleId) {
             const container = document.getElementById(containerId);
             const toggleBtn = document.getElementById(toggleId);
-            
+            if (!container || !toggleBtn) {
+                return;
+            }
             if (container.style.display === 'none') {
                 container.style.display = 'flex';
                 toggleBtn.classList.remove('collapsed');
@@ -678,7 +711,6 @@
                 }
             }
 
-            // 👑 鎖定天條天職：點選單元切換時，預設過濾條件一律強制回歸最左側第一個（Index 0 Default）
             activeType = type;
             activeUnit = unit;
             
@@ -700,29 +732,25 @@
             renderGroupedLexicon();
         }
 
-        /* 核心分流分組渲染引擎：自動產出剛性黑虛分隔線 */
+        /* 👑 核心分流分組渲染引擎：自動產出剛性黑虛分隔線 👑 */
         function renderGroupedLexicon() {
             const canvas = document.getElementById('lexicon-canvas');
             canvas.innerHTML = '';
 
-            // 依據側邊欄動態選定狀態，自動配置動態掃描鏈條
             const scanMap = [];
             if (activeType === 'all') {
-                // 👑 全自動動態對標：直接遍歷 Manifest 陣列配置，徹底排除硬編碼遺漏
-                beginnerCourseManifest.forEach(c => {
-                    scanMap.push({ type: 'codex', unit: c.id, label: `📦 初心者寶典 ── SECTION ${c.id} ${c.title}` });
-                });
-                handbookCourseManifest.forEach(c => {
-                    scanMap.push({ type: 'handbook', unit: c.id, label: `📦 冒險者手冊 ── SECTION ${c.id} ${c.title}` });
+                // 👑 全自動動態對標：直接遍歷註冊表配置，徹底排除硬編碼遺漏 👑
+                libraryDataRegistry.forEach(reg => {
+                    const displayTitle = reg.runtimeTitle || reg.defaultTitle;
+                    const cleanLabel = reg.type === 'codex' ? `📦 初心者寶典 ── SECTION ${displayTitle}` : `📦 冒險者手冊 ── SECTION ${displayTitle}`;
+                    scanMap.push({ type: reg.type, unit: reg.unit, label: cleanLabel });
                 });
             } else {
                 let currentLabelText = '';
-                if (activeType === 'codex') {
-                    const found = beginnerCourseManifest.find(c => c.id === activeUnit);
-                    currentLabelText = found ? `📦 初心者寶典 ── SECTION ${activeUnit} ${found.title}` : `📦 初心者寶典 ── SECTION ${activeUnit}`;
-                } else if (activeType === 'handbook') {
-                    const found = handbookCourseManifest.find(c => c.id === activeUnit);
-                    currentLabelText = found ? `📦 冒險者手冊 ── SECTION ${activeUnit} ${found.title}` : `📦 冒險者手冊 ── SECTION ${activeUnit}`;
+                const found = libraryDataRegistry.find(reg => reg.type === activeType && reg.unit === activeUnit);
+                if (found) {
+                    const displayTitle = found.runtimeTitle || found.defaultTitle;
+                    currentLabelText = found.type === 'codex' ? `📦 初心者寶典 ── SECTION ${displayTitle}` : `📦 冒險者手冊 ── SECTION ${displayTitle}`;
                 }
                 scanMap.push({ type: activeType, unit: activeUnit, label: currentLabelText });
             }
@@ -739,7 +767,7 @@
                 });
 
                 if (dataSlice.length > 0) {
-                    // 👑 剛性虛線防線：區間全自動加裝 dashed 黑色粗分隔線
+                    // 👑 剛性虛線防線：區間全自動加裝 dashed 黑色粗分隔線 👑
                     if (renderedBlocksCount > 0) {
                         const dividerLine = document.createElement('div');
                         dividerLine.style.cssText = "border-bottom: 3px dashed var(--border-heavy); margin: 35px 0; width: 100%;";
@@ -756,7 +784,8 @@
                     const gridContainer = document.createElement('div');
                     gridContainer.className = 'lib-lexicon-grid';
 
-                    dataSlice.forEach(item => {
+                    filteredData = dataSlice;
+                    filteredData.forEach(item => {
                         gridContainer.innerHTML += `
                             <div class="lib-jargon-card" onclick="openLexiconDetail('${item.id}')">
                                 <div class="jargon-tag-box">🏷️ ${item.tag}</div>
@@ -772,7 +801,6 @@
                 }
             });
 
-            // 確保無匹配項目時回傳提示，防呆不開天窗
             if (renderedBlocksCount === 0) {
                 canvas.innerHTML = `
                     <div style="width: 100%; padding: 40px; text-align: center; font-weight: 900; color: var(--text-secondary); border: 2px dashed var(--border-heavy); border-radius: var(--radius-sm);">
@@ -783,4 +811,19 @@
         }
 
         function openLexiconDetail(id) {
-            const data = libraryLexicon
+            const data = libraryLexicon.find(item => item.id === id);
+            if (!data) return;
+            document.getElementById('modal-jargon-tag').innerText = `🏷️ ${data.tag} [ ${data.en} ]`;
+            document.getElementById('modal-jargon-term').innerText = data.term;
+            document.getElementById('modal-jargon-lore').innerText = data.lore;
+            document.getElementById('modal-jargon-def').innerText = data.def;
+            document.getElementById('modal-jargon-lessons').innerText = data.lessons;
+            document.getElementById('lexicon-modal').style.display = 'flex';
+        }
+
+        function closeLexicon() {
+            document.getElementById('lexicon-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
