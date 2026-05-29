@@ -1,3 +1,10 @@
+/* ========================================================================
+REVISION HISTORY / VERSION LOG
+========================================================================
+2026-05-29 V6.1: 👑 子單元 1-1 終極熱修復版。更正最新時間。全量多行展開。徹底清除內部反引號與 HTML 屬性的引號編譯死鎖，完美點亮 R&D 預言、CMF 限制、材料長料期控制與 EMS 鐵血直通率防線四大沙盒。10題隨機抽3題洗牌引擎完璧歸位。
+========================================================================
+*/
+
 window.codexCourseEngineData = [
     {
         courseId: "L1-A1", 
@@ -24,19 +31,19 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典</div>
+                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
                                 <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【PRD 規格防線】：必須全面清查 CMF 是否具備現有流水線的量產製程能力，在開模前剛性攔截不切實際的幻想規格。')"><span>🔍 PRD 規格審查</span><span>➔</span></button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【公差疊加分析】：在圖紙出爐第一時間發動極限疊加模擬，計算零件微米級物理干涉，提前鎖死變形雷區。')"><span>🔍 公差疊加分析</span><span>➔</span></button>
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【PRD 規格防線】：必須全面清查 CMF 是否具備工廠現有流水線的量產製程能力，在開模前剛性攔截不切實際的幻想規格。')"><span>🔍 PRD 規格審查</span><span>➔</span></button>
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【公差疊加分析】：在圖紙出爐第一時間發動極限疊加模擬，計算零件微米級物理干涉，提前鎖死模具與變形雷區。')"><span>🔍 公差疊加分析</span><span>➔</span></button>
                                 </div>
                                 <div id="runtime-dict-box" class="dict-display-box"></div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策沙盒</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 現場突發修羅場：客戶 R&D 為了極致美感，強行要求將內部主板與外殼的 Clearance 安全間距由標準 0.3mm 壓縮至極限 0.1mm，你身為代工廠 TPM，此時的第一決斷是？</div>
+                                <div class="edu-card-label">🎮 TPM 工程決策沙盒（學以致用模擬演練）</div>
+                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>客戶 R&D 為了極致美感，強行要求將內部主板與外殼的 Clearance 安全間距由標準 0.3mm 壓縮至極限 0.1mm，你身為代工廠 TPM，此時的第一決斷是？</div>
                                 <div class="sandbox-choice-row">
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 模擬命運：專案全盤停線崩潰！在 PVT 試產拉速時因零件微小公差疊加，主板當場被殼體物理擠壓變形、電路短路集體燒毀，模具報廢延期兩個月！')">方案 A：聽從客戶意見直接簽字放行，滿足美學堅持。</button>
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 模擬命運：技術拆彈成功！帶領團隊調閱數據向客戶實證 0.1mm 會引發短路海嘯。成功說服客戶微調內部隱蔽骨架，保住安全間距又完美維持外部美學！')">方案 B：啟動跨功能技術仲裁，出示公差公理實證，逼出技術妥協點。</button>
+                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：專案全盤停線崩潰！</strong><br>在 PVT 試產拉速時因零件微小公差疊加，主板當場被殼體物理擠壓變形、電路短路集體燒毀，模具報廢延期兩個月！')">方案 A：聽從客戶意見直接簽字放行，滿足美學堅持。</button>
+                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：技術拆彈成功！</strong><br>帶領團隊調閱數據向客戶實證 0.1mm 會引發短路海嘯。成功說服客戶微調內部隱蔽骨架，保住安全間距又完美維持外部美學！')">方案 B：啟動跨功能技術仲裁，出示公差公理實證，逼出技術妥協點。</button>
                                 </div>
                                 <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                             </div>
@@ -60,9 +67,9 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典</div>
+                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
                                 <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【CMF 良率懲罰】：特殊表面工藝（如高光鏡面或特殊陽極）在工廠線體上的初始良率極低，TPM必須提前備足過爐報廢耗損預算。')"><span>🔍 CMF 良率懲罰</span><span>➔</span></button>
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【CMF 良率懲罰】：特殊表面工藝（如高光鏡面或特殊陽極）在工廠線體上的初始良率極低，TPM 必須提前備足過爐報廢耗損預算。')"><span>🔍 CMF 良率懲罰</span><span>➔</span></button>
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【限度樣本 Limit Sample】：開線前必須由客戶 ID、品保與工廠共同簽字會審，銲死表面缺陷外觀的黃金判退標準線。')"><span>🔍 外觀限度樣本</span><span>➔</span></button>
                                 </div>
                                 <div id="runtime-dict-box" class="dict-display-box"></div>
@@ -92,7 +99,7 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典</div>
+                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
                                 <div class="dict-btn-grid">
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【長料期沙漏控管】：精確追蹤 Lead Time 超過 12 週的稀缺晶片物料水位，一旦供應鏈斷線，必須立即發動二線備料認證。')"><span>🔍 長料期沙漏控管</span><span>➔</span></button>
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【二線備料策略】：認證相容晶片引腳（Pin-to-Pin）代償可行性，防止單一上游爆發不可抗力災難時卡死全案。')"><span>🔍 Second Source 備援</span><span>➔</span></button>
@@ -119,11 +126,11 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策沙盒</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 現場突發修羅場：DVT 開線前 24 小時，原定的日本特種防水膠廠突然通報配方異常無法交貨，點膠站面臨全面停工待料，你該如何拆彈？</div>
+                                <div class="edu-card-label">🎮 TPM 工程決策沙盒（學以致用模擬演練）</div>
+                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>DVT 開線前 24 小時，原定的日本特種防水膠廠突然通報配方異常無法交貨，點膠站面臨全面停工待料，你該如何拆彈？</div>
                                 <div class="sandbox-choice-row">
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 模擬命運：產線開空窗！停工待料 5 天，數百名操作工閒置，時程嚴重偏離，遭到主管與客戶集體彈劾！')">方案 A：發出警告郵件，並在線體上死等日本原廠配方重調完畢。</button>
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 模擬命運：完美備援！果斷調用國內二線供應商的儲備樣品，帶領團隊進行 12 小時極速可靠性點亮驗證，成功頂替過關！')">方案 B：啟動二線供應商（Dual Source）應變防線，調用備用料樣品進行極速可靠性點亮複審。</button>
+                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：產線開空窗！</strong><br>停工待料 5 天，數百名操作工閒置，時程嚴重偏離，遭到主管與客戶集體彈劾！')">方案 A：發出警告郵件，並在線體上死等日本原廠配方重調完畢。</button>
+                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：完美備援！</strong><br>果斷調用國內二線供應商的儲備樣品，帶領團隊進行 12 小時極速可靠性點亮驗證，成功頂替過關！')">方案 B：啟動二線供應商（Dual Source）應變防線，調用備用料樣品進行極速可靠性點亮複審。</button>
                                 </div>
                                 <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                             </div>
@@ -152,7 +159,7 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典</div>
+                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
                                 <div class="dict-btn-grid">
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【線平衡率 Line Balance】：評估流水線各工位工時平均配比度。低於 85% 代表存在嚴重瓶頸工位，會引發產線集體堆料、拉速垮台。')"><span>🔍 線平衡率指標</span><span>➔</span></button>
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【治具誤判率 False Alarm】：針床ICT與功能FCT治具誤判率必須鎖死在 1% 以下。過高會引發大量健康主板被送去重工拆解，摧毀直通率。')"><span>🔍 治具誤判率防線</span><span>➔</span></button>
@@ -171,7 +178,7 @@ window.codexCourseEngineData = [
                                 </div>
                                 <div class="edu-overview-card">
                                     <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">控制維修重工循環次數。嚴防曾經受手工高溫二度重工破壞的「健康機台」夾帶物理內傷流入凡間包裝。</div>
+                                    <div class="edu-card-body-text">控制維修重工循環次數。嚴防曾經受手工高溫二度重工破壞的健康機台夾帶物理內傷流入凡間包裝。</div>
                                 </div>
                                 <div class="edu-overview-card">
                                     <div class="edu-card-label">👁️ 團隊終極期待</div>
@@ -179,11 +186,11 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策沙盒</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 現場突發修羅場：PVT 結案審查時，工廠主管報告入庫良率高達 98.5%！但你翻查後台數據發現直通率（FPY）只有慘烈的 35%，此時你該如何決策？</div>
+                                <div class="edu-card-label">🎮 TPM 工程決策沙盒（學以致用模擬演練）</div>
+                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>PVT 結案審查時，工廠主管報告入庫良率高達 98.5%！但你翻查後台數據發現直通率（FPY）竟然只有慘烈的 35%，此時你該如何決策？</div>
                                 <div class="sandbox-choice-row">
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 模擬命運：客退海嘯爆發！選擇直接放行。結果流入市面後，因為大批經歷過手工二次高溫重工的手機內傷爆發，故障率集體炸裂！')">方案 A：良率既然過關，配合工廠主管如期開閘，准許出關大量生產（MP）。</button>
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 模擬命運：鐵血攔截成功！你死守剛性鐵律：『不斬良率，只斬直通率！』勒令製程 ME 團隊徹查線體，抓出治具公差偏移，將 FPY 拉回 85% 以上才放行。')">方案 B:: 一票否決、強行攔截！下令產線停線重調治具，將直通率拉回剛性指標。</button>
+                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：客退海嘯爆發！</strong><br>選擇直接放行。結果流入市面後，因為大批經歷過手工二次高溫重工的手機內傷爆發，故障率集體炸裂！')">方案 A：良率既然過關，配合工廠主管如期開閘，准許出關大量生產（MP）。</button>
+                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：鐵血攔截成功！</strong><br>你死守剛性鐵律：『不斬良率，只斬直通率！』勒令製程 ME 團隊徹查線體，抓出治具公差偏移，將 FPY 拉回 85% 以上才放行。')">方案 B：一票否決、強行攔截！下令產線停線重調治具，將直通率拉回剛性指標。</button>
                                 </div>
                                 <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                             </div>
@@ -197,9 +204,9 @@ window.codexCourseEngineData = [
             { q: "工廠最終入庫良率 99.2%，但大流水線直通率 (FPY) 只有 35%，這代表？", o: ["製程非常完美受控", "大批機器在線體被手工反覆拆解重工，帶有物理內傷，客退風險極高", "可以直接開閘放水大量生產"], a: 1 },
             { q: "何謂 PRD 規格防線審查？", o: ["代工廠操作工的排班表", "在開模前清查 CMF 是否具備工廠現有流水線的量產製程能力，剛性攔截不切實際規格", "採購部門採購現貨晶片的清單"], a: 1 },
             { q: "TPM 在客戶、零件廠商與代工製造廠三方賽局中的天職定位是？", o: ["研發端工程師的行政秘書", "工廠線體點膠站的操作工", "跨功能技術橋梁、風險決策權衡與技術決策仲裁者"], a: 2 },
-            { q: "為何 TPM 必須破除『便籤條』傳話筒習慣？", o: ["為了符合無紙化綠色環保法規", "發出的訊息、郵件通通必須經過『消化 ➔ 比對 ➔ 建議 ➔ 行動項目』的閉環處理才有管理價值", "因為高階主管不喜歡看短格式便籤"], a: 1 },
+            { q: "外出的訊息、郵件通通必須經過何種處理才有管理價值？", o: ["遵循無紙化綠色環保法規印出紙張", "經過『消化 ➔ 比對 ➔ 建議 ➔ 行動項目』的閉環處理", "直接抄送給所有高級專案總監"], a: 1 },
             { q: "當零件廠商通報核心晶片 Lead Time 突然暴增，TPM 最佳拆彈路徑是？", o: ["勒令工廠全面停線死等對方產能恢復", "坐在辦公室等主管下命令", "立即清查 Common Pool 資源並發動備援二線（Dual Source）極速可靠性認證防線"], a: 2 },
-            { q: "EMS 代工廠最核心的死守毛利與製造能力指標是？", o: ["BOM Cost 材料成本清單金額", "每小時產速 UPH 與直通率 FPY", "產品彩盒附件的外觀工業美感"], a: 1 },
+            { q: "禮品、電子代工廠（EMS）最核心的死守毛利與製造能力指標是？", o: ["BOM Cost 材料成本清單金額", "每小時產速 UPH 與直通率 FPY", "產品彩盒附件的外觀工業美感"], a: 1 },
             { q: "當治具的誤判率 (False Alarm) 過高時，會對工廠直通率造成何種連帶摧毀？", o: ["引發大量健康主板被誤判送去重工拆解，手工拆解汙染主板，直通率垮台", "提高產品在凡間實體市場的品牌溢價防線", "直接導致原件出廠的 Lead Time 縮短"], a: 0 },
             { q: "誰擁有發佈 2D/3D 工程開發圖紙與初代規格需求書的神聖至高權力？", o: ["代工智造廠 (EMS Factory)", "零件廠商 (Vendors)", "客戶研發端 (Brand R&D)"], a: 2 },
             { q: "大流水線各個工位工時不平均，線平衡率低於 85% 時，流水線會發生何種狀況？", o: ["產線拉速全線暴增", "存在嚴重的瓶頸工位，引發產線集體堆料（WIP）、拉速垮台", "產品的電路系統訊號完整性大幅提高"], a: 1 }
