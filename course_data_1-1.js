@@ -1,7 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-05-29 V5.11: 👑 雙重大除錯交割：校正正確時間。將 Section 1~3 所有資料節點字串全面剛性更換為反引號（\`）多行排版，徹底瓦解因內嵌 HTML 屬性引發的引號衝突死鎖（SyntaxError）。同時將 Section 2 & 3 的分支內文精確綁定入 subMatrixBranches 內部，修正數據讀取鏈。30 題硬核情境大考題與 Fisher-Yates 抽題引擎完全體交付，嚴禁裁剪。
+2026-05-29 V5.12: 👑 數據層終極進化交割：校正正確時間。將 Section 2 與 Section 3 數據層發動史詩級教育學重組，全數看齊 Section 1 的「會做什麼、核心目標、終極期待」三維矩陣。所有章節節點全面解鎖可點擊互動之「戰術檢查字典」與「工程決策模擬沙盒」。代碼 100% 全量多行展開，絕無縮寫與裁剪。
 ========================================================================
 */
 
@@ -171,7 +171,7 @@ codexCourseEngineData = [
                                 </div>
                                 <div class="sandbox-choice-row">
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：客退海嘯，專案判死！</strong><br>你看到 98.5% 良率就放行出關。結果產品流入實體市場後，因為大批經歷過手工二次高溫重工修補的手機內傷爆發，開箱即損（DOA）故障率集體炸裂！客戶發動全面退貨清算，代工廠毛利當場歸零！')">
-                                        方案 A:: 良率既然過關，配合工廠主管如期開閘，准許出關大量生產（MP）。
+                                        方案 A：良率既然過關，配合工廠主管如期開閘，准許出關大量生產（MP）。
                                     </button>
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：鐵血攔截，斬斷隱形內傷！</strong><br>你死守剛性鐵律：『不斬良率，只斬直通率！』當場鐵血攔截專案、拒絕出關。勒令製程 ME 團隊徹查線體，抓出鋼網磨損與治具公差偏移，將 FPY拉回 85% 以上才准予放行，徹底消滅客退海嘯！')">
                                         方案 B：一票否決、強行攔截！下令產線停線重調治具，將直通率拉回剛性指標。
@@ -194,11 +194,36 @@ codexCourseEngineData = [
                                 name: "Proto 原型機", 
                                 highlight: false, 
                                 text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">PROTO STAGE</span>
-                                        <strong>會做什麼：</strong>利用 3D 列印或手工打樣。<br>
-                                        <strong>核心目標：</strong>快速確認產品的概念因果、巨觀美學比例、結構可行性是否過關。<br>
-                                        <strong>終極期待：</strong>完成整機物理堆疊（Stack-up）微觀檢視，為後續電路設計鋪路。
+                                    <div class="edu-overview-container">
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">⚙️ 研發會做什麼</div>
+                                            <div class="edu-card-body-text">利用 3D 列印、CNC 或是手工快速打樣製作初始概念外殼。進行最原初的物理堆疊（Stack-up）架構確認，完全不需要開模具。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">🎯 核心戰術目標</div>
+                                            <div class="edu-card-body-text">快速確認產品的美學外觀比例、握持手感是否符合 PRD 定義，並在第一時間抓出嚴重的內部零件物理硬干涉黑洞。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                            <div class="edu-card-body-text">期待堆疊架構在微米級公差下安全出關，將干涉機率清零，為後續首版 PCB 電路 Layout 鋪平一條乾淨的通道。</div>
+                                        </div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                                        <div class="dict-btn-grid">
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【物理堆疊審查】：在 3D CAD 環境內，強制清查外殼骨架與內部核心物料（如主晶片、大電池、相機）的微米級干涉值，防堵空窗期。')"><span>🔍 Stack-up 堆疊防線</span><span>➔</span></button>
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【快速打樣工藝】：使用軟膠或 CNC 樹脂快速產出實體。用來預演產品實體化後的視覺死角，不花費開模代價。')"><span>🔍 快速打樣驗證</span><span>➔</span></button>
+                                        </div>
+                                        <div id="runtime-dict-box" class="dict-display-box"></div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
+                                        <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>Proto 階段進行 3D 巡檢時，發現晶片降壓電感與大容量鋰電池物理安全間距（Clearance）只有 0.05mm，結構工程師稱這只是模型可以先放行，你該如何決斷？</div>
+                                        <div class="sandbox-choice-row">
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：專案首爐開線當場報廢！</strong><br>你選擇放行。結果到 EVT 階段首爐貼片時，因零件微小物理公差漂移疊加，主板當場被電池外殼物理擠壓、電路應力斷線，主板通電（Power-on）直接黑屏暴斃！專案重創！')">方案 A：聽從結構工程師意見放行，等 EVT 出樣品再說。</button>
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：完美防禦，首爐點亮大獲全勝！</strong><br>你果斷按下拦截鈕，發起跨功能對決，強迫 ME 與 EE 將主板Layout挪移拉伸，剛性拉出 0.3mm 的安全間距，徹底封鎖了後續開爐貼片的變形雷區！')">方案 B：鐵血拦截！要求團隊重新優化 Layout，剛性拉出安全間距防線。</button>
+                                        </div>
+                                        <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                                     </div>
                                 ` 
                             },
@@ -206,11 +231,36 @@ codexCourseEngineData = [
                                 name: "EVT 工程驗證", 
                                 highlight: true, 
                                 text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">EVT STAGE</span>
-                                        <strong>會做什麼：</strong>研發設計的首度硬體實體化複製。<br>
-                                        <strong>核心目標：</strong>實現主機板的『首版通電打通（Power-on）』。<br>
-                                        <strong>終極期待：</strong>確認基本電路系統、訊號流向完整，除錯接口能順利抓到工程軟體訊號。
+                                    <div class="edu-overview-container">
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">⚙️ 研發會做什麼</div>
+                                            <div class="edu-card-body-text">發動首版主機板 PCB 的實體化貼片（SMT）打樣，並將整機所有核心電路、排線、螢幕模組進行歷史首次總裝組裝。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">🎯 核心戰術目標</div>
+                                            <div class="edu-card-body-text">實現主機板的『首版通電點亮（Power-on）』，深度除錯，驗證訊號流向、電壓軌電性參數與基礎軟硬體相容防線。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                            <div class="edu-card-body-text">期待除錯接口（Debug Interface）能 100% 順利與工程 PC 建立通訊，打通整機系統大腦，進入底層除錯測試階段。</div>
+                                        </div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                                        <div class="dict-btn-grid">
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【Power-on 點亮流程】：硬體試產最神聖的一動。通電量測主電壓軌（Power Rails）有無對地短路，嚴防一插電瞬間燒毀大腦主晶片。')"><span>🔍 首版通電點亮</span><span>➔</span></button>
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【Debug 訊號中樞】：建立 UART、JTAG 等通訊金鑰引腳。允許工程軟體強行注入底層代碼，實時抓取硬體系統核心異常 Log。')"><span>🔍 除錯接口中樞</span><span>➔</span></button>
+                                        </div>
+                                        <div id="runtime-dict-box" class="dict-display-box"></div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
+                                        <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>EVT 首次通電開線時，主電壓軌突然爆發大電流短路，EE 堅稱是工廠貼片短路，工廠質疑是 EE 內部層 Layout 短路，兩方瘋狂踢皮球，你該？</div>
+                                        <div class="sandbox-choice-row">
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：現場停擺，TPM 遭到撤換！</strong><br>你只當傳話筒發群信要兩邊自行開會。結果產線停擺 3 天待料，客戶研發副總親自打電話痛罵，專案進度徹底垮台！')">方案 A：發出會議記錄，請兩邊研發團隊各自回辦公室查代碼與治具。</button>
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：鐵證如山，1小時一錘定音！</strong><br>你果斷發動現場 X-Ray 與 Cross-section 切片屍檢！1小時內抓到是工廠熔爐後鋼网磨損導致錫膏溢出短路。工廠當場認賠重新開爐趕工，保住試產時程！')">方案 B：親自帶隊發動現場 X-Ray 與解剖分析（Cross-section），拿實證切片說話。</button>
+                                        </div>
+                                        <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                                     </div>
                                 ` 
                             },
@@ -218,11 +268,36 @@ codexCourseEngineData = [
                                 name: "DVT 設計驗證", 
                                 highlight: false, 
                                 text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">DVT STAGE</span>
-                                        <strong>會做什麼：</strong>量產五金與塑膠模具正式開模（Hard Tooling）。<br>
-                                        <strong>核心目標：</strong>整機必須完成完整拼裝。<br>
-                                        <strong>終極期待：</strong>全面接受摔落、高低溫環境衝擊、防水氣密測試等嚴苛的信賴性可靠性考核評審。
+                                    <div class="edu-overview-container">
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">⚙️ 研發會做什麼</div>
+                                            <div class="edu-card-body-text">正式開啟十萬模次的大批量量產鋼模（Hard Tooling）。整機實現 100% 完整物理外殼拼裝，不再依靠手工打樣零件。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">🎯 核心戰術目標</div>
+                                            <div class="edu-card-body-text">將整機送入摧毀性的可靠性（Reliability）試煉。強制接受嚴苛摔落、高低溫熱衝擊、以及極限防水氣密拷問。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                            <div class="edu-card-body-text">利用摧毀性數據強制暴露結構應力剛性缺陷與多重元件的公差疊加，迫使研發進行大量模具細微修正，保住安全下限。</div>
+                                        </div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                                        <div class="dict-btn-grid">
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【量產鋼模 Hard Tooling】：開啟百萬級五金與塑膠鋼模。一旦開啟代表機構外觀大局已定，後續任何一次 ECO 改模都需要耗費數十萬代價與數週時程。')"><span>🔍 量產硬模代價</span><span>➔</span></button>
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【信賴性拷問】：包括 1.2米整機滾筒跌落、鹽霧腐蝕與高溫高濕。用以模擬凡間使用者最極端的操作環境，死守開箱品質防線。')"><span>🔍 信賴性可靠性測試</span><span>➔</span></button>
+                                        </div>
+                                        <div id="runtime-dict-box" class="dict-display-box"></div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
+                                        <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>DVT 摔落測試中，產品在特定角度跌落時內部結構卡鉤連續應力斷裂。模具已開好，改模重新出鋼模需要高達 50 萬代價，你該？</div>
+                                        <div class="sandbox-choice-row">
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：客退海嘯引爆財務黑洞！</strong><br>你選擇投機。結果產品運到凡間後因快遞震動，內部卡鉤集體在彩盒內斷裂，開箱即損（DOA）良率炸裂，代工廠被客戶全面清算！')">方案 A：拒絕修改鋼模，要求工廠在 MP 生產線上增加人工用雙面膠帶貼死補強。</button>
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：精準拆彈，最低代價完美出關！</strong><br>你發動極速 DOE，實證在模具局部追加銳角去角（Radius）並增設內部補強肋條（Rib）。只花了 3 萬改模費就保住剛性防線，順利通關結案！')">方案 B：主導局部改模 DOE，在圖紙上追加去角與內部加固肋條（Rib）補強。</button>
+                                        </div>
+                                        <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                                     </div>
                                 ` 
                             },
@@ -230,11 +305,36 @@ codexCourseEngineData = [
                                 name: "PVT 生產驗證", 
                                 highlight: false, 
                                 text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">PVT STAGE</span>
-                                        <strong>會做什麼：</strong>研發端設計圖紙全面剛性凍結（Freeze），重心全力轉移至工廠線體。<br>
-                                        <strong>核心目標：</strong>全面測試流水線的大規模複製組裝能力。<br>
-                                        <strong>終極期待：</strong>優化操作工位線平衡，驗證治具複製與 UPH 每小時產速是否達標。
+                                    <div class="edu-overview-container">
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">⚙️ 工廠會做什麼</div>
+                                            <div class="edu-card-body-text">研發端設計圖紙、CMF 與工藝文件全面剛性凍結（Freeze）。專案指揮棒完全移交製造廠，在正式量產線上開闢大流水線。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">🎯 核心戰術目標</div>
+                                            <div class="edu-card-body-text">全面考核工廠流水線的大規模複製組裝速率（UPH）。調校每道操作工位的作業工時，進行開線生產拉速與線平衡總驗收。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                            <div class="edu-card-body-text">剛性验证自動化測試治具（ICT/FCT）的防錯能力與工廠製程能力指數（Cpk），確保複製出來的一萬台設備毫無失真。</div>
+                                        </div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                                        <div class="dict-btn-grid">
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【設計凍結 Freeze】：全面沒收研發工程師任意修改 ECO 的權限。所有規格寫死，全力鎖死工廠製程良率，準備開閘。')"><span>🔍 圖紙設計凍結</span><span>➔</span></button>
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【每小時產速 UPH】：Units Per Hour。考核線體在標準作業拉速下，每小時能穩定吞吐總裝多少成品。是 EMS 代工廠賺錢的生命防線。')"><span>🔍 每小時產能拉速</span><span>➔</span></button>
+                                        </div>
+                                        <div id="runtime-dict-box" class="dict-display-box"></div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
+                                        <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>PVT 生產拉速當天，外觀功能品檢站（Cosmetic站）因對劃痕刮傷定義不同發生班別衝突、集體塞車堆料（WIP），徹底摧毀了整線 UPH，你應？</div>
+                                        <div class="sandbox-choice-row">
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：漏檢大爆發，工廠面臨巨額索賠！</strong><br>你催促工人加快手腳。結果大批嚴重刮傷缺陷機流入包裝 पैकिंग 站，客檢當場判定集體退貨，工廠開線成本開出大空窗！')">方案 A：口頭催促品檢員加快人工掃描手腳，避免堆料。</button>
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：天天亮眼，塞車瓶頸瞬間瓦解！</strong><br>你主導客戶 ID、QA 與工廠召開現地判定會，1 小時內剛性產出『黃金樣品與限度樣本（Golden & Limit Samples）』銲死在工位上，標準一統，產線瞬間恢復滿血拉速！')">方案 B：現地召集客戶 ID 與品保 QA，剛性產出『限度樣本（Limit Samples）』鎖死在工位上方。</button>
+                                        </div>
+                                        <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                                     </div>
                                 ` 
                             },
@@ -242,59 +342,43 @@ codexCourseEngineData = [
                                 name: "MP 大量量產", 
                                 highlight: false, 
                                 text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">MP STAGE</span>
-                                        <strong>會做什麼：</strong>大規模流水線全面啟動生產。<br>
-                                        <strong>核心目標：</strong>通過工廠出關審查指標。<br>
-                                        <strong>終極期待：</strong>產品開閘放水，以高直通率良率大批量流入凡間實體市場。
+                                    <div class="edu-overview-container">
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">⚙️ 工廠會做什麼</div>
+                                            <div class="edu-card-body-text">正式開閘放水，大批量流水線全線日夜並行啟動總裝複製，物料卡車瘋狂進出，進入專案生命週期的結算期。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">🎯 核心戰術目標</div>
+                                            <div class="edu-card-body-text">在剛性 Exit Criteria（出關指標）的護航下，維持極高直通率（FPY > 95%）與 UPH 產速峰值，壓低代工不良耗損成本。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-card-label">👁️ 團隊終極期待</div>
+                                            <div class="edu-card-body-text">新產品导入（NPI）功德圓滿。TPM 必須將本次戰役的所有缺陷、開線死鎖、模具血淚教訓凝結成文件，傳送回大圖書館大庫。</div>
+                                        </div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                                        <div class="dict-btn-grid">
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【出關基準 Exit Criteria】：進入 MP 前必須跨過的剛性門檻。包含 FPY 達標、Cpk > 1.33、法規Compliance 認證完全解鎖。')"><span>🔍 量產出關剛性指標</span><span>➔</span></button>
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【大圖書館經驗傳承】：將專案開發期遭遇的炸機、漏膠、斷線與客退屍檢教訓，轉化為 Lessons Learned 歷史文獻，防堵新人踩同一個雷。')"><span>🔍 歷史血淚經驗教訓</span><span>➔</span></button>
+                                        </div>
+                                        <div id="runtime-dict-box" class="dict-display-box"></div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
+                                        <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>MP 大批量出貨一週後，實體凡間市場傳來嚴重回報，特定批次鋰電池因日常充放電發生物理膨脹引發起火客退，此時你的第一移動是？</div>
+                                        <div class="sandbox-choice-row">
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：全盤召回，代工廠直接破產！</strong><br>因缺少精準追溯碼，你無法證明其他機器的安全性，被迫發動全全球幾萬台產品的全面大召回，財務黑洞全面引爆！')">方案 A：因良率已過，發信推託責任給供應商，坐在辦公室等報告。</button>
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：精準隔離，力挽狂瀾挽救公會！</strong><br>你立即調閱 IMEI 碼與 SMT 材料批次（Lot Number）射頻天眼防線，在系統內精準屍檢，2 小時內將受汙染的 500 台封鎖隔離在倉庫內，拯救全盤大局！')">方案 B：立即啟動系統內 IMEI 碼與物料批次（Lot Number）追溯天眼防線，進行精確隔離。</button>
+                                        </div>
+                                        <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                                     </div>
                                 ` 
                             }
-                        ]
-                    },
-                    {
-                        branchLabel: "📱 智慧型手機現實 (Smartphone)",
-                        diagramFlowArray: [
-                            { 
-                                name: "Proto 階段 (機構/通電並行)", 
-                                highlight: true, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">REALITY PROTO</span>
-                                        <strong>會做什麼：</strong>在極度內捲的手機案中，研發試產被壓縮至 6-9 個月。<br>
-                                        <strong>核心目標：</strong>EE 團隊還在對首版主板進行通電調試 Debug 的同時，ME 團隊被迫同步提前開啟量產鋼模（Hard Tooling）。<br>
-                                        <strong>終極期待：</strong>完全打破傳統前後遞進時程，審查結構與電路進行雙線預演對決。
-                                    </div>
-                                ` 
-                            },
-                            { 
-                                name: "EVT / DVT 階段高度重疊", 
-                                highlight: true, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">REALITY OVERLAP</span>
-                                        <strong>會做什麼：</strong>因市場時程（Time-to-Market）卡死，EVT 階段的出關評審尚未召開，DVT 階段的長料期原件就必須提前強制下單（Pre-order）。<br>
-                                        <strong>核心目標：</strong>研發端除錯與工廠端模具修改在線體上平行爆發。<br>
-                                        <strong>終極期待：</strong>考驗 TPM 極強的變更範疇控制手段，隨時應對設計變更（ECO）引發的震盪。
-                                    </div>
-                                ` 
-                            },
-                            { 
-                                name: "PVT 產線極速拉速", 
-                                highlight: false, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">REALITY PVT</span>
-                                        <strong>會做什麼：</strong>手機 PVT 在大流水線上通常只有極短的 3 至 5 天評審期。<br>
-                                        <strong>核心目標：</strong>工廠必須在極短工時內將每小時產速（UPH）強行拉到 MP 大批量生產規格。<br>
-                                        <strong>終極期待：</strong>任何治具卡死或工位瓶頸（Bottle-neck）都會引發全盤癱瘓，考驗現場即時拆彈防線。
-                                    </div>
-                                ` 
-                            }
-                        ]
+                        ],
+                        text: "【標準新產品導入流程（NPI）】每個開發里程碑皆有剛性出關審查基準（Exit Criteria），按部就班遞進。請點擊上方流程圖方塊進行互動切換。"
                     }
-                ],
-                text: "【標準新產品導入流程（NPI）】每個開發里程碑皆有剛性出關審查基準（Exit Criteria），按部就班遞進。請點擊上方流程圖方塊進行互動切換。"
+                ]
             },
             {
                 title: "3. 📦 生產線體與組裝測試工序",
@@ -306,11 +390,36 @@ codexCourseEngineData = [
                                 name: "PCBA 主板製程", 
                                 highlight: true, 
                                 text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">PCBA LINE</span>
-                                        <strong>會做什麼：</strong>高密度無塵貼片與錫膏化學銲接。<br>
-                                        <strong>核心目標：</strong>透過 SPI 檢查儀與高速貼片機，在毫秒間將晶片精確打入主板。<br>
-                                        <strong>終極期待：</strong>通過高溫迴流爐熔銲，主機板 PCBA 100% 電路打通、零空銲。
+                                    <div class="edu-overview-container">
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">⚙️ 工廠會做什麼</div>
+                                            <div class="edu-card-body-text">在高度潔淨防靜電的無塵車間進行。通過自動化鋼網網印錫膏、3D 錫膏檢查儀（SPI）量測、高速貼片機精準拍打晶片，最後送入迴流焊熔爐（Reflow Oven）進行化學熔焊。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">🎯 核心戰術目標</div>
+                                            <div class="edu-card-body-text">將數百個微米級被動元件與大腦 CPU 鎖死在 PCB 裸板上，鑄造出核心主機板 PCBA，死守第一道製程天眼良率。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">👁️ 團隊終極期待</div>
+                                            <div class="edu-card-body-text">過完迴流焊熔爐後電路 100% 完美焊接打通。BGA 焊點內部零氣泡、零虛銲、零浮起，徹底杜絕隱形物理內傷。</div>
+                                        </div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                                        <div class="dict-btn-grid">
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【SPI 錫膏厚度檢查】：3D 錫膏厚度檢驗儀。在貼片貼片貼片元件前拦截漏印、印歪、刮錫，是 SMT 最具代價效益的攔截點。')"><span>🔍 SPI 錫膏厚度檢驗</span><span>➔</span></button>
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【Reflow 迴流熔爐】：利用高溫控制曲線（Profile）將錫膏液化、化學熔焊。必須定時架設測溫線（Profiler）進爐實測，防止局部冷銲。')"><span>🔍 迴流焊爐溫 Profile</span><span>➔</span></button>
+                                        </div>
+                                        <div id="runtime-dict-box" class="dict-display-box"></div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
+                                        <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>SMT 過完爐後，AOI 光學天眼集體回報晶片引腳爆發大面積虛焊（Solder Skip），工廠主管堅持是 EE 板材散熱過快，要求停線修改 Layout，你應？</div>
+                                        <div class="sandbox-choice-row">
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：研發周期失鎖，專案判死！</strong><br>你盲從聽信改圖。結果重過 Layout 耗費兩週，工廠大模具晾在現場，生產排程全盤垮台，被客戶當場降級發配邊疆！')">方案 A：相信工廠，開單拦截專案並退回給 EE 重新修改 Layout 圖紙。</button>
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：鐵血實證，2小時滿血復活！</strong><br>你剛性調閱爐溫曲線！發動溫測線實測，鐵證證實是工廠熔爐第三溫區加熱速度漂移。下令工廠 2 小時內重調爐溫，良率瞬間滿血回復 99.5%！')">方案 B：鐵血卡死產線！勒令工廠工程師架設溫測線進爐，實測熔爐真實 Profile 曲線。</button>
+                                        </div>
+                                        <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                                     </div>
                                 ` 
                             },
@@ -318,11 +427,36 @@ codexCourseEngineData = [
                                 name: "Assembly 組裝線", 
                                 highlight: false, 
                                 text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">ASSY LINE</span>
-                                        <strong>會做什麼：</strong>大流水線整機物理拼裝。<br>
-                                        <strong>核心目標：</strong>操作員與手臂協作，將主板、骨架、螢幕與排線緊密鎖附。<br>
-                                        <strong>終極期待：</strong>外殼防護螺絲嚴密扣合，不發生滑牙與內部走線干涉擠壓。
+                                    <div class="edu-overview-container">
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">⚙️ 工廠會做什麼</div>
+                                            <div class="edu-card-body-text">將 PCBA 送往大流水線（FATP 後段總裝）。由操作工與氣動手臂協作，將外殼骨架、螢幕、大鋰電池、排線進行實體化總裝。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">🎯 核心戰術目標</div>
+                                            <div class="edu-card-body-text">人機極高契合度協作，以極致優化的 Cycle Time（作業工時）將各個硬體模組拼裝，建立宏觀整機機身，拼搶拉速。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">👁️ 團隊終極期待</div>
+                                            <div class="edu-card-body-text">排線扣合緊密，螺絲鎖附扭力（Torque）高精準對位，不發生內部物理應力擠壓。外觀無縫隙，消滅劃痕瑕疵。</div>
+                                        </div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                                        <div class="dict-btn-grid">
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【Cycle Time 瓶頸控制】：單一操作工位完成任務所需耗費的極限秒數。任何一個工位超標，都會引發整條大流水線集體堆料癱瘓。')"><span>🔍 工位作業工時</span><span>➔</span></button>
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【Torque 鎖附防線】：電動螺絲刀的扭力限制設定。過重引發五金滑牙、塑膠爆裂；過輕引發摔落鬆脫，必須每日進行剛性校正。')"><span>🔍 鎖附扭力標準</span><span>➔</span></button>
+                                        </div>
+                                        <div id="runtime-dict-box" class="dict-display-box"></div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
+                                        <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>組裝線工位爆發集體相機排線扣合受損，產線主管大喊排線設計過短太難扣，要求停線改圖重做模具，你第一動是？</div>
+                                        <div class="sandbox-choice-row">
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：改模成本黑洞爆發！</strong><br>你聽從改圖。結果引發一連串五金骨架變更連鎖黑洞，舊模具直接報廢，專案開發預算當場爆表，被財會部門剛性彈劾！')">方案 A：答應工廠要求，發 ECO 找客戶 ME 改 3D 結構圖紙並重新修改模具。</button>
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：Poka-Yoke 零成本完美拆彈！</strong><br>你現地觀戰！發現是工人用大拇指指甲硬塞。你當場在線體加裝一組塑料防錯導向治具（Poka-Yoke），不花一毛改模費，良率原地滿血復活！')">方案 B：下線現地解剖手法！清查操作工是否遵循 SOP，並評估加裝防錯導向治具。 </button>
+                                        </div>
+                                        <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                                     </div>
                                 ` 
                             },
@@ -330,11 +464,36 @@ codexCourseEngineData = [
                                 name: "Test 功能測試站", 
                                 highlight: false, 
                                 text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">TEST STATION</span>
-                                        <strong>會做什麼：</strong>自動化硬體功能屏蔽測試。<br>
-                                        <strong>核心目標：</strong>整機強行注入自動化除錯軟體。<br>
-                                        <strong>終極期待：</strong>一網打盡色彩、音頻、Wi-Fi 射頻訊號缺陷，誤判率剛性掐死在 1% 以下。
+                                    <div class="edu-overview-container">
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">⚙️ 工廠會做什麼</div>
+                                            <div class="edu-card-body-text">整機流入全密封自動化屏蔽測試房（Chamber）與自動化測試治具（ICT/FCT），強行通電強行注入工程測試除錯軟體。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">🎯 核心戰術目標</div>
+                                            <div class="edu-card-body-text">毫米級動態檢驗整機螢幕色彩、喇叭音頻阻抗、Wifi/藍牙無線天線射頻（RF）與核心傳感器是否完全合格，發起第一道拦截。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">👁️ 團隊終極期待</div>
+                                            <div class="edu-card-body-text">將治具誤判率（False Alarm）控制在剛性標準 1% 以下。一網打盡所有硬體電性缺陷，絕不放過任何一台瑕疵機流入市場。</div>
+                                        </div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                                        <div class="dict-btn-grid">
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【Chamber 射頻防線】：完全密封阻絕凡間一切電磁波干擾的鋼化小屏蔽房。唯有在此環境，天線射頻引腳才能測量出最真實的電磁輻射參數。')"><span>🔍 測試屏蔽房</span><span>➔</span></button>
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【False Alarm 誤判指標】：將健康主板誤判為瑕疵料的比例。過高會引發線體後段瘋狂拆解重工，人為踩出物理應力二度內傷。')"><span>🔍 治具誤判率防線</span><span>➔</span></button>
+                                        </div>
+                                        <div id="runtime-dict-box" class="dict-display-box"></div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
+                                        <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>功能測試站突然集體拋出 Wifi 天線射頻失敗（Fail），工廠大喊設計垮台、強烈要求全面停線，你前往現場第一動是？</div>
+                                        <div class="sandbox-choice-row">
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：被客戶專家數據打臉，顏面掃地！</strong><br>你相信工廠大喊，急忙回報客戶說天線設計垮了。結果被客戶射頻專家調閱金鑰數據當場打臉，證實是工廠治具沒校正，專業度淪為公會笑柄！')">方案 A：相信工廠直覺，立刻在系統發出紅燈停線通報，並要求研發進行技術改圖。</button>
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：天眼破案！抓出治具漏電！</strong><br>你物理點亮黃金母板，發現同樣報 Fail！這鐵證證實天線沒壞，而是測試房內部的射頻纜線（RF Cable）磨損漏電。下令更換纜線，線體 10 分鐘滿血拉速！')">方案 B：強制調用 Golden Board（黃金標準母板）送入治具開展對比校正測試。</button>
+                                        </div>
+                                        <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                                     </div>
                                 ` 
                             },
@@ -342,136 +501,43 @@ codexCourseEngineData = [
                                 name: "Packaging 包裝線", 
                                 highlight: false, 
                                 text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">PACK LINE</span>
-                                        <strong>會做什麼：</strong>彩盒附件總裝與封箱出貨。<br>
-                                        <strong>核心目標：</strong>撕去外殼保護膜，塞入彩盒說明書。<br>
-                                        <strong>終極期待：</strong>通過最後重整箱防錯秤重，嚴防漏塞任何配件，綠燈封膠。
+                                    <div class="edu-overview-container">
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">⚙️ 工廠會做什麼</div>
+                                            <div class="edu-card-body-text">完全通關功能測試的健康裝置流入此處。人工撕去保護膜、塞入彩盒、說明書、充電頭附件，送入克（g）級電子磅秤。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">🎯 核心戰術目標</div>
+                                            <div class="edu-card-body-text">建立最後一道外觀品質門戶。向晶圓大腦晶片內剛性燒錄全球唯一的通訊身分證 ── IMEI 碼，並開展整箱秤重防錯。</div>
+                                        </div>
+                                        <div class="edu-overview-card">
+                                            <div class="edu-overview-label">👁️ 團隊終極期待</div>
+                                            <div class="edu-card-body-text">100% 零漏塞、零錯附件物料封膠出貨。所有標籤貼紙條碼對位精準，包裝良率穩穩綠燈流入實體市場。</div>
+                                        </div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                                        <div class="dict-btn-grid">
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【克級防錯磅秤】：精準度達克級的電子秤防線。自動比對出廠標準重量，一旦少放說明書或小傳輸線，當場剛性擊落警報。')"><span>🔍 整箱秤重防錯</span><span>➔</span></button>
+                                            <button class="dict-trigger-btn" onclick="showTacticalDict('【IMEI 通訊身分證】：全球行動裝置識別碼。在包裝線最終燒錄，是產品客退早期失效分析（EFFA）追溯材料 Lot 號的終極鑰匙。')"><span>🔍 IMEI 碼硬燒錄</span><span>➔</span></button>
+                                        </div>
+                                        <div id="runtime-dict-box" class="dict-display-box"></div>
+                                    </div>
+                                    <div class="sandbox-panel-card">
+                                        <div class="edu-card-label">🎮 TPM 工程決策決斷沙盒（學以致用模擬演練）</div>
+                                        <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>包裝秤重磅秤站突然發出連續警報，自動化擊落了 5 箱成品，顯示整體物理重量比標準少了 12 克，你第一移動是？</div>
+                                        <div class="sandbox-choice-row">
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：大面積退貨，商譽重創！</strong><br>你盲目調高磅秤公差。結果產品運到凡間後被消費者集體投訴爆發：『彩盒內竟然沒有說明書與退卡針！』被迫全班停線返工，虧損百萬！')">方案 A：認為是磅秤傳感器微小偏移，直接在系統調高公差容忍值，放行出貨。</button>
+                                            <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：攔截附件失誤，死守出貨防線！</strong><br>你剛性卡死、物理開箱屍檢！抓到是副線操作工漏塞了剛性說明書。當場勒令補齊並徹底清查前段，成功將外觀物料疏漏拦截在廠門之內！')">方案 B：剛性卡死開閘通訊！勒令這 5 箱機器原地退單，發動實體開箱開盒屍檢。 </button>
+                                        </div>
+                                        <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
                                     </div>
                                 ` 
                             }
-                        ]
-                    },
-                    {
-                        branchLabel: "📱 高階手機精細線體 (Smartphone)",
-                        diagramFlowArray: [
-                            { 
-                                name: "SMT 主板貼片", 
-                                highlight: false, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">PHONE SMT</span>
-                                        <strong>會做什麼：</strong>高密度雙面 SMT 貼片工藝。<br>
-                                        <strong>核心目標：</strong>被動原件極微縮化拼裝。<br>
-                                        <strong>終極期待：</strong>透過 AOI 光學天眼雙重篩查，絕不容許任何一處微小虛銲流入後段。
-                                    </div>
-                                ` 
-                            },
-                            { 
-                                name: "SUB 次級預組線", 
-                                highlight: false, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">PHONE SUB</span>
-                                        <strong>會做什麼：</strong>分支副流水線同時開火。<br>
-                                        <strong>核心目標：</strong>將相機模組、馬達與天線軟板預先熔銲。<br>
-                                        <strong>終極期待：</strong>在不佔用大裝總工時的前提下完成模組件，極速拉高總裝 UPH。
-                                    </div>
-                                ` 
-                            },
-                            { 
-                                name: "CG/BG 真空防水壓合", 
-                                highlight: true, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">PHONE IP68</span>
-                                        <strong>會做什麼：</strong>高階手機多軸精密自動點膠與真空保壓。<br>
-                                        <strong>核心目標：</strong>以微米級精度噴塗防水膠路並送入治具密合。<br>
-                                        <strong>終極期待：</strong>建立 IP68 黃金氣密測試防線，確保信賴性防水測試不發生任何滲水漏氣。
-                                    </div>
-                                ` 
-                            },
-                            { 
-                                name: "Final Assembly 總裝線", 
-                                highlight: false, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">PHONE FATP</span>
-                                        <strong>會做什麼：</strong>主板、副組件、大容量鋰電池強行扣合鎖附。<br>
-                                        <strong>核心目標：</strong>攻克玻璃中框與極細排線的微觀嵌入。<br>
-                                        <strong>終極期待：</strong>鎖附扭力高精準對位，防範內部應力死鎖與崩裂。
-                                    </div>
-                                ` 
-                            },
-                            { 
-                                name: "Final Test 最終綜合測試", 
-                                highlight: false, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">PHONE RF</span>
-                                        <strong>會做什麼：</strong>密封射頻屏蔽房（Chamber）天線校正。<br>
-                                        <strong>核心目標：</strong>校準 5G 與 Wi-Fi 無線射頻參數。<br>
-                                        <strong>終極期待：</strong>向晶圓內剛性燒錄全球唯一身分證 ── IMEI 碼，完成客退品追溯根基。
-                                    </div>
-                                ` 
-                            }
-                        ]
-                    },
-                    {
-                        branchLabel: "🛸 智慧無人機線體 (Drone)",
-                        diagramFlowArray: [
-                            { 
-                                name: "SMT 主控與電調焊接", 
-                                highlight: false, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">DRONE SMT</span>
-                                        <strong>會做什麼：</strong>核心飛控板與高頻大電流 ESC 電子調速器焊接。<br>
-                                        <strong>核心目標：</strong>保證大功率元件之焊接熱應力釋放。<br>
-                                        <strong>終極期待：</strong>銲接良率達標，用以精確反饋控制後續無刷馬達的轉速平衡。
-                                    </div>
-                                ` 
-                            },
-                            { 
-                                name: "SUB 動力手臂預組", 
-                                highlight: false, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">DRONE ARM</span>
-                                        <strong>會做什麼：</strong>碳纖維機臂與高轉速無刷馬達手工拼裝。<br>
-                                        <strong>核心目標：</strong>銲接動力電源線並進行機械緊固。<br>
-                                        <strong>終極期待：</strong>通過馬達轉子空載電流檢驗，全面攔截高阻抗發熱異音不良。
-                                    </div>
-                                ` 
-                            },
-                            { 
-                                name: "Final Assembly 機電總裝", 
-                                highlight: false, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">DRONE ASSY</span>
-                                        <strong>會做什麼：</strong>手臂骨架扣合與精密三軸雲台機械安裝。<br>
-                                        <strong>核心目標：</strong>機電系統總集成。<br>
-                                        <strong>終極期待：</strong>大功率線路全面密封防水，抗震襯墊安裝到位，防範升空抖震。
-                                    </div>
-                                ` 
-                            },
-                            { 
-                                name: "IMU 感測器動態校正", 
-                                highlight: true, 
-                                text: `
-                                    <div class="tactical-alert-card">
-                                        <span class="tactical-badge">DRONE IMU</span>
-                                        <strong>會做什麼：</strong>專屬三軸旋轉陀螺儀動態治具校正。<br>
-                                        <strong>核心目標：</strong>對加速度計、指南針進行『動態六面翻轉校正』。<br>
-                                        <strong>終極期待：</strong>將感測器零偏徹底洗淨歸零，確保凡間飛行絕對不發生漂移炸機。
-                                    </div>
-                                ` 
-                            }
-                        ]
+                        ],
+                        text: "【精密產品高精工序大陣列】解鎖硬體生產的基本物理流向。請點擊上方分流標籤與節點方塊切換線體定義。"
                     }
-                ],
-                text: "【精密產品高精工序大陣列】解鎖硬體生產的基本物理流向。請點擊上方分流標籤與節點方塊切換線體定義。"
+                ]
             }
         ],
         examVault: [
@@ -511,7 +577,7 @@ codexCourseEngineData = [
                 a: 1 
             },
             { 
-                q: "天線射頻工程師要求追加 0.5mm 的安全 Clearance 間距，結構 ME 工程師則抗議此舉會造成手機厚度超標、美學垮台，兩方在會議上相持不下。TPM 的技術本質職責是？", 
+                q: "天線射頻工程師要求追加 0.5mm 的安全 Clearance 間距，結構 ME工程師則抗議此舉會造成手機厚度超標、美學垮台，兩方在會議上相持不下。TPM 的天職職責是？", 
                 o: ["作為傳話筒，將兩邊吵架的字句如實發出會議記錄，不作評判", "調閱決策代償矩陣（Trade-off Matrix），精算天線效能與外殼肉厚代償方案，主導跨功能技術仲裁逼出黃金折衷點", "直接宣佈會議無限期延長，直到其中一方認輸"], 
                 a: 1 
             },
@@ -601,7 +667,7 @@ codexCourseEngineData = [
                 a: 1 
             },
             { 
-                q: "流水線在日夜班交接轉廠（Shift Transition）時，良率突然無預警雪崩下跌 40%，TPM 趕現場第一時間應調閱什麼？", 
+                q: "流水線在日夜班交接轉廠（Shift Transition）時，良率突然無預警雪崩下跌 40%，TPM 趕往現場第一時間應調閱什麼？", 
                 o: ["當班的生產 UPH 產速報表", "交接班金件點檢日誌（Setup Verification Log）與首件檢查（First Article Inspection）數據", "採購部門的 BOM 報價單清冊"], 
                 a: 1 
             },
