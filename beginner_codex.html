@@ -127,7 +127,6 @@
             overflow: hidden;
         }
 
-        /* 側邊欄預設隱藏，路由接入才開閘 */
         .sidebar-panel {
             display: none;
             width: 340px;
@@ -180,7 +179,7 @@
             color: white !important;
         }
 
-        /* 大廳選單 */
+        /* 大廳目錄首頁預設直接點亮 */
         .dashboard-view-hall {
             display: block;
             width: 100%;
@@ -557,11 +556,11 @@
         }
     </style>
 </head>
-<body style="display: flex; flex-direction: column; height: 100vw; height: 100vh; overflow: hidden;">
+<body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.9</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.10</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -825,21 +824,26 @@
                 document.getElementById('current-chapter-id').innerText = `SECTION ${pIdx + 1} / ${course.subPages.length}`;
                 document.getElementById('current-chapter-name').innerText = page.title;
 
-                const subNavWrapper = document.getElementById('cdx-sub-nav-bar');
+                // 👑 修正鎖定線：精確對齊 HTML 內宣告的 'cdx-sub-nav-wrapper' 節點，拔除 null 指標 👑
+                const subNavWrapper = document.getElementById('cdx-sub-nav-wrapper');
                 let targetedText = page.text;
                 let targetedFlow = page.diagramFlowArray;
 
                 if (page.subMatrixBranches) {
-                    subNavWrapper.style.display = 'flex';
-                    subNavWrapper.innerHTML = '';
-                    page.subMatrixBranches.forEach((branch, bIdx) => {
-                        const activeBranchClass = bIdx === activeSubMatrixIdx ? 'active' : '';
-                        subNavWrapper.innerHTML += `<button class="sub-nav-btn ${activeBranchClass}" onclick="switchSubMatrixBranch(${bIdx})">${branch.branchLabel}</button>`;
-                    });
+                    if (subNavWrapper) {
+                        subNavWrapper.style.display = 'flex';
+                        subNavWrapper.innerHTML = '';
+                        page.subMatrixBranches.forEach((branch, bIdx) => {
+                            const activeBranchClass = bIdx === activeSubMatrixIdx ? 'active' : '';
+                            subNavWrapper.innerHTML += `<button class="sub-nav-btn ${activeBranchClass}" onclick="switchSubMatrixBranch(${bIdx})">${branch.branchLabel}</button>`;
+                        });
+                    }
                     targetedText = page.subMatrixBranches[activeSubMatrixIdx].text;
                     targetedFlow = page.subMatrixBranches[activeSubMatrixIdx].diagramFlowArray;
                 } else {
-                    subNavWrapper.style.display = 'none';
+                    if (subNavWrapper) {
+                        subNavWrapper.style.display = 'none';
+                    }
                     activeSubMatrixIdx = 0;
                 }
 
