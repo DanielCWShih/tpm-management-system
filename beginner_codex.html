@@ -1,10 +1,3 @@
-<!-- 
-========================================================================
-REVISION HISTORY / VERSION LOG
-========================================================================
-2026-05-29 V6.0: 👑 戰術大廳看板與微學習架構完全體：更正最新時間。沒收所有冗贅大廳卡片，升級為高階數據可視化「進度整備盤（Executive Dashboard）」。全自動掃描註冊表動態結算 LEVEL 1 總完成百分比與 (完成數/單元數)。隨機大考場剛性變更為「10 題庫隨機抽 3 題（Slice 0,3）」閃擊模式。全域鎖死剛性黑色粗線條美學，代碼 100% 完整全量展開交付。
-========================================================================
--->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -24,6 +17,7 @@ REVISION HISTORY / VERSION LOG
             --color-completed: #22C55E;
             --color-active-gold: #FDE047;
             --color-fail: #DC2626;
+            --color-locked-gray: #E2E8F0;
         }
 
         html, body {
@@ -201,18 +195,17 @@ REVISION HISTORY / VERSION LOG
             box-shadow: 1px 1px 0px var(--border-heavy) !important;
         }
 
-        /* 右側內容面板 */
+        /* 右側主內容面板 */
         .content-panel {
             flex: 1;
             height: 100%;
             padding: 35px 40px;
-            overflow: hidden;
             background-color: var(--card-white);
             display: flex;
             flex-direction: column;
+            overflow: visible; 
         }
 
-        /* 剛性顯影互鎖：容器預設底層全部鎖死隱藏 */
         .dashboard-view-hall,
         .document-canvas,
         .exam-session-box,
@@ -221,51 +214,76 @@ REVISION HISTORY / VERSION LOG
             width: 100%;
         }
 
-        /* 👑 新版戰略 Dashboard 看板佈局 👑 */
+        /* 大廳安全艙帶緩衝，防止 Hover 線條切邊 */
         .dashboard-view-hall {
             height: 100%;
             overflow-y: auto;
+            padding: 10px 12px 30px 12px; 
+        }
+
+        /* 水平滑動七級整備卡槽 */
+        .level-cards-flex-row {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .progress-card-master {
             background: var(--card-white);
-            border: 4px solid var(--border-heavy);
-            border-radius: 15px;
-            padding: 40px;
+            border: 3px solid var(--border-heavy);
+            border-radius: 12px;
+            padding: 20px 24px;
             box-shadow: var(--shadow-tactical);
-            max-width: 650px;
-            margin-bottom: 35px;
+            min-width: 240px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .progress-card-master:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 7px 7px 0px var(--border-heavy);
+        }
+
+        .progress-card-master.active-level {
+            background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important;
+            border-color: var(--border-heavy) !important;
+            border-width: 4px !important;
+            box-shadow: 6px 6px 0px var(--border-heavy) !important;
         }
 
         .progress-label {
             font-family: monospace;
             font-weight: 900;
-            font-size: 1.15rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .progress-percentage {
-            font-size: 5.5rem;
+            font-size: 2.8rem;
             font-weight: 900;
-            margin: 15px 0;
+            margin: 6px 0;
             color: var(--text-main);
             line-height: 1;
         }
 
         .progress-stats {
-            font-size: 1.2rem;
+            font-size: 0.85rem;
             font-weight: 800;
             color: var(--text-main);
         }
 
         .progress-bar-bg {
             width: 100%;
-            height: 26px;
+            height: 14px;
             background: #E2E8F0;
-            border: 3px solid var(--border-heavy);
-            border-radius: 13px;
-            margin-top: 25px;
+            border: 2px solid var(--border-heavy);
+            border-radius: 7px;
+            margin-top: 10px;
             overflow: hidden;
         }
 
@@ -273,28 +291,29 @@ REVISION HISTORY / VERSION LOG
             height: 100%;
             background: var(--color-completed);
             width: 0%;
-            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: width 0.4s ease-out;
         }
 
+        /* 下層子單元網格防線 */
         .cdx-dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px;
             width: 100%;
-            padding-top: 10px;
+            padding: 8px 4px; 
         }
 
         .cdx-dashboard-card {
             border: 3px solid var(--border-heavy);
             border-radius: var(--radius-sm);
-            padding: 25px 22px;
+            padding: 22px 20px;
             cursor: pointer;
             box-shadow: var(--shadow-tactical);
             transition: all 0.15s;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 140px;
+            min-height: 130px;
         }
 
         .cdx-dashboard-card:hover {
@@ -345,42 +364,6 @@ REVISION HISTORY / VERSION LOG
             width: 100%;
         }
 
-        /* 互動型卡牌結構組件 */
-        .edu-overview-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .edu-overview-card {
-            background: #FFFFFF;
-            border: 2px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            box-shadow: 3px 3px 0px var(--border-heavy);
-        }
-
-        .edu-card-label {
-            font-size: 0.8rem;
-            font-weight: 900;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            border-bottom: 1px dashed var(--border-heavy);
-            padding-bottom: 4px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .edu-card-body-text {
-            font-size: 0.9rem;
-            font-weight: 700;
-            line-height: 1.5;
-            color: var(--text-main);
-        }
-
         /* 流程圖大畫布 */
         .dynamic-flow-canvas {
             display: flex;
@@ -392,7 +375,6 @@ REVISION HISTORY / VERSION LOG
             padding: 20px;
             border-radius: var(--radius-sm);
             margin: 15px 0;
-            width: 100%;
             overflow-x: auto;
             flex-shrink: 0;
         }
@@ -426,7 +408,7 @@ REVISION HISTORY / VERSION LOG
             user-select: none;
         }
 
-        /* 10 抽 3 閃擊戰大考場 */
+        /* 10 抽 3 考場 */
         .exam-session-box {
             flex-direction: column;
         }
@@ -466,7 +448,7 @@ REVISION HISTORY / VERSION LOG
             background: var(--sidebar-cream);
         }
 
-        /* 底部頁碼導航點點 */
+        /* 底部導航點點 */
         .sub-pagination-dots-zone {
             display: flex;
             justify-content: center;
@@ -511,10 +493,9 @@ REVISION HISTORY / VERSION LOG
 </head>
 <body>
 
-    <!-- 頂部控制導航列 -->
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">SYS.BEGINNER_CODEX V6.0</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">SYS.BEGINNER_CODEX V6.3</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -523,51 +504,40 @@ REVISION HISTORY / VERSION LOG
         </div>
     </div>
 
-    <!-- 工作主框架 -->
     <div class="workspace-container">
         
-        <!-- 左側常駐摺疊天賦樹導航列 -->
         <aside class="sidebar-panel">
             <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
             <div id="global-tree-root"></div>
         </aside>
 
-        <!-- 右側動態內容主畫布 -->
         <main class="content-panel">
             
-            <!-- 單元動態主標頭 -->
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
                 <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
                 <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">公會戰術天賦大廳</h2>
             </div>
 
-            <!-- 👑 數據化進度整備盤大廳 👑 -->
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
-                <div class="progress-card-master">
-                    <div class="progress-label">CORE COMPETENCY: LEVEL 1</div>
-                    <div class="progress-percentage" id="main-progress-pct">0%</div>
-                    <div class="progress-stats" id="main-progress-stats">完成子單元: 0 / 0</div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" id="main-progress-fill"></div>
-                    </div>
+                <div class="level-cards-flex-row" id="global-level-flex-deck"></div>
+                <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
+                <div style="font-weight: 900; font-size: 1.2rem; margin-bottom: 15px; color: var(--text-main);">
+                    🌿 <span id="dynamic-list-title-label">Level 1</span> 子單元大捷攻堅列表：
                 </div>
-                <div style="font-weight: 900; font-size: 1.15rem; margin-bottom: 15px; color: var(--text-main);">🌿 Level 1 子單元研修列表：</div>
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
 
-            <!-- 教材內容閱讀畫布 -->
             <div class="document-canvas" id="textbook-viewport">
-                <div class="cdx-sub-nav-bar" id="cdx-sub-nav-wrapper" style="display:none;"></div>
+                <div class="cdx-sub-nav-bar" id="cdx-sub-nav-wrapper"></div>
                 <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.15rem; margin: 0 0 15px 0;">⚡ 實戰知識核心 (Core Knowledge Base)</h3>
                 <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
                 <div class="textbook-scroll-box" id="lesson-content"></div>
             </div>
 
-            <!-- 10 抽 3 閃擊戰大考場 -->
             <div class="exam-session-box" id="exam-viewport">
                 <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
                     <span style="color:var(--color-fail);">🔥 10 抽 3 隨機閃擊戰 (Exam Mode)</span>
-                    <span id="exam-counter" style="color:var(--text-secondary);">1 / 3</span>
+                    <span id="exam-counter">1 / 3</span>
                 </div>
                 <div class="exam-progress-bar">
                     <div class="exam-progress-fill" id="exam-progress"></div>
@@ -576,22 +546,42 @@ REVISION HISTORY / VERSION LOG
                 <div id="exam-options-container"></div>
             </div>
 
-            <!-- 底部控制點點列 -->
             <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
             
         </main>
     </div>
 
     <script>
-        // 全域去中心化子單元配置註冊表
         const globalSubUnitRegistry = [
-            { type: 'codex', subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
-            { type: 'codex', subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'course_data_1-2.js' },
-            { type: 'codex', subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'course_data_1-3.js' }
+            { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
+            { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'course_data_1-2.js' },
+            { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'course_data_1-3.js' }
         ];
 
+        const globalLevelMetadata = [
+            { num: 1, key: 'l1', name: 'LEVEL 1', label: '🌿 基礎通識領域' },
+            { num: 2, key: 'l2', name: 'LEVEL 2', label: '🌊 進階跨功能技術' },
+            { num: 3, key: 'l3', name: 'LEVEL 3', label: '🔮 高階 TPM 專科' },
+            { num: 4, key: 'l4', name: 'LEVEL 4', label: '⏳ 日常速通地下城' },
+            { num: 5, key: 'l5', name: 'LEVEL 5', label: '🌐 供應鏈擴展 DLC' },
+            { num: 6, key: 'l6', name: 'LEVEL 6', label: '🔒 未知研修領域' },
+            { num: 7, key: 'l7', name: 'LEVEL 7', label: '🔒 神聖核心終局' }
+        ];
+
+        let selectedActiveLevelNum = 1; 
         let activeCourseIdx = 0, activePageIdx = 0, activeSubMatrixIdx = 0, activeFlowNodeIdx = 0;
         let examActive = false, examCurrentQ = 0, examScoreCount = 0;
+
+        // 👑 剛性復原：重新激活特工字典顯影與沙盒決策大腦 👑
+        window.showTacticalDict = function(textPayload) {
+            const box = document.getElementById('runtime-dict-box');
+            if (box) { box.style.display = 'block'; box.innerHTML = `💡 <strong>公會特工字典反饋：</strong><br>${textPayload}`; }
+        };
+
+        window.triggerSimDecision = function(isSuccess, feedbackText) {
+            const box = document.getElementById('runtime-sandbox-fallout');
+            if (box) { box.style.display = 'block'; box.className = isSuccess ? 'sandbox-fallout-box success' : 'sandbox-fallout-box fail'; box.innerHTML = feedbackText; }
+        };
 
         window.onload = () => {
             window.codexCourseEngineData = [];
@@ -603,10 +593,10 @@ REVISION HISTORY / VERSION LOG
             const root = document.getElementById('global-tree-root');
             root.innerHTML = `
                 <div class="menu-category-block">
-                    <button class="tree-main-toggle">🗺️ Level 1 基礎通識</button>
+                    <button class="tree-main-toggle">🗺️ 初心者寶典星盤</button>
                     <div class="tree-sub-group">
                         ${globalSubUnitRegistry.map(u => `
-                            <button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}')">${u.title}</button>
+                            <button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>
                         `).join('')}
                     </div>
                 </div>
@@ -619,7 +609,6 @@ REVISION HISTORY / VERSION LOG
             const paramType = directType || urlParams.get('type') || 'codex';
 
             if (!paramC) {
-                // 點亮看板模式
                 document.getElementById('cdx-page-header-zone').style.display = 'block';
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD";
                 document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
@@ -630,9 +619,8 @@ REVISION HISTORY / VERSION LOG
                 document.getElementById('universal-dots-bar').style.display = 'none';
 
                 document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active'));
-                renderExecutiveDashboard();
+                renderMultiLevelHubDashboard();
             } else {
-                // 點亮教材大畫布模式
                 document.getElementById('dashboard-menu-hall').style.display = 'none';
                 const subUnitKey = `lf-${paramType}-${paramC}`;
                 document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active'));
@@ -643,75 +631,70 @@ REVISION HISTORY / VERSION LOG
             }
         }
 
-        function renderExecutiveDashboard() {
+        function renderMultiLevelHubDashboard() {
+            const deckRow = document.getElementById('global-level-flex-deck');
             const grid = document.getElementById('l1-cards-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
+            if (!deckRow || !grid) return;
 
-            let totalUnits = globalSubUnitRegistry.length;
-            let completedCount = 0;
+            deckRow.innerHTML = ''; grid.innerHTML = '';
 
-            globalSubUnitRegistry.forEach(unit => {
-                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
-                const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
-                if (isClear) completedCount++;
-
-                // 未過考核戰術黃，過考核安全綠
-                const cardColor = isClear ? '#DCFCE7' : '#FEF08A';
-                const statusText = isClear ? '✅ 考核通過 [ 憑證已點亮 ]' : '⏳ 尚未通過考核';
-
-                grid.innerHTML += `
-                    <div class="cdx-dashboard-card" style="background-color: ${cardColor};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}')">
-                        <div>
-                            <div style="font-family: monospace; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);">LEVEL 1 SUB-UNIT</div>
-                            <h3 style="margin: 6px 0 0 0; font-size: 1.1rem; font-weight: 900; color: var(--text-main);">${unit.title}</h3>
-                        </div>
-                        <div style="font-size: 0.82rem; font-weight: 900; color: var(--text-main); margin-top: 15px;">${statusText}</div>
-                    </div>
-                `;
+            globalLevelMetadata.forEach(lvl => {
+                const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num);
+                let total = subUnitsInLvl.length, done = 0;
+                subUnitsInLvl.forEach(u => {
+                    const storageKey = `L1-A${u.subUnitId.split('-')[1]}`;
+                    if (localStorage.getItem(`codex-${storageKey}-clear`) === 'true') done++;
+                });
+                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                const isActiveClass = lvl.num === selectedActiveLevelNum ? 'active-level' : '';
+                deckRow.innerHTML += `
+                    <div class="progress-card-master ${isActiveClass}" onclick="switchDashboardSelectedLevel(${lvl.num})">
+                        <div class="progress-label">${lvl.name} : ${lvl.label}</div>
+                        <div class="progress-percentage">${pct}%</div>
+                        <div class="progress-stats">完成指標: ${done} / ${total}</div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%;"></div></div>
+                    </div>`;
             });
 
-            // 👑 數據百分比自動化計算核心 👑
-            const finalPercentage = Math.round((completedCount / totalUnits) * 100);
-            document.getElementById('main-progress-pct').innerText = `${finalPercentage}%`;
-            document.getElementById('main-progress-stats').innerText = `完成子單元: ${completedCount} / ${totalUnits}`;
-            document.getElementById('main-progress-fill').style.width = `${finalPercentage}%`;
+            document.getElementById('dynamic-list-title-label').innerText = `Level ${selectedActiveLevelNum}`;
+            const filteredUnits = globalSubUnitRegistry.filter(u => u.levelNum === selectedActiveLevelNum);
+            
+            if (filteredUnits.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; padding: 40px 20px; border: 2px dashed var(--color-locked-gray); text-align: center; font-weight: 800; color: var(--text-secondary); border-radius: var(--radius-sm);">🔒 執政官提示：Level ${selectedActiveLevelNum} 數據包尚未部署上線，敬請期待。</div>`;
+                return;
+            }
+
+            filteredUnits.forEach(unit => {
+                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
+                const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
+                const savedGrade = localStorage.getItem(`talent-${storageKey}-grade`);
+                const cardColor = isClear ? '#DCFCE7' : '#FEF08A';
+                grid.innerHTML += `
+                    <div class="cdx-dashboard-card" style="background-color: ${cardColor};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
+                        <div>
+                            <div style="font-family: monospace; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);">LEVEL ${selectedActiveLevelNum} SUB-UNIT</div>
+                            <h3 style="margin: 6px 0 0 0; font-size: 1.1rem; font-weight: 900; color: var(--text-main);">${unit.title}</h3>
+                        </div>
+                        <div style="font-size: 0.82rem; font-weight: 900; color: var(--text-main); margin-top: 15px;">${isClear ? `✅ 考核通過 [ 等階: ${savedGrade} ]` : '⏳ 尚未通過考核'}</div>
+                    </div>`;
+            });
         }
 
-        function switchUnit(type, subUnitId) {
-            examActive = false;
-            activeCourseIdx = 0; activePageIdx = 0; activeSubMatrixIdx = 0; activeFlowNodeIdx = 0;
-            const newUrl = `${window.location.pathname}?type=${type}&c=${subUnitId}`;
-            window.history.pushState(null, '', newUrl);
-            routeController(type, subUnitId);
-        }
-
-        function exitToDashboardMenu() {
-            examActive = false;
-            const newUrl = window.location.pathname;
-            window.history.pushState(null, '', newUrl);
-            routeController(null, null);
-        }
+        function switchDashboardSelectedLevel(lvlNum) { selectedActiveLevelNum = lvlNum; renderMultiLevelHubDashboard(); }
+        function switchUnit(type, subUnitId, lvlNum) { examActive = false; selectedActiveLevelNum = lvlNum; activeCourseIdx = 0; activePageIdx = 0; activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; const newUrl = `${window.location.pathname}?type=${type}&c=${subUnitId}`; window.history.pushState(null, '', newUrl); routeController(type, subUnitId); }
+        function exitToDashboardMenu() { examActive = false; const newUrl = window.location.pathname; window.history.pushState(null, '', newUrl); routeController(null, null); }
 
         function injectContentPackScript(type, packId) {
             window.codexCourseEngineData = [];
-            const oldScript = document.getElementById('dynamic-course-pack');
-            if (oldScript) oldScript.remove();
-
-            const script = document.createElement('script');
-            script.id = 'dynamic-course-pack';
+            const oldScript = document.getElementById('dynamic-course-pack'); if (oldScript) oldScript.remove();
+            const found = globalSubUnitRegistry.find(u => u.subUnitId === packId); if (!found) return;
+            const script = document.createElement('script'); script.id = 'dynamic-course-pack';
             const isLocalFile = window.location.protocol === 'file:';
-            script.src = isLocalFile ? `${globalSubUnitRegistry.find(u=>u.subUnitId===packId).file}` : `${globalSubUnitRegistry.find(u=>u.subUnitId===packId).file}?v=${Date.now()}`;
-            
+            script.src = isLocalFile ? `${found.file}` : `${found.file}?v=${Date.now()}`;
             script.onload = () => { initEngine(); };
             script.onerror = () => {
                 document.getElementById('current-chapter-name').innerText = "數據包加載失敗";
-                document.getElementById('lesson-content').innerHTML = `
-                    <div style="padding: 30px; border: 2px dashed var(--color-fail); text-align: center; font-weight: 900; color: var(--color-fail);">
-                        💥 找不到單元數據包 [ course_data_${packId}.js ]。請確認檔案放置路徑。
-                    </div>`;
-                document.getElementById('dynamic-flow-renderer-box').style.display = 'none';
-                document.getElementById('universal-dots-bar').innerHTML = '';
+                document.getElementById('lesson-content').innerHTML = `<div style="padding: 30px; border: 2px dashed var(--color-fail); text-align: center; font-weight: 900; color: var(--color-fail);">💥 找不到單元數據包 [ ${found.file} ]。</div>`;
             };
             document.head.appendChild(script);
         }
@@ -719,19 +702,13 @@ REVISION HISTORY / VERSION LOG
         function initEngine() {
             if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) {
                 document.getElementById('current-chapter-name').innerText = "數據解讀失敗";
-                document.getElementById('lesson-content').innerHTML = `
-                    <div style="padding: 30px; border: 3px solid var(--border-heavy); background-color: #FEE2E2; border-radius: var(--radius-sm); font-weight: 900; color: var(--color-fail); line-height: 1.6;">
-                        🚨 [除錯顯影警告] window.codexCourseEngineData 數據結構為空！<br><br>
-                        <strong>可能原因：</strong> 外部 JS 內部存在編譯期語法錯誤（SyntaxError），請開啟 F12 Console 檢查錯誤行數。
-                    </div>`;
-                document.getElementById('textbook-viewport').style.display = 'flex';
-                document.getElementById('dynamic-flow-renderer-box').style.display = 'none';
-                document.getElementById('universal-dots-bar').style.display = 'none';
+                document.getElementById('lesson-content').innerHTML = `<div style="padding: 30px; border: 3px solid var(--border-heavy); background-color: #FEE2E2; border-radius: var(--radius-sm); font-weight: 900; color: var(--color-fail);">🚨 [除錯顯影警告] window.codexCourseEngineData 數據結構為空！</div>`;
                 return;
             }
             loadCourseState(activeCourseIdx, activePageIdx);
         }
 
+        // 👑 剛性復原：100% 補齊多網格分支與頁籤對位引擎 👑
         function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx;
             const course = window.codexCourseEngineData[cIdx];
@@ -742,9 +719,7 @@ REVISION HISTORY / VERSION LOG
                 document.getElementById('textbook-viewport').style.display = 'none';
                 document.getElementById('exam-viewport').style.display = 'block';
                 document.getElementById('universal-dots-bar').style.display = 'flex';
-                course.subPages.forEach((_, sIdx) => {
-                    dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`;
-                });
+                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; });
                 dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`;
                 runExamEngine();
             } else {
@@ -757,14 +732,14 @@ REVISION HISTORY / VERSION LOG
                 document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`;
                 document.getElementById('current-chapter-name').innerText = page.title;
 
+                // 👑 多分支矩陣 subMatrixBranches 硬核焊接 👑
                 const subNavWrapper = document.getElementById('cdx-sub-nav-wrapper');
                 let targetedText = page.text;
                 let targetedFlow = page.diagramFlowArray;
 
                 if (page.subMatrixBranches) {
                     if (subNavWrapper) {
-                        subNavWrapper.style.display = 'flex';
-                        subNavWrapper.innerHTML = '';
+                        subNavWrapper.style.display = 'flex'; subNavWrapper.innerHTML = '';
                         page.subMatrixBranches.forEach((branch, bIdx) => {
                             const activeBranchClass = bIdx === activeSubMatrixIdx ? 'active' : '';
                             subNavWrapper.innerHTML += `<button class="sub-nav-btn ${activeBranchClass}" onclick="switchSubMatrixBranch(${bIdx})">${branch.branchLabel}</button>`;
@@ -777,6 +752,7 @@ REVISION HISTORY / VERSION LOG
                     activeSubMatrixIdx = 0;
                 }
 
+                // 渲染流程圖與內文富文本
                 if (targetedFlow && targetedFlow[activeFlowNodeIdx] && targetedFlow[activeFlowNodeIdx].text) {
                     document.getElementById('lesson-content').innerHTML = targetedFlow[activeFlowNodeIdx].text;
                 } else {
@@ -785,8 +761,7 @@ REVISION HISTORY / VERSION LOG
 
                 const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
                 if (flowRenderer && targetedFlow) {
-                    flowRenderer.style.display = 'flex';
-                    flowRenderer.innerHTML = '';
+                    flowRenderer.style.display = 'flex'; flowRenderer.innerHTML = '';
                     targetedFlow.forEach((node, nIdx) => {
                         const isSelected = nIdx === activeFlowNodeIdx;
                         let nodeClass = 'flow-node-block';
@@ -819,48 +794,33 @@ REVISION HISTORY / VERSION LOG
             document.getElementById('current-chapter-id').innerText = "EXAM MODE";
             document.getElementById('current-chapter-name').innerText = "10 抽 3 隨機閃擊戰";
             document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`;
-
-            const progressPct = (examCurrentQ / 3) * 100;
-            document.getElementById('exam-progress').style.width = `${progressPct}%`;
+            document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`;
             document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
-
-            const container = document.getElementById('exam-options-container');
-            container.innerHTML = '';
-            qData.o.forEach((opt, idx) => {
-                container.innerHTML += `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`;
-            });
+            const container = document.getElementById('exam-options-container'); container.innerHTML = '';
+            qData.o.forEach((opt, idx) => { container.innerHTML += `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`; });
         }
 
         function submitAnswer(idx) {
             const course = window.codexCourseEngineData[activeCourseIdx];
             if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; }
-            examCurrentQ++;
-            runExamEngine();
+            examCurrentQ++; runExamEngine();
         }
 
         function settleExamPayload() {
-            examActive = false;
-            const course = window.codexCourseEngineData[activeCourseIdx];
-            
-            // 3 題錯 2 題即 Fail 門檻
-            if (examScoreCount < 2) {
-                alert(`💥【考核失敗】答對題數 ${examScoreCount}/3，未達 2 題及格線！強制退回重訓！`);
-                const storageKey = `L1-A${course.courseId.split('-')[1]}`;
-                localStorage.setItem(`codex-${storageKey}-clear`, 'false');
-                localStorage.removeItem(`talent-${storageKey}-grade`);
+            examActive = false; const course = window.codexCourseEngineData[activeCourseIdx];
+            let grade = examScoreCount === 3 ? "S" : examScoreCount === 2 ? "A" : "Fail";
+            let storageKey = "L1-A" + course.courseId.split('-')[1];
+            if (grade === "Fail") {
+                alert(`💥【考核失敗】答對題數 ${examScoreCount}/3，未達 2 題及格線！`);
+                localStorage.setItem(`codex-${storageKey}-clear`, 'false'); localStorage.removeItem(`talent-${storageKey}-grade`);
             } else {
-                let grade = examScoreCount === 3 ? "S" : "A";
                 alert(`🏆【考核通過】位階核定為：【 ${grade} 】級！`);
-                const storageKey = `L1-A${course.courseId.split('-')[1]}`;
-                localStorage.setItem(`codex-${storageKey}-clear`, 'true');
-                localStorage.setItem(`talent-${storageKey}-grade`, grade);
+                localStorage.setItem(`codex-${storageKey}-clear`, 'true'); localStorage.setItem(`talent-${storageKey}-grade`, grade);
             }
             exitToDashboardMenu();
         }
 
-        function syncNavbarState(lang) {
-            localStorage.setItem('tpm-lang-pref', lang);
-        }
+        function syncNavbarState(lang) { localStorage.setItem('tpm-lang-pref', lang); }
         function executeLangSwitch(lang) { routeController(); }
     </script>
 </body>
