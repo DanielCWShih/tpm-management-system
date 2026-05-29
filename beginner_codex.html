@@ -275,7 +275,6 @@
             flex-direction: column;
         }
 
-        /* 剛性防禦：所有檢視容器預設底層通通鎖死隱藏 */
         .dashboard-view-hall,
         .document-canvas,
         .exam-session-box,
@@ -584,17 +583,23 @@
             background: var(--sidebar-cream);
         }
 
-        @keyframes fadeInBox {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
+        .sub-pagination-dots-zone {
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            padding: 15px 0;
+            width: 100%;
+            flex-shrink: 0;
+            margin-top: auto;
+            border-top: 2px dashed #E2E8F0;
         }
     </style>
 </head>
-<body>
+<body style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.17</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.18</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -652,7 +657,6 @@
     </div>
 
     <script>
-        // 去中心化配置註冊表
         const globalSubUnitRegistry = [
             { 
                 type: 'codex', 
@@ -700,18 +704,8 @@
         let examCurrentQ = 0;
         let examScoreCount = 0;
 
-        window.showTacticalDict = function(textPayload) {
-            const box = document.getElementById('runtime-dict-box');
-            if (box) { box.style.display = 'block'; box.innerHTML = `💡 <strong>公會特工字典反饋：</strong><br>${textPayload}`; }
-        };
-
-        window.triggerSimDecision = function(isSuccess, feedbackText) {
-            const box = document.getElementById('runtime-sandbox-fallout');
-            if (box) { box.style.display = 'block'; box.className = isSuccess ? 'sandbox-fallout-box success' : 'sandbox-fallout-box fail'; box.innerHTML = feedbackText; }
-        };
-
         window.onload = () => {
-            window.codexCourseEngineData = []; // 👑 封裝防線：初始化焊接全域 window 大腦 👑
+            window.codexCourseEngineData = []; 
             renderGlobalTreeStructure();
             routeController();
         };
@@ -761,19 +755,16 @@
             }
         }
 
-        // 👑 剛性修復2：支援直接參數注入，實時秒殺 window.location.search 不同步延遲黑洞 👑
         function routeController(directType, directC) {
             const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
             const urlParams = new URLSearchParams(window.location.search);
             
-            // 優先吃點擊注入的實體參數，無參數才降級抓網址
             const paramC = directC || urlParams.get('c');
             const paramType = directType || urlParams.get('type') || 'codex';
 
             syncNavbarState(currentLang);
 
             if (!paramC) {
-                // 大廳整備狀態點亮
                 document.getElementById('cdx-page-header-zone').style.display = 'block';
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD";
                 document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
@@ -786,7 +777,6 @@
                 document.querySelectorAll('.leaf-btn').forEach(btn => btn.classList.remove('active'));
                 renderMicroDashboard();
             } else {
-                // 特定單元狀態點亮
                 document.getElementById('dashboard-menu-hall').style.display = 'none';
 
                 const subUnitKey = `${paramType}-${paramC}`;
@@ -846,7 +836,6 @@
             const newUrl = `${window.location.pathname}?type=${type}&c=${subUnitId}`;
             window.history.pushState(null, '', newUrl);
             
-            // 👑 銲死控制：原地參數直發，不給 pushState 任何卡頓反應時間 👑
             routeController(type, subUnitId);
         }
 
@@ -854,17 +843,15 @@
             examActive = false;
             const newUrl = window.location.pathname;
             window.history.pushState(null, '', newUrl);
-            routeController(null, null); // 降級還原微型大廳
+            routeController(null, null); 
         }
 
-        /* 👑 剛性修復3：appendChild 歸位，並加裝舊節點排他自我清空解構器 👑 */
         function injectContentPackScript(type, packId) {
             const found = globalSubUnitRegistry.find(item => item.type === type && item.subUnitId === packId);
             if (!found) return;
 
-            window.codexCourseEngineData = []; // 重置 window Namespace 緩衝區
+            window.codexCourseEngineData = []; 
             
-            // 剛性排他：掃除舊有 Script 標籤防止干擾
             const oldScript = document.getElementById('dynamic-course-pack');
             if (oldScript) {
                 oldScript.remove();
@@ -888,13 +875,27 @@
                 document.getElementById('universal-dots-bar').innerHTML = '';
             };
             
-            // 👑 鐵血對位：正式將生好的節點推入 head 頂層，發動實體下載！ 👑
             document.head.appendChild(script);
         }
 
+        // 👑 核心加裝：除錯顯影防線（破除隱性罷工） 👑
         function initEngine() {
-            // 👑 剛性對位：改向 window 頂層直接清查數據包 👑
-            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) return;
+            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) {
+                // 💥 剛性顯影：如果發現外部 JS 加載成功但 window 大腦變數為空，直接在畫面上噴射紅色技術診斷報告 💥
+                document.getElementById('current-chapter-name').innerText = "數據結構解析失敗";
+                document.getElementById('lesson-content').innerHTML = `
+                    <div style="padding: 30px; border: 3px solid var(--border-heavy); background-color: #FEE2E2; border-radius: var(--radius-sm); font-weight: 900; color: var(--color-fail); line-height: 1.6;">
+                        🚨 [RCA 診斷中心] 外部資料包加載成功，但 window.codexCourseEngineData 數據結構為空！<br><br>
+                        <strong>可能原因：</strong><br>
+                        1. 外部 course_data_1-1.js 內部發生了編譯期語法錯誤（SyntaxError），例如反引號、引號破碎不對稱，導致瀏覽器拒絕執行。<br>
+                        2. 外部資料包頭部的 window 宣告名稱與主機殼未完全對齊。<br><br>
+                        請按 F12 開啟 Console 主控台檢視詳細的錯誤行數。
+                    </div>`;
+                document.getElementById('textbook-viewport').style.display = 'flex';
+                document.getElementById('dynamic-flow-renderer-box').style.display = 'none';
+                document.getElementById('universal-dots-bar').style.display = 'none';
+                return;
+            }
             loadCourseState(activeCourseIdx, activePageIdx);
         }
 
