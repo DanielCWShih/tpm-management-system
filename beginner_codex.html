@@ -1,4 +1,4 @@
-html_code_v6_5 = """<!DOCTYPE html>
+html_code_v6_6 = """<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -12,8 +12,8 @@ html_code_v6_5 = """<!DOCTYPE html>
             --text-main: #1A1A1A;
             --text-secondary: #475569;
             --border-heavy: #1A1A1A;
-            --shadow-tactical: 5px 5px 0px #1A1A1A;
-            --radius-sm: 8px;
+            --shadow-tactical: 4px 4px 0px #1A1A1A;
+            --radius-sm: 6px;
             --color-completed: #22C55E;
             --color-active-gold: #FDE047;
             --color-fail: #DC2626;
@@ -54,9 +54,9 @@ html_code_v6_5 = """<!DOCTYPE html>
             box-shadow: 3px 3px 0px var(--border-heavy); color: var(--text-main);
         }
 
-        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
+        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0px var(--border-heavy); }
 
-        /* 工作框架 */
+        /* 工作主框架 */
         .workspace-container { display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden; }
 
         /* 側邊欄全域天賦樹 */
@@ -73,7 +73,7 @@ html_code_v6_5 = """<!DOCTYPE html>
             width: 100%; margin-bottom: 5px; color: var(--text-main); text-align: center;
         }
 
-        .hub-return-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
+        .hub-return-btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0px var(--border-heavy); }
 
         .menu-category-block { width: 100%; margin-bottom: 2px; }
 
@@ -99,7 +99,6 @@ html_code_v6_5 = """<!DOCTYPE html>
             transition: all 0.1s; line-height: 1.4;
         }
 
-        /* 👑 修正點：修復 Hover 側邊欄左側線條裁剪問題，加上左側安全位移空間 👑 */
         .leaf-btn:hover { transform: translate(2px, -2px); box-shadow: 2px 4px 0px var(--border-heavy); }
         .leaf-btn.active { background: var(--color-active-gold) !important; box-shadow: 1px 1px 0px var(--border-heavy) !important; }
 
@@ -114,47 +113,48 @@ html_code_v6_5 = """<!DOCTYPE html>
             display: none; width: 100%;
         }
 
-        /* 大廳容器加裝安全擴展帶 */
+        /* 👑 修正2：主大廳導入 70% 微縮比例優化（降低 font-size 與內邊距，極大化填滿資訊） 👑 */
         .dashboard-view-hall {
-            height: 100%; overflow-y: auto; padding: 15px 15px 40px 15px; 
+            height: 100%; overflow-y: auto; padding: 10px 15px 30px 15px; 
+            font-size: 0.82rem; 
         }
 
-        /* 7 大 Level 剛性兩排並列網格 */
+        /* 7 大 Level 剛性雙排網格：縮小尺寸 */
         .level-cards-parallel-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; margin-bottom: 25px; padding: 5px 2px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; margin-bottom: 20px; padding: 5px 2px;
         }
 
         .progress-card-master {
-            background: var(--card-white); border: 3px solid var(--border-heavy);
-            border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow-tactical);
+            background: var(--card-white); border: 2px solid var(--border-heavy);
+            border-radius: 10px; padding: 12px 16px; box-shadow: var(--shadow-tactical);
             cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; justify-content: space-between;
         }
 
-        .progress-card-master:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0px var(--border-heavy); }
-        .progress-card-master.active-level { background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important; border-width: 4px !important; box-shadow: 6px 6px 0px var(--border-heavy) !important; }
+        .progress-card-master:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0px var(--border-heavy); }
+        .progress-card-master.active-level { background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important; border-width: 3px !important; box-shadow: 5px 5px 0px var(--border-heavy) !important; }
 
-        .progress-label { font-family: monospace; font-weight: 900; font-size: 0.8rem; color: var(--text-secondary); }
-        .progress-percentage { font-size: 2.5rem; font-weight: 900; margin: 4px 0; color: var(--text-main); line-height: 1; }
-        .progress-stats { font-size: 0.8rem; font-weight: 800; color: var(--text-main); }
+        .progress-label { font-family: monospace; font-weight: 900; font-size: 0.72rem; color: var(--text-secondary); }
+        .progress-percentage { font-size: 1.8rem; font-weight: 900; margin: 2px 0; color: var(--text-main); line-height: 1; }
+        .progress-stats { font-size: 0.75rem; font-weight: 800; color: var(--text-main); }
 
-        .progress-bar-bg { width: 100%; height: 12px; background: #E2E8F0; border: 2px solid var(--border-heavy); border-radius: 6px; margin-top: 8px; overflow: hidden; }
+        .progress-bar-bg { width: 100%; height: 10px; background: #E2E8F0; border: 2px solid var(--border-heavy); border-radius: 5px; margin-top: 6px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: var(--color-completed); width: 0%; transition: width 0.4s ease-out; }
 
-        /* 👑 修正3：超強縮放、專治 20+ 多單元爆版的雙列橫向流線清單 👑 */
+        /* 👑 修正3：流線清單微縮調校 ── 升級為剛性四列並排（repeat(4, 1fr)） 👑 */
         .cdx-dashboard-grid {
             display: grid; 
-            grid-template-columns: repeat(2, 1fr); /* 雙列並排，空間利用率提升 200% */
-            gap: 16px; width: 100%; padding: 5px 2px;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 12px; width: 100%; padding: 5px 2px;
         }
 
         .cdx-dashboard-card {
-            border: 3px solid var(--border-heavy); border-radius: var(--radius-sm);
-            padding: 16px 20px; cursor: pointer; box-shadow: var(--shadow-tactical);
+            border: 2px solid var(--border-heavy); border-radius: var(--radius-sm);
+            padding: 10px 14px; cursor: pointer; box-shadow: var(--shadow-tactical);
             transition: all 0.15s; display: flex; flex-direction: row; 
-            justify-content: space-between; align-items: center; min-height: 70px;
+            justify-content: space-between; align-items: center; min-height: 52px;
         }
 
-        .cdx-dashboard-card:hover { transform: translate(-3px, -3px); box-shadow: 7px 7px 0px var(--text-main); }
+        .cdx-dashboard-card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0px var(--text-main); }
 
         .document-canvas { flex: 1; overflow: hidden; }
         .textbook-scroll-box { flex: 1; overflow-y: auto; padding-right: 8px; width: 100%; }
@@ -170,7 +170,7 @@ html_code_v6_5 = """<!DOCTYPE html>
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">SYS.BEGINNER_CODEX V6.5</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V6.6</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -194,7 +194,7 @@ html_code_v6_5 = """<!DOCTYPE html>
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
                 <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
                 <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
-                <div style="font-weight: 900; font-size: 1.2rem; margin-bottom: 15px; color: var(--text-main);">
+                <div style="font-weight: 900; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">
                     🌿 <span id="dynamic-list-title-label">Level 1</span> 子單元大捷攻堅列表：
                 </div>
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
@@ -316,17 +316,16 @@ html_code_v6_5 = """<!DOCTYPE html>
                 return;
             }
 
-            // 👑 修正3：高Scannability行狀流線清單渲染 👑
             filteredUnits.forEach(unit => {
                 const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
                 const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
                 grid.innerHTML += `
                     <div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:4px 8px; border-radius:4px;">${unit.subUnitId}</span>
-                            <h3 style="margin:0; font-size:0.95rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span>
+                            <h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
                         </div>
-                        <div style="font-size:0.8rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:10px;">${isClear ? `✅ [${localStorage.getItem(`talent-${storageKey}-grade`)}]` : '⏳ 待攻堅'}</div>
+                        <div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isClear ? `✅ [${localStorage.getItem(`talent-${storageKey}-grade`)}]` : '⏳ 待攻堅'}</div>
                     </div>`;
             });
         }
@@ -430,8 +429,7 @@ html_code_v6_5 = """<!DOCTYPE html>
 </html>
 """
 
-import os
 with open("beginner_codex.html", "w", encoding="utf-8") as f:
-    f.write(html_code_v6_4)
+    f.write(html_code_v6_6)
 
-print("COMPRESSED_FILE_GENERATION_SUCCESS: V6.4 updated to V6.5 list-row scaling layout.")
+print("FILE_GENERATION_SUCCESS: beginner_codex.html compressed version.")
