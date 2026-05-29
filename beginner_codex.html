@@ -143,7 +143,6 @@
             height: 100%;
         }
 
-        /* 👑 核心加裝：全域戰術大廳返回鈕樣式 👑 */
         .hub-return-btn {
             background: var(--card-white);
             border: 3px solid var(--border-heavy);
@@ -276,7 +275,7 @@
             flex-direction: column;
         }
 
-        /* 👑 剛性防禦：所有檢視容器預設底層通通鎖死隱藏，不漏光 👑 */
+        /* 剛性隱藏預設，交給 JS 動態調配 */
         .dashboard-view-hall,
         .document-canvas,
         .exam-session-box,
@@ -595,7 +594,7 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.15</span>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;" id="global-inject-tag">SYS.BEGINNER_CODEX V5.16</span>
             <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
@@ -763,7 +762,6 @@
             }
         }
 
-        // 👑 剛性核心優化：三視窗狀態顯影互鎖控制器 👑
         function routeController() {
             const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
             const urlParams = new URLSearchParams(window.location.search);
@@ -773,7 +771,7 @@
             syncNavbarState(currentLang);
 
             if (!paramC) {
-                // 👑 沒參數：強制清空並點亮微型 Dashboard 大廳 👑
+                // 大廳狀態激活
                 document.getElementById('cdx-page-header-zone').style.display = 'block';
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD";
                 document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
@@ -786,7 +784,7 @@
                 document.querySelectorAll('.leaf-btn').forEach(btn => btn.classList.remove('active'));
                 renderMicroDashboard();
             } else {
-                // 有參數：關閉大廳，開啟教材大畫布
+                // 單元教材狀態激活
                 document.getElementById('dashboard-menu-hall').style.display = 'none';
 
                 activeSubUnitKey = `${paramType}-${paramC}`;
@@ -798,7 +796,6 @@
             }
         }
 
-        // 👑 剛性對位優化：黃綠雙色天賦卡牌渲染器 👑
         function renderMicroDashboard() {
             const grid = document.getElementById('l1-cards-grid');
             if (!grid) return;
@@ -818,7 +815,6 @@
                 const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
                 const savedGrade = localStorage.getItem(`talent-${storageKey}-grade`);
 
-                // 剛性配色防線：未通過考核鎖死戰術黃（#FEF08A），通過考核點亮安全綠（#DCFCE7）
                 let cardStyle = "background-color: #FEF08A; border: 3px solid var(--border-heavy);"; 
                 let statusBadge = "⏳ 尚未通過考核";
                 if (isClear && savedGrade && savedGrade !== "Fail") {
@@ -851,21 +847,32 @@
 
         function exitToDashboardMenu() {
             examActive = false;
-            // 點擊返回大廳時，清空參數回到大廳選單
             const newUrl = window.location.pathname;
             window.history.pushState({ path: newUrl }, '', newUrl);
             routeController();
         }
 
+        /* 👑 剛性熱修復：動態掛載與排他防線 👑 */
         function injectContentPackScript(type, packId) {
             const found = globalSubUnitRegistry.find(item => item.type === type && item.subUnitId === packId);
             if (!found) return;
 
             codexCourseEngineData = [];
+            
+            // 清理舊有殘留節點
+            const oldScript = document.getElementById('dynamic-course-pack');
+            if (oldScript) {
+                oldScript.remove();
+            }
+
             const script = document.createElement('script');
+            script.id = 'dynamic-course-pack';
             const isLocalFile = window.location.protocol === 'file:';
             script.src = isLocalFile ? found.file : `${found.file}?v=${Date.now()}`;
-            script.onload = () => { initEngine(); };
+            
+            script.onload = () => { 
+                initEngine(); 
+            };
             script.onerror = () => { 
                 document.getElementById('current-chapter-name').innerText = "數據包載入失敗";
                 document.getElementById('lesson-content').innerHTML = `
@@ -875,6 +882,8 @@
                 document.getElementById('dynamic-flow-renderer-box').style.display = 'none';
                 document.getElementById('universal-dots-bar').innerHTML = '';
             };
+            
+            // 銲死防線：將生成好的腳本節點推入 DOM 流水線
             document.head.appendChild(script);
         }
 
@@ -889,7 +898,6 @@
             const dotsBar = document.getElementById('universal-dots-bar');
             dotsBar.innerHTML = '';
 
-            // 👑 視窗顯示互鎖控制線 👑
             if (examActive) {
                 document.getElementById('textbook-viewport').style.display = 'none';
                 document.getElementById('exam-viewport').style.display = 'block';
@@ -967,7 +975,6 @@
 
         function syncNavbarState(lang) {
             localStorage.setItem('tpm-lang-pref', lang);
-            document.title = globalUiTranslations[lang]["title"];
             const cachedName = localStorage.getItem('tpm-user-name');
             const cachedRank = localStorage.getItem('tpm-user-rank') || globalUiTranslations[lang]["rank-default"];
             if (cachedName) {
