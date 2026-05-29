@@ -1,7 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-05-29 V5.6: 👑 多行全展開交割版：更正最新時間。徹底清除任何「單行壓縮字串」的偷懶行為。將 Section 1~3 所有富文本卡牌、動態字典、決策沙盒的 HTML 標籤，全部以標準 VS Code 多行縮排規格展開。30 題硬核大會考試題逐行優化，尾部 Fisher-Yates 隨機引擎完美嚙合。全量交付，絕不省略任何一列。
+2026-05-29 V5.6: 👑 滿血多行展開對齊版：更正最新時間。HTML 全面採用標準縮排展開，Section 1~3（含手機現實、三大精細流水線）內容 100% 完整，30 題實戰情境試題庫配合 Fisher-Yates 雙重洗牌引擎完璧歸位，嚴禁任何形式的代碼縮寫、留白與裁剪。
 ========================================================================
 */
 
@@ -46,7 +46,7 @@ codexCourseEngineData = [
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【PRD 規格防線審查】：必須全面清查 CMF（色彩、材質、工藝）是否具備工廠現有流水線的量產製程能力，在開模前剛性攔截不切實際的幻想規格。')">
                                         <span>🔍 PRD 規格審查</span><span>➔</span>
                                     </button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【公差疊加分析】：在圖紙出爐第一時間，ME團隊必須發動極限疊加模擬，計算零件間的微米級物理干涉，提前鎖死模具與變形雷區。')">
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【公差疊加分析】：在圖紙出爐第一時間，ME團隊必須發動極慢疊加模擬，計算零件間的微米級物理干涉，提前鎖死模具與變形雷區。')">
                                         <span>🔍 公差疊加分析</span><span>➔</span>
                                     </button>
                                 </div>
@@ -194,8 +194,8 @@ codexCourseEngineData = [
                                 name: "Proto 原型機", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>PROTO STAGE</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">PROTO STAGE</span>
                                         <strong>會做什麼：</strong>利用 3D 列印或手工打樣。<br>
                                         <strong>核心目標：</strong>快速確認產品的概念因果、巨觀美學比例、結構可行性是否過關。<br>
                                         <strong>終極期待：</strong>完成整機物理堆疊（Stack-up）微觀檢視，為後續電路設計鋪路。
@@ -206,8 +206,8 @@ codexCourseEngineData = [
                                 name: "EVT 工程驗證", 
                                 highlight: true, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>EVT STAGE</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">EVT STAGE</span>
                                         <strong>會做什麼：</strong>研發設計的首度硬體實體化複製。<br>
                                         <strong>核心目標：</strong>實現主機板的『首版通電打通（Power-on）』。<br>
                                         <strong>終極期待：</strong>確認基本電路系統、訊號流向完整，除錯接口能順利抓到工程軟體訊號。
@@ -218,8 +218,8 @@ codexCourseEngineData = [
                                 name: "DVT 設計驗證", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>DVT STAGE</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">DVT STAGE</span>
                                         <strong>會做什麼：</strong>量產五金與塑膠模具正式開模（Hard Tooling）。<br>
                                         <strong>核心目標：</strong>整機必須完成完整拼裝。<br>
                                         <strong>終極期待：</strong>全面接受摔落、高低溫環境衝擊、防水氣密測試等嚴苛的信賴性可靠性考核評審。
@@ -230,11 +230,11 @@ codexCourseEngineData = [
                                 name: "PVT 生產驗證", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>PVT STAGE</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">PVT STAGE</span>
                                         <strong>會做什麼：</strong>研發端設計圖紙全面剛性凍結（Freeze），重心全力轉移至工廠線體。<br>
                                         <strong>核心目標：</strong>全面測試流水線的大規模複製組裝能力。<br>
-                                        <strong>終極期待：</strong>優化操作工位線平衡，验证治具複製與 UPH 每小時產速是否達標。
+                                        <strong>終極期待：</strong>優化操作工位線平衡，驗證治具複製與 UPH 每小時產速是否達標。
                                     </div>
                                 ` 
                             },
@@ -242,8 +242,8 @@ codexCourseEngineData = [
                                 name: "MP 大量量產", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>MP STAGE</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">MP STAGE</span>
                                         <strong>會做什麼：</strong>大規模流水線全面啟動生產。<br>
                                         <strong>核心目標：</strong>通過工廠出關審查指標。<br>
                                         <strong>終極期待：</strong>產品開閘放水，以高直通率良率大批量流入凡間實體市場。
@@ -260,8 +260,8 @@ codexCourseEngineData = [
                                 name: "Proto 階段 (機構/通電並行)", 
                                 highlight: true, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>REALITY PROTO</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">REALITY PROTO</span>
                                         <strong>會做什麼：</strong>在極度內捲的手機案中，研發試產被壓縮至 6-9 個月。<br>
                                         <strong>核心目標：</strong>EE 團隊還在對首版主板進行通電調試 Debug 的同時，ME 團隊被迫同步提前開啟量產鋼模（Hard Tooling）。<br>
                                         <strong>終極期待：</strong>完全打破傳統前後遞進時程，審查結構與電路進行雙線預演對決。
@@ -272,8 +272,8 @@ codexCourseEngineData = [
                                 name: "EVT / DVT 階段高度重疊", 
                                 highlight: true, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>REALITY OVERLAP</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">REALITY OVERLAP</span>
                                         <strong>會做什麼：</strong>因市場時程（Time-to-Market）卡死，EVT 階段的出關評審尚未召開，DVT 階段的長料期原件就必須提前強制下單（Pre-order）。<br>
                                         <strong>核心目標：</strong>研發端除錯與工廠端模具修改在線體上平行爆發。<br>
                                         <strong>終極期待：</strong>考驗 TPM 極強的變更範疇控制手段，隨時應對設計變更（ECO）引發的震盪。
@@ -284,8 +284,8 @@ codexCourseEngineData = [
                                 name: "PVT 產線極速拉速", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>REALITY PVT</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">REALITY PVT</span>
                                         <strong>會做什麼：</strong>手機 PVT 在大流水線上通常只有極短的 3 至 5 天評審期。<br>
                                         <strong>核心目標：</strong>工廠必須在極短工時內將每小時產速（UPH）強行拉到 MP 大批量生產規格。<br>
                                         <strong>終極期待：</strong>任何治具卡死或工位瓶頸（Bottle-neck）都會引發全盤癱瘓，考驗現場即時拆彈防線。
@@ -307,8 +307,8 @@ codexCourseEngineData = [
                                 name: "PCBA 主板製程", 
                                 highlight: true, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>PCBA LINE</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">PCBA LINE</span>
                                         <strong>會做什麼：</strong>高密度無塵貼片與錫膏化學銲接。<br>
                                         <strong>核心目標：</strong>透過 SPI 檢查儀與高速貼片機，在毫秒間將晶片精確打入主板。<br>
                                         <strong>終極期待：</strong>通過高溫迴流爐熔銲，主機板 PCBA 100% 電路打通、零空銲。
@@ -319,8 +319,8 @@ codexCourseEngineData = [
                                 name: "Assembly 組裝線", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>ASSY LINE</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">ASSY LINE</span>
                                         <strong>會做什麼：</strong>大流水線整機物理拼裝。<br>
                                         <strong>核心目標：</strong>操作員與手臂協作，將主板、骨架、螢幕與排線緊密鎖附。<br>
                                         <strong>終極期待：</strong>外殼防護螺絲嚴密扣合，不發生滑牙與內部走線干涉擠壓。
@@ -331,8 +331,8 @@ codexCourseEngineData = [
                                 name: "Test 功能測試站", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>TEST STATION</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">TEST STATION</span>
                                         <strong>會做什麼：</strong>自動化硬體功能屏蔽測試。<br>
                                         <strong>核心目標：</strong>整機強行注入自動化除錯軟體。<br>
                                         <strong>終極期待：</strong>一網打盡色彩、音頻、Wi-Fi 射頻訊號缺陷，誤判率剛性掐死在 1% 以下。
@@ -343,8 +343,8 @@ codexCourseEngineData = [
                                 name: "Packaging 包裝線", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>PACK LINE</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">PACK LINE</span>
                                         <strong>會做什麼：</strong>彩盒附件總裝與封箱出貨。<br>
                                         <strong>核心目標：</strong>撕去外殼保護膜，塞入彩盒說明書。<br>
                                         <strong>終極期待：</strong>通過最後重整箱防錯秤重，嚴防漏塞任何配件，綠燈封膠。
@@ -361,8 +361,8 @@ codexCourseEngineData = [
                                 name: "SMT 主板貼片", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>PHONE SMT</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">PHONE SMT</span>
                                         <strong>會做什麼：</strong>高密度雙面 SMT 貼片工藝。<br>
                                         <strong>核心目標：</strong>被動原件極微縮化拼裝。<br>
                                         <strong>終極期待：</strong>透過 AOI 光學天眼雙重篩查，絕不容許任何一處微小虛銲流入後段。
@@ -373,8 +373,8 @@ codexCourseEngineData = [
                                 name: "SUB 次級預組線", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>PHONE SUB</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">PHONE SUB</span>
                                         <strong>會做什麼：</strong>分支副流水線同時開火。<br>
                                         <strong>核心目標：</strong>將相機模組、馬達與天線軟板預先熔銲。<br>
                                         <strong>終極期待：</strong>在不佔用大裝總工時的前提下完成模組件，極速拉高總裝 UPH。
@@ -385,8 +385,8 @@ codexCourseEngineData = [
                                 name: "CG/BG 真空防水壓合", 
                                 highlight: true, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>PHONE IP68</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">PHONE IP68</span>
                                         <strong>會做什麼：</strong>高階手機多軸精密自動點膠與真空保壓。<br>
                                         <strong>核心目標：</strong>以微米級精度噴塗防水膠路並送入治具密合。<br>
                                         <strong>終極期待：</strong>建立 IP68 黃金氣密測試防線，確保信賴性防水測試不發生任何滲水漏氣。
@@ -397,8 +397,8 @@ codexCourseEngineData = [
                                 name: "Final Assembly 總裝線", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>PHONE FATP</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">PHONE FATP</span>
                                         <strong>會做什麼：</strong>主板、副組件、大容量鋰電池強行扣合鎖附。<br>
                                         <strong>核心目標：</strong>攻克玻璃中框與極細排線的微觀嵌入。<br>
                                         <strong>終極期待：</strong>鎖附扭力高精準對位，防範內部應力死鎖與崩裂。
@@ -409,8 +409,8 @@ codexCourseEngineData = [
                                 name: "Final Test 最終綜合測試", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>PHONE RF</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">PHONE RF</span>
                                         <strong>會做什麼：</strong>密封射頻屏蔽房（Chamber）天線校正。<br>
                                         <strong>核心目標：</strong>校準 5G 與 Wi-Fi 無線射頻參數。<br>
                                         <strong>終極期待：</strong>向晶圓內剛性燒錄全球唯一身分證 ── IMEI 碼，完成客退品追溯根基。
@@ -427,8 +427,8 @@ codexCourseEngineData = [
                                 name: "SMT 主控與電調焊接", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>DRONE SMT</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">DRONE SMT</span>
                                         <strong>會做什麼：</strong>核心飛控板與高頻大電流 ESC 電子調速器焊接。<br>
                                         <strong>核心目標：</strong>保證大功率元件之焊接熱應力釋放。<br>
                                         <strong>終極期待：</strong>銲接良率達標，用以精確反饋控制後續無刷馬達的轉速平衡。
@@ -439,8 +439,8 @@ codexCourseEngineData = [
                                 name: "SUB 動力手臂預組", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>DRONE ARM</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">DRONE ARM</span>
                                         <strong>會做什麼：</strong>碳纖維機臂與高轉速無刷馬達手工拼裝。<br>
                                         <strong>核心目標：</strong>銲接動力電源線並進行機械緊固。<br>
                                         <strong>終極期待：</strong>通過馬達轉子空載電流檢驗，全面攔截高阻抗發熱異音不良。
@@ -451,11 +451,11 @@ codexCourseEngineData = [
                                 name: "Final Assembly 機電總裝", 
                                 highlight: false, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>DRONE ASSY</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">DRONE ASSY</span>
                                         <strong>會做什麼：</strong>手臂骨架扣合與精密三軸雲台機械安裝。<br>
                                         <strong>核心目標：</strong>機電系統總集成。<br>
-                                        <strong>終極期待：</strong>大功率線路全面密封防水，抗震襯墊安裝到位，防範升空抖震。
+                                        <strong>終極期待：</strong>大功率線路全面密封防水，抗震襯墊安裝到位，防範升空抖震.
                                     </div>
                                 ` 
                             },
@@ -463,8 +463,8 @@ codexCourseEngineData = [
                                 name: "IMU 感測器動態校正", 
                                 highlight: true, 
                                 text: `
-                                    <div class='tactical-alert-card'>
-                                        <span class='tactical-badge'>DRONE IMU</span>
+                                    <div class="tactical-alert-card">
+                                        <span class="tactical-badge">DRONE IMU</span>
                                         <strong>會做什麼：</strong>專屬三軸旋轉陀螺儀動態治具校正。<br>
                                         <strong>核心目標：</strong>對加速度計、指南針進行『動態六面翻轉校正』。<br>
                                         <strong>終極期待：</strong>將感測器零偏徹底洗淨歸零，確保凡間飛行絕對不發生漂移炸機。
@@ -519,7 +519,7 @@ codexCourseEngineData = [
                 a: 1 
             },
             { 
-                q: "產品放水流入實體市場後，用戶集體回報開箱即損（DOA）故障率超標。這批客退品應第一時間強制送往何處進行屍檢剖析？", 
+                q: "產品在市場發生開箱即損（DOA）故障率超標，客退品應送往何處進行屍檢剖析？", 
                 o: ["產品市場行銷與概念調研部", "早期失效分析中繼站（EFFA / DOA Autopsy Line）進行物理開殼分析與缺陷追溯", "直接推回 SMT 熔爐重新過火"], 
                 a: 1 
             },
@@ -529,7 +529,7 @@ codexCourseEngineData = [
                 a: 1 
             },
             { 
-                q: "在 SMT 製程中，架設在鋼網錫膏印刷機正後方、用來在過爐前及時攔截錫膏印偏或厚度不均的 3D 量測關鍵天眼設備是？", 
+                q: "在 SMT 製程中，架設在鋼網錫膏印刷機正後方、用來在過爐前及時攔截錫膏印偏 or 厚度不均的 3D 量測關鍵天眼設備是？", 
                 o: ["AOI 自動光學檢測儀", "SPI 錫膏檢查儀", "X-Ray 射線斷層掃描儀"], 
                 a: 1 
             },
@@ -555,7 +555,7 @@ codexCourseEngineData = [
             },
             { 
                 q: "專案進度正式跨入 PVT 里程碑時，代表以下何種硬體狀態已經發生？", 
-                o: ["產品還在進行最初步的市場概念與 ID 美學調研", "研發設計檔案與 CMF 貼圖全面剛性凍結（Freeze），重心全力轉移至工廠量量產複製與拉速", "外殼鋼模尚未開模，還在等待結構 ME 出圖"], 
+                o: ["產品還在進行最初步的市場概念與 ID 美學調研", "研發設計檔案與 CMF 貼圖全面剛性凍結（Freeze），重心全力轉移至工廠量產複製與拉速", "外殼鋼模尚未開模，還在等待結構 ME 出圖"], 
                 a: 1 
             },
             { 
@@ -573,17 +573,61 @@ codexCourseEngineData = [
                 o: ["ICT 主板電路漏電針床站", "IMU 慣性核心動態六面翻轉校正站（Calibration）", "包裝 Packing 秤重防錯防缺料站"], 
                 a: 1 
             },
-            { q: "若新人在本堂 L1 考場位階考核中答對率低於 60%（Fail），系統的剛性連動法則會觸發何種後果？", o: ["系統自動放水，算他及格並發放戰力勳章", "不予點亮天賦樹認證，系統執行強退回溯，逼迫重新研讀實戰知識核心並重考", "直接跳轉至 L2 進階專科領域"], a: 1 },
-            { q: "在 SMT 製程中，若迴流焊熔爐的溫度焊接曲線（Profile）因厚銅板散熱過快導致升溫不足，主板元件最容易爆發何種微觀銲接缺陷？", o: ["元件外殼表面嚴重燒焦痕痕跡", "冷銲、虛銲與假銲（Cold Solder / Pseudo Solder）引發後期電路斷線", "主板 PCB 發生大面積碳化收縮"], a: 1 },
-            { q: "為了在開線試產的第一時間檢驗 SMT 線體設備的抓取精度與溫度穩定度，不浪費昂貴核心晶片的戰術備料作法是？", o: ["直接把百萬級核心晶片推上流水線進行盲測", "使用空板與過爐 dummy 樣片進行『空板過爐測試（Dummy Board Test）』進行製程打光確認", "坐在辦公室等 SMT 課長口頭保證"], a: 1 },
-            { q: "工廠 FATP 組裝線發生集體螢幕刮傷不良，工廠品保稱是前段進料問題，TPM 該如何快速在現場釐清權責邊界？", o: ["直接判定為上游 Vendor 賠償，開單罰款", "調閱 IQC（進料檢驗）原始抽檢數據報告，對比流水線 Assembly 拆解卡具的物理刮擦軌跡，精準判定是進料瑕疵還是線體治具刮傷", "不做任何調查，直接要求設計師修改 PRD 提高刮傷容忍公差"], a: 1 },
-            { q: "為防範高能量鋰電池在專案大量生產 MP 後，因日常充放電自然膨脹擠壓主板導致起火，TPM 在結構 DFM 階段必須死守什麼？", o: ["電池彩盒彩盒的美觀度", "電池四周必須剛性留出足夠的『膨脹安全 Clearance 安全間距Layout』", "要求電子 EE 將電池容量調降至 10%"], a: 1 },
-            { q: "在 fine-pitch BGA 晶片高密度貼片中，為了防範引腳錫膏發生物理橋接短路，TPM 應要求工廠定期維護哪一個關鍵治具？", o: ["後段組裝使用的防靜電手環", "SMT 錫膏網印鋼網（Stencil）的雷射開孔平整度與清洗頻率", "包裝箱使用的膠帶保壓器"], a: 1 },
-            { q: "流水線在日夜班交接轉廠（Shift Transition）時，良率突然無預警雪崩下跌 40%，TPM 趕往現場第一時間應調閱什麼？", o: ["當班的生產 UPH 產速報表", "交接班金件點檢日誌（Setup Verification Log）與首件檢查（First Article Inspection）數據", "採購部門的 BOM 報價單清冊"], a: 1 },
-            { q: "在 EVD 階段整機摔落測試（Drop Test）中，產品在特定角度連續跌落時內部結構卡鉤發生集體應力斷裂，TPM 應主導？", o: ["開除摔落測試站的操作工，認定其手法過於粗暴", "召集結構 ME 發動快速 DOE，評估局部肋條（Rib）增厚代償或更換高抗衝擊 PC-ABS 材料的結構補強", "發信給客戶要求取消摔落測試項目以順利結案"], a: 1 },
-            { q: "高階相機模組在進行自動化六軸對位（Active Alignment）時，治具回報 False Alarm（誤判率）高達 15%，導致大量合格品被扣留，這會造成何種連帶災難？", o: ["直接導致產品的 Lead Time 減少", "引發工廠後段瘋狂拆解重工，人為汙染光學鏡頭，直通率與毛利雙重垮台", "提高產品在凡間實體市場的溢價空間"], a: 1 },
-            { q: "二線備料廠（Dual Source）交付的元件宣稱規格與一線完全相同，TPM 准許其全面上線量產的剛性防線是？", o: ["直接相信其出廠報告，不需經過線體試產直接在 MP 大量導入", "在 EVT 或 DVT 階段安排專屬小批量（Split Run）線體對比測試，通過完整可靠性信賴性交叉比對驗證後方能解鎖放行", "由 TPM 課長口頭簽字放行認證"], a: 1 },
-            { q: "大流水線 FATP 的外觀品檢站（Cosmetic Inspection），為防範不同班別操作員對刮傷定義不一引發誤判 or 漏檢，TPM 必須主導線體建立？", o: ["取消外觀檢查站，全數交由凡間使用者自行發現不良", "主導客戶 ID、品保 QA 與工廠三方會審，剛性產出『黃金樣品與邊界限度樣本（Golden & Limit Samples）』銲死在工位上", "要求操作工自行憑感覺判定刮傷嚴重度"], a: 1 }
+            { 
+                q: "若新人在本堂 L1 考場位階考核中答對率低於 60%（Fail），系統的剛性連動法則會觸發何種後果？", 
+                o: ["系統自動放水，算他及格並發放戰力勳章", "不予點亮天賦樹認證，系統執行強退回溯，逼迫重新研讀實戰知識核心並重考", "直接跳轉至 L2 進階專科領域"], 
+                a: 1 
+            },
+            { 
+                q: "在 SMT 製程中，若迴流焊熔爐的溫度焊接曲線（Profile）因厚銅板散熱過快導致升溫不足，主板元件最容易爆發何種微觀銲接缺陷？", 
+                o: ["元件外殼表面嚴重燒焦痕痕跡", "冷銲、虛銲與假銲（Cold Solder / Pseudo Solder）引發後期電路斷線", "主板 PCB 發生大面積碳化收縮"], 
+                a: 1 
+            },
+            { 
+                q: "為了在開線試產的第一時間檢驗 SMT 線體設備的抓取精度與溫度穩定度，不浪費昂貴核心晶片的戰術備料作法是？", 
+                o: ["直接把百萬級核心晶片推上流水線進行盲測", "使用空板與過爐 dummy 樣片進行『空板過爐測試（Dummy Board Test）』進行製程打光確認", "坐在辦公室等 SMT 課長口頭保證"], 
+                a: 1 
+            },
+            { 
+                q: "工廠 FATP 組裝線發生集體螢幕刮傷不良，工廠品保稱是前段進料問題，TPM 該如何快速在現場釐清權責邊界？", 
+                o: ["直接判定為上游 Vendor 賠償，開單罰款", "調閱 IQC（進料檢驗）原始抽檢數據報告，對比流水線 Assembly 拆解卡具的物理刮擦軌跡，精準判定是進料瑕疵還是線體治具刮傷", "不做任何調查，直接要求設計師修改 PRD 提高刮傷容忍公差"], 
+                a: 1 
+            },
+            { 
+                q: "為防範高能量鋰電池在專案大量生產 MP 後，因日常充放電自然膨脹擠壓主板導致起火，TPM 在結構 DFM 階段必須死守什麼？", 
+                o: ["電池彩盒彩盒的美觀度", "電池四周必須剛性留出足夠的『膨脹安全 Clearance 安全間距Layout』", "要求電子 EE 將電池容量調降至 10%"], 
+                a: 1 
+            },
+            { 
+                q: "在 fine-pitch BGA 晶片高密度貼片中，為了防範引腳錫膏發生物理橋接短路，TPM 應要求工廠定期維護哪一個關鍵治具？", 
+                o: ["後段組裝使用的防靜電手環", "SMT 錫膏網印鋼網（Stencil）的雷射開孔平整度與清洗頻率", "包裝箱使用的膠帶保壓器"], 
+                a: 1 
+            },
+            { 
+                q: "流水線在日夜班交接轉廠（Shift Transition）時，良率突然無預警雪崩下跌 40%，TPM 趕往現場第一時間應調閱什麼？", 
+                o: ["當班的生產 UPH 產速報表", "交接班金件點檢日誌（Setup Verification Log）與首件檢查（First Article Inspection）數據", "採購部門的 BOM 報價單清冊"], 
+                a: 1 
+            },
+            { 
+                q: "在 EVD 階段整機摔落測試（Drop Test）中，產品在特定角度連續跌落時內部結構卡鉤發生集體應力斷裂，TPM 應主導？", 
+                o: ["開除摔落測試站的操作工，認定其手法過於粗暴", "召集結構 ME 發動快速 DOE，評估局部肋條（Rib）增厚代償或更換高抗衝擊 PC-ABS 材料的結構補強", "發信給客戶要求取消摔落測試項目以順利結案"], 
+                a: 1 
+            },
+            { 
+                q: "高階相機模組在進行自動化六軸對位（Active Alignment）時，治具回報 False Alarm（誤判率）高達 15%，導致大量合格品被扣留，這會造成何種連帶災難？", 
+                o: ["直接導致產品的 Lead Time 減少", "引發工廠後段瘋狂拆解重工，人為汙染光學鏡頭，直通率與毛利雙重垮台", "提高產品在凡間實體市場的溢價空間"], 
+                a: 1 
+            },
+            { 
+                q: "二線備料廠（Dual Source）交付的元件宣稱規格與一線完全相同，TPM 准許其全面上線量產的剛性防線是？", 
+                o: ["直接相信其出廠報告，不需經過線體試產直接在 MP 大量導入", "在 EVT 或 DVT 階段安排專屬小批量（Split Run）線體對比測試，通過完整可靠性信賴性交叉比對驗證後方能解鎖放行", "由 TPM 課長口頭簽字放行認證"], 
+                a: 1 
+            },
+            { 
+                q: "大流水線 FATP 的外觀品檢站（Cosmetic Inspection），為防範不同班別操作員對刮傷定義不一引發誤判 or 漏檢，TPM 必須主導線體建立？", 
+                o: ["取消外觀檢查站，全數交由凡間使用者自行發現不良", "主導客戶 ID、品保 QA 與工廠三方會審，剛性產出『黃金樣品與邊界限度樣本（Golden & Limit Samples）』銲死在工位上", "要求操作工自行憑感覺判定刮傷嚴重度"], 
+                a: 1 
+            }
         ]
     }
 ];
