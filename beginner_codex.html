@@ -12,257 +12,543 @@
             --text-main: #1A1A1A;
             --text-secondary: #475569;
             --border-heavy: #1A1A1A;
-            --shadow-tactical: 4px 4px 0px #1A1A1A;
-            --radius-sm: 6px;
+            --shadow-tactical: 5px 5px 0px #1A1A1A;
+            --radius-sm: 8px;
             --color-completed: #22C55E;
             --color-active-gold: #FDE047;
             --color-fail: #DC2626;
             --color-locked-gray: #E2E8F0;
         }
 
-        html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; background-color: var(--bg-color); font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; }
-        * { box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
+        }
 
-        .tactical-navbar { width: 100vw; height: 85px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--border-heavy); padding: 0 40px; background-color: var(--bg-color); flex-shrink: 0; z-index: 1000; }
-        .navbar-brand { display: flex; flex-direction: column; }
-        .navbar-controls { display: flex; align-items: center; gap: 15px; }
+        * {
+            box-sizing: border-box;
+        }
 
-        /* 語系切換按鈕 */
-        .lang-switcher-wrapper { display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; }
-        .lang-btn-core { width: 50px; height: 35px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; border-radius: 4px; }
-        .lang-btn-core.active { background: var(--text-main) !important; color: white !important; }
+        /* 剛性頂部控制列 */
+        .tactical-navbar {
+            width: 100vw;
+            height: 85px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--border-heavy);
+            padding: 0 40px;
+            background-color: var(--bg-color);
+            flex-shrink: 0;
+            z-index: 1000;
+        }
 
-        .auth-panel { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); white-space: nowrap; }
-        .back-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 15px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); color: var(--text-main); }
-        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
-
-        .workspace-container { display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden; }
-        .sidebar-panel { display: flex; width: 350px; background-color: var(--sidebar-cream); border-right: 4px solid var(--border-heavy); padding: 25px 18px; flex-direction: column; gap: 12px; overflow-y: auto; flex-shrink: 0; }
-        .hub-return-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 15px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); width: 100%; margin-bottom: 5px; color: var(--text-main); text-align: center; }
-        .tree-main-toggle { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 16px; border-radius: var(--radius-sm); font-weight: 900; font-size: 0.92rem; text-align: left; cursor: pointer; width: 100%; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); box-shadow: 3px 3px 0px var(--border-heavy); }
-        .tree-sub-group { padding-left: 10px; border-left: 3px solid var(--border-heavy); margin-left: 8px; margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
-        .leaf-btn { background: var(--card-white); border: 2px solid var(--border-heavy); padding: 10px 14px; border-radius: var(--radius-sm); font-weight: 800; font-size: 0.82rem; text-align: left; cursor: pointer; width: 100%; color: var(--text-main); box-shadow: 2px 2px 0px var(--border-heavy); transition: all 0.1s; line-height: 1.4; }
-        
-        /* 側邊欄滑過左邊線條防裁切 */
-        .leaf-btn:hover { transform: translate(2px, -2px); box-shadow: 2px 4px 0px var(--border-heavy); }
-        .leaf-btn.active { background: var(--color-active-gold) !important; box-shadow: 1px 1px 0px var(--border-heavy) !important; }
-
-        .content-panel { flex: 1; height: 100%; padding: 35px 40px; background-color: var(--card-white); display: flex; flex-direction: column; overflow: visible; }
-        .dashboard-view-hall, .document-canvas, .exam-session-box, .sub-pagination-dots-zone { display: none; width: 100%; }
-
-        /* 大廳 70% 資訊密度微縮比例呈現 */
-        .dashboard-view-hall { height: 100%; overflow-y: auto; padding: 10px 15px 30px 15px; font-size: 0.82rem; }
-        .level-cards-parallel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; margin-bottom: 20px; padding: 5px 2px; }
-        .progress-card-master { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: 10px; padding: 12px 16px; box-shadow: var(--shadow-tactical); cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; justify-content: space-between; }
-        .progress-card-master:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0px var(--border-heavy); }
-        .progress-card-master.active-level { background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important; border-width: 3px !important; box-shadow: 5px 5px 0px var(--border-heavy) !important; }
-        
-        .progress-label { font-family: monospace; font-weight: 900; font-size: 0.72rem; color: var(--text-secondary); }
-        .progress-percentage { font-size: 1.8rem; font-weight: 900; margin: 2px 0; color: var(--text-main); line-height: 1; }
-        .progress-stats { font-size: 0.75rem; font-weight: 800; color: var(--text-main); }
-        .progress-bar-bg { width: 100%; height: 10px; background: #E2E8F0; border: 2px solid var(--border-heavy); border-radius: 5px; margin-top: 6px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: var(--color-completed); width: 0%; transition: width 0.4s ease-out; }
-
-        /* 流線清單 4 列並排 */
-        .cdx-dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; padding: 5px 2px; }
-        .cdx-dashboard-card { border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 10px 14px; cursor: pointer; box-shadow: var(--shadow-tactical); transition: all 0.15s; display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 52px; }
-        .cdx-dashboard-card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0px var(--text-main); }
-
-        .document-canvas { flex: 1; overflow: hidden; }
-        
-        /* 👑 修正3：70% 比例微縮滿版閱讀畫布（絕對不允許併排與 canvas 擠壓） 👑 */
-        .textbook-scroll-box { flex: 1; overflow-y: auto; padding: 10px 8px 40px 0; width: 100%; font-size: 0.85rem; display: block; }
-        .knowledge-header-clean { border-left: 5px solid var(--border-heavy); padding-left: 12px; font-size: 1.1rem; margin: 0 0 20px 0; font-weight: 900; color: var(--text-main); }
-        .content-buffer-area { width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; } /* 術語圖鑑 4 列並排 */
-
-        /* 👑 術語卡牌圖鑑風格（對標 Library 樣板） 👑 */
-        .term-tactical-card {
-            background: #FFFFFF;
-            border: 2px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            box-shadow: var(--shadow-tactical);
-            cursor: pointer;
-            transition: all 0.1s;
+        .navbar-brand {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 140px;
         }
 
-        .term-tactical-card:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 6px 6px 0px var(--border-heavy);
-            background-color: #FFFDF4;
+        .navbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .term-tag {
-            font-size: 0.65rem;
+        .auth-panel {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
             font-weight: 900;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px dashed var(--border-heavy);
-            padding-bottom: 4px;
-            margin-bottom: 8px;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            white-space: nowrap;
         }
 
-        .term-title {
-            font-size: 0.95rem;
+        .back-btn {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 15px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
             font-weight: 900;
+            text-decoration: none;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            display: inline-block;
+            text-align: center;
+            min-width: 95px;
             color: var(--text-main);
-            margin: 0 0 6px 0;
-            line-height: 1.3;
         }
 
-        .term-parentheses-desc {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: #475569;
+        .back-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
+        }
+
+        /* 雙區塊工作主框架 */
+        .workspace-container {
+            display: flex;
+            width: 100vw;
+            height: calc(100vh - 85px);
+            overflow: hidden;
+        }
+
+        /* 側邊欄常駐導航面板 */
+        .sidebar-panel {
+            display: flex;
+            width: 350px;
+            background-color: var(--sidebar-cream);
+            border-right: 4px solid var(--border-heavy);
+            padding: 25px 18px;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            height: 100%;
+        }
+
+        .hub-return-btn {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 12px 15px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 900;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            width: 100%;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-main);
+            transition: all 0.1s;
+        }
+
+        .hub-return-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
+            background-color: #FAF9F5;
+        }
+
+        .menu-category-block {
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        .tree-main-toggle {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.95rem;
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            width: 100%;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .tree-sub-group {
+            padding-left: 10px;
+            border-left: 3px solid var(--border-heavy);
+            margin-left: 8px;
+            margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .leaf-btn {
+            background: var(--card-white);
+            border: 2px solid var(--border-heavy);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-weight: 800;
+            font-size: 0.82rem;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
+            color: var(--text-main);
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            transition: all 0.1s;
             line-height: 1.4;
         }
 
-        .term-eng-sub {
-            font-size: 0.65rem;
+        .leaf-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+        }
+
+        .leaf-btn.active {
+            background: var(--color-active-gold) !important;
+            color: var(--text-main) !important;
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px var(--border-heavy) !important;
+        }
+
+        /* 右側主內容面板 */
+        .content-panel {
+            flex: 1;
+            height: 100%;
+            padding: 35px 40px;
+            background-color: var(--card-white);
+            display: flex;
+            flex-direction: column;
+            overflow: visible; 
+        }
+
+        .dashboard-view-hall,
+        .document-canvas,
+        .exam-session-box,
+        .sub-pagination-dots-zone {
+            display: none;
+            width: 100%;
+        }
+
+        /* 大廳安全艙帶緩衝，防止 Hover 線條切邊 */
+        .dashboard-view-hall {
+            height: 100%;
+            overflow-y: auto;
+            padding: 10px 12px 30px 12px; 
+        }
+
+        /* 水平滑動七級整備卡槽 */
+        .level-cards-flex-row {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .progress-card-master {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: var(--shadow-tactical);
+            min-width: 240px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .progress-card-master:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 7px 7px 0px var(--border-heavy);
+        }
+
+        .progress-card-master.active-level {
+            background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important;
+            border-color: var(--border-heavy) !important;
+            border-width: 4px !important;
+            box-shadow: 6px 6px 0px var(--border-heavy) !important;
+        }
+
+        .progress-label {
             font-family: monospace;
             font-weight: 900;
-            color: #94A3B8;
-            margin-top: auto;
-            text-transform: uppercase;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
         }
 
-        /* 👑 術語深度解鎖彈窗（Modal） 👑 */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.5); z-index: 2000;
-            display: none; justify-content: center; align-items: center;
-            padding: 20px;
+        .progress-percentage {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin: 6px 0;
+            color: var(--text-main);
+            line-height: 1;
         }
 
-        .modal-panel-box {
-            background: var(--bg-color);
-            border: 4px solid var(--border-heavy);
-            border-radius: 12px;
-            box-shadow: 8px 8px 0px var(--border-heavy);
+        .progress-stats {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .progress-bar-bg {
             width: 100%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 30px;
-            position: relative;
-            animation: fadeInBox 0.15s ease-out;
+            height: 14px;
+            background: #E2E8F0;
+            border: 2px solid var(--border-heavy);
+            border-radius: 7px;
+            margin-top: 10px;
+            overflow: hidden;
         }
 
-        .modal-close-btn {
-            position: absolute; top: 15px; right: 20px;
-            background: var(--card-white); border: 2px solid var(--border-heavy);
-            border-radius: 50%; width: 30px; height: 30px;
-            font-weight: 900; font-size: 1rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--color-completed);
+            width: 0%;
+            transition: width 0.4s ease-out;
+        }
+
+        /* 下層子單元網格防線 */
+        .cdx-dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+            padding: 8px 4px; 
+        }
+
+        .cdx-dashboard-card {
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            padding: 22px 20px;
+            cursor: pointer;
+            box-shadow: var(--shadow-tactical);
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 130px;
+        }
+
+        .cdx-dashboard-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0px var(--text-main);
+        }
+
+        .document-canvas {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* 二級頁籤導航列 */
+        .cdx-sub-nav-bar {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--border-heavy);
+            padding-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .sub-nav-btn {
+            background: #FFF;
+            border: 2px solid var(--border-heavy);
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.85rem;
+            cursor: pointer;
             box-shadow: 2px 2px 0px var(--border-heavy);
+            transition: all 0.1s;
+            color: var(--text-main);
         }
 
-        .modal-close-btn:hover {
-            transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--border-heavy);
+        .sub-nav-btn.active {
+            background: var(--text-main);
+            color: white;
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px var(--border-heavy);
         }
 
-        .edu-overview-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; width: 100%; }
-        .edu-overview-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 14px; box-shadow: 3px 3px 0px var(--border-heavy); }
-        .edu-card-label { font-size: 0.75rem; font-weight: 900; color: var(--text-secondary); text-transform: uppercase; border-bottom: 1px dashed var(--border-heavy); padding-bottom: 4px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-        .edu-card-body-text { font-size: 0.82rem; font-weight: 700; line-height: 1.5; color: var(--text-main); }
-        
-        .dict-panel-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 16px; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 15px; width: 100%; }
-        .dict-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
-        .dict-trigger-btn { background: #FFFFFF; border: 2px solid var(--border-heavy); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 2px 2px 0px var(--border-heavy); display: flex; justify-content: space-between; align-items: center; color: var(--text-main); }
-        .dict-trigger-btn:hover { background: #FAF9F5; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--border-heavy); }
-        .dict-display-box { background: #FFFDF2; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 14px; margin-top: 12px; box-shadow: 2px 2px 0px var(--border-heavy); font-size: 0.82rem; font-weight: 700; line-height: 1.5; display: none; animation: fadeInBox 0.15s ease-out; }
-        
-        .sandbox-panel-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 18px; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 20px; width: 100%; }
-        .sandbox-choice-row { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-        .sandbox-choice-btn { background: #FFFFFF; border: 2px solid var(--border-heavy); padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 2px 2px 0px var(--border-heavy); color: var(--text-main); transition: all 0.1s; }
-        .sandbox-choice-btn:hover { background: #FAF5FF; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--border-heavy); }
-        .sandbox-fallout-box { margin-top: 12px; padding: 12px; border-radius: var(--radius-sm); border: 2px solid var(--border-heavy); font-size: 0.82rem; font-weight: 700; line-height: 1.5; display: none; }
-        .sandbox-fallout-box.success { background: #F0FDF4; border-color: #16A34A; color: #14532D; box-shadow: 3px 3px 0px #16A34A; }
-        .sandbox-fallout-box.fail { background: #FEF2F2; border-color: #DC2626; color: #7F1D1D; box-shadow: 3px 3px 0px #DC2626; }
-        
-        .exam-progress-bar { width: 100%; background: #E2E8F0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 25px; border: 1.5px solid #000; }
-        .exam-progress-fill { height: 100%; background: var(--text-main); width: 0%; transition: width 0.2s; }
-        .option-card { background: #FFF; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 14px; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0px #000; transition: all 0.1s; }
-        .option-card:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px #000; background: var(--sidebar-cream); }
-        
-        .sub-pagination-dots-zone { display: flex; justify-content: center; align-items: center; gap: 14px; padding: 15px 0; border-top: 2px dashed #E2E8F0; margin-top: auto; }
-        .slider-dot { width: 14px; height: 14px; border: 3px solid var(--border-heavy); border-radius: 50%; background: #FFF; cursor: pointer; }
-        .slider-dot.active { background: var(--text-main); transform: scale(1.2); }
-        .slider-dot.exam-dot { border-color: var(--color-fail); background: #FEF2F2; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #B91C1C; }
-        .slider-dot.exam-dot.active { background: var(--color-fail); color: #FFF; }
-        @keyframes fadeInBox { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        .textbook-scroll-box {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+            width: 100%;
+        }
+
+        /* 流程圖大畫布 */
+        .dynamic-flow-canvas {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            background: #F8FAFC;
+            border: 2px dashed var(--border-heavy);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            margin: 15px 0;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
+        .flow-node-block {
+            background: #FFF;
+            border: 2px solid var(--border-heavy);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.85rem;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            white-space: nowrap;
+            text-align: center;
+            transition: all 0.1s;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .flow-node-block.active-node {
+            background: var(--text-main) !important;
+            color: #FFFFFF !important;
+            border-color: #1A1A1A !important;
+            box-shadow: 3px 3px 0px var(--color-active-gold) !important;
+        }
+
+        .flow-arrow-split {
+            font-weight: 900;
+            font-size: 1rem;
+            color: var(--text-main);
+            user-select: none;
+        }
+
+        /* 10 抽 3 考場 */
+        .exam-session-box {
+            flex-direction: column;
+        }
+
+        .exam-progress-bar {
+            width: 100%;
+            background: #E2E8F0;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1.5px solid #000;
+        }
+
+        .exam-progress-fill {
+            height: 100%;
+            background: var(--text-main);
+            width: 0%;
+            transition: width 0.2s;
+        }
+
+        .option-card {
+            background: #FFF;
+            border: 2px solid var(--border-heavy);
+            padding: 18px;
+            border-radius: var(--radius-sm);
+            margin-top: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 3px 3px 0px #000;
+            transition: all 0.1s;
+        }
+
+        .option-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px #000;
+            background: var(--sidebar-cream);
+        }
+
+        /* 底部導航點點 */
+        .sub-pagination-dots-zone {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            padding: 15px 0;
+            margin-top: auto;
+            border-top: 2px dashed #E2E8F0;
+        }
+
+        .slider-dot {
+            width: 14px;
+            height: 14px;
+            border: 3px solid var(--border-heavy);
+            border-radius: 50%;
+            background: #FFF;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .slider-dot.active {
+            background: var(--text-main);
+            transform: scale(1.2);
+        }
+
+        .slider-dot.exam-dot {
+            border-color: var(--color-fail);
+            background: #FEF2F2;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #B91C1C;
+        }
+
+        .slider-dot.exam-dot.active {
+            background: var(--color-fail);
+            color: #FFF;
+        }
     </style>
 </head>
 <body>
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
+            <span style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.8rem;">SYS.BEGINNER_CODEX V6.3</span>
+            <h1 style="margin: 3px 0 0 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
         </div>
         <div class="navbar-controls">
-            <div id="global-user-profile-card" class="auth-panel">👤 冒險者：讀取中...</div>
-            <div class="lang-switcher-wrapper">
-                <button class="lang-btn-core active" id="btn-tw" onclick="executeLangSwitch('tw')">TW</button>
-                <button class="lang-btn-core" id="btn-en" onclick="executeLangSwitch('en')">EN</button>
-            </div>
+            <div id="global-user-profile-card" class="auth-panel">👤 冒險者：線上特工</div>
             <a href="index.html" class="back-btn">返回首頁</a>
         </div>
     </div>
 
     <div class="workspace-container">
+        
         <aside class="sidebar-panel">
             <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
             <div id="global-tree-root"></div>
         </aside>
 
         <main class="content-panel">
+            
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
                 <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
                 <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">公會戰術天賦大廳</h2>
             </div>
 
-            <!-- 數據化多階 Level HUB 大廳 -->
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
-                <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
+                <div class="level-cards-flex-row" id="global-level-flex-deck"></div>
                 <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
-                <div style="font-weight: 900; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">
-                    子單元列表：
+                <div style="font-weight: 900; font-size: 1.2rem; margin-bottom: 15px; color: var(--text-main);">
+                    🌿 <span id="dynamic-list-title-label">Level 1</span> 子單元大捷攻堅列表：
                 </div>
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
 
-            <!-- 教材內容核心畫布 (去 Canvas 滿版佈局) -->
             <div class="document-canvas" id="textbook-viewport">
                 <div class="cdx-sub-nav-bar" id="cdx-sub-nav-wrapper"></div>
-                <h3 class="knowledge-header-clean">實戰知識核心 (Core Knowledge Base)</h3>
-                <div class="textbook-scroll-box">
-                    <div id="lesson-content" class="content-buffer-area"></div>
-                </div>
+                <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.15rem; margin: 0 0 15px 0;">⚡ 實戰知識核心 (Core Knowledge Base)</h3>
+                <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
+                <div class="textbook-scroll-box" id="lesson-content"></div>
             </div>
 
-            <!-- 10 抽 3 隨機大考場 -->
             <div class="exam-session-box" id="exam-viewport">
-                <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;"><span style="color:var(--color-fail);">🔥 10 抽 3 隨機大考</span><span id="exam-counter">1 / 3</span></div>
-                <div class="exam-progress-bar"><div class="exam-progress-fill" id="exam-progress"></div></div>
+                <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
+                    <span style="color:var(--color-fail);">🔥 10 抽 3 隨機閃擊戰 (Exam Mode)</span>
+                    <span id="exam-counter">1 / 3</span>
+                </div>
+                <div class="exam-progress-bar">
+                    <div class="exam-progress-fill" id="exam-progress"></div>
+                </div>
                 <h3 id="exam-question-text" style="font-size:1.2rem; line-height:1.5; margin-bottom:25px; font-weight: 800;">載入中...</h3>
                 <div id="exam-options-container"></div>
             </div>
 
             <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
+            
         </main>
-    </div>
-
-    <!-- 👑 全域術語詳情彈窗（Modal） 👑 -->
-    <div class="modal-overlay" id="global-term-modal" onclick="closeTermModalOutside(event)">
-        <div class="modal-panel-box">
-            <button class="modal-close-btn" onclick="closeTermModal()">✕</button>
-            <div id="modal-dynamic-payload-area"></div>
-        </div>
     </div>
 
     <script>
@@ -272,159 +558,269 @@
             { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'course_data_1-3.js' }
         ];
 
-        // 👑 沒收所有 Level 進度卡內部的 Emoji 圖標 👑
         const globalLevelMetadata = [
-            { num: 1, key: 'l1', name: 'LEVEL 1', label: '基礎通識' },
-            { num: 2, key: 'l2', name: 'LEVEL 2', label: '進階跨功能' },
-            { num: 3, key: 'l3', name: 'LEVEL 3', label: '高階 TPM' },
-            { num: 4, key: 'l4', name: 'LEVEL 4', label: '日常速通' },
-            { num: 5, key: 'l5', name: 'LEVEL 5', label: '供應鏈擴展' },
-            { num: 6, key: 'l6', name: 'LEVEL 6', label: '未知領域' },
-            { num: 7, key: 'l7', name: 'LEVEL 7', label: '終局修煉' }
+            { num: 1, key: 'l1', name: 'LEVEL 1', label: '🌿 基礎通識領域' },
+            { num: 2, key: 'l2', name: 'LEVEL 2', label: '🌊 進階跨功能技術' },
+            { num: 3, key: 'l3', name: 'LEVEL 3', label: '🔮 高階 TPM 專科' },
+            { num: 4, key: 'l4', name: 'LEVEL 4', label: '⏳ 日常速通地下城' },
+            { num: 5, key: 'l5', name: 'LEVEL 5', label: '🌐 供應鏈擴展 DLC' },
+            { num: 6, key: 'l6', name: 'LEVEL 6', label: '🔒 未知研修領域' },
+            { num: 7, key: 'l7', name: 'LEVEL 7', label: '🔒 神聖核心終局' }
         ];
 
-        let selectedActiveLevelNum = 1, activeCourseIdx = 0, activePageIdx = 0, activeSubMatrixIdx = 0, examActive = false, examCurrentQ = 0, examScoreCount = 0;
+        let selectedActiveLevelNum = 1; 
+        let activeCourseIdx = 0, activePageIdx = 0, activeSubMatrixIdx = 0, activeFlowNodeIdx = 0;
+        let examActive = false, examCurrentQ = 0, examScoreCount = 0;
 
-        // 彈窗內部字典與沙盒動態通訊
-        window.showTacticalDict = (t) => {
-            const b = document.getElementById('runtime-dict-box');
-            if (b) { b.style.display = 'block'; b.innerHTML = `💡 <strong>字典反饋：</strong><br>${t}`; }
-        };
-        window.triggerSimDecision = (s, f) => {
-            const b = document.getElementById('runtime-sandbox-fallout');
-            if (b) { b.style.display = 'block'; b.className = s ? 'sandbox-fallout-box success' : 'sandbox-fallout-box fail'; b.innerHTML = f; }
+        // 👑 剛性復原：重新激活特工字典顯影與沙盒決策大腦 👑
+        window.showTacticalDict = function(textPayload) {
+            const box = document.getElementById('runtime-dict-box');
+            if (box) { box.style.display = 'block'; box.innerHTML = `💡 <strong>公會特工字典反饋：</strong><br>${textPayload}`; }
         };
 
-        window.onload = () => { window.codexCourseEngineData = []; renderGlobalTreeStructure(); routeController(); };
+        window.triggerSimDecision = function(isSuccess, feedbackText) {
+            const box = document.getElementById('runtime-sandbox-fallout');
+            if (box) { box.style.display = 'block'; box.className = isSuccess ? 'sandbox-fallout-box success' : 'sandbox-fallout-box fail'; box.innerHTML = feedbackText; }
+        };
+
+        window.onload = () => {
+            window.codexCourseEngineData = [];
+            renderGlobalTreeStructure();
+            routeController();
+        };
 
         function renderGlobalTreeStructure() {
-            const root = document.getElementById('global-tree-root'); root.innerHTML = '';
-            const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
-            presentLevels.forEach(lvlNum => {
-                const subset = globalSubUnitRegistry.filter(u => u.levelNum === lvlNum);
-                const block = document.createElement('div'); block.className = 'menu-category-block';
-                block.innerHTML = `<button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} 展開</button><div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">${subset.map(u => `<button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}</div>`;
-                root.appendChild(block);
-            });
+            const root = document.getElementById('global-tree-root');
+            root.innerHTML = `
+                <div class="menu-category-block">
+                    <button class="tree-main-toggle">🗺️ 初心者寶典星盤</button>
+                    <div class="tree-sub-group">
+                        ${globalSubUnitRegistry.map(u => `
+                            <button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         }
 
-        function toggleMenuSection(id) { const el = document.getElementById(id); if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; }
-
         function routeController(directType, directC) {
-            const urlParams = new URLSearchParams(window.location.search), paramC = directC || urlParams.get('c'), paramType = directType || urlParams.get('type') || 'codex';
-            syncNavbarState();
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramC = directC || urlParams.get('c');
+            const paramType = directType || urlParams.get('type') || 'codex';
+
             if (!paramC) {
-                document.getElementById('cdx-page-header-zone').style.display = 'block'; document.getElementById('current-chapter-id').innerText = "DASHBOARD"; document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
-                document.getElementById('dashboard-menu-hall').style.display = 'block'; document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('universal-dots-bar').style.display = 'none';
+                document.getElementById('cdx-page-header-zone').style.display = 'block';
+                document.getElementById('current-chapter-id').innerText = "DASHBOARD";
+                document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
+
+                document.getElementById('dashboard-menu-hall').style.display = 'block';
+                document.getElementById('textbook-viewport').style.display = 'none';
+                document.getElementById('exam-viewport').style.display = 'none';
+                document.getElementById('universal-dots-bar').style.display = 'none';
+
+                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active'));
                 renderMultiLevelHubDashboard();
             } else {
-                document.getElementById('dashboard-menu-hall').style.display = 'none'; document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); const leaf = document.getElementById(`lf-${paramType}-${paramC}`); if (leaf) leaf.classList.add('active'); injectContentPackScript(paramType, paramC);
+                document.getElementById('dashboard-menu-hall').style.display = 'none';
+                const subUnitKey = `lf-${paramType}-${paramC}`;
+                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active'));
+                const activeLeaf = document.getElementById(subUnitKey);
+                if (activeLeaf) activeLeaf.classList.add('active');
+
+                injectContentPackScript(paramType, paramC);
             }
         }
 
         function renderMultiLevelHubDashboard() {
-            const deckRow = document.getElementById('global-level-flex-deck'), grid = document.getElementById('l1-cards-grid'); if (!deckRow || !grid) return;
+            const deckRow = document.getElementById('global-level-flex-deck');
+            const grid = document.getElementById('l1-cards-grid');
+            if (!deckRow || !grid) return;
+
             deckRow.innerHTML = ''; grid.innerHTML = '';
+
             globalLevelMetadata.forEach(lvl => {
-                const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num); let total = subUnitsInLvl.length, done = 0;
-                subUnitsInLvl.forEach(u => { if (localStorage.getItem(`codex-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') done++; });
+                const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num);
+                let total = subUnitsInLvl.length, done = 0;
+                subUnitsInLvl.forEach(u => {
+                    const storageKey = `L1-A${u.subUnitId.split('-')[1]}`;
+                    if (localStorage.getItem(`codex-${storageKey}-clear`) === 'true') done++;
+                });
                 const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-                deckRow.innerHTML += `<div class="progress-card-master ${lvl.num===selectedActiveLevelNum?'active-level':''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();"><div class="progress-label">${lvl.name} : ${lvl.label}</div><div class="progress-percentage">${pct}%</div><div class="progress-stats">完成指標: ${done} / ${total}</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%;"></div></div></div>`;
+                const isActiveClass = lvl.num === selectedActiveLevelNum ? 'active-level' : '';
+                deckRow.innerHTML += `
+                    <div class="progress-card-master ${isActiveClass}" onclick="switchDashboardSelectedLevel(${lvl.num})">
+                        <div class="progress-label">${lvl.name} : ${lvl.label}</div>
+                        <div class="progress-percentage">${pct}%</div>
+                        <div class="progress-stats">完成指標: ${done} / ${total}</div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%;"></div></div>
+                    </div>`;
             });
+
+            document.getElementById('dynamic-list-title-label').innerText = `Level ${selectedActiveLevelNum}`;
             const filteredUnits = globalSubUnitRegistry.filter(u => u.levelNum === selectedActiveLevelNum);
-            if (filteredUnits.length === 0) { grid.innerHTML = `<div style="grid-column: 1/-1; padding: 40px; border: 2px dashed #ccc; text-align: center; font-weight: 800;">🔒 數據包尚未部署。</div>`; return; }
+            
+            if (filteredUnits.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; padding: 40px 20px; border: 2px dashed var(--color-locked-gray); text-align: center; font-weight: 800; color: var(--text-secondary); border-radius: var(--radius-sm);">🔒 執政官提示：Level ${selectedActiveLevelNum} 數據包尚未部署上線，敬請期待。</div>`;
+                return;
+            }
+
             filteredUnits.forEach(unit => {
-                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`, isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
-                grid.innerHTML += `<div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})"><div style="display:flex; align-items:center; gap:8px;"><span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span><h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3></div><div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isClear ? `✅ [${localStorage.getItem(`talent-${storageKey}-grade`)}]` : '⏳ 待攻堅'}</div></div>`;
+                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
+                const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
+                const savedGrade = localStorage.getItem(`talent-${storageKey}-grade`);
+                const cardColor = isClear ? '#DCFCE7' : '#FEF08A';
+                grid.innerHTML += `
+                    <div class="cdx-dashboard-card" style="background-color: ${cardColor};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
+                        <div>
+                            <div style="font-family: monospace; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary);">LEVEL ${selectedActiveLevelNum} SUB-UNIT</div>
+                            <h3 style="margin: 6px 0 0 0; font-size: 1.1rem; font-weight: 900; color: var(--text-main);">${unit.title}</h3>
+                        </div>
+                        <div style="font-size: 0.82rem; font-weight: 900; color: var(--text-main); margin-top: 15px;">${isClear ? `✅ 考核通過 [ 等階: ${savedGrade} ]` : '⏳ 尚未通過考核'}</div>
+                    </div>`;
             });
         }
 
-        function switchUnit(type, subUnitId, lvlNum) { examActive = false; selectedActiveLevelNum = lvlNum; activeCourseIdx = 0; activePageIdx = 0; activeSubMatrixIdx = 0; window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); routeController(type, subUnitId); }
-        function exitToDashboardMenu() { examActive = false; window.history.pushState(null, '', window.location.pathname); routeController(null, null); }
+        function switchDashboardSelectedLevel(lvlNum) { selectedActiveLevelNum = lvlNum; renderMultiLevelHubDashboard(); }
+        function switchUnit(type, subUnitId, lvlNum) { examActive = false; selectedActiveLevelNum = lvlNum; activeCourseIdx = 0; activePageIdx = 0; activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; const newUrl = `${window.location.pathname}?type=${type}&c=${subUnitId}`; window.history.pushState(null, '', newUrl); routeController(type, subUnitId); }
+        function exitToDashboardMenu() { examActive = false; const newUrl = window.location.pathname; window.history.pushState(null, '', newUrl); routeController(null, null); }
 
         function injectContentPackScript(type, packId) {
-            window.codexCourseEngineData = []; const old = document.getElementById('dynamic-course-pack'); if (old) old.remove();
+            window.codexCourseEngineData = [];
+            const oldScript = document.getElementById('dynamic-course-pack'); if (oldScript) oldScript.remove();
             const found = globalSubUnitRegistry.find(u => u.subUnitId === packId); if (!found) return;
-            const script = document.createElement('script'); script.id = 'dynamic-course-pack'; script.src = `${found.file}?v=${Date.now()}`; script.onload = () => { initEngine(); }; document.head.appendChild(script);
+            const script = document.createElement('script'); script.id = 'dynamic-course-pack';
+            const isLocalFile = window.location.protocol === 'file:';
+            script.src = isLocalFile ? `${found.file}` : `${found.file}?v=${Date.now()}`;
+            script.onload = () => { initEngine(); };
+            script.onerror = () => {
+                document.getElementById('current-chapter-name').innerText = "數據包加載失敗";
+                document.getElementById('lesson-content').innerHTML = `<div style="padding: 30px; border: 2px dashed var(--color-fail); text-align: center; font-weight: 900; color: var(--color-fail);">💥 找不到單元數據包 [ ${found.file} ]。</div>`;
+            };
+            document.head.appendChild(script);
         }
 
         function initEngine() {
-            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) { document.getElementById('current-chapter-name').innerText = "數據解讀失敗"; document.getElementById('lesson-content').innerHTML = `<div style="padding: 30px; border: 3px solid var(--border-heavy); background-color: #FEE2E2; border-radius: var(--radius-sm); font-weight: 900; color: var(--color-fail);">🚨 數據結構為空！</div>`; return; }
+            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) {
+                document.getElementById('current-chapter-name').innerText = "數據解讀失敗";
+                document.getElementById('lesson-content').innerHTML = `<div style="padding: 30px; border: 3px solid var(--border-heavy); background-color: #FEE2E2; border-radius: var(--radius-sm); font-weight: 900; color: var(--color-fail);">🚨 [除錯顯影警告] window.codexCourseEngineData 數據結構為空！</div>`;
+                return;
+            }
             loadCourseState(activeCourseIdx, activePageIdx);
         }
 
-        // 👑 修正點：點擊 Slider 點點直接強制無痛退出考場模式 👑
-        function exitExamToPage(pIdx) {
-            examActive = false; examCurrentQ = 0; examScoreCount = 0; activeSubMatrixIdx = 0;
-            loadCourseState(activeCourseIdx, pIdx);
-        }
-
+        // 👑 剛性復原：100% 補齊多網格分支與頁籤對位引擎 👑
         function loadCourseState(cIdx, pIdx) {
-            activeCourseIdx = cIdx; const course = window.codexCourseEngineData[cIdx]; const dotsBar = document.getElementById('universal-dots-bar'); dotsBar.innerHTML = '';
-            if (examActive) {
-                document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block'; document.getElementById('universal-dots-bar').style.display = 'flex';
-                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; }); dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; runExamEngine();
-            } else {
-                document.getElementById('textbook-viewport').style.display = 'flex'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('universal-dots-bar').style.display = 'flex';
-                activePageIdx = pIdx; const page = course.subPages[pIdx]; document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; document.getElementById('current-chapter-name').innerText = page.title;
-                const subNavWrapper = document.getElementById('cdx-sub-nav-wrapper'); let targetedText = page.text, targetedFlow = page.diagramFlowArray;
-                
-                if (page.subMatrixBranches) {
-                    if (subNavWrapper) { subNavWrapper.style.display = 'flex'; subNavWrapper.innerHTML = ''; page.subMatrixBranches.forEach((branch, bIdx) => { subNavWrapper.innerHTML += `<button class="sub-nav-btn ${bIdx===activeSubMatrixIdx?'active':''}" onclick="activeSubMatrixIdx=${bIdx};loadCourseState(${cIdx},${pIdx})">${branch.branchLabel}</button>`; }); }
-                    targetedText = page.subMatrixBranches[activeSubMatrixIdx].text; targetedFlow = page.subMatrixBranches[activeSubMatrixIdx].diagramFlowArray;
-                } else { if (subNavWrapper) subNavWrapper.style.display = 'none'; activeSubMatrixIdx = 0; }
-                
-                // 👑 修正3：滿版 4 欄術語卡牌圖鑑網格（對標 Library 樣板） 👑
-                let compiledHtml = "";
-                if (targetedFlow && targetedFlow.length > 0) {
-                    compiledHtml = targetedFlow.map((node, nIdx) => `
-                        <div class="term-tactical-card" onclick="openTermModal(${cIdx}, ${pIdx}, ${nIdx})">
-                            <div class="term-tag">${node.category || "FATP / PROCESS"}</div>
-                            <h4 class="term-title">${node.name}</h4>
-                            <div class="term-parentheses-desc">${node.shortDesc || ""}</div>
-                            <div class="term-eng-sub">${node.engSub || "PROCESS METRIC"}</div>
-                        </div>`).join('');
-                } else {
-                    compiledHtml = `<div style="grid-column: 1/-1; line-height:1.6; font-size:0.85rem;">${targetedText || ""}</div>`;
-                }
-                document.getElementById('lesson-content').innerHTML = compiledHtml;
+            activeCourseIdx = cIdx;
+            const course = window.codexCourseEngineData[cIdx];
+            const dotsBar = document.getElementById('universal-dots-bar');
+            dotsBar.innerHTML = '';
 
-                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="exitExamToPage(${sIdx})"></div>`; }); dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
+            if (examActive) {
+                document.getElementById('textbook-viewport').style.display = 'none';
+                document.getElementById('exam-viewport').style.display = 'block';
+                document.getElementById('universal-dots-bar').style.display = 'flex';
+                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; });
+                dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`;
+                runExamEngine();
+            } else {
+                document.getElementById('textbook-viewport').style.display = 'flex';
+                document.getElementById('exam-viewport').style.display = 'none';
+                document.getElementById('universal-dots-bar').style.display = 'flex';
+                activePageIdx = pIdx;
+                const page = course.subPages[pIdx];
+
+                document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`;
+                document.getElementById('current-chapter-name').innerText = page.title;
+
+                // 👑 多分支矩陣 subMatrixBranches 硬核焊接 👑
+                const subNavWrapper = document.getElementById('cdx-sub-nav-wrapper');
+                let targetedText = page.text;
+                let targetedFlow = page.diagramFlowArray;
+
+                if (page.subMatrixBranches) {
+                    if (subNavWrapper) {
+                        subNavWrapper.style.display = 'flex'; subNavWrapper.innerHTML = '';
+                        page.subMatrixBranches.forEach((branch, bIdx) => {
+                            const activeBranchClass = bIdx === activeSubMatrixIdx ? 'active' : '';
+                            subNavWrapper.innerHTML += `<button class="sub-nav-btn ${activeBranchClass}" onclick="switchSubMatrixBranch(${bIdx})">${branch.branchLabel}</button>`;
+                        });
+                    }
+                    targetedText = page.subMatrixBranches[activeSubMatrixIdx].text;
+                    targetedFlow = page.subMatrixBranches[activeSubMatrixIdx].diagramFlowArray;
+                } else {
+                    if (subNavWrapper) subNavWrapper.style.display = 'none';
+                    activeSubMatrixIdx = 0;
+                }
+
+                // 渲染流程圖與內文富文本
+                if (targetedFlow && targetedFlow[activeFlowNodeIdx] && targetedFlow[activeFlowNodeIdx].text) {
+                    document.getElementById('lesson-content').innerHTML = targetedFlow[activeFlowNodeIdx].text;
+                } else {
+                    document.getElementById('lesson-content').innerHTML = targetedText;
+                }
+
+                const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
+                if (flowRenderer && targetedFlow) {
+                    flowRenderer.style.display = 'flex'; flowRenderer.innerHTML = '';
+                    targetedFlow.forEach((node, nIdx) => {
+                        const isSelected = nIdx === activeFlowNodeIdx;
+                        let nodeClass = 'flow-node-block';
+                        if (isSelected) nodeClass += ' active-node';
+                        flowRenderer.innerHTML += `<div class="${nodeClass}" onclick="switchFlowNode(${nIdx})">${node.name}</div>`;
+                        if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
+                    });
+                } else if (flowRenderer) {
+                    flowRenderer.style.display = 'none';
+                }
+
+                course.subPages.forEach((_, sIdx) => {
+                    const dotActive = sIdx === pIdx ? "active" : "";
+                    dotsBar.innerHTML += `<div class="slider-dot ${dotActive}" onclick="triggerMainPageChange(${sIdx})"></div>`;
+                });
+                dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
             }
         }
 
-        // 👑 彈窗大腦：精準解析對齊 👑
-        function openTermModal(cIdx, pIdx, nIdx) {
-            const course = window.codexCourseEngineData[cIdx];
-            const node = course.subPages[pIdx].diagramFlowArray[nIdx];
-            const modal = document.getElementById('global-term-modal');
-            const payload = document.getElementById('modal-dynamic-payload-area');
-            if (!modal || !payload || !node) return;
-
-            payload.innerHTML = `
-                <h2 style="font-size:1.4rem; font-weight:900; border-bottom:3px solid var(--border-heavy); padding-bottom:8px; margin-bottom:20px; color:var(--text-main)">
-                    ${node.name} <span style="font-size:0.95rem; font-weight:700; color:var(--text-secondary)">(${node.engSub || ""})</span>
-                </h2>
-                <div class="content-buffer-area" style="display:flex; flex-direction:column; gap:20px;">
-                    ${node.text}
-                </div>
-            `;
-            modal.style.display = 'flex';
-        }
-
-        function closeTermModal() { document.getElementById('global-term-modal').style.display = 'none'; }
-        function closeTermModalOutside(e) { if(e.target.id === "global-term-modal") closeTermModal(); }
-
+        function triggerMainPageChange(sIdx) { activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; loadCourseState(activeCourseIdx, sIdx); }
+        function switchSubMatrixBranch(bIdx) { activeSubMatrixIdx = bIdx; activeFlowNodeIdx = 0; loadCourseState(activeCourseIdx, activePageIdx); }
+        function switchFlowNode(nIdx) { activeFlowNodeIdx = nIdx; loadCourseState(activeCourseIdx, activePageIdx); }
+        function exitExamToPage(pIdx) { examActive = false; activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; loadCourseState(activeCourseIdx, pIdx); }
         function enterExamMode() { examActive = true; examCurrentQ = 0; examScoreCount = 0; loadCourseState(activeCourseIdx, 0); }
+
         function runExamEngine() {
-            const course = window.codexCourseEngineData[activeCourseIdx]; if (examCurrentQ >= 3) { settleExamPayload(); return; }
-            const qData = course.examVault[examCurrentQ]; document.getElementById('current-chapter-id').innerText = "EXAM MODE"; document.getElementById('current-chapter-name').innerText = "10 抽 3 隨機大考"; document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`; document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`; document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
-            const container = document.getElementById('exam-options-container'); container.innerHTML = qData.o.map((opt, idx) => `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`).join('');
+            const course = window.codexCourseEngineData[activeCourseIdx];
+            if (examCurrentQ >= course.examVault.length) { settleExamPayload(); return; }
+            const qData = course.examVault[examCurrentQ];
+            document.getElementById('current-chapter-id').innerText = "EXAM MODE";
+            document.getElementById('current-chapter-name').innerText = "10 抽 3 隨機閃擊戰";
+            document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`;
+            document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`;
+            document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
+            const container = document.getElementById('exam-options-container'); container.innerHTML = '';
+            qData.o.forEach((opt, idx) => { container.innerHTML += `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`; });
         }
-        function submitAnswer(idx) { const course = window.codexCourseEngineData[activeCourseIdx]; if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } examCurrentQ++; runExamEngine(); }
-        function settleExamPayload() { examActive = false; const course = window.codexCourseEngineData[activeCourseIdx]; let grade = examScoreCount === 3 ? "S" : examScoreCount === 2 ? "A" : "Fail"; let storageKey = "L1-A" + course.courseId.split('-')[1]; if (grade === "Fail") { alert(`💥【考核失敗】答對 ${examScoreCount}/3！`); localStorage.setItem(`codex-${storageKey}-clear`, 'false'); } else { alert(`🏆【考核通過】位階：【 ${grade} 】！`); localStorage.setItem(`codex-${storageKey}-clear`, 'true'); localStorage.setItem(`talent-${storageKey}-grade`, grade); } exitToDashboardMenu(); }
-        
-        function syncNavbarState() { const name = localStorage.getItem('tpm-user-name') || 'Daniel Shih'; document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：${name}`; }
+
+        function submitAnswer(idx) {
+            const course = window.codexCourseEngineData[activeCourseIdx];
+            if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; }
+            examCurrentQ++; runExamEngine();
+        }
+
+        function settleExamPayload() {
+            examActive = false; const course = window.codexCourseEngineData[activeCourseIdx];
+            let grade = examScoreCount === 3 ? "S" : examScoreCount === 2 ? "A" : "Fail";
+            let storageKey = "L1-A" + course.courseId.split('-')[1];
+            if (grade === "Fail") {
+                alert(`💥【考核失敗】答對題數 ${examScoreCount}/3，未達 2 題及格線！`);
+                localStorage.setItem(`codex-${storageKey}-clear`, 'false'); localStorage.removeItem(`talent-${storageKey}-grade`);
+            } else {
+                alert(`🏆【考核通過】位階核定為：【 ${grade} 】級！`);
+                localStorage.setItem(`codex-${storageKey}-clear`, 'true'); localStorage.setItem(`talent-${storageKey}-grade`, grade);
+            }
+            exitToDashboardMenu();
+        }
+
+        function syncNavbarState(lang) { localStorage.setItem('tpm-lang-pref', lang); }
         function executeLangSwitch(lang) { routeController(); }
     </script>
 </body>
