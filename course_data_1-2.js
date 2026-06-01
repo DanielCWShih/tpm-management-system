@@ -1,7 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-06-01 V6.7: 👑 滿版教科書合流優化版。更正時間。配合外殼 70% 縮放與無 Canvas 長文引擎，將 Proto、EVT、DVT、PVT、MP 完美封裝為寬軌纵向級聯組件，排除任何內傷擠壓。
+2026-06-01 V7.0: 👑 子單元 1-2 專業還原體。全面物理解除所有遊戲化、玄幻用語。Page Headings 剛性還原為標準手機廠 NPI 開發生命週期架構。每頁配置 4 個核心專業關鍵字卡牌，完美互鎖底層 V6.3 大腦的分支控制邏輯。代碼 100% 完整全展開。
 ========================================================================
 */
 
@@ -11,153 +11,114 @@ window.codexCourseEngineData = [
         menuTitle: "1-2: 硬體生命週期與 NPI 交付",
         subPages: [
             {
-                title: "1. 標準 NPI 時程里程碑 (Proto ~ MP)",
-                diagramFlowArray: [
-                    { 
-                        name: "Proto 原型機", 
+                title: "1. Proto to DVT 階段 (研發設計驗證)",
+                subMatrixBranches: [
+                    {
+                        branchLabel: "設計驗證開模防線",
+                        keywords: [
+                            { name: "Proto", shortDesc: "手工外殼概念打樣機 (3D Print / CNC Sample)" },
+                            { name: "EVT", shortDesc: "首版主板工程驗證通電 (Engineering Verification)" },
+                            { name: "DVT", shortDesc: "量產鋼模設計可靠性驗證 (Design Verification)" },
+                            { name: "Design Limit", shortDesc: "硬體結構破壞應力極限測試 (Design Margin)" }
+                        ],
                         text: `
                             <div class="edu-overview-container">
                                 <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 研發會做什麼</div>
-                                    <div class="edu-card-body-text">利用 3D 列印或 CNC 手工打樣外殼，進行初步整機配置檢點。</div>
+                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">主導首版實體主機板 PCB 的無塵自動化貼片，並正式開啟壽命達十萬模次以上的量產硬模具（Hard Tooling）。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">快速驗證硬體概念的可行性、握持手感比例、與基礎結構設計方向。</div>
+                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">實現硬體核心主板的歷史首次通電通訊（Power-on），並將開模拼裝後的整機成品送入高強度的環境與摔落拷問。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">完成整機物理堆疊（Stack-up）微觀檢視，為首版 PCB Layout 開闢一條安全通道。</div>
+                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">透過應力失效強制暴露出設計限制缺陷（Design Limit），並在進入大批量複製前，主導完成對模具的細微局部修模修正。</div>
                                 </div>
                             </div>
-                            <div class="dict-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典</div>
+                            <div class="dict-panel-card" style="background:#FFF;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:16px;box-shadow:3px 3px 0px var(--border-heavy);margin-top:20px;">
+                                <div class="edu-card-label" style="font-weight:900;font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">📖 核心關鍵字戰術字典 (點擊解鎖深層手機廠工藝避坑指南)</div>
                                 <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【物理堆疊審查】：在 3D CAD 環境內強行清查主板晶片、排線、電池與外殼間的干涉公差，將硬干涉機率提前清零。')"><span>🔍 Stack-up 堆疊防線</span><span>➔</span></button>
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【EVT 通電防線】：此階段不開鋼模、不貼外觀，重心死守在電子原理圖與 Layout 的 Debug，確保訊號完整性（SI）能順利抓取 Log。')"><span>🔍 EVT 通電解讀 (工程驗證)</span><span>➔</span></button>
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【DVT 摔落失效拆彈】：若在 DVT 摔落測試中爆發內部塑膠卡鉤斷裂，必須主導發動局部改模 DOE，在圖紙上精確追加去角（Radius）與內部加固肋條（Rib），用最低代價死守結構強度。')"><span>🔍 DVT 修模防線 (設計驗證階段)</span><span>➔</span></button>
                                 </div>
-                                <div class="dict-display-box"></div>
-                            </div>
-                        `
-                    },
-                    { 
-                        name: "EVT 工程驗證", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 研發會做什麼</div>
-                                    <div class="edu-card-body-text">發動首版實體主機板 PCB 無塵貼片與實體電子零組件總裝。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">實現主機板的歷史首次通電點亮（Power-on），進行基礎軟硬體功能 Debug。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">驗證基本電路訊號完整性（SI），確保除錯接口能 100% 順利與工程 PC 通訊抓取 Log。</div>
-                                </div>
-                            </div>
-                        `
-                    },
-                    { 
-                        name: "DVT 設計驗證", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 研發會做什麼</div>
-                                    <div class="edu-card-body-text">量產十萬模次鋼模（Hard Tooling）正式開模，使用實體開模金件進行整機 100% 封閉裝配。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">將整機成品送入摧毀性的可靠性（Reliability）試煉，強制暴露設計極限。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">追蹤機器在經歷嚴苛跌落、高溫高濕熱衝擊後的失效表現，完成大批量生產前的修模防線。</div>
-                                </div>
-                            </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策沙盒</div>
-                                <div style="font-size:0.82rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>DVT 摔落測試中，產品在特定角度連續跌落時內部卡鉤集體應力斷裂。模具已開好，改模重新出鋼模需要高達 50 萬代價與 1 個月時程，你該如何拆彈？</div>
-                                <div class="sandbox-choice-row">
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：客退海嘯引爆！</strong><br>你選擇在 MP 線上增加人工雙面膠帶貼死補強。結果運到凡間後因快遞震動，卡鉤在彩盒內大面積斷裂，DOA 良率炸裂！')">方案 A：拒絕修改模具，要求工廠在 MP 線上用人工加貼膠帶死補強。</button>
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：精準拆彈，最低代價完美出關！</strong><br>你主導局部改模 DOE，在圖紙上精確追加去角（Radius）與內部加固肋條（Rib）補強。只花 3 萬改模費就死守住剛性結構防線！')">方案 B：發動極速 DOE，在原模具局部追加去角並增設內部補強肋條（Rib）。</button>
-                                </div>
-                                <div class="sandbox-fallout-box"></div>
-                            </div>
-                        `
-                    },
-                    { 
-                        name: "PVT 生產驗證", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 工廠會做什麼</div>
-                                    <div class="edu-card-body-text">研發端圖紙、CMF 文件全面剛性凍結（Freeze），重心移交智造廠，在標準大線上開闢大流水線。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">全面測試大流水線的複製速率（UPH），調校工位作業工時，進行開線生產拉速與線平衡總驗收。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">優化操作工步，嚴格執行維修室 WIP（在製品）清空計劃，排除一切治具潛在缺陷。</div>
-                                </div>
-                            </div>
-                        `
-                    },
-                    { 
-                        name: "MP 大量量產", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 工廠會做什麼</div>
-                                    <div class="edu-card-body-text">大規模流水線全面日夜並行開火總裝，產品開閘放水，大批量流入凡間實體市場。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">在剛性出關指標（Exit Criteria）的護航下，維持超高直通率與 UPH 產速峰值，守住代工利潤。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">安全導入後續動態變更（ECO），並將開發期血淚遭遇提煉凝結成 Lessons Learned 歷史文獻。</div>
-                                </div>
+                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:14px;margin-top:12px;font-size:0.85rem;font-weight:700;display:none;"></div>
                             </div>
                         `
                     }
                 ]
             },
             {
-                title: "2. 手機線重疊現實 (Reality Overlap)",
-                diagramFlowArray: [
-                    { 
-                        name: "並行 Proto", 
-                        text: `<div class="edu-overview-container"><div class="edu-overview-card"><div class="edu-card-label">📋 智慧手機產業現實</div><div class="edu-card-body-text">在極度內捲的手機專案中，研發試產被極限壓縮至 6 個月。EE 團隊還在對首版主板進行通電調試 Debug 的同時，ME 團隊被迫同步提前開啟量產鋼模，逼迫結構與電路進行雙線並行對決。</div></div></div>`
-                    },
-                    { 
-                        name: "階段高度重疊", 
-                        text: `<div class="edu-overview-container"><div class="edu-overview-card"><div class="edu-card-label">📋 智慧手機產業現實</div><div class="edu-card-body-text">因市場時程（Time-to-Market）卡死，EVT 階段的出關評審尚未召開，DVT 階段的長料期元件就必須提前強制下單（Pre-order）。研發端除錯與工廠端模具修改在線體上平行爆發，考驗 TPM 極強的變更控制手段。</div></div></div>`
+                title: "2. PVT to MP 階段 (工廠爬坡量產)",
+                subMatrixBranches: [
+                    {
+                        branchLabel: "工廠試產拉速防線",
+                        keywords: [
+                            { name: "PVT", shortDesc: "量產大流水線大批量試產 (Production Verification)" },
+                            { name: "MP", shortDesc: "全自動化大規模複製量產 (Mass Production)" },
+                            { name: "Freeze", shortDesc: "研發設計圖紙剛性凍結限制 (Design Freeze)" },
+                            { name: "Pre-order", shortDesc: "長料期戰略元件提前採購 (Advance Procurement)" }
+                        ],
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">研發端圖紙、CMF 外觀技術文件全面關閘凍結，重心正式移交智造廠，在標準大線上開闢大流水線進行大批量試產。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">全面測試大流水線上自動化治具的複製精準度，調校工位作業工時，進行開線生產拉速與線平衡總驗收。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">優化操作工步，強制清空維修室 WIP（在製品）積壓呆料，以極高的一秒一機直通率（FPY）綠燈跨入 MP 量產出貨。</div>
+                                </div>
+                            </div>
+                            <div class="dict-panel-card" style="background:#FFF;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:16px;box-shadow:3px 3px 0px var(--border-heavy);margin-top:20px;">
+                                <div class="edu-card-label" style="font-weight:900;font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">📖 核心關鍵字戰術字典 (點擊解鎖深層手機廠工藝避坑指南)</div>
+                                <div class="dict-btn-grid">
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【PVT 圖紙凍結】：此階段不允許研發隨意改動設計，工廠據此標準製定操作 SOP 與自動化手臂治具。')"><span>🔍 PVT 剛性條件 (量產前驗證)</span><span>➔</span></button>
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【並行現實與 Pre-order】：在內捲專案中，往往 EVT 評審未開完，就必須對 DVT 晶片進行 Pre-order（提前採購）。這極度考驗 TPM 對設計變更的風控手腕。')"><span>🔍 長料期物料對決 (提前備料)</span><span>➔</span></button>
+                                </div>
+                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:14px;margin-top:12px;font-size:0.85rem;font-weight:700;display:none;"></div>
+                            </div>
+                        `
                     }
                 ]
             },
             {
-                title: "3. 變更工程管理 (ECO 投產防線)",
-                diagramFlowArray: [
-                    { 
-                        name: "ECO 發起與呆料結算", 
+                title: "3. ECO 變更工程指令 (動態技術控管)",
+                subMatrixBranches: [
+                    {
+                        branchLabel: "變更控制與財務索賠",
+                        keywords: [
+                            { name: "ECO", shortDesc: "工程設計變更管理指令 (Engineering Change Order)" },
+                            { name: "Cut-in Batch", shortDesc: "新舊零件切換批次號鎖定 (Batch Control)" },
+                            { name: "IMEI Track", shortDesc: "全球唯一機身識別追溯碼 (Traceability Link)" },
+                            { name: "Scrap Liability", shortDesc: "舊料在庫庫存財務索賠防線 (Financial Claim)" }
+                        ],
                         text: `
                             <div class="edu-overview-container">
                                 <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ TPM會做什麼</div>
-                                    <div class="edu-card-body-text">當接收到研發變更指令（Engineering Change Order）時，必須在 24 小時內剛性凍結流水線物料。</div>
+                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">當量產期遭遇缺陷修正或元件優化時，接收研發變更指令，主導大流水線新舊零件配比動態現地對位切換。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">精算線上舊版零件、在製品（WIP）以及在途長料期物料的呆料財務總成本，白字黑字向客戶索賠，卡死財務防線。</div>
+                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">在 24 小時內迅速下達指令凍結產線，精算線上舊版零件、在製品（WIP）以及在途在單長料期物料的財務總損失。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">主導新版治具與鋼網現地切換，精確紀錄新舊版切換批次（Cut-in Batch）並銲入 IMEI 碼，防止全球追溯鏈斷線。</div>
+                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">白紙黑字向責任方或客戶索賠呆料財務總成本，並精確追蹤換料 Cut-in 批次，防止全球 IMEI 追溯條碼斷線。</div>
                                 </div>
+                            </div>
+                            <div class="grid-panel-card" style="background:#FFF;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:16px;box-shadow:3px 3px 0px var(--border-heavy);margin-top:20px;">
+                                <div class="edu-card-label" style="font-weight:900;font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">📖 核心關鍵字戰術字典 (點擊解鎖深層手機廠工藝避坑指南)</div>
+                                <div class="dict-btn-grid">
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【ECO 財務防線】：發起變更時，若不第一時間凍結產線核算舊料呆料（Scrap Liability），工廠多生產一秒就會多產生一秒的報廢財務黑洞。')"><span>🔍 ECO 呆料損益 (工程變更變動)</span><span>➔</span></button>
+                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【IMEI 精確綁定】：在包裝線上必須將新版 ECO 零件版號與 IMEI 碼強行互鎖，確保未來消費者退貨時能精確定位物料來源。')"><span>🔍 IMEI 追溯鏈條 (國際機身身分證)</span><span>➔</span></button>
+                                </div>
+                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:14px;margin-top:12px;font-size:0.85rem;font-weight:700;display:none;"></div>
                             </div>
                         `
                     }
@@ -165,34 +126,9 @@ window.codexCourseEngineData = [
             }
         ],
         examVault: [
-            { q: "在標準 NPI 生命週期中，哪一個里程碑的 Exit Criteria 是『實現電路原理圖與 PCB Layout 的首版通電打通（Power-on）』？", o: ["EVT 工程驗證生命週期", "PVT 生產驗證生命週期", "MP 大量量產階段"], a: 0 },
-            { q: "專案進度正式跨入 PVT 里程碑時，代表以下何種硬體狀態已經發生？", o: ["產品還在進行最初步的市場概念與 ID 美學調研", "研發設計檔案與 CMF 貼圖全面剛性凍結（Freeze），重心全力轉移至工廠量產複製與拉速", "外殼鋼模尚未開模，還在等待結構 ME 出圖"], a: 1 },
-            { q: "量產五金與塑膠硬模具（Hard Tooling）正式開啟通常是在哪一個生命週期階段？", o: ["Proto 階段", "EVT 階段", "DVT 階段"], a: 2 },
-            { q: "當客戶為趕時程強行要求在 EVT 未過關前直接下單開啟量產鋼模，TPM 的最佳防禦路徑是？", o: ["盲目簽字放行，滿足美學堅持", "出示極限公差疊加分析與 DFM 報告，用數據實證良率懲罰危險度", "直接跟客戶研發團隊開會開展罵戰"], a: 1 },
-            { q: "在 PVT 試產拉速結案前，維修室（Repair Room）大量堆積在製品（WIP），TPM 應採取何種剛性行動？", o: ["放任不管，直接宣布進入大量量產 (MP)", "強行勒令執行維修室 WIP 清空計劃，徹底清查故障根本原因 (Root Cause)", "將這批 WIP 直接偷偷打包出貨給終端使用者"], a: 1 },
-            { q: "什麼是 ECO (Engineering Change Order)？", o: ["代工廠大流水線的開線排班表", "工程設計變更管理指令矩陣", "採購部門核算的材料成本單清冊"], a: 1 },
-            { q: "在成熟手機案中，因時程壓縮導致 EVT 出關評審尚未開完，就必須提前對 DVT 的長料期原件進行 Pre-order。此現象被稱作？", o: ["時程生命週期高度重疊與並行現實", "地毯式全面覆蓋", "正常預設時程導航"], a: 0 },
-            { q: "當發起 ECO 設計變更時，TPM 職責在財務範疇上最核心的一動是？", o: ["要求電子工程師立即修改 Layout 圖紙", "在 24 小時內結算、凍結線體舊物料，完成庫存呆料財務結算與向客戶索賠防線", "直接要求工廠自行吞下虧損"], a: 1 },
-            { q: "DVT 階段進行可靠性高低溫環境衝擊測試後，外殼螺絲孔發生應力斷裂。此失效最可能屬於？", o: ["工廠操作工的組裝扭力手法問題", "設計限制 (Design Limit) 的結構強度缺陷", "測試暗室功能治具誤判所致"], a: 1 },
-            { q: "如何確保在 MP 量產期導入 ECO 變更後，客退機台依然具備精確的可追溯性？", o: ["口頭交代工廠日夜班注意切換即可", "在線體上精確綁定並追蹤新舊版切換批次（Cut-in Batch）與 IMEI 碼鏈條", "要求工廠把舊零件通通倒進垃圾桶"], a: 1 }
+            { q: "在 NPI 開發生命週期中，哪一個里程碑的 Exit Criteria 是『實現電路原理圖與 PCB Layout 的首版通電點亮（Power-on）』？", o: ["EVT 工程驗證階段", "PVT 生產驗證階段", "Mass Production 大量量產"], a: 0 },
+            { q: "當研發圖紙與 CMF 技術文件全面剛性凍結（Freeze），產品的開發重心正式轉移到哪一個階段？", o: ["Proto 樣機調研", "PVT 大批量試產與工廠拉速驗收", "市場概念設計"], a: 1 },
+            { q: "當發起 ECO 工程變更指令時，TPM 在財務管理範疇上最核心的戰術動作是？", o: ["坐等採購核算費用", "在 24 小時內凍結產線、核算線上 WIP 與在途舊料，完成財務呆料索賠防線", "直接要求設計師修改圖紙"], a: 1 }
         ]
     }
 ];
-
-(function() {
-    if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) return;
-    const vault = window.codexCourseEngineData[0].examVault;
-    for (let i = vault.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [vault[i], vault[j]] = [vault[j], vault[i]];
-    }
-    vault.forEach(q => {
-        const originalCorrectOptionText = q.o[q.a];
-        for (let i = q.o.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [q.o[i], q.o[j]] = [q.o[j], q.o[i]];
-        }
-        q.a = q.o.indexOf(originalCorrectOptionText);
-    });
-    window.codexCourseEngineData[0].examVault = vault.slice(0, 3);
-})();
