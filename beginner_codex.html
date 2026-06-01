@@ -581,9 +581,8 @@
     </div>
 
     <script>
-        // 👑 剛性鎖定：您的 GAS Web App 實體基地台 URL 👑
+        // 👑 剛性鎖定：您的 GAS Web App 實體基地台 URL（維持內網限制，不開放「任何人」） 👑
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
-        const GLOBAL_USER_EMAIL = "danielcwshih@fih-foxconn.com";
 
         const globalSubUnitRegistry = [
             { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
@@ -606,6 +605,28 @@
         let examActive = false, examCurrentQ = 0, examScoreCount = 0;
 
         window.onload = () => {
+            // 👑 註冊跨視窗數據監聽器：當新視窗回傳成績時，在背景無感補齊 LocalStorage 👑
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'TPM_PULL_SYNC') {
+                    const lessons = event.data.lessons.split(",");
+                    lessons.forEach(function(code) {
+                        const cleanCode = code.trim();
+                        if (cleanCode !== "") {
+                            localStorage.setItem("codex-L1-A" + cleanCode.split('-')[1] + "-clear", "true");
+                            localStorage.setItem("talent-L1-A" + cleanCode.split('-')[1] + "-grade", "通過");
+                        }
+                    });
+                    alert("📊 成績查詢完畢！已成功同步並點亮地端天賦燈號。");
+                    renderMultiLevelHubDashboard();
+                    
+                    // 恢復查詢按鈕狀態
+                    const btn = document.getElementById('tpm-query-btn');
+                    btn.innerHTML = "📊 查詢與同步成績";
+                    btn.style.background = "#22C55E";
+                    btn.disabled = false;
+                }
+            });
+
             renderGlobalTreeStructure();
             routeController();
         };
@@ -832,7 +853,7 @@
             runExamEngine(); 
         }
         
-        // 👑 🔥 終極進化：原生異步無感秒速盲推（0.3秒解決、零跳轉、零競爭重複） 🔥 👑
+        // 👑 🔥 頂層獨立新分頁拋接模組：主網頁 0 秒無感切回大廳，絕不卡死、重複生成！ 🔥 👑
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
@@ -851,67 +872,42 @@
                 localStorage.setItem(`talent-${storageKey}-grade`, '通過');
             }
 
-            // 實體發射異步背景 Fetch（mode: 'no-cors'）
-            const finalPushUrl = GLOBAL_GAS_URL + 
-                "?action=push" +
-                "&courseId=" + encodeURIComponent(course.courseId) + 
-                "&status=" + encodeURIComponent(finalStatus) + 
-                "&email=" + encodeURIComponent(GLOBAL_USER_EMAIL);
-            
-            // 0.2 秒無感通聯，網頁完全不跳轉、不閃爍
-            fetch(finalPushUrl, { method: "GET", mode: "no-cors" })
-            .then(() => { console.log("公會看盤矩陣同步成功！"); })
-            .catch((err) => { console.log("異步同步通聯稍有延遲", err); });
+            try {
+                // 🎯 建立內網投遞的實體 URL（在新分頁中加載，完美攜帶 Foxconn 登入憑證越牆）
+                const finalPushUrl = GLOBAL_GAS_URL + 
+                    "?action=push" +
+                    "&courseId=" + encodeURIComponent(course.courseId) + 
+                    "&status=" + encodeURIComponent(finalStatus);
+                
+                // 🚀 核心優化：開啟獨立小視窗去跑 Foxconn 慢速驗證，完全不綁架主網頁！
+                window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
+                
+            } catch(e) {
+                console.log("獨立航線擊發攔截:", e);
+            }
 
+            // 👑 主視窗 0 秒鐘直接切回大廳，學員不需要在原地傻傻排隊等待
             exitToDashboardMenu();
         }
 
-        // 👑 🔥 終極進化：JSONP 跨網域秒速記憶拉回（0.5秒解決、零網頁跳轉） 🔥 👑
+        // 👑 🔥 獨立新分頁拉回模組：在新視窗跑 SSO，跑完跨視窗 postMessage 送回大廳後自毀！ 🔥 👑
         function triggerCloudPullSync() {
             const btn = document.getElementById('tpm-query-btn');
-            btn.innerHTML = "⏳ 正在讀取成績...";
+            btn.innerHTML = "⏳ 正在查詢成績...";
             btn.style.background = "#94A3B8";
             btn.disabled = true;
 
-            // 建立 JSONP 的專屬隨機回呼暗號
-            const callbackName = "tpmCallback_" + Math.floor(Math.random() * 1000000);
-            
-            window[callbackName] = function(response) {
-                if (response && response.status === "success" && response.lessons) {
-                    const lessons = response.lessons.split(",");
-                    lessons.forEach(function(code) {
-                        const cleanCode = code.trim();
-                        if (cleanCode !== "") {
-                            localStorage.setItem("codex-L1-A" + cleanCode.split('-')[1] + "-clear", "true");
-                            localStorage.setItem("talent-L1-A" + cleanCode.split('-')[1] + "-grade", "通過");
-                        }
-                    });
-                    alert("📊 成績查詢完畢！已成功為您同步並補齊地端天賦燈號。");
-                } else {
-                    alert("⚠️ 雲端查無成績：您在看盤矩陣中尚未有通過紀錄。");
-                }
+            try {
+                const finalPullUrl = GLOBAL_GAS_URL + "?action=pull";
                 
-                // 復原按鈕外觀
+                // 🚀 開放新分頁去啃 Foxconn 30秒的 SSO 時延牆，主頁面不留任何滾動條死鎖
+                window.open(finalPullUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
+            } catch(e) {
+                console.log("發動雲端回拉異常:", e);
                 btn.innerHTML = "📊 查詢與同步成績";
                 btn.style.background = "#22C55E";
                 btn.disabled = false;
-                
-                // 清理垃圾記憶體
-                delete window[callbackName];
-                document.getElementById(callbackName).remove();
-                renderMultiLevelHubDashboard();
-            };
-
-            // 動態注入 Script 標籤發動第一方通航，完美穿透 Foxconn CORS 封鎖
-            const finalPullUrl = GLOBAL_GAS_URL + 
-                "?action=pull" + 
-                "&email=" + encodeURIComponent(GLOBAL_USER_EMAIL) + 
-                "&callback=" + callbackName;
-
-            const script = document.createElement('script');
-            script.id = callbackName;
-            script.src = finalPullUrl;
-            document.head.appendChild(script);
+            }
         }
     </script>
 </body>
