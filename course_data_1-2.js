@@ -1,7 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-05-29 V6.1: 👑 子單元 1-2 滿血進化版。更正最新時間。全量多行展開。全面導入「會做什麼、核心目標、終極期待」三維戰術矩陣。精準填補 Proto、EVT、DVT、PVT、MP 完整大畫布，10題題庫隨機抽 3 題。
+2026-06-01 V6.7: 👑 滿版教科書合流優化版。更正時間。配合外殼 70% 縮放與無 Canvas 長文引擎，將 Proto、EVT、DVT、PVT、MP 完美封裝為寬軌纵向級聯組件，排除任何內傷擠壓。
 ========================================================================
 */
 
@@ -19,7 +19,7 @@ window.codexCourseEngineData = [
                             <div class="edu-overview-container">
                                 <div class="edu-overview-card">
                                     <div class="edu-card-label">⚙️ 研發會做什麼</div>
-                                    <div class="edu-card-body-text">利用 3D 列印或 CNC 手工打樣外殼，進行初步整機配置配置檢點。</div>
+                                    <div class="edu-card-body-text">利用 3D 列印或 CNC 手工打樣外殼，進行初步整機配置檢點。</div>
                                 </div>
                                 <div class="edu-overview-card">
                                     <div class="edu-card-label">🎯 核心戰術目標</div>
@@ -30,12 +30,12 @@ window.codexCourseEngineData = [
                                     <div class="edu-card-body-text">完成整機物理堆疊（Stack-up）微觀檢視，為首版 PCB Layout 開闢一條安全通道。</div>
                                 </div>
                             </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                            <div class="dict-panel-card">
+                                <div class="edu-card-label">📖 戰術檢查字典</div>
                                 <div class="dict-btn-grid">
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【物理堆疊審查】：在 3D CAD 環境內強行清查主板晶片、排線、電池與外殼間的干涉公差，將硬干涉機率提前清零。')"><span>🔍 Stack-up 堆疊防線</span><span>➔</span></button>
                                 </div>
-                                <div id="runtime-dict-box" class="dict-display-box"></div>
+                                <div class="dict-display-box"></div>
                             </div>
                         `
                     },
@@ -76,13 +76,13 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策沙盒（學以致用模擬演練）</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>DVT 跌落測試中，產品在特定角度連續跌落時內部卡鉤集體應力斷裂。模具已開好，改模重新出鋼模需要高達 50 萬代價與 1 個月時程，你該如何拆彈？</div>
+                                <div class="edu-card-label">🎮 TPM 工程決策沙盒</div>
+                                <div style="font-size:0.82rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>DVT 摔落測試中，產品在特定角度連續跌落時內部卡鉤集體應力斷裂。模具已開好，改模重新出鋼模需要高達 50 萬代價與 1 個月時程，你該如何拆彈？</div>
                                 <div class="sandbox-choice-row">
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：客退海嘯引爆！</strong><br>你選擇在 MP 線上增加人工雙面膠帶貼死補強。結果運到凡間後因快遞震動，卡鉤在彩盒內大面積斷裂，DOA 良率炸裂！')">方案 A：拒絕修改模具，要求工廠在 MP 線上用人工加貼膠帶死補強。</button>
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：精準拆彈，最低代價完美出關！</strong><br>你主導局部改模 DOE，在圖紙上精確追加去角（Radius）與內部加固肋條（Rib）補強。只花 3 萬改模費就死守住剛性結構防線！')">方案 B：發動極速 DOE，在原模具局部追加去角並增設內部補強肋條（Rib）。</button>
                                 </div>
-                                <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
+                                <div class="sandbox-fallout-box"></div>
                             </div>
                         `
                     },
@@ -131,11 +131,11 @@ window.codexCourseEngineData = [
                 diagramFlowArray: [
                     { 
                         name: "並行 Proto", 
-                        text: `<div class="edu-overview-container"><div class="edu-overview-card"><div class="edu-card-label">📋 產業畸形現實</div><div class="edu-card-body-text">在極度內捲的手機專案中，研發試產被極限壓縮至 6 個月。EE 團隊還在對首版主板進行通電調試 Debug 的同時，ME 團隊被迫同步提前開啟量產鋼模，逼迫結構與電路進行雙線並行對決。</div></div></div>`
+                        text: `<div class="edu-overview-container"><div class="edu-overview-card"><div class="edu-card-label">📋 智慧手機產業現實</div><div class="edu-card-body-text">在極度內捲的手機專案中，研發試產被極限壓縮至 6 個月。EE 團隊還在對首版主板進行通電調試 Debug 的同時，ME 團隊被迫同步提前開啟量產鋼模，逼迫結構與電路進行雙線並行對決。</div></div></div>`
                     },
                     { 
                         name: "階段高度重疊", 
-                        text: `<div class="edu-overview-container"><div class="edu-overview-card"><div class="edu-card-label">📋 產業畸形現實</div><div class="edu-card-body-text">因市場時程（Time-to-Market）卡死，EVT 階段的出關評審尚未召開，DVT 階段的長料期元件就必須提前強制下單（Pre-order）。研發端除錯與工廠端模具修改在線體上平行爆發，考驗 TPM 極強的變更控制手段。</div></div></div>`
+                        text: `<div class="edu-overview-container"><div class="edu-overview-card"><div class="edu-card-label">📋 智慧手機產業現實</div><div class="edu-card-body-text">因市場時程（Time-to-Market）卡死，EVT 階段的出關評審尚未召開，DVT 階段的長料期元件就必須提前強制下單（Pre-order）。研發端除錯與工廠端模具修改在線體上平行爆發，考驗 TPM 極強的變更控制手段。</div></div></div>`
                     }
                 ]
             },
