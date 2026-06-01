@@ -581,6 +581,7 @@
     </div>
 
     <script>
+        // 👑 剛性焊接：您的 GAS 網網頁應用程式部署 URL 👑
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
         const globalSubUnitRegistry = [
@@ -604,9 +605,9 @@
         let examActive = false, examCurrentQ = 0, examScoreCount = 0;
 
         window.onload = () => {
-            // 👑 智能監聽器：精確接收來自新分頁的高定 UI 訊號，原地解鎖按鈕狀態機
+            // 👑 戰術通訊監聽器：精確接引來自高級卡片 UI 視窗的 postMessage 訊號，解除按鈕死鎖狀態機 👑
             window.addEventListener('message', function(event) {
-                // 處理 A：反向回拉完畢
+                // 訊號 A：反向拉回成績完畢
                 if (event.data && event.data.type === 'TPM_PULL_SYNC') {
                     const lessons = event.data.lessons.split(",");
                     lessons.forEach(function(code) {
@@ -616,13 +617,13 @@
                             localStorage.setItem("talent-L1-A" + cleanCode.split('-')[1] + "-grade", "通過");
                         }
                     });
-                    alert("📊 成績查詢完畢！已成功同步並點亮地端天賦燈號。");
+                    alert("📊 雲端成績同步成功！已成功點亮歷史天賦燈號。");
                     resetQueryButtonState();
                 }
                 
-                // 處理 B：正向寫入完畢
+                // 訊號 B：正向考核改寫完畢
                 if (event.data && event.data.type === 'TPM_PUSH_DONE') {
-                    console.log("正向考核數據矩陣寫入成功。");
+                    console.log("正向考核數據矩陣原位改寫成功。");
                     resetQueryButtonState();
                 }
             });
@@ -888,11 +889,11 @@
             if (currentRegistry && currentRegistry.type === 'handbook') { resolvedType = "Handbook Course"; }
 
             try {
-                // 🔥 將大考按鈕也置入防重試冷卻狀態機
-                const queryBtn = document.getElementById('tpm-query-btn');
-                if (queryBtn) {
-                    queryBtn.innerHTML = "⏳ 正在同步成績...";
-                    queryBtn.disabled = true;
+                // 🔥 大考按鈕也一併進入冷卻保護狀態
+                const btn = document.getElementById('tpm-query-btn');
+                if (btn) {
+                    btn.innerHTML = "⏳ 正在上傳成績...";
+                    btn.disabled = true;
                 }
 
                 const finalPushUrl = GLOBAL_GAS_URL + 
