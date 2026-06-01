@@ -581,8 +581,9 @@
     </div>
 
     <script>
-        // 👑 剛性焊接：您的 GAS 網網頁應用程式部署 URL 👑
+        // 👑 剛性綁定：您的 GAS Web App 實體基地台 URL 👑
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
+        const GLOBAL_USER_EMAIL = "danielcwshih@fih-foxconn.com";
 
         const globalSubUnitRegistry = [
             { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
@@ -605,25 +606,14 @@
         let examActive = false, examCurrentQ = 0, examScoreCount = 0;
 
         window.onload = () => {
-            // 👑 戰術通訊監聽器：精確接引來自高級卡片 UI 視窗的 postMessage 訊號，解除按鈕死鎖狀態機 👑
+            // 👑 跨視窗安全監聽器：若未來 GAS 有噴送 postMessage 訊號則進行處理 👑
             window.addEventListener('message', function(event) {
-                // 訊號 A：反向拉回成績完畢
                 if (event.data && event.data.type === 'TPM_PULL_SYNC') {
-                    const lessons = event.data.lessons.split(",");
-                    lessons.forEach(function(code) {
-                        const cleanCode = code.trim();
-                        if (cleanCode !== "") {
-                            localStorage.setItem("codex-L1-A" + cleanCode.split('-')[1] + "-clear", "true");
-                            localStorage.setItem("talent-L1-A" + cleanCode.split('-')[1] + "-grade", "通過");
-                        }
-                    });
-                    alert("📊 雲端成績同步成功！已成功點亮歷史天賦燈號。");
+                    processPulledData(event.data.lessons);
+                    alert("📊 成績同步完畢！已成功還原歷史進度。");
                     resetQueryButtonState();
                 }
-                
-                // 訊號 B：正向考核改寫完畢
                 if (event.data && event.data.type === 'TPM_PUSH_DONE') {
-                    console.log("正向考核數據矩陣原位改寫成功。");
                     resetQueryButtonState();
                 }
             });
@@ -631,6 +621,42 @@
             renderGlobalTreeStructure();
             routeController();
         };
+
+        // 👑 剛性防禦：西元日期強力還原解碼器 👑
+        // 專門絕殺 Google Sheet 自動將 "1-1"、"1-2" 課綱轉換成 "Thu Jan 01 2026" 日期字串的硬傷！
+        function parseLessonCode(rawCode) {
+            if (!rawCode) return "";
+            var cleaned = rawCode.trim();
+            
+            // 如果原本就是 X-Y 的課綱代號，直接原樣回傳
+            if (/^\d+-\d+$/.test(cleaned)) {
+                return cleaned;
+            }
+            
+            // 嘗試將其塞入 JavaScript Date 物件進行解碼
+            var parsedDate = new Date(cleaned);
+            if (!isNaN(parsedDate.getTime())) {
+                var month = parsedDate.getMonth() + 1; // 1
+                var day = parsedDate.getDate();        // 1 或是 2
+                return month + "-" + day;              // 成功還原出 "1-1" 或是 "1-2"！
+            }
+            return "";
+        }
+
+        // 👑 核心進度矩陣清洗注入器 👑
+        function processPulledData(pulledDataStr) {
+            if (!pulledDataStr) return;
+            var lessons = pulledDataStr.split(",");
+            lessons.forEach(function(rawCode) {
+                var cleanCode = parseLessonCode(rawCode); // 強力過濾洗淨日期呆料
+                if (cleanCode && cleanCode.indexOf('-') !== -1) {
+                    var suffix = cleanCode.split('-')[1]; // "1" 或是 "2"
+                    localStorage.setItem("codex-L1-A" + suffix + "-clear", "true");
+                    localStorage.setItem("talent-L1-A" + suffix + "-grade", "通過");
+                }
+            });
+            renderMultiLevelHubDashboard();
+        }
 
         function resetQueryButtonState() {
             const btn = document.getElementById('tpm-query-btn');
@@ -642,33 +668,19 @@
             renderMultiLevelHubDashboard();
         }
 
-        function renderGlobalTreeStructure() {
-            const root = document.getElementById('global-tree-root'); 
-            root.innerHTML = '';
-            const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
-            
-            presentLevels.forEach(lvlNum => {
-                const subset = globalSubUnitRegistry.filter(u => u.levelNum === lvlNum);
-                const block = document.createElement('div'); 
-                block.className = 'menu-category-block';
-                block.innerHTML = `
-                    <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} 展開</button>
-                    <div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">
-                        ${subset.map(u => `<button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}
-                    </div>`;
-                root.appendChild(block);
-            });
-        }
-
-        function toggleMenuSection(id) { 
-            const el = document.getElementById(id); 
-            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
-        }
-
         function routeController(directType, directC) {
             document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：Daniel Shih`;
 
             const urlParams = new URLSearchParams(window.location.search);
+            
+            // 🔥 剛性攔截：當子分頁回航重定向到 GitHub 頂層時，精確抽取記憶參數原地復活！
+            const pulledData = urlParams.get('pulledData');
+            if (pulledData !== null) {
+                processPulledData(pulledData);
+                alert("📊 成績查詢完畢！已成功同步並點亮地端天賦燈號。");
+                window.history.pushState(null, '', window.location.pathname); // 洗淨網址
+            }
+
             const paramC = directC || urlParams.get('c');
             const paramType = directType || urlParams.get('type') || 'codex';
 
@@ -864,6 +876,7 @@
             runExamEngine(); 
         }
         
+        // 👑 正向大考盲推：加裝地端時序主動防禦監聽器 👑
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
@@ -884,31 +897,58 @@
 
             const cleanId = course.courseId.replace("L", "").trim();
             const currentRegistry = globalSubUnitRegistry.find(function(u) { return u.subUnitId === cleanId; });
-            
-            let resolvedType = "Beginner Codex";
             if (currentRegistry && currentRegistry.type === 'handbook') { resolvedType = "Handbook Course"; }
 
             try {
-                // 🔥 大考按鈕也一併進入冷卻保護狀態
                 const btn = document.getElementById('tpm-query-btn');
-                if (btn) {
-                    btn.innerHTML = "⏳ 正在上傳成績...";
-                    btn.disabled = true;
-                }
+                if (btn) { btn.innerHTML = "⏳ 正在同步成績..."; btn.disabled = true; }
 
+                // 補齊四維特徵路由參數，確保與舊 GAS 高度相容
+                const currentReturnUrl = window.location.origin + window.location.pathname;
                 const finalPushUrl = GLOBAL_GAS_URL + 
                     "?action=push" +
                     "&courseId=" + encodeURIComponent(course.courseId) + 
-                    "&status=" + encodeURIComponent(finalStatus);
+                    "&status=" + encodeURIComponent(finalStatus) +
+                    "&redirect=" + encodeURIComponent(currentReturnUrl);
                 
-                window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
+                // 開啟獨立頂層Context小視窗
+                var pushWin = window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
+                var pushStart = Date.now();
+                
+                // 🚀 雷達追蹤定時器：500ms 循環清查子視窗狀態，一秒杜絕卡死與重複生成！
+                var pushTimer = setInterval(function() {
+                    if (!pushWin || pushWin.closed) {
+                        clearInterval(pushTimer);
+                        resetQueryButtonState();
+                        return;
+                    }
+                    try {
+                        // 判定回航
+                        if (pushWin.location.href && pushWin.location.href.indexOf(window.location.origin) !== -1) {
+                            pushWin.close();
+                            clearInterval(pushTimer);
+                            resetQueryButtonState();
+                            return;
+                        }
+                    } catch (e) { /* 跨網域封鎖中，保持追蹤 */ }
+                    
+                    // 5秒強制熔斷自毀
+                    if (Date.now() - pushStart > 5000) {
+                        pushWin.close();
+                        clearInterval(pushTimer);
+                        resetQueryButtonState();
+                    }
+                }, 500);
+
             } catch(e) {
-                console.log("獨立航線擊發攔截:", e);
+                console.log("獨立正向航線擊發異常:", e);
+                resetQueryButtonState();
             }
 
             exitToDashboardMenu();
         }
 
+        // 👑 反向查詢拉回：加裝地端時序主動防禦監聽器 👑
         function triggerCloudPullSync() {
             const btn = document.getElementById('tpm-query-btn');
             btn.innerHTML = "⏳ 正在查詢成績...";
@@ -916,8 +956,62 @@
             btn.disabled = true;
 
             try {
-                const finalPullUrl = GLOBAL_GAS_URL + "?action=pull";
-                window.open(finalPullUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
+                // 🔥 剛性補齊參數補給：將 redirect 與 email 完整編碼傳遞，引導舊 GAS 指引方向！
+                const currentReturnUrl = window.location.origin + window.location.pathname;
+                const finalPullUrl = GLOBAL_GAS_URL + 
+                    "?action=pull" +
+                    "&email=" + encodeURIComponent(GLOBAL_USER_EMAIL) +
+                    "&redirect=" + encodeURIComponent(currentReturnUrl);
+                
+                var syncWin = window.open(finalPullUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
+                var pullStart = Date.now();
+                
+                // 🚀 雷達追蹤定時器：橫向抓取跨網域相同 Domain 狀態，一秒解鎖按鈕並物理自毀！
+                var pullTimer = setInterval(function() {
+                    if (!syncWin || syncWin.closed) {
+                        clearInterval(pullTimer);
+                        resetQueryButtonState();
+                        return;
+                    }
+                    try {
+                        // 成功跳轉回 GitHub 同源 (Same-origin)
+                        if (syncWin.location.href && syncWin.location.href.indexOf(window.location.origin) !== -1) {
+                            var params = new URLSearchParams(syncWin.location.search);
+                            var pulledData = params.get('pulledData');
+                            if (pulledData) {
+                                processPulledData(pulledData);
+                                alert("📊 雲端成績同步成功！");
+                            }
+                            syncWin.close(); // 物理關閉
+                            clearInterval(pullTimer);
+                            resetQueryButtonState(); // 彈回正常狀態
+                            return;
+                        }
+                    } catch (e) { /* 跨網域封鎖中，保持追蹤 */ }
+                    
+                    // 5.5秒強制熔斷自毀（防止狐狸防火牆SSO無限超時卡死）
+                    if (Date.now() - pullStart > 5500) {
+                        // 終極備援：如果在黑底白字頁面靜止，直接強行關閉它
+                        syncWin.close();
+                        clearInterval(pullTimer);
+                        
+                        // 💡 特批分流：由於舊 GAS 輸出純 JSON 文字時會斷絕 window.opener，
+                        // 我們在 5.5 秒熔斷時強制幫 Daniel 發動一次「地端兜底洗牌」！
+                        // 系統會去雲端看盤矩陣的 D 欄反向格式化刷新 LocalStorage。
+                        fetch(GLOBAL_GAS_URL + "?action=pull&email=" + encodeURIComponent(GLOBAL_USER_EMAIL))
+                        .then(res => res.text())
+                        .then(txt => {
+                            // 暴力硬核清洗可能夾在 text 裡面的 lessons 資料
+                            if(txt.indexOf("lessons") !== -1) {
+                                var match = txt.match(/"lessons"\s*:\s*"([^"]+)"/);
+                                if(match && match[1]) { processPulledData(match[1]); }
+                            }
+                        }).catch(e => {});
+
+                        resetQueryButtonState(); // 剛性強制變回正常狀態
+                    }
+                }, 500);
+
             } catch(e) {
                 console.log("發動雲端回拉異常:", e);
                 resetQueryButtonState();
