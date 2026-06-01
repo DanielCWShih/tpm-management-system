@@ -1,7 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-06-01 V7.0: 👑 子單元 1-3 專業還原體。全面物理解除所有遊戲化、玄幻用語。Page Headings 剛性還原為標準手機代工廠通用產線與查線排查架構。每頁配置 4 個核心專業關鍵字卡牌，完美互鎖底層 V6.3 大腦的分支控制邏輯。代碼 100% 完整全展開。
+2026-06-01 V7.0: 👑 子單元 1-3 專業還原完全體。全面剝離所有玄幻遊戲用語。Page Headings 剛性還原為標準手機代工廠通用產線與查線排查架構。每頁配置 4 個核心專業關鍵字變數，完美相容 HTML V6.3 的流程 Tab 導航控制邏輯。代碼 100% 完整全量展開，絕無縮寫。
 ========================================================================
 */
 
@@ -11,114 +11,257 @@ window.codexCourseEngineData = [
         menuTitle: "1-3: 工廠地理與 4M1E 線體通識",
         subPages: [
             {
-                title: "1. SMT to FATP 四大通用線體",
-                subMatrixBranches: [
+                title: "1. SMT to FATP 手機通用四大實體線體 (表面貼片與整機後段工序流程導航)",
+                diagramFlowArray: [
                     {
-                        branchLabel: "通用製造流水線體",
-                        keywords: [
-                            { name: "SMT", shortDesc: "裸板主板晶片高速銲接貼片製程 (Surface Mount)" },
-                            { name: "SPI", shortDesc: "熔爐前錫膏 3D 印刷厚度厚度檢查 (Solder Paste Inspection)" },
-                            { name: "FATP", shortDesc: "整機物理總裝、功能測試到包裝總稱 (Final Assembly & Test)" },
-                            { name: "Reflow Oven", shortDesc: "高溫加熱液化完成化學熔焊之高溫熔爐 (Reflow Profile)" }
-                        ],
+                        name: "SMT (主板表面貼片車間)",
                         text: `
                             <div class="edu-overview-container">
                                 <div class="edu-overview-card">
-                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">主導裸板在淨化車間內進行鋼網網印錫膏、貼片焊接，並送往 FATP 後段流水線鎖附附件彩盒封箱出貨。</div>
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">在萬級超高潔淨度無塵室內，主導裸板 PCB 鋼網錫膏網印、3D 檢查、高速貼片機晶片拍打、與迴流焊化學熔焊固化。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">在毫秒間將高精密晶片固化焊接於電路板，優化後段手工組裝 Cycle Time，消滅各站工位堆料瓶頸。</div>
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">在毫秒級時間內將數百個微米級被動元件與大腦 CPU 精確固化銲接在主板上，鑄造出核心 PCBA。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">過爐焊接 100% 導通、BGA 焊點內部零氣泡、零虛焊、包裝線克級磅秤精確秤重防錯，實現零漏塞零錯配件包裝良率。</div>
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">過爐後電路導通率 100%，BGA 晶片內部銲點零氣泡、零虛銲、零空銲，消滅一切隱性物理內傷。</div>
                                 </div>
                             </div>
-                            <div class="dict-panel-card" style="background:#FFF;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:16px;box-shadow:3px 3px 0px var(--border-heavy);margin-top:20px;">
-                                <div class="edu-card-label" style="font-weight:900;font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">📖 核心關鍵字戰術字典 (點擊解鎖深層手機廠工藝避坑指南)</div>
-                                <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【SPI 銲前卡口】：在主板送入高溫熔爐前，攔截錫膏印偏、刮錫，這是在 SMT 製程中成本最低、效益最高的剛性攔截點。')"><span>🔍 SPI 錫膏檢查 (銲前厚度檢驗)</span><span>➔</span></button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【Reflow 爐溫 Profile 漂移】：若熔爐第三溫區加熱速度漂移，會引發大面積冷銲、虛焊缺陷。必須立刻勒令工廠工程師架設溫測線進爐實測。')"><span>🔍 爐溫 Profile 曲線 (高溫焊接熔爐)</span><span>➔</span></button>
+                        `
+                    },
+                    {
+                        name: "SPI (過爐前錫膏檢驗儀)",
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">Solder Paste Inspection。架設在鋼網錫膏印刷機正後方、貼片機群正前方，利用 3D 雷射光學檢測錫膏厚度、面積與高度公差偏移。</div>
                                 </div>
-                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:14px;margin-top:12px;font-size:0.85rem;font-weight:700;display:none;"></div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">在元件尚未貼下去、尚未送入高溫爐熔焊前，將漏印、印歪、刮錫、錫膏厚度不足之瑕疵主板就地攔截。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">建立 SMT 初始最前段品質天眼。此階段攔截重工只需用洗板水刷掉錫膏即可，重工材料損耗成本幾乎為零。</div>
+                                </div>
+                            </div>
+                            <div class="dict-panel-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:16px; box-shadow:3px 3px 0px #1A1A1A; margin-top:20px;">
+                                <div style="font-weight:900; font-size:0.85rem; color:#475569; margin-bottom:10px;">📖 專業技術字典</div>
+                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
+                                    <button style="background:#FFF; border:2px solid #1A1A1A; padding:10px; border-radius:6px; font-weight:800; font-size:0.8rem; text-align:left; cursor:pointer;" onclick="showTacticalDict('【SPI 銲前攔截比】：大廠製程中，70%的後段虛焊短路根源都在前段錫膏印刷。死守 SPI 攔截精準度是 SMT 製程降本增效的第一鐵律。')">🔍 SPI 錫膏檢查工藝機制 ➔</button>
+                                </div>
+                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin-top:12px; font-size:0.85rem; font-weight:700; line-height:1.5; display:none;"></div>
+                            </div>
+                        `
+                    },
+                    {
+                        name: "Reflow Oven (高溫迴流銲爐)",
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">內部橫跨 10 到 12 個獨立高溫充氮加熱溫區。主板隨流水線皮帶緩慢進爐，經受最高達 260°C 的高溫化學受熱曲線拷問。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">將主板表面的錫膏完全液化融化、激發化學松香活性，隨後在冷卻溫區精確固化凝結完成電路機械熔焊。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">定時架設溫測線（Profiler）進爐實測，鎖死加熱速率，杜絕厚銅板因散熱過快升溫不足導致大面積冷銲虛焊。</div>
+                                </div>
+                            </div>
+                            <div class="dict-panel-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:16px; box-shadow:3px 3px 0px #1A1A1A; margin-top:20px;">
+                                <div style="font-weight:900; font-size:0.85rem; color:#475569; margin-bottom:10px;">📖 專業技術字典</div>
+                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
+                                    <button style="background:#FFF; border:2px solid #1A1A1A; padding:10px; border-radius:6px; font-weight:800; font-size:0.8rem; text-align:left; cursor:pointer;" onclick="showTacticalDict('【爐溫 Profile 曲線】：若測試站爆發大面積虛焊（Solder Skip），工廠老手常甩鍋給研發板材設計。TPM 應立即下令產線停線，實測 Profile 曲線，鐵證往往會指向工廠熔爐溫區溫控老化漂移。')">🔍 拆彈過爐焊接缺陷 ➔</button>
+                                </div>
+                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin-top:12px; font-size:0.85rem; font-weight:700; line-height:1.5; display:none;"></div>
+                            </div>
+                        `
+                    },
+                    {
+                        name: "FATP (後段物理總裝線)",
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">Final Assembly, Testing & Packaging。大流水線整機拼裝。操作員扣合螢幕、主板、鎖附扭力螺絲、隨後流入自動化測試房、最後包裝封箱。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">優化各操作工位工時（Cycle Time），高頻率拉速，一網打盡色彩、音頻、射頻電性缺陷，守住出貨時程。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">測試站治具誤判率（False Alarm）嚴格掐死在 1% 以下，彩盒磅秤整箱電子秤重防錯，實現廠門之內零缺陷流出。</div>
+                                </div>
                             </div>
                         `
                     }
                 ]
             },
             {
-                title: "2. 防水與感測器高端精密工序",
-                subMatrixBranches: [
+                title: "2. 高階手機防水氣密與感測器精密工序 (高端高精專用核心技術站點)",
+                diagramFlowArray: [
                     {
-                        branchLabel: "高端高精技術站點",
-                        keywords: [
-                            { name: "Leak Test", shortDesc: "高壓氣密性非浸水防水檢測 (Leakage Detection)" },
-                            { name: "IMU Cal", shortDesc: "慣性核心加速度羅盤多面翻轉校正 (Calibration)" },
-                            { name: "AA Process", shortDesc: "六軸手臂動態對焦微米級AA主動對位 (Active Alignment)" },
-                            { name: "Poka-Yoke", shortDesc: "實體硬體與操作結構治具防呆防錯 (Error Proofing)" }
-                        ],
+                        name: "Leak Test (防水氣密測試)",
                         text: `
                             <div class="edu-overview-container">
                                 <div class="edu-overview-card">
-                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">💡 主導多軸自動化點膠機噴塗防水膠路，並將整機送入專屬陀螺儀動態治具進行翻轉多面校正。</div>
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">利用高精密氣密測試儀向密封殼體腔內注入微量高壓氣體，在不將手機扔進水裡的狀態下，動態感測氣壓漏氣偏移率。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">建立 IP68 黃金氣密測試防線，精確洗淨陀螺儀與羅盤指南針零偏，排除凡間使用者升空漂移炸機隱患。</div>
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">建立 IP68 行業黃金防水阻絕防線。透過微量形變波形快速解讀整機密封結構的物理防水完好度。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">防水防水橡膠圈鎖附形變維持 25%~40% 黃金壓縮比，治具測試誤判率（False Alarm）嚴格控制在 1% 以下。</div>
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">防水防水橡膠圈（O-Ring）在結構鎖附壓合時，其物理受壓形變率剛性維持在 25%~40% 黃金壓縮比區間，防範漏氣爆倉。</div>
                                 </div>
                             </div>
-                            <div class="dict-panel-card" style="background:#FFF;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:16px;box-shadow:3px 3px 0px var(--border-heavy);margin-top:20px;">
-                                <div class="edu-card-label" style="font-weight:900;font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">📖 核心關鍵字戰術字典 (點擊解鎖深層手機廠工藝避坑指南)</div>
-                                <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【AA 影像對位製程】：高階相機或影像模組為了排除微米級組裝公差，在點亮動態下利用六軸機器手臂微調至最清晰焦點的精密製程工藝。')"><span>🔍 AA 影像主動對位 (攝像對焦製程)</span><span>➔</span></button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【Poka-Yoke 現場防呆】：為了防止操作工因日夜班交接疲勞將排線反塞或漏裝附件，在線體上加裝的塑料防錯導向物理結構。')"><span>🔍 Poka-Yoke 防呆機制 (產線實體防錯)</span><span>➔</span></button>
+                        `
+                    },
+                    {
+                        name: "IMU Cal (慣性核心校正站)",
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">無人機與高階防手震手機特有工序。將機器綁定在專屬高精三軸旋轉陀螺儀動態校正治具上，開展精密動態六面翻轉。</div>
                                 </div>
-                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:14px;margin-top:12px;font-size:0.85rem;font-weight:700;display:none;"></div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">強行注入動態校正演算法 Image，將機器內部的加速度計、氣壓計、指南針羅盤的晶圓零偏誤差徹底「洗淨抹平」。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">死守感測器精準度。防範終端消費者拿到實物機器在戶外起飛後發生嚴重的羅盤漂移或空中失控炸機災難。</div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        name: "AA Process (主動影像對位)",
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">Active Alignment。高階影像模組製程。利用六軸高精密度機器手臂，在鏡頭模組動態點亮點燃的狀態下，微米級微調鏡頭與 CMOS 晶片間的相對軸向角度。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">利用實時圖像演算法反饋調整，物理排除鏡片組與感光元件組裝微觀公差疊加引起的「邊緣模糊、焦點偏移」硬傷。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">實現畫面中央與四周 100% 均勻最清晰對焦解像力。此高精站點之自動化夾具與標定板光源強度必須每日剛性對位校正。</div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        name: "Poka-Yoke (產線防呆防錯)",
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">在流水線治具上加裝特定塑料防錯導向導軌、非對稱卡槽、紅外線防漏感應探頭、或軟體強制互鎖校驗鎖死程序。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">防範一線操作工因日夜班長途交接轉廠引發的生理疲勞，剛性阻絕人為發生的「排線反塞、配件漏塞、螺絲漏鎖」等低級缺陷。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">實現「愚巧化防錯」，讓錯誤的操作在物理結構上根本無法扣合成立，用硬體治具剛性托底直通率。</div>
+                                </div>
                             </div>
                         `
                     }
                 ]
             },
             {
-                title: "3. 4M1E 現地查線因果排查戰術",
-                subMatrixBranches: [
+                title: "3. 4M1E 現地查線因果排查戰術 (良率海嘯雪崩時的現地技術排查總綱)",
+                diagramFlowArray: [
                     {
-                        branchLabel: "現場大排除因果矩陣",
-                        keywords: [
-                            { name: "Man", shortDesc: "人員異動與日夜班轉廠交接檢查 (Operator State)" },
-                            { name: "Machine", shortDesc: "設備探針磨損與電動起子鎖附扭力 (Tool Calibration)" },
-                            { name: "Material", shortDesc: "上游料號IQ檢驗原始Lot追溯 (Lot Number)" },
-                            { name: "Method / Env", shortDesc: "映像檔軟體版本與無塵室ESD破窗 (Software & ESD)" }
-                        ],
+                        name: "Man & Machine (人员與設備排查)",
                         text: `
                             <div class="edu-overview-container">
                                 <div class="edu-overview-card">
-                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">當大流水線測試站良率遭遇無預警無預警雪崩下跌時，第一時間趕赴現地調閱日誌發動排除法。</div>
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">當測試良率無預警大跌時，第一時間衝往現地。檢查操作員是否違反 SOP 操作、是否剛更換新人，同時調閱起子扭力日誌與 ICT 測試針床探針磨損變形度。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">地毯式清查 IQC 進料報告與生產首件檢查（FAI）數據，精確核對物料批號，嚴防混料汙染。</div>
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">排除因「人員操作不當」或「自動化治具精度偏移、探針針床老化漏電」引發的局部測試異常。</div>
                                 </div>
                                 <div class="edu-overview-card">
-                                    <div class="edu-cut-label" style="font-family:monospace;font-weight:900;color:var(--text-secondary);border-bottom:1px dashed #ccc;padding-bottom:4px;margin-bottom:8px;">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text" style="font-size:0.9rem;font-weight:700;line-height:1.5;color:var(--text-main);">在兩小時內查出究竟是探針變形、新人未受訓上崗、電動螺絲刀扭力偏離、還是無塵室靜電防護 ESD 破窗。</div>
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">迅速判定病灶。若在日夜班交接（Shift Transition）時良率突變，應立即調閱交接班金件點檢日誌（Setup Verification Log）與首件檢查（FAI）數據。</div>
                                 </div>
                             </div>
-                            <div class="dict-panel-card" style="background:#FFF;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:16px;box-shadow:3px 3px 0px var(--border-heavy);margin-top:20px;">
-                                <div class="edu-card-label" style="font-weight:900;font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">📖 核心關鍵字戰術字典 (點擊解鎖深層手機廠工藝避坑指南)</div>
-                                <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【日夜班轉廠交接】：產線交接（Shift Transition）往往是良率下跌高發期。趕往現場應立即調閱交接班金件點檢日誌（Setup Verification Log）。')"><span>🔍 轉廠交接點檢 (日夜轉班排查)</span><span>➔</span></button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【IQC 與 COA 互鎖】：全面追蹤進料原始報告與供應商 Lot Number，檢查物料在倉庫至產線間的防潮與保存期限有無破窗。')"><span>🔍 物料批號追溯 (料號與Lot檢驗)</span><span>➔</span></button>
+                        `
+                    },
+                    {
+                        name: "Material (進料原物料追溯)",
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">在 ERP 品質系統中一鍵逆向調閱此批次出事機台的進料 IQC 原始報告、原廠 COA 品質檔案、與料號 Lot Number。</div>
                                 </div>
-                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2;border:2px solid var(--border-heavy);border-radius:var(--radius-sm);padding:14px;margin-top:12px;font-size:0.85rem;font-weight:700;display:none;"></div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">清查是否在線體上遭遇了供應商特定批次的隱性材料公差缺陷，核實倉庫到線體間有無發生混料汙染。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">精準鎖定缺陷物料的波及層級，及時發動在製品（WIP）剛性隔離，防止帶病材料夾帶流入最終包裝出貨。</div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        name: "Method & Env (工藝軟體與環境防護)",
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">核對功能測試站點的測試韌體（FTM Image）版本代號是否正確，並現地動態點檢操作工的 ESD 靜電手環、靜電皮帶有無破窗失效。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">排除因「測試軟體灌錯版本引發的誤判」，以及死守無塵車間溫濕度與 ESD 防護，嚴防晶片遭遇微觀靜電擊穿擊傷。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">環境因子與工藝標準完全在控。兩小時內閉環輸出 Root Cause 技術排除分析日誌，讓拉速重新重回綠燈水位。</div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        name: "FAI (首件檢查防線)",
+                        text: `
+                            <div class="edu-overview-container">
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div class="edu-card-body-text">First Article Inspection。在每日清晨開線、白夜班交接轉廠、或線體更換 ECO 零件後的歷史第一台機器，必須強制進行整機尺寸與電性的剛性地毯式全檢。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div class="edu-card-body-text">在流水線尚未啟動大规模大量複製前，用實物樣品驗證設備狀態、鋼網對位、與程序參數的絕對正確性。</div>
+                                </div>
+                                <div class="edu-overview-card">
+                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
+                                    <div class="edu-card-body-text">FAI 首件量測數據完全契合圖紙公差，由品保、製程工程師聯合簽字放行，大流水線方可准許開閘拉速。</div>
+                                </div>
                             </div>
                         `
                     }
