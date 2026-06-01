@@ -100,27 +100,6 @@
             white-space: nowrap;
         }
 
-        .sync-cloud-btn {
-            background: #22C55E;
-            color: #FFFFFF;
-            border: 3px solid var(--border-heavy);
-            padding: 10px 16px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 900;
-            font-size: 0.85rem;
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            transition: all 0.1s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .sync-cloud-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0px var(--border-heavy);
-        }
-
         .back-btn {
             background: var(--card-white);
             border: 3px solid var(--border-heavy);
@@ -531,7 +510,6 @@
         </div>
         <div class="navbar-controls">
             <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
-            <button class="sync-cloud-btn" id="tpm-query-btn" onclick="triggerCloudPullSync()">📊 查詢與同步成績</button>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
                 <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
@@ -581,7 +559,7 @@
     </div>
 
     <script>
-        // 👑 剛性焊接：您的 GAS 網網頁應用程式部署 URL 👑
+        // 👑 剛性綁定：您的 GAS Web App 實體基地台 URL 👑
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
         const globalSubUnitRegistry = [
@@ -605,42 +583,9 @@
         let examActive = false, examCurrentQ = 0, examScoreCount = 0;
 
         window.onload = () => {
-            // 👑 戰術通訊監聽器：精確接引來自高級卡片 UI 視窗的 postMessage 訊號，解除按鈕死鎖狀態機 👑
-            window.addEventListener('message', function(event) {
-                // 訊號 A：反向拉回成績完畢
-                if (event.data && event.data.type === 'TPM_PULL_SYNC') {
-                    const lessons = event.data.lessons.split(",");
-                    lessons.forEach(function(code) {
-                        const cleanCode = code.trim();
-                        if (cleanCode !== "") {
-                            localStorage.setItem("codex-L1-A" + cleanCode.split('-')[1] + "-clear", "true");
-                            localStorage.setItem("talent-L1-A" + cleanCode.split('-')[1] + "-grade", "通過");
-                        }
-                    });
-                    alert("📊 雲端成績同步成功！已成功點亮歷史天賦燈號。");
-                    resetQueryButtonState();
-                }
-                
-                // 訊號 B：正向考核改寫完畢
-                if (event.data && event.data.type === 'TPM_PUSH_DONE') {
-                    console.log("正向考核數據矩陣原位改寫成功。");
-                    resetQueryButtonState();
-                }
-            });
-
             renderGlobalTreeStructure();
             routeController();
         };
-
-        function resetQueryButtonState() {
-            const btn = document.getElementById('tpm-query-btn');
-            if (btn) {
-                btn.innerHTML = "📊 查詢與同步成績";
-                btn.style.background = "#22C55E";
-                btn.disabled = false;
-            }
-            renderMultiLevelHubDashboard();
-        }
 
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); 
@@ -864,6 +809,7 @@
             runExamEngine(); 
         }
         
+        // 👑 正向獨立新分頁盲推：純單向如實拋送至 Google Sheet，最穩定的封牌開線架構 👑
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
@@ -889,39 +835,21 @@
             if (currentRegistry && currentRegistry.type === 'handbook') { resolvedType = "Handbook Course"; }
 
             try {
-                // 🔥 大考按鈕也一併進入冷卻保護狀態
-                const btn = document.getElementById('tpm-query-btn');
-                if (btn) {
-                    btn.innerHTML = "⏳ 正在上傳成績...";
-                    btn.disabled = true;
-                }
-
+                // 🎯 拼接正向寫入的獨立 URL（action=push），在新視窗中安全加載並攜帶 Cookies 越牆
                 const finalPushUrl = GLOBAL_GAS_URL + 
                     "?action=push" +
                     "&courseId=" + encodeURIComponent(course.courseId) + 
                     "&status=" + encodeURIComponent(finalStatus);
                 
+                // 開啟微型新分頁，後台大腦 V7.99 / V8.00 收到後會自動改寫看盤矩陣並在 0.9 秒內自毀關閉！
                 window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
+                
             } catch(e) {
-                console.log("獨立航線擊發攔截:", e);
+                console.log("獨立正向航線擊發異常:", e);
             }
 
+            // 大廳主網頁一秒直接切回 Dashboard 大廳，提供最流暢的使用者體驗
             exitToDashboardMenu();
-        }
-
-        function triggerCloudPullSync() {
-            const btn = document.getElementById('tpm-query-btn');
-            btn.innerHTML = "⏳ 正在查詢成績...";
-            btn.style.background = "#94A3B8";
-            btn.disabled = true;
-
-            try {
-                const finalPullUrl = GLOBAL_GAS_URL + "?action=pull";
-                window.open(finalPullUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
-            } catch(e) {
-                console.log("發動雲端回拉異常:", e);
-                resetQueryButtonState();
-            }
         }
     </script>
 </body>
