@@ -581,7 +581,6 @@
     </div>
 
     <script>
-        // 👑 剛性鎖定：您的 GAS Web App 實體基地台 URL（維持內網限制，不開放「任何人」） 👑
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
         const globalSubUnitRegistry = [
@@ -605,8 +604,9 @@
         let examActive = false, examCurrentQ = 0, examScoreCount = 0;
 
         window.onload = () => {
-            // 👑 註冊跨視窗數據監聽器：當新視窗回傳成績時，在背景無感補齊 LocalStorage 👑
+            // 👑 智能監聽器：精確接收來自新分頁的高定 UI 訊號，原地解鎖按鈕狀態機
             window.addEventListener('message', function(event) {
+                // 處理 A：反向回拉完畢
                 if (event.data && event.data.type === 'TPM_PULL_SYNC') {
                     const lessons = event.data.lessons.split(",");
                     lessons.forEach(function(code) {
@@ -617,19 +617,29 @@
                         }
                     });
                     alert("📊 成績查詢完畢！已成功同步並點亮地端天賦燈號。");
-                    renderMultiLevelHubDashboard();
-                    
-                    // 恢復查詢按鈕狀態
-                    const btn = document.getElementById('tpm-query-btn');
-                    btn.innerHTML = "📊 查詢與同步成績";
-                    btn.style.background = "#22C55E";
-                    btn.disabled = false;
+                    resetQueryButtonState();
+                }
+                
+                // 處理 B：正向寫入完畢
+                if (event.data && event.data.type === 'TPM_PUSH_DONE') {
+                    console.log("正向考核數據矩陣寫入成功。");
+                    resetQueryButtonState();
                 }
             });
 
             renderGlobalTreeStructure();
             routeController();
         };
+
+        function resetQueryButtonState() {
+            const btn = document.getElementById('tpm-query-btn');
+            if (btn) {
+                btn.innerHTML = "📊 查詢與同步成績";
+                btn.style.background = "#22C55E";
+                btn.disabled = false;
+            }
+            renderMultiLevelHubDashboard();
+        }
 
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); 
@@ -853,7 +863,6 @@
             runExamEngine(); 
         }
         
-        // 👑 🔥 頂層獨立新分頁拋接模組：主網頁 0 秒無感切回大廳，絕不卡死、重複生成！ 🔥 👑
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
@@ -872,25 +881,33 @@
                 localStorage.setItem(`talent-${storageKey}-grade`, '通過');
             }
 
+            const cleanId = course.courseId.replace("L", "").trim();
+            const currentRegistry = globalSubUnitRegistry.find(function(u) { return u.subUnitId === cleanId; });
+            
+            let resolvedType = "Beginner Codex";
+            if (currentRegistry && currentRegistry.type === 'handbook') { resolvedType = "Handbook Course"; }
+
             try {
-                // 🎯 建立內網投遞的實體 URL（在新分頁中加載，完美攜帶 Foxconn 登入憑證越牆）
+                // 🔥 將大考按鈕也置入防重試冷卻狀態機
+                const queryBtn = document.getElementById('tpm-query-btn');
+                if (queryBtn) {
+                    queryBtn.innerHTML = "⏳ 正在同步成績...";
+                    queryBtn.disabled = true;
+                }
+
                 const finalPushUrl = GLOBAL_GAS_URL + 
                     "?action=push" +
                     "&courseId=" + encodeURIComponent(course.courseId) + 
                     "&status=" + encodeURIComponent(finalStatus);
                 
-                // 🚀 核心優化：開啟獨立小視窗去跑 Foxconn 慢速驗證，完全不綁架主網頁！
                 window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
-                
             } catch(e) {
                 console.log("獨立航線擊發攔截:", e);
             }
 
-            // 👑 主視窗 0 秒鐘直接切回大廳，學員不需要在原地傻傻排隊等待
             exitToDashboardMenu();
         }
 
-        // 👑 🔥 獨立新分頁拉回模組：在新視窗跑 SSO，跑完跨視窗 postMessage 送回大廳後自毀！ 🔥 👑
         function triggerCloudPullSync() {
             const btn = document.getElementById('tpm-query-btn');
             btn.innerHTML = "⏳ 正在查詢成績...";
@@ -899,14 +916,10 @@
 
             try {
                 const finalPullUrl = GLOBAL_GAS_URL + "?action=pull";
-                
-                // 🚀 開放新分頁去啃 Foxconn 30秒的 SSO 時延牆，主頁面不留任何滾動條死鎖
                 window.open(finalPullUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
             } catch(e) {
                 console.log("發動雲端回拉異常:", e);
-                btn.innerHTML = "📊 查詢與同步成績";
-                btn.style.background = "#22C55E";
-                btn.disabled = false;
+                resetQueryButtonState();
             }
         }
     </script>
