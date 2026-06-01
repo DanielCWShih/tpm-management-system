@@ -1,7 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-05-29 V6.1: 👑 子單元 1-3 滿血全展開版。更正最新時間。全量多行展開。全面導入「會做什麼、核心目標、終極期待」三維戰術矩陣。精準解鎖 SMT 熔爐爐溫 Profile 曲線、FCT測試治具誤判與磅秤站附件攔截三大命運沙盒。10隨機抽 3 題。
+2026-06-01 V6.7: 👑 滿版教科書合流優化版。更正時間。配合外殼 70% 縮放與無 Canvas 長文引擎，將 SMT、Assembly、Test、Packaging 以及 4M1E 現場查線全面釋放。
 ========================================================================
 */
 
@@ -30,22 +30,22 @@ window.codexCourseEngineData = [
                                     <div class="edu-card-body-text">過完迴流焊熔爐後電路 100% 完美焊接打通。BGA 焊點內部零氣泡、零虛銲、零浮起，徹底杜絕隱形物理內傷。</div>
                                 </div>
                             </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
+                            <div class="dict-panel-card">
+                                <div class="edu-card-label">📖 戰術檢查字典</div>
                                 <div class="dict-btn-grid">
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【SPI 錫膏厚度檢查】：3D 錫膏厚度檢驗儀。在貼片元件前攔截漏印、印歪、刮錫，是 SMT 最具代價效益的攔截點。')"><span>🔍 SPI 錫膏厚度檢驗</span><span>➔</span></button>
                                     <button class="dict-trigger-btn" onclick="showTacticalDict('【Reflow 迴流熔爐】：利用高溫控制曲線（Profile）將錫膏液化、化學熔焊。必須定時架設測溫線（Profiler）進爐實測，防止局部冷銲。')"><span>🔍 迴流焊爐溫 Profile</span><span>➔</span></button>
                                 </div>
-                                <div id="runtime-dict-box" class="dict-display-box"></div>
+                                <div class="dict-display-box"></div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策大沙盒（學以致用模擬演練）</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>SMT 過完爐後，AOI 光學天眼集體回報晶片引腳爆發大面積虛焊（Solder Skip），工廠主管堅持是 EE 板材散熱過快，要求停線修改 Layout，你應？</div>
+                                <div class="edu-card-label">🎮 TPM 工程決策大沙盒</div>
+                                <div style="font-size:0.82rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>SMT 過完爐後，AOI 光學天眼集體回報晶片引腳爆發大面積虛焊（Solder Skip），工廠主管堅持是 EE 板材散熱過快，要求停線修改 Layout，你應？</div>
                                 <div class="sandbox-choice-row">
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：研發周期失鎖！</strong><br>你盲目聽信改圖。結果重過 Layout 耗費兩週，工廠大模具晾在現場，生產排程全盤垮台，被客戶當場編錄發配邊疆！')">方案 A：相信工廠，開單攔截專案並退回給 EE 重新修改 Layout 圖紙。</button>
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：鐵血實證，2小時滿血復活！</strong><br>你剛性調閱爐溫曲線！發動溫測線實測，鐵證證實是工廠熔爐第三溫區加熱速度漂移。下令工廠 2 小時內重調爐溫，良率瞬間滿血回復 99.5%！')">方案 B：鐵血卡死產線！勒令工廠工程師架設溫測線進爐，實測熔爐真實 Profile 曲線。</button>
                                 </div>
-                                <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
+                                <div class="sandbox-fallout-box"></div>
                             </div>
                         `
                     },
@@ -86,13 +86,13 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策大沙盒（學以致用模擬演練）</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>功能測試站突然集體拋出 Wifi 天線射頻失敗（Fail），工廠大喊設計垮台、強烈要求全面停線，你該如何拆彈？</div>
+                                <div class="edu-card-label">🎮 TPM 工程決策大沙盒</div>
+                                <div style="font-size:0.82rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>功能測試站突然集體拋出 Wifi 天線射頻失敗（Fail），工廠大喊設計垮台、強烈要求全面停線，你該如何拆彈？</div>
                                 <div class="sandbox-choice-row">
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：被專家數據打臉，顏面掃地！</strong><br>你相信工廠大喊。結果被客戶射頻專家調閱數據當場打臉，證實是工廠治具沒校正，專業度淪為公會笑柄！')">方案 A：相信工廠直覺，立刻在系統發出紅燈停線通報，並要求研發進行技術改圖。</button>
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：天眼破案！抓出治具漏電！</strong><br>你物理點亮黃金母板，發現同樣報 Fail！這鐵證證實天線沒壞，而是測試房內部的射頻纜線（RF Cable）磨損漏電。更換纜線瞬間滿血拉速！')">方案 B：強制調用 Golden Board（黃金標準母板）送入治具開展對比校正測試。</button>
                                 </div>
-                                <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
+                                <div class="sandbox-fallout-box"></div>
                             </div>
                         `
                     },
@@ -114,13 +114,13 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                             <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策大沙盒（學以致用模擬演練）</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>包裝秤重磅秤站突然發出連續警報，自動化擊落了 5 箱成品，顯示整體物理重量比標準少了 12 克，你第一移動是？</div>
+                                <div class="edu-card-label">🎮 TPM 工程決策大沙盒</div>
+                                <div style="font-size:0.82rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>產線突發修羅場：</strong>包裝秤重磅秤站突然發出連續警報，自動化擊落了 5 箱成品，顯示整體物理重量比標準少了 12 克，你第一移動是？</div>
                                 <div class="sandbox-choice-row">
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：大面積退貨，商譽重創！</strong><br>你盲目調高磅秤公差。結果產品運到凡間後被消費者集體投訴爆發：彩盒內竟然沒有說明書與退卡針！')">方案 A：認為是磅秤傳感器微小偏移，直接在系統調高公差容忍值，放行出貨。</button>
                                     <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：攔截附件失誤，死守出貨防線！</strong><br>你現場卡死、物理開箱屍檢！抓到是副線操作工漏塞了剛性說明書。當場勒令補齊並徹底清查前段，成功將外觀物料疏漏攔截在廠門之內！')">方案 B：剛性卡死開閘通訊！勒令這 5 箱機器原地退單，發動實體開箱開盒屍檢。 </button>
                                 </div>
-                                <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
+                                <div class="sandbox-fallout-box"></div>
                             </div>
                         `
                     }
@@ -156,7 +156,7 @@ window.codexCourseEngineData = [
                                 </div>
                                 <div class="edu-overview-card">
                                     <div class="edu-card-label">🔍 Material / Method / Env</div>
-                                    <div class="edu-card-body-text">全面追蹤進料 IQC 原始報告與物料批號（Lot Number），核對供應商出廠 COA；點檢測試軟體版本與無塵室 ESD 靜電環防護。</div>
+                                    <div class="edu-card-body-text">全面追蹤进料 IQC 原始報告與物料批號（Lot Number），核對供應商出廠 COA；點檢測試軟體版本與無塵室 ESD 靜電環防護。</div>
                                 </div>
                             </div>
                         `
