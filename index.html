@@ -3,107 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System TPM 公會總部 | System TPM Guild</title>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
+    <title>System TPM 公會總部 | Tactical Hub</title>
     <style>
         :root {
             --bg-color: #FEF9E7;
-            --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
             --text-main: #1A1A1A;
             --text-secondary: #475569;
             --border-heavy: #1A1A1A;
             --shadow-tactical: 5px 5px 0px #1A1A1A;
-            --radius-sm: 8px;
+            --radius-sm: 12px;
+            --color-stripe-light: #FDF2D0;
         }
 
         html, body {
             margin: 0;
             padding: 0;
             width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             background-color: var(--bg-color);
             font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         * {
             box-sizing: border-box;
         }
 
-        /* 剛性首頁畫布外殼：允許卡牌超出時自然出現垂直滾動條，絕對不裁剪 */
-        .idx-canvas-full {
-            width: 100vw;
-            height: 100vh;
-            overflow-y: auto;
-            padding: 40px 40px 80px 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-
-        /* 中央標題區域 */
-        .idx-main-header {
-            text-align: center;
-            margin-bottom: 40px;
+        /* 頂部控制列 */
+        .hub-navbar {
             width: 100%;
-            padding-top: 20px;
-            flex-shrink: 0;
-        }
-
-        .idx-main-header .logo-mark {
-            font-size: 0.9rem;
-            font-weight: 900;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            color: var(--text-secondary);
-            font-family: monospace;
-        }
-
-        .idx-main-header h1 {
-            font-size: 3.2rem;
-            margin: 0;
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-
-        .idx-main-header .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            font-weight: 700;
-            margin-top: 15px;
-        }
-
-        /* 右上角剛性控制中樞 */
-        .idx-floating-controls {
-            position: absolute;
-            top: 30px;
-            right: 40px;
+            max-width: 1200px;
+            padding: 25px 20px 0 20px;
             display: flex;
+            justify-content: flex-end;
             align-items: center;
-            gap: 12px;
-            z-index: 2000;
+            gap: 15px;
+        }
+
+        .auth-panel {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            box-shadow: 3px 3px 0px var(--border-heavy);
         }
 
         .lang-switcher-wrapper {
             display: flex;
             background: var(--card-white);
             border: 3px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
+            border-radius: 8px;
             box-shadow: 3px 3px 0px var(--border-heavy);
             padding: 2px;
         }
 
         .lang-btn-core {
-            width: 50px;
-            height: 35px;
+            width: 45px;
+            height: 32px;
             border: none;
             background: transparent;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 900;
             color: var(--text-secondary);
             display: flex;
@@ -113,304 +79,319 @@
         }
 
         .lang-btn-core.active {
-            background: var(--text-main) !important;
-            color: white !important;
+            background: var(--text-main);
+            color: white;
         }
 
-        .auth-panel {
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            padding: 10px 20px;
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
+        /* 總部標題區 */
+        .hub-header {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .hub-version-tag {
+            font-family: monospace;
             font-weight: 900;
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            min-height: 45px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            font-size: 0.85rem;
         }
 
-        /* 卡牌矩陣網格 */
-        .idx-hub-grid {
+        .hub-main-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin: 10px 0;
+            color: var(--text-main);
+        }
+
+        .hub-subtitle {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.04);
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* 大廳核心看板外框 */
+        .hub-tactical-deck {
+            width: 92%;
+            max-width: 1200px;
+            border: 4px solid var(--border-heavy);
+            padding: 40px;
+            margin-bottom: 60px;
+            border-radius: 8px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            width: 100%;
-            max-width: 1400px;
-            padding: 10px 0;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            background-color: var(--bg-color);
         }
 
-        .idx-hub-card {
+        /* 戰術卡片基礎樣式 */
+        .tactical-card {
             background: var(--card-white);
             border: 3px solid var(--border-heavy);
-            border-radius: 12px;
-            padding: 40px 30px;
-            text-decoration: none;
+            border-radius: var(--radius-sm);
+            padding: 25px 22px;
             box-shadow: var(--shadow-tactical);
-            position: relative;
+            text-decoration: none;
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            text-align: left;
-            transition: transform 0.15s, box-shadow 0.15s;
+            transition: all 0.15s ease-out;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .idx-hub-card:hover {
+        .tactical-card:hover {
             transform: translate(-4px, -4px);
-            box-shadow: 10px 10px 0px var(--text-main);
-            background-color: #FFFDF2;
+            box-shadow: 9px 9px 0px var(--border-heavy);
         }
 
-        .idx-hub-card.locked {
-            background: repeating-linear-gradient(45deg, #FFFDF9, #FFFDF9 10px, #FDF2D0 10px, #FDF2D0 20px);
-            opacity: 0.5;
-            cursor: not-allowed;
+        /* 尚未解鎖的條紋副本樣式 */
+        .tactical-card.locked-stripe {
+            background-image: linear-gradient(
+                45deg, 
+                var(--color-stripe-light) 25%, 
+                transparent 25%, 
+                transparent 50%, 
+                var(--color-stripe-light) 50%, 
+                var(--color-stripe-light) 75%, 
+                transparent 75%, 
+                transparent
+            );
+            background-size: 24px 24px;
         }
 
-        .idx-icon-box {
-            width: 55px;
-            height: 55px;
-            background: var(--bg-color);
-            border: 3px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
+        .card-icon-frame {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--border-heavy);
+            border-radius: 8px;
+            background: var(--card-white);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 25px;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            margin-bottom: 20px;
         }
 
-        .idx-hub-card:hover .idx-icon-box {
-            background: #FDE047;
-        }
-
-        .idx-hub-card h3 {
-            font-size: 1.4rem;
+        .card-title {
+            font-size: 1.35rem;
             font-weight: 900;
-            margin: 0 0 12px 0;
-            letter-spacing: -0.5px;
+            margin: 0 0 10px 0;
+            letter-spacing: 0.5px;
         }
 
-        .idx-hub-card p {
-            font-size: 0.95rem;
+        .card-desc {
+            font-size: 0.82rem;
+            font-weight: 700;
             color: var(--text-secondary);
-            font-weight: 600;
+            line-height: 1.5;
             margin: 0;
-            line-height: 1.6;
         }
 
-        .idx-bg-watermark {
+        /* 👑 右下角地端數據備份控制面板 👑 */
+        .local-storage-panel {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 10rem;
-            font-weight: 900;
-            color: rgba(253, 242, 208, 0.4);
-            z-index: -1;
-            user-select: none;
-            font-family: monospace;
-            pointer-events: none;
-        }
-
-        #google-native-icon-wrapper {
+            bottom: 25px;
+            right: 25px;
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-tactical);
             display: flex;
             align-items: center;
-            margin-left: 8px;
+            gap: 10px;
+            z-index: 2000;
+        }
+
+        .local-btn {
+            border: 2px solid var(--border-heavy);
+            background: var(--card-white);
+            color: var(--text-main);
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            font-weight: 900;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.1s;
+        }
+
+        .local-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+        }
+
+        .local-btn.export-theme { 
+            background: #FDE047; 
+        } 
+        
+        .local-btn.import-theme { 
+            background: #22C55E; 
+            color: white; 
+        }
+
+        #hidden-file-input { 
+            display: none; 
         }
     </style>
 </head>
 <body>
 
-    <div class="idx-bg-watermark">TPM.GUILD</div>
-    
-    <div class="idx-canvas-full">
+    <div class="hub-navbar">
+        <div class="auth-panel">👤 冒險者 : Daniel Shih</div>
+        <div class="lang-switcher-wrapper">
+            <button class="lang-btn-core active">TW</button>
+            <button class="lang-btn-core">EN</button>
+        </div>
+    </div>
+
+    <div class="hub-header">
+        <div class="hub-version-tag">GUILD HQ / LEVEL 2026</div>
+        <h1 class="hub-main-title">System TPM 公會總部</h1>
+        <div class="hub-subtitle">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
+    </div>
+
+    <div class="hub-tactical-deck">
         
-        <div style="display: none;">
-            <div id="g_id_onload"
-                 data-client_id="714448595856-i1nkps3f08arusf8fdfguj3gpnnu69uf.apps.googleusercontent.com"
-                 data-context="signin"
-                 data-ux_mode="popup"
-                 data-callback="handlePortalLogin"
-                 data-auto_select="true">
-            </div>
+        <a href="beginner_codex.html" class="tactical-card">
+            <div class="card-icon-frame">🗺️</div>
+            <h3 class="card-title" style="color: #1D4ED8;">初心者寶典</h3>
+            <p class="card-desc">工廠基礎與 System TPM 基礎概括：點亮硬體世界第一步的核心知識大本營。</p>
+        </a>
+
+        <a href="handbook.html" class="tactical-card">
+            <div class="card-icon-frame">📜</div>
+            <h3 class="card-title" style="color: #B45309;">冒險者手冊</h3>
+            <p class="card-desc">功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
+        </a>
+
+        <div class="tactical-card locked-stripe">
+            <div class="card-icon-frame">⚔️</div>
+            <h3 class="card-title" style="color: #64748B;">階級晉級試煉</h3>
+            <p class="card-desc">綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
         </div>
 
-        <div class="idx-floating-controls">
-            
-            <div id="auth-unlogged-zone" class="auth-panel">
-                <span data-i18n="auth-locked">🔒 未讀取公會憑證</span>
-                <div id="google-native-icon-wrapper">
-                    <div class="g_id_signin" 
-                         data-type="icon" 
-                         data-shape="square" 
-                         data-theme="outline" 
-                         data-size="large">
-                    </div>
-                </div>
-            </div>
-
-            <div id="auth-logged-zone" class="auth-panel" style="display: none;"></div>
-
-            <div class="lang-switcher-wrapper">
-                <button class="lang-btn-core" id="global-btn-tw" onclick="executeLangSwitch('tw')">TW</button>
-                <button class="lang-btn-core" id="global-btn-en" onclick="executeLangSwitch('en')">EN</button>
-            </div>
+        <div class="tactical-card locked-stripe">
+            <div class="card-icon-frame">🤖</div>
+            <h3 class="card-title" style="color: #64748B;">賢者之識</h3>
+            <p class="card-desc">智慧核心：整合大語言模型 (LLM) 知識庫，自動化輔助生成全新標準化作業教材。</p>
         </div>
 
-        <div class="idx-main-header">
-            <div class="logo-mark" id="home-logo-mark-text">GUILD HQ / LEVEL 2026</div>
-            <h1 id="home-main-title-text">System TPM 公會總部</h1>
-            <div class="subtitle" id="home-subtitle-text">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
+        <a href="talent_tree.html" class="tactical-card">
+            <div class="card-icon-frame">🌿</div>
+            <h3 class="card-title" style="color: #047857;">冒險者天賦樹</h3>
+            <p class="card-desc">RPG 樹狀指南路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
+        </a>
+
+        <div class="tactical-card locked-stripe">
+            <div class="card-icon-frame">🛡️</div>
+            <h3 class="card-title" style="color: #64748B;">隨機副本挑戰</h3>
+            <p class="card-desc">動態隨機題庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
         </div>
 
-        <div class="idx-hub-grid">
-            
-            <a href="beginner_codex.html" class="idx-hub-card active">
-                <div class="idx-icon-box">🗺️</div>
-                <h3 data-i18n="card-codex-title">初心者寶典</h3>
-                <p data-i18n="card-codex-desc">工廠基礎與 System TPM 基礎概括：點亮硬體世界觀第一步的核心知識大本營。</p>
-            </a>
-            
-            <a href="handbook.html" class="idx-hub-card active">
-                <div class="idx-icon-box">📜</div>
-                <h3 data-i18n="card-handbook-title">冒險者手冊</h3>
-                <p data-i18n="card-handbook-desc">功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
-            </a>
-            
-            <div class="idx-hub-card locked">
-                <div class="idx-icon-box">⚔️</div>
-                <h3 data-i18n="card-trial-title">階級晉級試煉</h3>
-                <p data-i18n="card-trial-desc">綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
-            </div>
-            
-            <div class="idx-hub-card locked">
-                <div class="idx-icon-box">🤖</div>
-                <h3 data-i18n="card-sage-title">賢者之識</h3>
-                <p data-i18n="card-sage-desc">智慧核心：整合大語言模型（LLM）知識庫，自動化輔助生成全新標準化作業教材。</p>
-            </div>
-            
-            <a href="talent_tree.html" class="idx-hub-card active">
-                <div class="idx-icon-box">🌿</div>
-                <h3 data-i18n="card-tree-title">冒險者天賦樹</h3>
-                <p data-i18n="card-tree-desc">RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
-            </a>
-            
-            <div class="idx-hub-card locked">
-                <div class="idx-icon-box">🛡️</div>
-                <h3>隨機副本挑戰</h3>
-                <p>動態隨機题庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
-            </div>
-            
-            <a href="Library.html" class="idx-hub-card active">
-                <div class="idx-icon-box">📚</div>
-                <h3 data-i18n="card-library-title">知識圖書館</h3>
-                <p data-i18n="card-library-desc">集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。</p>
-            </a>
-            
-        </div>
-        
-        <footer style="margin-top: auto; padding: 40px 0; text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); font-family: monospace;">
-            <span>GUILD.REVISION: 0528-V4.2 | @2026 | OPERATOR: DANIEL SHIH</span>
-        </footer>
-        
+        <a href="library.html" class="tactical-card">
+            <div class="card-icon-frame">📚</div>
+            <h3 class="card-title" style="color: #6D28D9;">知識圖書館</h3>
+            <p class="card-desc">集中收錄公會歷史戰役系統架構文件、經驗教訓 (Lessons Learned) 與心得卷軸。</p>
+        </a>
+
+    </div>
+
+    <div class="local-storage-panel">
+        <span style="font-size:0.75rem; font-weight:900; color:var(--text-secondary);">💾 進度存檔控制：</span>
+        <button class="local-btn export-theme" onclick="exportPersonalProgress()">📊 備份下載存檔</button>
+        <button class="local-btn import-theme" onclick="triggerImportClick()">📥 載入歷史進度</button>
+        <input type="file" id="hidden-file-input" accept=".json" onchange="importPersonalProgress(event)">
     </div>
 
     <script>
-        const pageTranslations = {
-            tw: {
-                "home-logo-mark-text": "GUILD HQ / LEVEL 2026",
-                "home-main-title-text": "System TPM 公會總部",
-                "home-subtitle-text": "Daniel Shih | 2026 年度高效管理與團隊修煉套件",
-                "card-codex-title": "初心者寶典",
-                "card-codex-desc": "工廠基礎與 System TPM 基礎概括：點亮硬體世界觀第一步的核心知識大本營。",
-                "card-handbook-title": "冒險者手冊",
-                "card-handbook-desc": "功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。",
-                "card-tree-title": "冒險者天賦樹",
-                "card-tree-desc": "RPG 樹狀指向路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。",
-                "card-library-title": "知識圖書館",
-                "card-library-desc": "集中收錄公會歷史戰役系統架構文件、經驗教訓（Lessons Learned）與心得卷軸。",
-                "auth-locked": "🔒 未讀取公會憑證", 
-                "rank-default": "冒險者"
-            },
-            en: {
-                "home-logo-mark-text": "GUILD HQ / LEVEL 2026",
-                "home-main-title-text": "System TPM Guild",
-                "home-subtitle-text": "Daniel Shih | 2026 Tactical Management & Training Suite",
-                "card-codex-title": "Beginner's Codex",
-                "card-codex-desc": "Factory Foundations & System TPM Overviews: The core base camp for stepping into hardware cosmos.",
-                "card-handbook-title": "Adventurer's Handbook",
-                "card-handbook-desc": "Advanced Functional Modules: Deep-dive into IPX8, Precision Optics, FW Integration, and XFN mechanics.",
-                "card-tree-title": "Adventurer Talent Tree",
-                "card-tree-desc": "Visual Progression Matrix: Dynamically mapping and allocating completed nodes.",
-                "card-library-title": "Knowledge Library",
-                "card-library-desc": "Centralized archive storing historical systems design manifests, post-mortems, and scrolls.",
-                "auth-locked": "🔒 No Credentials", 
-                "rank-default": "Adventurer"
+        // 👑 存檔下載大腦：打包所有與考核、天賦樹相關的地端 LocalStorage 資料
+        function exportPersonalProgress() {
+            const backupData = {};
+            let hasData = false;
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                // 剛性過濾：只抓取與本系統核心相關的資料標籤
+                if (key.startsWith('codex-') || key.startsWith('talent-') || key.startsWith('tpm-')) {
+                    backupData[key] = localStorage.getItem(key);
+                    hasData = true;
+                }
             }
-        };
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const currentLang = localStorage.getItem('tpm-lang-pref') || 'tw';
-            syncLanguageState(currentLang);
-        });
+            if (!hasData) {
+                alert("⏳ 地端目前查無任何通關紀錄，無需備份。");
+                return;
+            }
 
-        function syncLanguageState(lang) {
-            localStorage.setItem('tpm-lang-pref', lang);
+            // 轉化為標準 JSON Blob 並發動流暢下載
+            const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const downloadLink = document.createElement('a');
             
-            const twBtn = document.getElementById('global-btn-tw');
-            const enBtn = document.getElementById('global-btn-en');
-            if (twBtn && enBtn) {
-                twBtn.classList.remove('active');
-                enBtn.classList.remove('active');
-                document.getElementById(`global-btn-${lang}`).classList.add('active');
-            }
-
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (pageTranslations[lang][key]) {
-                    el.innerText = pageTranslations[lang][key];
-                }
-            });
-
-            document.getElementById('home-logo-mark-text').innerText = pageTranslations[lang]["home-logo-mark-text"];
-            document.getElementById('home-main-title-text').innerText = pageTranslations[lang]["home-main-title-text"];
-            document.getElementById('home-subtitle-text').innerText = pageTranslations[lang]["home-subtitle-text"];
-            document.title = pageTranslations[lang]["home-main-title-text"];
-
-            const cachedName = localStorage.getItem('tpm-user-name');
-            const cachedRank = localStorage.getItem('tpm-user-rank') || pageTranslations[lang]["rank-default"];
+            // 檔名帶上當前日期，方便學員做版本控管
+            const dateStr = new Date().toISOString().slice(0, 10);
+            downloadLink.href = url;
+            downloadLink.download = `tpm_guild_save_${dateStr}.json`;
             
-            const unloggedZone = document.getElementById('auth-unlogged-zone');
-            const loggedZone = document.getElementById('auth-logged-zone');
-
-            if (cachedName) {
-                if (unloggedZone) {
-                    unloggedZone.style.display = 'none';
-                }
-                if (loggedZone) {
-                    loggedZone.style.display = 'flex';
-                    loggedZone.innerHTML = `👤 ${cachedRank}：${cachedName}`;
-                }
-            } else {
-                if (loggedZone) {
-                    loggedZone.style.display = 'none';
-                }
-                if (unloggedZone) {
-                    unloggedZone.style.display = 'flex';
-                }
-            }
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(url);
         }
 
-        function executeLangSwitch(lang) {
-            syncLanguageState(lang);
+        function triggerCloudPullSync() {
+            // 保留舊接口宣告防止外部組件偏位當機，此處已無縫代償重定向至單機存檔
+            exportPersonalProgress();
         }
 
-        function handlePortalLogin(response) {
-            const payload = JSON.parse(decodeURIComponent(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')).split('').map(function(c) { return '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2); }).join('')));
-            localStorage.setItem('tpm-user-email', payload.email);
-            localStorage.setItem('tpm-user-name', payload.name);
-            syncLanguageState(localStorage.getItem('tpm-lang-pref') || 'tw');
+        function triggerImportClick() {
+            document.getElementById('hidden-file-input').click();
+        }
+
+        // 👑 存檔載入大腦：讀取上傳的 JSON，原位滿血復活地端記憶
+        function importPersonalProgress(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    const keys = Object.keys(importedData);
+
+                    if (keys.length === 0) {
+                        alert("⚠️ 此備份檔內無有效的公會數據進度。");
+                        return;
+                    }
+
+                    // 滿血覆蓋寫入地端
+                    keys.forEach(function(key) {
+                        localStorage.setItem(key, importedData[key]);
+                    });
+
+                    alert(`✓ 載入成功！已成功恢復 ${keys.length} 項考核天賦記憶。大廳即將重新開線！`);
+                    window.location.reload(); // 原地強力刷新
+
+                } catch (err) {
+                    alert("💥 檔案解析失敗！請確認是否為本系統產出的標準 .json 存檔。");
+                }
+            };
+            reader.readAsText(file);
+            
+            // 清空 input 暫存，允許學員高頻重複載入同一個檔案
+            event.target.value = "";
         }
     </script>
 </body>
