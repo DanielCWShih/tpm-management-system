@@ -1,233 +1,308 @@
-/* ========================================================================
-REVISION HISTORY / VERSION LOG
-========================================================================
-2026-05-29 V6.1: 👑 子單元 1-1 終極熱修復版。更正最新時間。全量多行展開。徹底清除內部反引號與 HTML 屬性的引號編譯死鎖，完美點亮 R&D 預言、CMF 限制、材料長料期控制與 EMS 鐵血直通率防線四大沙盒。10題隨機抽3題洗牌引擎完璧歸位。
-========================================================================
-*/
-
-window.codexCourseEngineData = [
-    {
-        courseId: "L1-A1", 
-        menuTitle: "1-1: 基本世界觀與三方賽局",
-        subPages: [
-            {
-                title: "1. 眾神殿 ── 客戶研發端 (Brand R&D)",
-                diagramFlowArray: [
-                    { 
-                        name: "市場預言 (PRD)", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 客戶會做什麼</div>
-                                    <div class="edu-card-body-text">主導全球市場調研、產品規格定義，發佈交付初代產品規格需求書（PRD）與 2D/3D 工程開發圖紙。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">追求極致美學突破與極限技術參數，用極高工藝難度拉高市場溢價防線。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">期待代工廠（EMS）能 100% 完美復刻所有微觀複雜結構，不允許以任何組裝公差為由修改設計。</div>
-                                </div>
-                            </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
-                                <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【PRD 規格防線】：必須全面清查 CMF 是否具備工廠現有流水線的量產製程能力，在開模前剛性攔截不切實際的幻想規格。')"><span>🔍 PRD 規格審查</span><span>➔</span></button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【公差疊加分析】：在圖紙出爐第一時間發動極限疊加模擬，計算零件微米級物理干涉，提前鎖死模具與變形雷區。')"><span>🔍 公差疊加分析</span><span>➔</span></button>
-                                </div>
-                                <div id="runtime-dict-box" class="dict-display-box"></div>
-                            </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策沙盒（學以致用模擬演練）</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>客戶 R&D 為了極致美感，強行要求將內部主板與外殼的 Clearance 安全間距由標準 0.3mm 壓縮至極限 0.1mm，你身為代工廠 TPM，此時的第一決斷是？</div>
-                                <div class="sandbox-choice-row">
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：專案全盤停線崩潰！</strong><br>在 PVT 試產拉速時因零件微小公差疊加，主板當場被殼體物理擠壓變形、電路短路集體燒毀，模具報廢延期兩個月！')">方案 A：聽從客戶意見直接簽字放行，滿足美學堅持。</button>
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：技術拆彈成功！</strong><br>帶領團隊調閱數據向客戶實證 0.1mm 會引發短路海嘯。成功說服客戶微調內部隱蔽骨架，保住安全間距又完美維持外部美學！')">方案 B：啟動跨功能技術仲裁，出示公差公理實證，逼出技術妥協點。</button>
-                                </div>
-                                <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
-                            </div>
-                        `
-                    },
-                    { 
-                        name: "外觀幻化 (ID/CMF)", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 客戶會做什麼</div>
-                                    <div class="edu-card-body-text">主導產品外觀工業設計（ID）與美學表面處理製程（CMF：色彩、材質、工藝）。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">利用高光 C 角、特殊視覺紋理或特種陽極氧化，打造無懈可擊的產品微觀美學防線。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">工廠量產時表面必須達到零刮傷、零色差，且不能因開模頂出工藝而產生任何塑料收縮痕。</div>
-                                </div>
-                            </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
-                                <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【CMF 良率懲罰】：特殊表面工藝（如高光鏡面或特殊陽極）在工廠線體上的初始良率極低，TPM 必須提前備足過爐報廢耗損預算。')"><span>🔍 CMF 良率懲罰</span><span>➔</span></button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【限度樣本 Limit Sample】：開線前必須由客戶 ID、品保與工廠共同簽字會審，銲死表面缺陷外觀的黃金判退標準線。')"><span>🔍 外觀限度樣本</span><span>➔</span></button>
-                                </div>
-                                <div id="runtime-dict-box" class="dict-display-box"></div>
-                            </div>
-                        `
-                    }
-                ]
-            },
-            {
-                title: "2. 萬物星塵 ── 廠商材料端 (Vendors)",
-                diagramFlowArray: [
-                    { 
-                        name: "星塵冶煉 (Lead Time)", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 廠商會做什麼</div>
-                                    <div class="edu-card-body-text">研發與控制特定元件之晶圓材料技術（如核心晶片、特種特殊膠材、鏡頭模組原件）。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">在特定材料防線上維持行業壟斷，控制出廠良率，確保向代工廠大量供貨時產能無虞。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">期待代工廠（EMS）提供精確無料期偏位的排產預測（Forecast），且在加工拼裝時不發生人為擊傷。</div>
-                                </div>
-                            </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
-                                <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【長料期沙漏控管】：精確追蹤 Lead Time 超過 12 週的稀缺晶片物料水位，一旦供應鏈斷線，必須立即發動二線備料認證。')"><span>🔍 長料期沙漏控管</span><span>➔</span></button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【二線備料策略】：認證相容晶片引腳（Pin-to-Pin）代償可行性，防止單一上游爆發不可抗力災難時卡死全案。')"><span>🔍 Second Source 備援</span><span>➔</span></button>
-                                </div>
-                                <div id="runtime-dict-box" class="dict-display-box"></div>
-                            </div>
-                        `
-                    },
-                    { 
-                        name: "純淨審查 (IQC/SQE)", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 廠商會做什麼</div>
-                                    <div class="edu-card-body-text">向代工廠源源不絕地輸送原件與物料，並在物料發生異常時派駐工程師現地支援。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">對齊供應商出廠品質報告（COA），確保進廠原件物理與電性公差不汙染代工廠流水線。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">不因工廠進料檢驗（IQC）規格不對齊或設備測試針床應力不當而造成零件非缺陷毀損。</div>
-                                </div>
-                            </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策沙盒（學以致用模擬演練）</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>DVT 開線前 24 小時，原定的日本特種防水膠廠突然通報配方異常無法交貨，點膠站面臨全面停工待料，你該如何拆彈？</div>
-                                <div class="sandbox-choice-row">
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：產線開空窗！</strong><br>停工待料 5 天，數百名操作工閒置，時程嚴重偏離，遭到主管與客戶集體彈劾！')">方案 A：發出警告郵件，並在線體上死等日本原廠配方重調完畢。</button>
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：完美備援！</strong><br>果斷調用國內二線供應商的儲備樣品，帶領團隊進行 12 小時極速可靠性點亮驗證，成功頂替過關！')">方案 B：啟動二線供應商（Dual Source）應變防線，調用備用料樣品進行極速可靠性點亮複審。</button>
-                                </div>
-                                <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
-                            </div>
-                        `
-                    }
-                ]
-            },
-            {
-                title: "3. 物質深淵 ── 代工智造端 (EMS Factory)",
-                diagramFlowArray: [
-                    { 
-                        name: "產線拉速 (UPH/Balance)", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🛠️ 工廠會做什麼</div>
-                                    <div class="edu-card-body-text">接過客戶 2D/3D 圖紙指令，吞下供應商原物料，在大流水線上進行硬體實體化的大規模組裝複製。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">死守流水線平衡率與直通率（FPY），消滅製程瓶頸，極速提升每小時產能速率（UPH），守住毛利。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">期待 TPM 扮演跨功能大腦，在試產缺陷、線體治具卡死爆發時，第一時間找出 Root Cause 主導拆彈。</div>
-                                </div>
-                            </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">📖 戰術檢查字典（點擊術語解鎖避坑細節）</div>
-                                <div class="dict-btn-grid">
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【線平衡率 Line Balance】：評估流水線各工位工時平均配比度。低於 85% 代表存在嚴重瓶頸工位，會引發產線集體堆料、拉速垮台。')"><span>🔍 線平衡率指標</span><span>➔</span></button>
-                                    <button class="dict-trigger-btn" onclick="showTacticalDict('【治具誤判率 False Alarm】：針床ICT與功能FCT治具誤判率必須鎖死在 1% 以下。過高會引發大量健康主板被送去重工拆解，摧毀直通率。')"><span>🔍 治具誤判率防線</span><span>➔</span></button>
-                                </div>
-                                <div id="runtime-dict-box" class="dict-display-box"></div>
-                            </div>
-                        `
-                    },
-                    { 
-                        name: "直通防線 (FPY/Rework)", 
-                        text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🛠️ 工廠會做什麼</div>
-                                    <div class="edu-card-body-text">對組裝測試不合格的機台執行在線拆解修補，送往維修室（Repair Room）進行二次手工高溫焊接重工。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 核心戰術目標</div>
-                                    <div class="edu-card-body-text">控制維修重工循環次數。嚴防曾經受手工高溫二度重工破壞的健康機台夾帶物理內傷流入凡間包裝。</div>
-                                </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 團隊終極期待</div>
-                                    <div class="edu-card-body-text">要求品保團隊不向工廠主管妥協，死守直通率指標（First Pass Yield），寧可停線重調設備也絕不放任瑕疵料過關。</div>
-                                </div>
-                            </div>
-                            <div class="sandbox-panel-card">
-                                <div class="edu-card-label">🎮 TPM 工程決策沙盒（學以致用模擬演練）</div>
-                                <div style="font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:10px;">🚨 <strong>現場突發修羅場：</strong>PVT 結案審查時，工廠主管報告入庫良率高達 98.5%！但你翻查後台數據發現直通率（FPY）竟然只有慘烈的 35%，此時你該如何決策？</div>
-                                <div class="sandbox-choice-row">
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(false, '💥 <strong>模擬命運：客退海嘯爆發！</strong><br>選擇直接放行。結果流入市面後，因為大批經歷過手工二次高溫重工的手機內傷爆發，故障率集體炸裂！')">方案 A：良率既然過關，配合工廠主管如期開閘，准許出關大量生產（MP）。</button>
-                                    <button class="sandbox-choice-btn" onclick="triggerSimDecision(true, '🏆 <strong>模擬命運：鐵血攔截成功！</strong><br>你死守剛性鐵律：『不斬良率，只斬直通率！』勒令製程 ME 團隊徹查線體，抓出治具公差偏移，將 FPY 拉回 85% 以上才放行。')">方案 B：一票否決、強行攔截！下令產線停線重調治具，將直通率拉回剛性指標。</button>
-                                </div>
-                                <div id="runtime-sandbox-fallout" class="sandbox-fallout-box"></div>
-                            </div>
-                        `
-                    }
-                ]
-            }
-        ],
-        examVault: [
-            { q: "當研發端要求 0.1mm 的極限間距，但工廠稱設備公差疊加會撞車，TPM 職責是？", o: ["當傳話筒告知兩邊各自開會", "調閱歷史 Cpk 與公差數據，主導跨功能技術代償方案談判", "全盤聽從客戶 RD 的最高指令"], a: 1 },
-            { q: "工廠最終入庫良率 99.2%，但大流水線直通率 (FPY) 只有 35%，這代表？", o: ["製程非常完美受控", "大批機器在線體被手工反覆拆解重工，帶有物理內傷，客退風險極高", "可以直接開閘放水大量生產"], a: 1 },
-            { q: "何謂 PRD 規格防線審查？", o: ["代工廠操作工的排班表", "在開模前清查 CMF 是否具備工廠現有流水線的量產製程能力，剛性攔截不切實際規格", "採購部門採購現貨晶片的清單"], a: 1 },
-            { q: "TPM 在客戶、零件廠商與代工製造廠三方賽局中的天職定位是？", o: ["研發端工程師的行政秘書", "工廠線體點膠站的操作工", "跨功能技術橋梁、風險決策權衡與技術決策仲裁者"], a: 2 },
-            { q: "外出的訊息、郵件通通必須經過何種處理才有管理價值？", o: ["遵循無紙化綠色環保法規印出紙張", "經過『消化 ➔ 比對 ➔ 建議 ➔ 行動項目』的閉環處理", "直接抄送給所有高級專案總監"], a: 1 },
-            { q: "當零件廠商通報核心晶片 Lead Time 突然暴增，TPM 最佳拆彈路徑是？", o: ["勒令工廠全面停線死等對方產能恢復", "坐在辦公室等主管下命令", "立即清查 Common Pool 資源並發動備援二線（Dual Source）極速可靠性認證防線"], a: 2 },
-            { q: "禮品、電子代工廠（EMS）最核心的死守毛利與製造能力指標是？", o: ["BOM Cost 材料成本清單金額", "每小時產速 UPH 與直通率 FPY", "產品彩盒附件的外觀工業美感"], a: 1 },
-            { q: "當治具的誤判率 (False Alarm) 過高時，會對工廠直通率造成何種連帶摧毀？", o: ["引發大量健康主板被誤判送去重工拆解，手工拆解汙染主板，直通率垮台", "提高產品在凡間實體市場的品牌溢價防線", "直接導致原件出廠的 Lead Time 縮短"], a: 0 },
-            { q: "誰擁有發佈 2D/3D 工程開發圖紙與初代規格需求書的神聖至高權力？", o: ["代工智造廠 (EMS Factory)", "零件廠商 (Vendors)", "客戶研發端 (Brand R&D)"], a: 2 },
-            { q: "大流水線各個工位工時不平均，線平衡率低於 85% 時，流水線會發生何種狀況？", o: ["產線拉速全線暴增", "存在嚴重的瓶頸工位，引發產線集體堆料（WIP）、拉速垮台", "產品的電路系統訊號完整性大幅提高"], a: 1 }
-        ]
-    }
-];
-
-(function() {
-    if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) return;
-    const vault = window.codexCourseEngineData[0].examVault;
-    for (let i = vault.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [vault[i], vault[j]] = [vault[j], vault[i]];
-    }
-    vault.forEach(q => {
-        const originalCorrectOptionText = q.o[q.a];
-        for (let i = q.o.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [q.o[i], q.o[j]] = [q.o[j], q.o[i]];
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初心者寶典大廳 | System TPM Tactical Hub</title>
+    <style>
+        :root {
+            --bg-color: #FEF9E7;
+            --sidebar-cream: #FDF2D0;
+            --card-white: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-secondary: #475569;
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 4px 4px 0px #1A1A1A;
+            --radius-sm: 6px;
+            --color-completed: #22C55E;
+            --color-active-gold: #FDE047;
+            --color-fail: #DC2626;
+            --color-locked-gray: #E2E8F0;
         }
-        q.a = q.o.indexOf(originalCorrectOptionText);
-    });
-    window.codexCourseEngineData[0].examVault = vault.slice(0, 3);
-})();
+
+        html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; background-color: var(--bg-color); font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; }
+        * { box-sizing: border-box; }
+
+        .tactical-navbar { width: 100vw; height: 85px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--border-heavy); padding: 0 40px; background-color: var(--bg-color); flex-shrink: 0; z-index: 1000; }
+        .navbar-brand { display: flex; flex-direction: column; }
+        .navbar-controls { display: flex; align-items: center; gap: 15px; }
+
+        /* 語系切換按鈕 */
+        .lang-switcher-wrapper { display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; }
+        .lang-btn-core { width: 50px; height: 35px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+        .lang-btn-core.active { background: var(--text-main) !important; color: white !important; }
+
+        .auth-panel { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); white-space: nowrap; }
+        .back-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 10px 15px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; text-decoration: none; box-shadow: 3px 3px 0px var(--border-heavy); color: var(--text-main); }
+        .back-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-heavy); }
+
+        .workspace-container { display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden; }
+        .sidebar-panel { display: flex; width: 350px; background-color: var(--sidebar-cream); border-right: 4px solid var(--border-heavy); padding: 25px 18px; flex-direction: column; gap: 12px; overflow-y: auto; flex-shrink: 0; }
+        .hub-return-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 15px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); width: 100%; margin-bottom: 5px; color: var(--text-main); text-align: center; }
+        
+        .tree-main-toggle { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 16px; border-radius: var(--radius-sm); font-weight: 900; font-size: 0.92rem; text-align: left; cursor: pointer; width: 100%; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); box-shadow: 3px 3px 0px var(--border-heavy); }
+        .tree-sub-group { padding-left: 10px; border-left: 3px solid var(--border-heavy); margin-left: 8px; margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
+        .leaf-btn { background: var(--card-white); border: 2px solid var(--border-heavy); padding: 10px 14px; border-radius: var(--radius-sm); font-weight: 800; font-size: 0.82rem; text-align: left; cursor: pointer; width: 100%; color: var(--text-main); box-shadow: 2px 2px 0px var(--border-heavy); transition: all 0.1s; line-height: 1.4; }
+        
+        /* 修正點：加上左側安全緩衝位移，完全清空 Hover 裁切 */
+        .leaf-btn:hover { transform: translate(2px, -2px); box-shadow: 2px 4px 0px var(--border-heavy); }
+        .leaf-btn.active { background: var(--color-active-gold) !important; box-shadow: 1px 1px 0px var(--border-heavy) !important; }
+
+        .content-panel { flex: 1; height: 100%; padding: 35px 40px; background-color: var(--card-white); display: flex; flex-direction: column; overflow: visible; }
+        .dashboard-view-hall, .document-canvas, .exam-session-box, .sub-pagination-dots-zone { display: none; width: 100%; }
+
+        /* 大廳 70% 資訊密度微縮比例呈現 */
+        .dashboard-view-hall { height: 100%; overflow-y: auto; padding: 10px 15px 30px 15px; font-size: 0.82rem; }
+        .level-cards-parallel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; margin-bottom: 20px; padding: 5px 2px; }
+        .progress-card-master { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: 10px; padding: 12px 16px; box-shadow: var(--shadow-tactical); cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; justify-content: space-between; }
+        .progress-card-master:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0px var(--border-heavy); }
+        .progress-card-master.active-level { background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important; border-width: 3px !important; box-shadow: 5px 5px 0px var(--border-heavy) !important; }
+        
+        .progress-label { font-family: monospace; font-weight: 900; font-size: 0.72rem; color: var(--text-secondary); }
+        .progress-percentage { font-size: 1.8rem; font-weight: 900; margin: 2px 0; color: var(--text-main); line-height: 1; }
+        .progress-stats { font-size: 0.75rem; font-weight: 800; color: var(--text-main); }
+        .progress-bar-bg { width: 100%; height: 10px; background: #E2E8F0; border: 2px solid var(--border-heavy); border-radius: 5px; margin-top: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--color-completed); width: 0%; transition: width 0.4s ease-out; }
+
+        /* 流線清單 4 列並排防線 */
+        .cdx-dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; padding: 5px 2px; }
+        .cdx-dashboard-card { border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 10px 14px; cursor: pointer; box-shadow: var(--shadow-tactical); transition: all 0.15s; display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 52px; }
+        .cdx-dashboard-card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0px var(--text-main); }
+
+        .document-canvas { flex: 1; overflow: hidden; }
+        .cdx-sub-nav-bar { display: flex; gap: 12px; margin-bottom: 20px; border-bottom: 3px solid var(--border-heavy); padding-bottom: 12px; flex-shrink: 0; }
+        .sub-nav-btn { background: #FFF; border: 2px solid var(--border-heavy); padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 900; font-size: 0.85rem; cursor: pointer; box-shadow: 2px 2px 0px var(--border-heavy); transition: all 0.1s; color: var(--text-main); }
+        .sub-nav-btn.active { background: var(--text-main); color: white; transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--border-heavy); }
+        
+        /* 👑 修正3：滿版縱向流線教科書佈局 70% 比例微縮 👑 */
+        .textbook-scroll-box { flex: 1; overflow-y: auto; padding-right: 8px; width: 100%; font-size: 0.85rem; }
+        .textbook-section-block { margin-bottom: 28px; border-bottom: 2px dashed #E2E8F0; padding-bottom: 20px; width: 100%; }
+        
+        .edu-overview-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; width: 100%; }
+        .edu-overview-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 14px; box-shadow: 3px 3px 0px var(--border-heavy); }
+        .edu-card-label { font-size: 0.75rem; font-weight: 900; color: var(--text-secondary); text-transform: uppercase; border-bottom: 1px dashed var(--border-heavy); padding-bottom: 4px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .edu-card-body-text { font-size: 0.82rem; font-weight: 700; line-height: 1.5; color: var(--text-main); }
+        
+        .dict-panel-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 16px; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 15px; width: 100%; }
+        .dict-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
+        .dict-trigger-btn { background: #FFFFFF; border: 2px solid var(--border-heavy); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 2px 2px 0px var(--border-heavy); display: flex; justify-content: space-between; align-items: center; color: var(--text-main); }
+        .dict-trigger-btn:hover { background: #FAF9F5; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--border-heavy); }
+        .dict-display-box { background: #FFFDF2; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 14px; margin-top: 12px; box-shadow: 2px 2px 0px var(--border-heavy); font-size: 0.82rem; font-weight: 700; line-height: 1.5; display: none; animation: fadeInBox 0.15s ease-out; }
+        
+        .sandbox-panel-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 18px; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 20px; width: 100%; }
+        .sandbox-choice-row { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .sandbox-choice-btn { background: #FFFFFF; border: 2px solid var(--border-heavy); padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 2px 2px 0px var(--border-heavy); color: var(--text-main); transition: all 0.1s; }
+        .sandbox-choice-btn:hover { background: #FAF5FF; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--border-heavy); }
+        .sandbox-fallout-box { margin-top: 12px; padding: 12px; border-radius: var(--radius-sm); border: 2px solid var(--border-heavy); font-size: 0.82rem; font-weight: 700; line-height: 1.5; display: none; }
+        .sandbox-fallout-box.success { background: #F0FDF4; border-color: #16A34A; color: #14532D; box-shadow: 3px 3px 0px #16A34A; }
+        .sandbox-fallout-box.fail { background: #FEF2F2; border-color: #DC2626; color: #7F1D1D; box-shadow: 3px 3px 0px #DC2626; }
+        
+        .exam-progress-bar { width: 100%; background: #E2E8F0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 25px; border: 1.5px solid #000; }
+        .exam-progress-fill { height: 100%; background: var(--text-main); width: 0%; transition: width 0.2s; }
+        .option-card { background: #FFF; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 14px; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0px #000; transition: all 0.1s; }
+        .option-card:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px #000; background: var(--sidebar-cream); }
+        
+        .sub-pagination-dots-zone { display: flex; justify-content: center; align-items: center; gap: 14px; padding: 15px 0; border-top: 2px dashed #E2E8F0; margin-top: auto; }
+        .slider-dot { width: 14px; height: 14px; border: 3px solid var(--border-heavy); border-radius: 50%; background: #FFF; cursor: pointer; }
+        .slider-dot.active { background: var(--text-main); transform: scale(1.2); }
+        .slider-dot.exam-dot { border-color: var(--color-fail); background: #FEF2F2; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #B91C1C; }
+        .slider-dot.exam-dot.active { background: var(--color-fail); color: #FFF; }
+        @keyframes fadeInBox { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="tactical-navbar">
+        <div class="navbar-brand">
+            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
+        </div>
+        <div class="navbar-controls">
+            <div id="global-user-profile-card" class="auth-panel">👤 冒險者：讀取中...</div>
+            <div class="lang-switcher-wrapper">
+                <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
+                <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
+            </div>
+            <a href="index.html" class="back-btn">返回首頁</a>
+        </div>
+    </div>
+
+    <div class="workspace-container">
+        <aside class="sidebar-panel">
+            <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
+            <div id="global-tree-root"></div>
+        </aside>
+
+        <main class="content-panel">
+            <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
+                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">公會戰術天賦大廳</h2>
+            </div>
+
+            <div class="dashboard-view-hall" id="dashboard-menu-hall">
+                <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
+                <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
+                <div style="font-weight: 900; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">
+                    子單元列表：
+                </div>
+                <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
+            </div>
+
+            <div class="document-canvas" id="textbook-viewport">
+                <div class="cdx-sub-nav-bar" id="cdx-sub-nav-wrapper"></div>
+                <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.15rem; margin: 0 0 15px 0;">⚡ 實戰知識核心 (Core Knowledge Base)</h3>
+                <div class="textbook-scroll-box" id="lesson-content"></div>
+            </div>
+
+            <div class="exam-session-box" id="exam-viewport">
+                <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;"><span style="color:var(--color-fail);">🔥 10 抽 3 隨機閃擊戰</span><span id="exam-counter">1 / 3</span></div>
+                <div class="exam-progress-bar"><div class="exam-progress-fill" id="exam-progress"></div></div>
+                <h3 id="exam-question-text" style="font-size:1.2rem; line-height:1.5; margin-bottom:25px; font-weight: 800;">載入中...</h3>
+                <div id="exam-options-container"></div>
+            </div>
+
+            <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
+        </main>
+    </div>
+
+    <script>
+        const globalSubUnitRegistry = [
+            { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
+            { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'course_data_1-2.js' },
+            { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'course_data_1-3.js' }
+        ];
+
+        // 👑 沒收 Level 整備卡片內部的所有裝飾性表情圖標 👑
+        const globalLevelMetadata = [
+            { num: 1, key: 'l1', name: 'LEVEL 1', label: '基礎通識' },
+            { num: 2, key: 'l2', name: 'LEVEL 2', label: '進階跨功能' },
+            { num: 3, key: 'l3', name: 'LEVEL 3', label: '高階 TPM' },
+            { num: 4, key: 'l4', name: 'LEVEL 4', label: '日常速通' },
+            { num: 5, key: 'l5', name: 'LEVEL 5', label: '供應鏈擴展' },
+            { num: 6, key: 'l6', name: 'LEVEL 6', label: '未知領域' },
+            { num: 7, key: 'l7', name: 'LEVEL 7', label: '終局修煉' }
+        ];
+
+        let selectedActiveLevelNum = 1, activeCourseIdx = 0, activePageIdx = 0, activeSubMatrixIdx = 0, examActive = false, examCurrentQ = 0, examScoreCount = 0;
+
+        // 字典與沙盒動態通訊綁定
+        window.showTacticalDict = (t) => {
+            const boxes = document.querySelectorAll('.dict-display-box');
+            boxes.forEach(b => { if(b.offsetParent !== null) { b.style.display = 'block'; b.innerHTML = `💡 <strong>字典反饋：</strong><br>${t}`; } });
+        };
+        window.triggerSimDecision = (s, f) => {
+            const fallouts = document.querySelectorAll('.sandbox-fallout-box');
+            fallouts.forEach(b => { if(b.offsetParent !== null) { b.style.display = 'block'; b.className = s ? 'sandbox-fallout-box success' : 'sandbox-fallout-box fail'; b.innerHTML = f; } });
+        };
+
+        window.onload = () => { window.codexCourseEngineData = []; renderGlobalTreeStructure(); routeController(); };
+
+        // 左側全自動動態 Level 歸類折疊樹
+        function renderGlobalTreeStructure() {
+            const root = document.getElementById('global-tree-root'); root.innerHTML = '';
+            const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
+            presentLevels.forEach(lvlNum => {
+                const subset = globalSubUnitRegistry.filter(u => u.levelNum === lvlNum);
+                const block = document.createElement('div'); block.className = 'menu-category-block';
+                block.innerHTML = `<button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} 展開</button><div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">${subset.map(u => `<button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}</div>`;
+                root.appendChild(block);
+            });
+        }
+
+        function toggleMenuSection(id) { const el = document.getElementById(id); if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; }
+
+        function routeController(directType, directC) {
+            const urlParams = new URLSearchParams(window.location.search), paramC = directC || urlParams.get('c'), paramType = directType || urlParams.get('type') || 'codex';
+            syncNavbarState();
+            if (!paramC) {
+                document.getElementById('cdx-page-header-zone').style.display = 'block'; document.getElementById('current-chapter-id').innerText = "DASHBOARD"; document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
+                document.getElementById('dashboard-menu-hall').style.display = 'block'; document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('universal-dots-bar').style.display = 'none';
+                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); renderMultiLevelHubDashboard();
+            } else {
+                document.getElementById('dashboard-menu-hall').style.display = 'none'; document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); const leaf = document.getElementById(`lf-${paramType}-${paramC}`); if (leaf) leaf.classList.add('active'); injectContentPackScript(paramType, paramC);
+            }
+        }
+
+        function renderMultiLevelHubDashboard() {
+            const deckRow = document.getElementById('global-level-flex-deck'), grid = document.getElementById('l1-cards-grid'); if (!deckRow || !grid) return;
+            deckRow.innerHTML = ''; grid.innerHTML = '';
+            globalLevelMetadata.forEach(lvl => {
+                const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num); let total = subUnitsInLvl.length, done = 0;
+                subUnitsInLvl.forEach(u => { if (localStorage.getItem(`codex-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') done++; });
+                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                deckRow.innerHTML += `<div class="progress-card-master ${lvl.num===selectedActiveLevelNum?'active-level':''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();"><div class="progress-label">${lvl.name} : ${lvl.label}</div><div class="progress-percentage">${pct}%</div><div class="progress-stats">完成指標: ${done} / ${total}</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%;"></div></div></div>`;
+            });
+            const filteredUnits = globalSubUnitRegistry.filter(u => u.levelNum === selectedActiveLevelNum);
+            if (filteredUnits.length === 0) { grid.innerHTML = `<div style="grid-column: 1/-1; padding: 40px; border: 2px dashed #ccc; text-align: center; font-weight: 800;">🔒 數據包尚未部署。</div>`; return; }
+            filteredUnits.forEach(unit => {
+                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`, isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
+                grid.innerHTML += `<div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})"><div style="display:flex; align-items:center; gap:8px;"><span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span><h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3></div><div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isClear ? `✅ [${localStorage.getItem(`talent-${storageKey}-grade`)}]` : '⏳ 待攻堅'}</div></div>`;
+            });
+        }
+
+        function switchUnit(type, subUnitId, lvlNum) { examActive = false; selectedActiveLevelNum = lvlNum; activeCourseIdx = 0; activePageIdx = 0; activeSubMatrixIdx = 0; window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); routeController(type, subUnitId); }
+        function exitToDashboardMenu() { examActive = false; window.history.pushState(null, '', window.location.pathname); routeController(null, null); }
+
+        function injectContentPackScript(type, packId) {
+            window.codexCourseEngineData = []; const old = document.getElementById('dynamic-course-pack'); if (old) old.remove();
+            const found = globalSubUnitRegistry.find(u => u.subUnitId === packId); if (!found) return;
+            const script = document.createElement('script'); script.id = 'dynamic-course-pack'; script.src = `${found.file}?v=${Date.now()}`; script.onload = () => { initEngine(); }; document.head.appendChild(script);
+        }
+
+        function initEngine() {
+            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) { document.getElementById('current-chapter-name').innerText = "數據解讀失敗"; document.getElementById('lesson-content').innerHTML = `<div style="padding: 30px; border: 3px solid var(--border-heavy); background-color: #FEE2E2; border-radius: var(--radius-sm); font-weight: 900; color: var(--color-fail);">🚨 數據結構為空！</div>`; return; }
+            loadCourseState(activeCourseIdx, activePageIdx);
+        }
+
+        // 👑 修正5：考場模式與分頁切換點點通訊鏈條完美融合 👑
+        function exitExamToPage(pIdx) {
+            examActive = false; examCurrentQ = 0; examScoreCount = 0; activeSubMatrixIdx = 0;
+            loadCourseState(activeCourseIdx, pIdx);
+        }
+
+        function loadCourseState(cIdx, pIdx) {
+            activeCourseIdx = cIdx; const course = window.codexCourseEngineData[cIdx]; const dotsBar = document.getElementById('universal-dots-bar'); dotsBar.innerHTML = '';
+            if (examActive) {
+                document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block'; document.getElementById('universal-dots-bar').style.display = 'flex';
+                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; }); dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; runExamEngine();
+            } else {
+                document.getElementById('textbook-viewport').style.display = 'flex'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('universal-dots-bar').style.display = 'flex';
+                activePageIdx = pIdx; const page = course.subPages[pIdx]; document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; document.getElementById('current-chapter-name').innerText = page.title;
+                const subNavWrapper = document.getElementById('cdx-sub-nav-wrapper'); let targetedText = page.text, targetedFlow = page.diagramFlowArray;
+                
+                if (page.subMatrixBranches) {
+                    if (subNavWrapper) { subNavWrapper.style.display = 'flex'; subNavWrapper.innerHTML = ''; page.subMatrixBranches.forEach((branch, bIdx) => { subNavWrapper.innerHTML += `<button class="sub-nav-btn ${bIdx===activeSubMatrixIdx?'active':''}" onclick="activeSubMatrixIdx=${bIdx};loadCourseState(${cIdx},${pIdx})">${branch.branchLabel}</button>`; }); }
+                    targetedText = page.subMatrixBranches[activeSubMatrixIdx].text; targetedFlow = page.subMatrixBranches[activeSubMatrixIdx].diagramFlowArray;
+                } else { if (subNavWrapper) subNavWrapper.style.display = 'none'; activeSubMatrixIdx = 0; }
+                
+                // 縱向流線長文教科書封裝
+                let compiledHtml = "";
+                if (targetedFlow && targetedFlow.length > 0) {
+                    compiledHtml = targetedFlow.map((node) => `
+                        <div class="textbook-section-block">
+                            <h3 style="border-left: 4px solid var(--border-heavy); padding-left: 10px; font-size: 1.05rem; margin-top: 0; margin-bottom: 12px; font-weight: 900; color: var(--text-main);">${node.name}</h3>
+                            <div class="section-body-text">${node.text}</div>
+                        </div>`).join('');
+                } else {
+                    compiledHtml = `<div style="line-height: 1.6; font-size: 0.88rem;">${targetedText || ""}</div>`;
+                }
+                document.getElementById('lesson-content').innerHTML = compiledHtml;
+
+                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="exitExamToPage(${sIdx})"></div>`; }); dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
+            }
+        }
+
+        function enterExamMode() { examActive = true; examCurrentQ = 0; examScoreCount = 0; loadCourseState(activeCourseIdx, 0); }
+
+        function runExamEngine() {
+            const course = window.codexCourseEngineData[activeCourseIdx]; if (examCurrentQ >= 3) { settleExamPayload(); return; }
+            const qData = course.examVault[examCurrentQ]; document.getElementById('current-chapter-id').innerText = "EXAM MODE"; document.getElementById('current-chapter-name').innerText = "10 抽 3 隨機閃擊戰"; document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`; document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`; document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
+            const container = document.getElementById('exam-options-container'); container.innerHTML = ''; qData.o.forEach((opt, idx) => { container.innerHTML += `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`; });
+        }
+
+        function submitAnswer(idx) { const course = window.codexCourseEngineData[activeCourseIdx]; if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } examCurrentQ++; runExamEngine(); }
+        function settleExamPayload() { examActive = false; const course = window.codexCourseEngineData[activeCourseIdx]; let grade = examScoreCount === 3 ? "S" : examScoreCount === 2 ? "A" : "Fail"; let storageKey = "L1-A" + course.courseId.split('-')[1]; if (grade === "Fail") { alert(`💥【考核失敗】答對題數 ${examScoreCount}/3！`); localStorage.setItem(`codex-${storageKey}-clear`, 'false'); localStorage.removeItem(`talent-${storageKey}-grade`); } else { alert(`🏆【考核通過】位階：【 ${grade} 】級！`); localStorage.setItem(`codex-${storageKey}-clear`, 'true'); localStorage.setItem(`talent-${storageKey}-grade`, grade); } exitToDashboardMenu(); }
+        function syncNavbarState() { const name = localStorage.getItem('tpm-user-name') || 'Daniel Shih'; document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：${name}`; }
+        function executeLangSwitch(lang) { routeController(); }
+    </script>
+</body>
+</html>
