@@ -816,7 +816,7 @@
             runExamEngine(); 
         }
         
-        // 👑 實體表單對位焊接完全體（全量展開，絕不裁剪） 👑
+        // 👑 實體表單三軌對位焊接完全體（全量展開，絕不裁剪） 👑
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
@@ -847,9 +847,9 @@
                 resolvedType = "Handbook Course";
             }
 
-            // 3. 👑 越牆盲推：實體綁定您的表單與 entry ID 👑
+            // 3. 👑 越牆盲推：實體綁定您的表單、entry ID 以及全新的 userEmail 金鑰 👑
             try {
-                // 建立背景隱藏 iframe，剛性杜絕提交時網頁被強制 Redirect 重定向跳轉跑版
+                // 建立背景隱藏 iframe，剛性杜絕提交時網頁被強制重定向跳轉跑版
                 let hiddenIframe = document.getElementById('tpm-hidden-iframe');
                 if (!hiddenIframe) {
                     hiddenIframe = document.createElement('iframe');
@@ -862,7 +862,7 @@
                 // 動態建構越牆 Form 元件
                 let form = document.createElement('form');
                 
-                // 👑 修正後 100% 精確對位的實體擊發端點 👑
+                // 🎯 完美銲接：直接對準您的實體中繼 Google 表單擊發端點 (1-dlwsewAEIL8PD4pRngeaK1Z_MX2B5Dk89EeIKjgzaE)
                 form.action = "https://docs.google.com/forms/d/e/1FAIpQLSd7k9IMTAccbJBk3B-jAVishWRy_tmwx3xPki4KYISkjjCqQ/formResponse";
                 form.method = "POST";
                 form.target = "tpm-hidden-iframe"; // 指定在隱藏視窗中默默發射
@@ -882,17 +882,25 @@
                 inputStatus.value = finalStatus; 
                 form.appendChild(inputStatus);
 
+                // 銲接第三個剛性特徵欄位：userEmail -> entry.188229703 👑 (最新現地焊接)
+                let inputEmail = document.createElement('input');
+                inputEmail.type = 'hidden';
+                inputEmail.name = 'entry.188229703';
+                // 剛性自動獲取當前地端儲存的員工 Email 特徵，無資料則Fallback為您的測試前綴
+                inputEmail.value = localStorage.getItem('tpm-user-email') || 'danielcwshih@';
+                form.appendChild(inputEmail);
+
                 // 4. 背景隱藏擊發
                 document.body.appendChild(form);
                 form.submit();
                 
-                // 延時清理暫存節點
+                // 延時清理暫存 DOM 節點
                 setTimeout(function() {
                     form.remove();
                 }, 1000);
                 
             } catch(e) {
-                console.log("企業內網網域越牆盲推異常:", e);
+                console.log("企業內網網域越牆三軌盲推異常:", e);
             }
 
             // 重新導向回到大廳更新看板狀態
