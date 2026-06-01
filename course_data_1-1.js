@@ -1,10 +1,10 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-06-01 V7.3: 👑 零彈窗原位顯影圖鑑完全體。
+2026-06-01 V7.4: 👑 雙層原位切換解鎖完全體。
 1. 獨立全景分頁：Page 1 常常駐 beginner_codex_assets 全景製程地圖，內容順延至 P2, P3, P4。
 2. 沒收彈窗：全面拔除所有彈窗鈕。改為下方空白區直接呈現 3-5 個關聯關鍵字組。
-3. 極簡名詞小卡片：每個 Page 剛性配置 4 個橫向小頁籤卡片，內部僅保留純粹的名詞與白話括號。
+3. 極簡名詞小卡片：每個 Page 剛性配置 4 個橫向小頁籤卡片（由第一層大腦渲染），內部僅保留純粹的名詞與白話括號。
 4. 100% 完整全量展開：3 大內容頁面共 12 個核心關鍵字組因果指標與解說全數補齊，嚴禁任何省略。
 ========================================================================
 */
@@ -14,9 +14,11 @@ window.codexCourseEngineData = [
         courseId: "L1-1", 
         menuTitle: "1-1: 基本世界觀與三方賽局",
         subPages: [
-            // 👑 Page 1：獨立為純淨單元全景圖，不堆疊任何內文卡片，破除上下滾動 👑
+            // ==========================================
+            // PAGE 1: 獨立全景圖分頁
+            // ==========================================
             {
-                title: "1. 單元總覽 (1-1 手機代工廠三方賽局戰術全景圖)",
+                title: "1. 單元總覽 (1-1 智慧型手機代工廠三方賽局戰術全景圖)",
                 diagramFlowArray: [
                     {
                         name: "單元製程地圖 (Process Map)",
@@ -31,7 +33,9 @@ window.codexCourseEngineData = [
                     }
                 ]
             },
-            // 👑 Page 2：客戶研發端，內置 4 欄極簡卡片與原位切換解說 👑
+            // ==========================================
+            // PAGE 2: 客戶研發端 (Brand R&D)
+            // ==========================================
             {
                 title: "2. 客戶研發端 (Brand R&D - 主導產品規格與美學定義)",
                 diagramFlowArray: [
@@ -41,13 +45,13 @@ window.codexCourseEngineData = [
                             <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
                                 <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼 (工作範疇)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">主導全球市場與競品技術調研，定義實體硬體規格，發佈並交割初代產品規格需求書（PRD）。</div></div>
                                 <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的 (戰術核心目標)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">定義極限產品效能指標與功能參數，用技術專利護城河拉高市售實體機器之品牌溢價。</div></div>
-                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果 (團隊終極期待)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">期待代工廠（EMS）產線能 100% 完美復刻複雜結構，不允許以任何試產組裝公差為由擅自修改設計。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果 (團隊終極期待)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">期待代工廠（EMS）產線能 100% 完美復刻複雜結構，不允許以 any 試產組裝公差為由擅自修改設計。</div></div>
                             </div>
                             
                             <div style="margin-top:20px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                                 <div style="font-weight:900; font-size:0.88rem; color:#1A1A1A; border-bottom:2px solid #1A1A1A; padding-bottom:6px; margin-bottom:12px;">📋 關鍵詞 / Keywords (點擊下方卡片直接解鎖概念與全稱)</div>
                                 <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                    <div class="kc-p2" id="kcp2-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p2').innerHTML='<b>全稱：</b>Product Requirement Document (產品規格需求書)'; document.getElementById('kd-p2').innerHTML='<b>意思：</b>定義新手機功能、規格與零件配置的最高法規。TPM 必須在開模前清查 CMF 技術文件是否具備產線現有流水線的量產加工製程能力，剛性攔截幻想規格。'; document.querySelectorAll('.kc-p2').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">PRD</div>
+                                    <div class="kc-p2" id="kcp2-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p2').innerHTML='<b>全稱：</b>Product Requirement Document (產品規格需求書)'; document.getElementById('kd-p2').innerHTML='<b>意思：</b>定義新手機功能、規格與零件配置的最高法規。TPM 必須在開模前清查 CMF 技術文件是否具備產線現有流水線的量產能力，剛性攔截幻想規格。'; document.querySelectorAll('.kc-p2').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">PRD</div>
                                     <div class="kc-p2" id="kcp2-1" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p2').innerHTML='<b>全稱：</b>Design for Manufacturing (可製造性設計)'; document.getElementById('kd-p2').innerHTML='<b>意思：</b>在產品設計初期，由代工廠製造工程師評估該結構是否符合流水線的大規模量產複製工藝。用來提前抓出外殼拔模角不足或塑料肉厚不均等致命模具設計瑕疵。'; document.querySelectorAll('.kc-p2').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">DFM</div>
                                     <div class="kc-p2" id="kcp2-2" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p2').innerHTML='<b>全稱：</b>Specification Freeze (技術圖紙鎖死凍結)'; document.getElementById('kd-p2').innerHTML='<b>意思：</b>專案跨入特定試產里程碑（如PVT）時，下發剛性禁令鎖死所有設計參數，不允許研發工程師隨意微調尺寸，以便工廠固化 SOP 與夾具排產。'; document.querySelectorAll('.kc-p2').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">Freeze</div>
                                     <div class="kc-p2" id="kcp2-3" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p2').innerHTML='<b>全稱：</b>Acceptable Quality Level (驗收抽樣合格標準)'; document.getElementById('kd-p2').innerHTML='<b>意思：</b>品質檢驗時買賣雙方商定的最高可接受瑕疵概率。IQC 團隊嚴格以此指標在廠門口進行進料抽驗，一旦不良率超標則整批物料剛性拒收退貨。'; document.querySelectorAll('.kc-p2').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">AQL</div>
@@ -60,7 +64,7 @@ window.codexCourseEngineData = [
                         `
                     },
                     {
-                        name: "ID (外觀工業美學設計)",
+                        name: "ID (外觀美學工業設計)",
                         text: `
                             <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
                                 <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼 (工作範疇)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">設計產品外部巨觀美學線條，包含手機中框弧度、按鍵回彈段落觸感與後置鏡頭火山突起視覺比例。</div></div>
@@ -83,12 +87,12 @@ window.codexCourseEngineData = [
                         `
                     },
                     {
-                        name: "CMF (材質與表面處理)",
+                        name: "CMF (材質表面工藝)",
                         text: `
                             <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Color, Material, Finishing。主導產品外觀視覺色彩調配、物理物料材質挑選、與金屬表面處理（如陽極氧化、噴砂）。</div></div>
-                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">利用高光 C 角、特殊微觀霧面無視決紋理，打造產品無懈可擊的高級金屬與玻璃物理手感。</div></div>
-                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">工廠量產大流水線大批量產出時，各批次材料外觀色差（Delta E）剛性控制在客戶品保規定的極限標準線內。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Color, Material, Finishing。主導產品外觀視覺色彩調配、物理物料材質挑選、與金屬表面陽極氧化拋光等製程細節。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">利用高光 C角、特殊微觀霧面無視覺紋理，打造產品無懈可擊的高級玻璃與金屬物理手感。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">流水線大批量產出時，各批次外觀色差（Delta E）剛性控制在客戶品保規定的極限標準線內，不發生肉眼色偏。</div></div>
                             </div>
                             <div style="margin-top:20px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                                 <div style="font-weight:900; font-size:0.88rem; color:#1A1A1A; border-bottom:2px solid #1A1A1A; padding-bottom:6px; margin-bottom:12px;">📋 關鍵詞 / Keywords</div>
@@ -106,12 +110,12 @@ window.codexCourseEngineData = [
                         `
                     },
                     {
-                        name: "Clearance (內部安全避讓間距)",
+                        name: "Clearance (安全間距)",
                         text: `
                             <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
                                 <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼 (工作範疇)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">在 3D CAD 工程環境內精密審查並計算內部主板電子元件、軟板（FPC）、電池與外部金屬外殼殼體間的 3D 避讓間距。</div></div>
                                 <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的 (戰術核心目標)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">保留足夠的公差疊加安全緩衝帶，防範實體機器受凡間外力撞擊形變時，內部晶片當場被外殼硬擠壓短路毀損。</div></div>
-                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果 (團隊終極期待)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">將 Clearance 間距死守在標準 0.3mm 綠燈水位，絕不允許結構 ME 為了盲目迎合極致超薄而跨越安全界限。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果 (團隊終極期待)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">將 Clearance 間距死守在標準 0.3mm 綠燈水位，絕不允許結構 ME 為了盲目追求超薄而跨越安全界限。</div></div>
                             </div>
                             <div style="margin-top:20px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                                 <div style="font-weight:900; font-size:0.88rem; color:#1A1A1A; border-bottom:2px solid #1A1A1A; padding-bottom:6px; margin-bottom:12px;">📋 關鍵詞 / Keywords</div>
@@ -130,12 +134,14 @@ window.codexCourseEngineData = [
                     }
                 ]
             },
-            // 👑 Page 3：零件供應商端，內置 4 欄獨立名詞小卡片與原位切換解說 👑
+            // ==========================================
+            // PAGE 3: 零件供應商端 (Vendors)
+            // ==========================================
             {
                 title: "3. 零件供應商端 (Vendors - 掌控高精元件交期與原物料進料檢驗品質)",
                 diagramFlowArray: [
                     {
-                        name: "Lead Time (物料交期控制)",
+                        name: "Lead Time (物料交期)",
                         text: `
                             <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
                                 <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">掌控從工廠正式下達採購單（PO），到該稀缺戰略原物料元件實際送抵工廠倉庫入庫的物流四維時間。</div></div>
@@ -156,33 +162,65 @@ window.codexCourseEngineData = [
                                 </div>
                             </div>
                         `
+                    },
+                    {
+                        name: "COA (出廠檢驗證明報告)",
+                        text: `
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Certificate of Analysis。元件發貨進廠前，由供應商質量實驗室簽發出的實測物理形變與電性特徵測量數據報告。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">白紙黑字以品質實測報告自證零件公差未超標，保障出廠原物料品質不對代工廠大線上造成製程汙染。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">智造智造廠進料抽檢數據與 COA 報告 100% 互鎖。TPM 應嚴密監控供應商有無修改數據隱瞞製程偏移之行為。</div></div>
+                            </div>
+                        `
+                    },
+                    {
+                        name: "IQC (進料品質檢驗)",
+                        text: `
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:8px;">⚙️ 1. 會做什麼</div><div style="font-size:0.8rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Incoming Quality Control。物料抵達碼頭後，由工廠品保團隊發動針床、光學影像等進料常規抽樣檢驗。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:8px;">🎯 2. 目的</div><div style="font-size:0.8rem; font-weight:700; line-height:1.4; color:#1A1A1A;">嚴格遵循 AQL 品質抽樣水準，在廠門口將不良公差物料就地擊落退貨，一概拒收，死守源頭。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:8px;">👁️ 3. 期望結果</div><div style="font-size:0.8rem; font-weight:700; line-height:1.4; color:#1A1A1A;">攔截進料不良，與原廠重校治具探針，保證不汙染後續大線上組裝。</div></div>
+                            </div>
+                        `
                     }
                 ]
             },
-            // 👑 Page 4：代工製造廠端，內置 4 欄獨立名詞小卡片與原位切換解說 👑
+            // ==========================================
+            // PAGE 4: 代工製造廠端 (EMS Factory)
+            // ==========================================
             {
-                title: "4. 代工製造廠端 (EMS Factory - 大智造流水線總裝、拉速與直通率防禦)",
+                title: "4. 代工製造廠端 (EMS Factory - 大大量產拼裝、產速與直通良率防護)",
                 diagramFlowArray: [
                     {
-                        name: "FPY (直通率防線)",
+                        name: "FPY (首檢直通率指標)",
                         text: `
                             <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼 (工作範疇)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">First Pass Yield。精算產品在流水線上不經歷任何二次手工修補焊接、一次性高精導通全檢合格下線的真實物理概率。</div></div>
-                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的 (戰術核心目標)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">真實暴露智造產線與自動化設備的健康度，硬核阻絕經歷過二度熱應力重工損傷的「微觀損害機台」流入包裝。</div></div>
-                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果 (團隊終極期待)</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">撕開偽良率外衣。專案出關節點剛性咬合指標：『不斬入庫合格率，只斬流水線首檢直通率！』，死守產線良心。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">First Pass Yield。精算產品在流水線上不經歷任何二次手動高溫重工拆解修補、一次性合格通關下線的真實硬核概率。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">真實聯動暴露智造產線健康度，硬核阻絕經歷過二度熱應力手工重工損傷的「微觀內傷機台」流向終端。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">破除偽良率外衣。專案出關評審剛性鐵律：『不斬最終入庫合格率，只斬大流水線首檢直通率！』。</div></div>
                             </div>
                             <div style="margin-top:20px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                                 <div style="font-weight:900; font-size:0.88rem; color:#1A1A1A; border-bottom:2px solid #1A1A1A; padding-bottom:6px; margin-bottom:12px;">📋 關鍵詞 / Keywords</div>
                                 <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                    <div class="kc-p4" id="kcp4-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p4').innerHTML='<b>全稱：</b>False Alarm Rate (自動化屏蔽房功能治具測試誤判率)'; document.getElementById('kd-p4').innerHTML='<b>意思：</b>ICT與功能測試站站因探針老化、射頻纜線（RF Cable）磨損漏電，將完全健康的主板錯誤踢退判定為缺陷品的極低指標。必須嚴格掐死在 1% 以下，否則會引發重工室大淤積。'; document.querySelectorAll('.kc-p4').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">False Alarm</div>
-                                    <div class="kc-p4" id="kcp4-1" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p4').innerHTML='<b>全稱：</b>Rework Counter Control (手工拆解維修重工循環計數器)'; document.getElementById('kd-p4').innerHTML='<b>意思：</b>限制單台 PCB 主板被送入維修室烙鐵反覆烘烤的硬核次數（通常極限為 2 次）。過度重工的手機即使通關，內部也極易發生微觀內傷斷線，引發凡間使用者客退。'; document.querySelectorAll('.kc-p4').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">Rework</div>
-                                    <div class="kc-p4" id="kcp4-2" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p4').innerHTML='<b>全稱：</b>WIP Clearing Sequence (維修製品在庫大清洗清零計畫)'; document.getElementById('kd-p4').innerHTML='<b>意思：</b>在專案試產結關開評審會前夕，強行命令工廠維修室進行「WIP 在製品清空」。將所有待修機器全部結案 Debug 分析完畢，防止工廠隱瞞真實失效機理。'; document.querySelectorAll('.kc-p4').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">WIP Block</div>
-                                    <div class="kc-p4" id="kcp4-3" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p4').innerHTML='<b>全稱：</b>Cycle Time (流水線單站標準工程作業工時)'; document.getElementById('kd-p4').innerHTML='<b>意思：</b>單一工位操作工或自動化機械手臂，扣合一站零件所需花費的純物理秒數。整條大流水線的拉速與每小時最大產能（UPH），完全由最慢的那站瓶頸工時決定。'; document.querySelectorAll('.kc-p4').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">Cycle Time</div>
+                                    <div class="kc-p4" id="kcp4-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p4').innerHTML='<b>全稱：</b>False Alarm Rate (自動化功能治具測試誤判率)'; document.getElementById('kd-p4').innerHTML='<b>意思：</b>FCT測試站因探針老化或射頻纜線漏電，將完全健康的主板錯誤判定為不良零件的極低指標。必須嚴格掐死在 1% 以下，否則會引發重工室暴走。'; document.querySelectorAll('.kc-p4').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">False Alarm</div>
+                                    <div class="kc-p4" id="kcp4-1" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p4').innerHTML='<b>全稱：</b>Rework Counter Control (手工焊接重工計數器)'; document.getElementById('kd-p4').innerHTML='<b>意思：</b>限制單主板被送入維修室高溫更換晶粒晶圓的極限次數（通常鎖死為 2 次）。過度重工的手機外部雖正常，但 PCB 走線內部結構已微觀形變受損。'; document.querySelectorAll('.kc-p4').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">Rework</div>
+                                    <div class="kc-p4" id="kcp4-2" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p4').innerHTML='<b>全稱：</b>WIP Clearing Sequence (在線在製品大清洗清零計畫)'; document.getElementById('kd-p4').innerHTML='<b>意思：</b>在專案試產評審會前夕，強制要求工廠維修室進行「WIP清空」。將所有待修機器全部結案 Debug，防止工廠囤積呆料、隱瞞不良。'; document.querySelectorAll('.kc-p4').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">WIP Block</div>
+                                    <div class="kc-p4" id="kcp4-3" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 6px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('kt-p4').innerHTML='<b>全稱：</b>Cycle Time (流水線單站標準作業工時)'; document.getElementById('kd-p4').innerHTML='<b>意思：</b>單一操作工完成扣合排線或鎖螺絲所需花費的純物理秒數。整條大流水線的拉速 UPH 與平衡率完全由最慢的那站工時決定。'; document.querySelectorAll('.kc-p4').forEach(c=>c.style.background='#FFF'); this.style.background='#FDE047';">Cycle Time</div>
                                 </div>
                                 <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                    <div id="kt-p4"><b>全稱：</b>False Alarm Rate (自動化屏蔽房功能治具測試誤判率)</div>
-                                    <div id="kd-p4" style="margin-top:4px; color:#475569;"><b>意思：</b>ICT與功能測試站站因探針老化、射頻纜線（RF Cable）磨損漏電，將完全健康的主板錯誤踢退判定為缺陷品的極低指標。必須嚴格掐死在 1% 以下，否則會引發重工室大淤積。</div>
+                                    <div id="kt-p4"><b>全稱：</b>False Alarm Rate (自動化功能治具測試誤判率)</div>
+                                    <div id="kd-p4" style="margin-top:4px; color:#475569;"><b>意思：</b>FCT測試站因探針老化或射頻纜線漏電，將完全健康的主板錯誤判定為不良零件的極低指標。必須嚴格掐死在 1% 以下，否則會引發重工室暴走。</div>
                                 </div>
+                            </div>
+                        `
+                    },
+                    {
+                        name: "UPH (每小時實體產能速率)",
+                        text: `
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Units Per Hour。在大流水線各段總裝架設計時看板，動態實時精算、追蹤全線每小時穩定流出下線的最終機器產出總量。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">用極速拉速產能平攤車間固定折舊與人均工時，在極限壓縮的交期內，死死卡位捍衛代工廠智造微薄純利潤。</div></div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">試產爬坡期完成 UPH 產速峰值達標總驗收，消除所有點膠、打螺絲等手工操作工位瓶頸，平穩過渡到大量量產。</div></div>
                             </div>
                         `
                     }
@@ -190,8 +228,8 @@ window.codexCourseEngineData = [
             }
         ],
         examVault: [
-            { q: "當研發端要求極限 Clearance，但工廠稱設備公差疊加會撞車，TPM 最佳路徑是？", o: ["當傳話筒告知兩邊各自開會", "調閱歷史 Cpk 與公差數據，主導跨功能技術代償方案談判", "全盤聽從客戶 RD 的最高指令"], a: 1 },
-            { q: "工廠最終入庫良率 99.2%，但大流水線直通率 (FPY) 只有 35%，這代表？", o: ["製程非常完美受控", "大批機器在線體被手工反覆拆解重工，帶有物理內傷，客退風險極高", "可以直接開閘放水大量生產"], a: 1 },
+            { q: "當研發端要求 0.1mm 的極限間距，但工廠稱設備公差疊加會撞車，TPM 職責是？", o: ["當傳話筒告知兩邊各自開會", "調閱歷史 Cpk 與公差數據，主導跨功能技術談判", "全盤聽從客戶最高指令"], a: 1 },
+            { q: "工廠最終入庫良率 99.2%，但大流水線直通率 (FPY) 只有 35%，這代表？", o: ["製程受控", "大批機器在線體被手工拆解重工，帶有物理內傷", "可以開閘拉速"], a: 1 },
             { q: "大流水線各個工位操作時間不平均，線平衡率低於 85% 時，流水線會發生何種狀況？", o: ["產線拉速全線暴增", "存在嚴重的瓶頸工位，引發產線集體堆料（WIP）、拉速垮台", "產品的電路系統訊號完整性大幅提高"], a: 1 }
         ]
     }
