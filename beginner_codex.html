@@ -122,7 +122,7 @@
             box-shadow: 5px 5px 0px var(--border-heavy);
         }
 
-        /* 雙區塊主流線體框架 */
+        /* 主工作框架 */
         .workspace-container {
             display: flex;
             width: 100vw;
@@ -245,7 +245,7 @@
             width: 100%;
         }
 
-        /* 大廳狀態區：兩排並列剛性兩網格佈局 */
+        /* 大廳狀態區看板 */
         .dashboard-view-hall {
             height: 100%;
             overflow-y: auto;
@@ -374,7 +374,7 @@
             animation: fadeInBox 0.12s ease-out;
         }
 
-        /* 第一層大項導航頁籤（由數據包資料庫動態沖刷） */
+        /* 第一層大項導航頁籤 */
         .dynamic-flow-canvas {
             display: flex;
             align-items: center;
@@ -670,7 +670,6 @@
             filteredUnits.forEach(unit => {
                 const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
                 const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
-                // 👑 剛性修正：全面將「待攻堅」變更為「待考核」，過關後移除 S/A 噪音，一律剛性文字顯示為 [通過] 👑
                 grid.innerHTML += `
                     <div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
                         <div style="display:flex; align-items:center; gap:8px;">
@@ -754,7 +753,6 @@
                 let targetedText = page.text;
                 let targetedFlow = page.diagramFlowArray;
                 
-                // 第一層大項導航頁籤渲染（相容舊格式）
                 const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
                 if (flowRenderer && targetedFlow && targetedFlow.length > 0) {
                     flowRenderer.style.display = 'flex'; 
@@ -767,7 +765,6 @@
                     flowRenderer.style.display = 'none'; 
                 }
 
-                // 剛性限制單一節點渲染，杜絕垂直堆疊
                 let compiledHtml = "";
                 if (targetedFlow && targetedFlow.length > 0) {
                     if (targetedFlow[activeFlowNodeIdx]) {
@@ -819,21 +816,88 @@
             runExamEngine(); 
         }
         
-        // 👑 考核結算硬核卡口：2 題以上過關，文字簡化對位 👑
+        // 👑 完整尋找並覆蓋更換整個 function settleExamPayload() 函數 👑
+        // 這裡已經將 entry.1252064533 與 entry.815794593 進行剛性綁定，並且加入了「自動辨識課程類型（Beginner / Handbook）」的特徵前置判定
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
             const storageKey = "L1-A" + course.courseId.split('-')[1];
             
+            // 1. 判定大考結果
+            let finalStatus = "";
             if (examScoreCount < 2) {
                 alert("💥 失敗重考");
+                finalStatus = "失敗重考";
                 localStorage.setItem(`codex-${storageKey}-clear`, 'false');
                 localStorage.setItem(`talent-${storageKey}-grade`, '失敗重考');
             } else {
                 alert("🏆 通過");
+                finalStatus = "通過";
                 localStorage.setItem(`codex-${storageKey}-clear`, 'true');
                 localStorage.setItem(`talent-${storageKey}-grade`, '通過');
             }
+
+            // 2. 👑 前置判定：自動識別當前課程類型（Beginner Codex 還是 Handbook Course） 👑
+            // 利用課程代號動態清洗比對全域註冊表
+            const cleanId = course.courseId.replace("L", "").trim();
+            const currentRegistry = globalSubUnitRegistry.find(function(u) {
+                return u.subUnitId === cleanId;
+            });
+            
+            let resolvedType = "Beginner Codex";
+            if (currentRegistry && currentRegistry.type === 'handbook') {
+                resolvedType = "Handbook Course";
+            }
+
+            // 3. 👑 越牆盲推核心模組：將您的 entry.1252064533 與 entry.815794593 剛性綁定 👑
+            try {
+                // 建立背景不可見的隱藏 iframe，剛性防止提交表單時引發全網頁重定向跳轉
+                let hiddenIframe = document.getElementById('tpm-hidden-iframe');
+                if (!hiddenIframe) {
+                    hiddenIframe = document.createElement('iframe');
+                    hiddenIframe.id = 'tpm-hidden-iframe';
+                    hiddenIframe.name = 'tpm-hidden-iframe';
+                    hiddenIframe.style.display = 'none';
+                    document.body.appendChild(hiddenIframe);
+                }
+
+                // 動態建構越牆 Form 元件
+                let form = document.createElement('form');
+                
+                // ⚠️ 剛性提示：此處已為您預留好結構，請確保將下面網址更換成您公司 Google 表單的實體網址，並以 /formResponse 結尾
+                form.action = "https://docs.google.com/forms/d/e/您的實體表單ID貼在此處/formResponse";
+                form.method = "POST";
+                form.target = "tpm-hidden-iframe"; // 指定在隱藏視窗中默默發射
+
+                // 銲接第一個剛性特徵欄位：courseId -> entry.1252064533
+                let inputCourse = document.createElement('input');
+                inputCourse.type = 'hidden';
+                inputCourse.name = 'entry.1252064533'; 
+                // 如果是 Handbook 課程，自動在前面加上特徵前綴，方便後台大腦分流識別
+                inputCourse.value = (resolvedType === "Handbook Course") ? "HB-" + course.courseId : course.courseId;
+                form.appendChild(inputCourse);
+
+                // 銲接第二個剛性特徵欄位：status -> entry.815794593
+                let inputStatus = document.createElement('input');
+                inputStatus.type = 'hidden';
+                inputStatus.name = 'entry.815794593'; 
+                inputStatus.value = finalStatus; 
+                form.appendChild(inputStatus);
+
+                // 4. 背景擊發
+                document.body.appendChild(form);
+                form.submit();
+                
+                // 延時清理 DOM 暫存節點
+                setTimeout(function() {
+                    form.remove();
+                }, 1000);
+                
+            } catch(e) {
+                console.log("企業內網越牆盲推異常阻斷:", e);
+            }
+
+            // 重新導向回到大廳更新看板狀態
             exitToDashboardMenu();
         }
     </script>
