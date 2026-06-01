@@ -1,7 +1,7 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-06-01 V7.0: 👑 子單元 1-3 專業還原完全體。全面剝離所有玄幻遊戲用語。Page Headings 剛性還原為標準手機代工廠通用產線與查線排查架構。每頁配置 4 個核心專業關鍵字變數，完美相容 HTML V6.3 的流程 Tab 導航控制邏輯。代碼 100% 完整全量展開，絕無縮寫。
+2026-06-01 V7.1: 👑 子單元 1-3 滿血進化完璧版。全面清除玄幻語境。Page Headings 剛性還原為標準手機代工廠通用產線與查線排查架構。每頁配置 4 個核心專業關鍵字，代碼 100% 完整全量展開。
 ========================================================================
 */
 
@@ -11,94 +11,84 @@ window.codexCourseEngineData = [
         menuTitle: "1-3: 工廠地理與 4M1E 線體通識",
         subPages: [
             {
-                title: "1. SMT to FATP 手機通用四大實體線體 (表面貼片與整機後段工序流程導航)",
+                title: "1. SMT to FATP 四大通用線體 (貼片車間與整機後段總裝工序)",
                 diagramFlowArray: [
                     {
-                        name: "SMT (主板表面貼片車間)",
+                        name: "SMT (貼片製程車間)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">在萬級超高潔淨度無塵室內，主導裸板 PCB 鋼網錫膏網印、3D 檢查、高速貼片機晶片拍打、與迴流焊化學熔焊固化。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼 (工作範疇)</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">在恆溫無塵車間內，主導裸板 PCB 鋼網自動網印錫膏、高速貼片機晶片精密拍打。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">在毫秒級時間內將數百個微米級被動元件與大腦 CPU 精確固化銲接在主板上，鑄造出核心 PCBA。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的 (戰術核心目標)</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">在毫秒級時間內將微米級被動元件與主晶片固定在電路板上，鑄造核心主機板 PCBA。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">過爐後電路導通率 100%，BGA 晶片內部銲點零氣泡、零虛銲、零空銲，消滅一切隱性物理內傷。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果 (終極期待)</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">確保主板電路導通率 100%，大批量高速貼片製程不發生拋料與原件人為碎裂。</div>
                                 </div>
                             </div>
                         `
                     },
                     {
-                        name: "SPI (過爐前錫膏檢驗儀)",
+                        name: "SPI (錫膏 3D 檢查儀)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">Solder Paste Inspection。架設在鋼網錫膏印刷機正後方、貼片機群正前方，利用 3D 雷射光學檢測錫膏厚度、面積與高度公差偏移。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">Solder Paste Inspection。架設在網印錫膏機正後方，利用光學天眼掃描錫膏厚度、高度。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">在元件尚未貼下去、尚未送入高溫爐熔焊前，將漏印、印歪、刮錫、錫膏厚度不足之瑕疵主板就地攔截。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">在晶片尚未貼下去、尚未過高溫爐前，將漏印、印歪、連錫之瑕疵板現地攔截。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">建立 SMT 初始最前段品質天眼。此階段攔截重工只需用洗板水刷掉錫膏即可，重工材料損耗成本幾乎為零。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">建立 SMT 品質最省錢的防線。此階段重工只需洗掉錫膏重印，耗損成本幾乎為零。</div>
                                 </div>
                             </div>
-                            <div class="dict-panel-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:16px; box-shadow:3px 3px 0px #1A1A1A; margin-top:20px;">
-                                <div style="font-weight:900; font-size:0.85rem; color:#475569; margin-bottom:10px;">📖 專業技術字典</div>
-                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
-                                    <button style="background:#FFF; border:2px solid #1A1A1A; padding:10px; border-radius:6px; font-weight:800; font-size:0.8rem; text-align:left; cursor:pointer;" onclick="showTacticalDict('【SPI 銲前攔截比】：大廠製程中，70%的後段虛焊短路根源都在前段錫膏印刷。死守 SPI 攔截精準度是 SMT 製程降本增效的第一鐵律。')">🔍 SPI 錫膏檢查工藝機制 ➔</button>
-                                </div>
-                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin-top:12px; font-size:0.85rem; font-weight:700; line-height:1.5; display:none;"></div>
+                            <div style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:8px; padding:16px; margin-top:20px; box-shadow:3px 3px 0px #1A1A1A;">
+                                <button style="background:#1A1A1A; color:#FFF; border:none; padding:8px 12px; border-radius:4px; font-weight:900; cursor:pointer;" onclick="showTacticalDict('【SPI 銲前卡口】：手機大廠統計 70% 的後段虛焊、短路短路本源都在前段錫膏印刷。死守 SPI 攔截精準度是防範 SMT製程暴走的第一鐵律。')">🔍 核心字典：SPI 錫膏檢查防線 ➔</button>
+                                <div id="runtime-dict-box" style="margin-top:10px; font-weight:700; font-size:0.85rem; display:none;"></div>
                             </div>
                         `
                     },
                     {
-                        name: "Reflow Oven (高溫迴流銲爐)",
+                        name: "Reflow Oven (迴流銲爐)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">內部橫跨 10 到 12 個獨立高溫充氮加熱溫區。主板隨流水線皮帶緩慢進爐，經受最高達 260°C 的高溫化學受熱曲線拷問。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">主板隨流水線傳送帶緩慢進爐，經受 10 到 12 個加熱溫區、高達 260°C 的高溫洗禮。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">將主板表面的錫膏完全液化融化、激發化學松香活性，隨後在冷卻溫區精確固化凝結完成電路機械熔焊。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">將主板表面的錫膏液化、融化，激發松香化學活性，冷卻後固化凝結完成電路熔焊。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">定時架設溫測線（Profiler）進爐實測，鎖死加熱速率，杜絕厚銅板因散熱過快升溫不足導致大面積冷銲虛焊。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">BGA 內部零氣泡、零空焊、零假焊。定時進爐實測 Profile 爐溫曲線，防止溫區漂移。</div>
                                 </div>
-                            </div>
-                            <div class="dict-panel-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:16px; box-shadow:3px 3px 0px #1A1A1A; margin-top:20px;">
-                                <div style="font-weight:900; font-size:0.85rem; color:#475569; margin-bottom:10px;">📖 專業技術字典</div>
-                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
-                                    <button style="background:#FFF; border:2px solid #1A1A1A; padding:10px; border-radius:6px; font-weight:800; font-size:0.8rem; text-align:left; cursor:pointer;" onclick="showTacticalDict('【爐溫 Profile 曲線】：若測試站爆發大面積虛焊（Solder Skip），工廠老手常甩鍋給研發板材設計。TPM 應立即下令產線停線，實測 Profile 曲線，鐵證往往會指向工廠熔爐溫區溫控老化漂移。')">🔍 拆彈過爐焊接缺陷 ➔</button>
-                                </div>
-                                <div id="runtime-dict-box" class="dict-display-box" style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin-top:12px; font-size:0.85rem; font-weight:700; line-height:1.5; display:none;"></div>
                             </div>
                         `
                     },
                     {
-                        name: "FATP (後段物理總裝線)",
+                        name: "FATP (後段總裝線)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">Final Assembly, Testing & Packaging。大流水線整機拼裝。操作員扣合螢幕、主板、鎖附扭力螺絲、隨後流入自動化測試房、最後包裝封箱。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">大流水線整機拼裝。操作員與氣動工具協作，鎖附螺絲、組裝螢幕、進行軟體功能測試與封箱。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">優化各操作工位工時（Cycle Time），高頻率拉速，一網打盡色彩、音頻、射頻電性缺陷，守住出貨時程。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">壓縮各站作業 Cycle Time，消滅瓶頸工位，極速拉升每小時產能速率 (UPH)。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">測試站治具誤判率（False Alarm）嚴格掐死在 1% 以下，彩盒磅秤整箱電子秤重防錯，實現廠門之內零缺陷流出。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">測試治具誤判率掐死在 1% 以下，彩盒磅秤整箱秤重防錯，絕不塞錯配件附件。</div>
                                 </div>
                             </div>
                         `
@@ -106,42 +96,42 @@ window.codexCourseEngineData = [
                 ]
             },
             {
-                title: "2. 高階手機防水氣密與感測器精密工序 (高端高精專用核心技術站點)",
+                title: "2. 防水與感測器高端高精專用工序 (手機與無人機核心精密站點)",
                 diagramFlowArray: [
                     {
-                        name: "Leak Test (防水氣密測試)",
+                        name: "Leak Test (氣密性防水)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">利用高精密氣密測試儀向密封殼體腔內注入微量高壓氣體，在不將手機扔進水裡的狀態下，動態感測氣壓漏氣偏移率。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">利用氣密儀向密封手機腔內強行注入微量高壓空氣，精密感測腔內氣壓漏氣波形。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">建立 IP68 行業黃金防水阻絕防線。透過微量形變波形快速解讀整機密封結構的物理防水完好度。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">建立 IP68 行業黃金防水阻絕檢驗防線，不需將實體手機扔進水裡即可排查縫隙。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">防水防水橡膠圈（O-Ring）在結構鎖附壓合時，其物理受壓形變率剛性維持在 25%~40% 黃金壓縮比區間，防範漏氣爆倉。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">防水防水橡膠圈鎖附形變量剛性維持在 25%~40% 黃金壓縮比，防止過度擠壓碎裂。</div>
                                 </div>
                             </div>
                         `
                     },
                     {
-                        name: "IMU Cal (慣性核心校正站)",
+                        name: "IMU Cal (感測器校正)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">無人機與高階防手震手機特有工序。將機器綁定在專屬高精三軸旋轉陀螺儀動態校正治具上，開展精密動態六面翻轉。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">將智慧裝置強行綁定在三軸旋轉陀螺儀高精動態治具上，開展精密六面翻轉。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">強行注入動態校正演算法 Image，將機器內部的加速度計、氣壓計、指南針羅盤的晶圓零偏誤差徹底「洗淨抹平」。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">校正並洗淨加速度計、陀螺儀、羅盤指南針晶圓出廠零偏，將硬體系統動態重置。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">死守感測器精準度。防範終端消費者拿到實物機器在戶外起飛後發生嚴重的羅盤漂移或空中失控炸機災難。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">排除升空航向漂移。防範凡間終端使用者在實體環境飛行時爆發失控炸機悲劇。</div>
                                 </div>
                             </div>
                         `
@@ -149,37 +139,37 @@ window.codexCourseEngineData = [
                     {
                         name: "AA Process (主動影像對位)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">Active Alignment。高階影像模組製程。利用六軸高精密度機器手臂，在鏡頭模組動態點亮點燃的狀態下，微米級微調鏡頭與 CMOS 晶片間的相對軸向角度。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">Active Alignment。在鏡頭點亮點燃狀態下，利用六軸高精機器手臂微調鏡片組與 CMOS 間的微米級相對傾角。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">利用實時圖像演算法反饋調整，物理排除鏡片組與感光元件組裝微觀公差疊加引起的「邊緣模糊、焦點偏移」硬傷。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">利用圖像反饋演算法，排除微觀鏡頭多層鏡片組裝累積公差造成的「邊緣模糊、對焦不均」缺陷。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">實現畫面中央與四周 100% 均勻最清晰對焦解像力。此高精站點之自動化夾具與標定板光源強度必須每日剛性對位校正。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">畫面中央與四周 100% 均勻最清晰。此高精精密站點光源與夾具必須每日定期標定。</div>
                                 </div>
                             </div>
                         `
                     },
                     {
-                        name: "Poka-Yoke (產線防呆防錯)",
+                        name: "Poka-Yoke (產線防呆機制)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">在流水線治具上加裝特定塑料防錯導向導軌、非對稱卡槽、紅外線防漏感應探頭、或軟體強制互鎖校驗鎖死程序。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">在流水線特定工位治具加裝非對稱防插導軌、限位物理卡口、或光電防漏鎖感測探頭。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">防範一線操作工因日夜班長途交接轉廠引發的生理疲勞，剛性阻絕人為發生的「排線反塞、配件漏塞、螺絲漏鎖」等低級缺陷。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">防範一線操作工因高頻率拉速或交接班轉廠生理疲勞引發的「排線反插、配件漏塞」低級缺陷。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">實現「愚巧化防錯」，讓錯誤的操作在物理結構上根本無法扣合成立，用硬體治具剛性托底直通率。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">實現「愚巧防錯」，讓錯誤的操作工步在實體治具上根本無法扣合扣死，硬體托底直通率。</div>
                                 </div>
                             </div>
                         `
@@ -187,61 +177,61 @@ window.codexCourseEngineData = [
                 ]
             },
             {
-                title: "3. 4M1E 現地查線因果排查戰術 (良率海嘯雪崩時的現地技術排查總綱)",
+                title: "3. 4M1E 現地查線因果排查戰術 (良率海嘯雪崩時的現地排查總綱)",
                 diagramFlowArray: [
                     {
-                        name: "Man & Machine (人员與設備排查)",
+                        name: "Man & Machine (人員與設備)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">當測試良率無預警大跌時，第一時間衝往現地。檢查操作員是否違反 SOP 操作、是否剛更換新人，同時調閱起子扭力日誌與 ICT 測試針床探針磨損變形度。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">第一時間衝往現地。清查當班操作工有無遵循 SOP，點檢電動起子鎖附扭力（Torque）日誌。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">排除因「人員操作不當」或「自動化治具精度偏移、探針針床老化漏電」引發的局部測試異常。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">排除因「新人未受訓上崗人為硬傷」或「自動化測試針床 ICT 探針變形老化漏電」病灶。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">迅速判定病灶。若在日夜班交接（Shift Transition）時良率突變，應立即調閱交接班金件點檢日誌（Setup Verification Log）與首件檢查（FAI）數據。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">若突變爆發在白夜班轉廠（Shift Transition），立即調閱金件點檢日誌（Setup Verification Log）。</div>
                                 </div>
                             </div>
                         `
                     },
                     {
-                        name: "Material (進料原物料追溯)",
+                        name: "Material (物料批號追溯)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">在 ERP 品質系統中一鍵逆向調閱此批次出事機台的進料 IQC 原始報告、原廠 COA 品質檔案、與料號 Lot Number。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">一鍵逆向追溯出事機台的進料原始 IQC 報告、供應商原廠 COA 特徵與 Lot Number 批號。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">清查是否在線體上遭遇了供應商特定批次的隱性材料公差缺陷，核實倉庫到線體間有無發生混料汙染。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">徹查是否遭遇了上游零件隱性物理形變公差偏離，排查線體有無發生混料二次汙染。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">精準鎖定缺陷物料的波及層級，及時發動在製品（WIP）剛性隔離，防止帶病材料夾帶流入最終包裝出貨。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">精準圈定不良料件波及圈，果斷執行在製品 (WIP) 剛性封鎖隔離，嚴防瑕疵流入最終包裝。</div>
                                 </div>
                             </div>
                         `
                     },
                     {
-                        name: "Method & Env (工藝軟體與環境防護)",
+                        name: "Method & Env (工藝與環境)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">核對功能測試站點的測試韌體（FTM Image）版本代號是否正確，並現地動態點檢操作工的 ESD 靜電手環、靜電皮帶有無破窗失效。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">核對測試站測試韌體 (FTM Image) 版本，現地點檢作業工位 ESD 靜電手環防護有無漏電。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">排除因「測試軟體灌錯版本引發的誤判」，以及死守無塵車間溫濕度與 ESD 防護，嚴防晶片遭遇微觀靜電擊穿擊傷。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">排除測試軟體誤判海嘯，死守無塵室溫濕度與 ESD 防線，嚴防晶片晶圓微觀擊穿傷。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">環境因子與工藝標準完全在控。兩小時內閉環輸出 Root Cause 技術排除分析日誌，讓拉速重新重回綠燈水位。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">兩小時內精準閉環技術排查因果日誌，排除一切環境破窗變數，拉回綠燈產速。</div>
                                 </div>
                             </div>
                         `
@@ -249,18 +239,18 @@ window.codexCourseEngineData = [
                     {
                         name: "FAI (首件檢查防線)",
                         text: `
-                            <div class="edu-overview-container">
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">⚙️ 1. 會做什麼 (工作範疇)</div>
-                                    <div class="edu-card-body-text">First Article Inspection。在每日清晨開線、白夜班交接轉廠、或線體更換 ECO 零件後的歷史第一台機器，必須強制進行整機尺寸與電性的剛性地毯式全檢。</div>
+                            <div class="edu-overview-container" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">⚙️ 1. 會做什麼</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">First Article Inspection。白夜班交接、或線體更換 ECO 零件後的歷史第一台裝置，全面剛性量測。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">🎯 2. 目的 (戰術核心目標)</div>
-                                    <div class="edu-card-body-text">在流水線尚未啟動大规模大量複製前，用實物樣品驗證設備狀態、鋼網對位、與程序參數的絕對正確性。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">🎯 2. 目的</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">在大流水線大規模複製開閘前，用單一實物樣品動態檢驗程序、治具、鋼網之對位精準。</div>
                                 </div>
-                                <div class="edu-overview-card">
-                                    <div class="edu-card-label">👁️ 3. 期望結果 (團隊終極期待)</div>
-                                    <div class="edu-card-body-text">FAI 首件量測數據完全契合圖紙公差，由品保、製程工程師聯合簽字放行，大流水線方可准許開閘拉速。</div>
+                                <div class="edu-overview-card" style="background:#FFF; border:2px solid #1A1A1A; border-radius:8px; padding:14px; box-shadow:3px 3px 0px #1A1A1A;">
+                                    <div style="font-weight:900; font-size:0.75rem; color:#475569; border-bottom:1px dashed #ccc; padding-bottom:5px; margin-bottom:10px;">👁️ 3. 期望結果</div>
+                                    <div style="font-size:0.82rem; font-weight:700; color:#1A1A1A; line-height:1.5;">首件數據完全合格，由品保、製程工程師聯合簽署交割日誌，產線准許全面大量拉速。</div>
                                 </div>
                             </div>
                         `
@@ -275,3 +265,12 @@ window.codexCourseEngineData = [
         ]
     }
 ];
+
+(function() {
+    const v = window.codexCourseEngineData[0].examVault;
+    for (let i = v.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [v[i], v[j]] = [v[j], v[i]];
+    }
+    window.codexCourseEngineData[0].examVault = v.slice(0, 3);
+})();
