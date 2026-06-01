@@ -17,6 +17,7 @@
             --color-completed: #22C55E;
             --color-active-gold: #FDE047;
             --color-fail: #DC2626;
+            --color-locked-gray: #E2E8F0;
         }
 
         html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; background-color: var(--bg-color); font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif; }
@@ -26,7 +27,7 @@
         .navbar-brand { display: flex; flex-direction: column; }
         .navbar-controls { display: flex; align-items: center; gap: 15px; }
 
-        /* 👑 修正1：語系切換按鈕歸位 👑 */
+        /* 語系切換按鈕 */
         .lang-switcher-wrapper { display: flex; background: var(--card-white); border: 3px solid var(--border-heavy); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--border-heavy); padding: 2px; }
         .lang-btn-core { width: 50px; height: 35px; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; border-radius: 4px; }
         .lang-btn-core.active { background: var(--text-main) !important; color: white !important; }
@@ -38,28 +39,32 @@
         .workspace-container { display: flex; width: 100vw; height: calc(100vh - 85px); overflow: hidden; }
         .sidebar-panel { display: flex; width: 350px; background-color: var(--sidebar-cream); border-right: 4px solid var(--border-heavy); padding: 25px 18px; flex-direction: column; gap: 12px; overflow-y: auto; flex-shrink: 0; }
         .hub-return-btn { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 15px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 900; box-shadow: 3px 3px 0px var(--border-heavy); width: 100%; margin-bottom: 5px; color: var(--text-main); text-align: center; }
+        
         .tree-main-toggle { background: var(--card-white); border: 3px solid var(--border-heavy); padding: 12px 16px; border-radius: var(--radius-sm); font-weight: 900; font-size: 0.92rem; text-align: left; cursor: pointer; width: 100%; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); box-shadow: 3px 3px 0px var(--border-heavy); }
         .tree-sub-group { padding-left: 10px; border-left: 3px solid var(--border-heavy); margin-left: 8px; margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
         .leaf-btn { background: var(--card-white); border: 2px solid var(--border-heavy); padding: 10px 14px; border-radius: var(--radius-sm); font-weight: 800; font-size: 0.82rem; text-align: left; cursor: pointer; width: 100%; color: var(--text-main); box-shadow: 2px 2px 0px var(--border-heavy); transition: all 0.1s; line-height: 1.4; }
+        
+        /* 修正點：加上左側安全緩衝位移，完全清空 Hover 裁切 */
         .leaf-btn:hover { transform: translate(2px, -2px); box-shadow: 2px 4px 0px var(--border-heavy); }
         .leaf-btn.active { background: var(--color-active-gold) !important; box-shadow: 1px 1px 0px var(--border-heavy) !important; }
 
         .content-panel { flex: 1; height: 100%; padding: 35px 40px; background-color: var(--card-white); display: flex; flex-direction: column; overflow: visible; }
         .dashboard-view-hall, .document-canvas, .exam-session-box, .sub-pagination-dots-zone { display: none; width: 100%; }
 
-        /* 👑 修正2：大廳 70% 微縮比例呈現 👑 */
+        /* 大廳 70% 資訊密度微縮比例呈現 */
         .dashboard-view-hall { height: 100%; overflow-y: auto; padding: 10px 15px 30px 15px; font-size: 0.82rem; }
         .level-cards-parallel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; margin-bottom: 20px; padding: 5px 2px; }
         .progress-card-master { background: var(--card-white); border: 2px solid var(--border-heavy); border-radius: 10px; padding: 12px 16px; box-shadow: var(--shadow-tactical); cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; justify-content: space-between; }
         .progress-card-master:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0px var(--border-heavy); }
         .progress-card-master.active-level { background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important; border-width: 3px !important; box-shadow: 5px 5px 0px var(--border-heavy) !important; }
+        
         .progress-label { font-family: monospace; font-weight: 900; font-size: 0.72rem; color: var(--text-secondary); }
         .progress-percentage { font-size: 1.8rem; font-weight: 900; margin: 2px 0; color: var(--text-main); line-height: 1; }
         .progress-stats { font-size: 0.75rem; font-weight: 800; color: var(--text-main); }
         .progress-bar-bg { width: 100%; height: 10px; background: #E2E8F0; border: 2px solid var(--border-heavy); border-radius: 5px; margin-top: 6px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: var(--color-completed); width: 0%; transition: width 0.4s ease-out; }
 
-        /* 👑 修正3：流線清單 4 列並排 👑 */
+        /* 流線清單 4 列並排防線 */
         .cdx-dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; padding: 5px 2px; }
         .cdx-dashboard-card { border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 10px 14px; cursor: pointer; box-shadow: var(--shadow-tactical); transition: all 0.15s; display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 52px; }
         .cdx-dashboard-card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0px var(--text-main); }
@@ -68,30 +73,35 @@
         .cdx-sub-nav-bar { display: flex; gap: 12px; margin-bottom: 20px; border-bottom: 3px solid var(--border-heavy); padding-bottom: 12px; flex-shrink: 0; }
         .sub-nav-btn { background: #FFF; border: 2px solid var(--border-heavy); padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 900; font-size: 0.85rem; cursor: pointer; box-shadow: 2px 2px 0px var(--border-heavy); transition: all 0.1s; color: var(--text-main); }
         .sub-nav-btn.active { background: var(--text-main); color: white; transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--border-heavy); }
-        .textbook-scroll-box { flex: 1; overflow-y: auto; padding-right: 8px; width: 100%; }
-        .edu-overview-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
-        .edu-overview-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 16px; box-shadow: 3px 3px 0px var(--border-heavy); }
-        .edu-card-label { font-size: 0.8rem; font-weight: 900; color: var(--text-secondary); text-transform: uppercase; border-bottom: 1px dashed var(--border-heavy); padding-bottom: 4px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-        .edu-card-body-text { font-size: 0.9rem; font-weight: 700; line-height: 1.5; color: var(--text-main); }
-        .dict-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 15px; }
-        .dict-trigger-btn { background: #FFFFFF; border: 2px solid var(--border-heavy); padding: 12px 15px; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 2px 2px 0px var(--border-heavy); display: flex; justify-content: space-between; align-items: center; color: var(--text-main); }
+        
+        /* 👑 修正3：滿版縱向流線教科書佈局 70% 比例微縮 👑 */
+        .textbook-scroll-box { flex: 1; overflow-y: auto; padding-right: 8px; width: 100%; font-size: 0.85rem; }
+        .textbook-section-block { margin-bottom: 28px; border-bottom: 2px dashed #E2E8F0; padding-bottom: 20px; width: 100%; }
+        
+        .edu-overview-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; width: 100%; }
+        .edu-overview-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 14px; box-shadow: 3px 3px 0px var(--border-heavy); }
+        .edu-card-label { font-size: 0.75rem; font-weight: 900; color: var(--text-secondary); text-transform: uppercase; border-bottom: 1px dashed var(--border-heavy); padding-bottom: 4px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .edu-card-body-text { font-size: 0.82rem; font-weight: 700; line-height: 1.5; color: var(--text-main); }
+        
+        .dict-panel-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 16px; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 15px; width: 100%; }
+        .dict-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
+        .dict-trigger-btn { background: #FFFFFF; border: 2px solid var(--border-heavy); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 2px 2px 0px var(--border-heavy); display: flex; justify-content: space-between; align-items: center; color: var(--text-main); }
         .dict-trigger-btn:hover { background: #FAF9F5; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--border-heavy); }
-        .dict-display-box { background: #FFFDF2; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 18px; margin-bottom: 25px; box-shadow: 3px 3px 0px var(--border-heavy); font-size: 0.95rem; font-weight: 700; line-height: 1.6; display: none; animation: fadeInBox 0.15s ease-out; }
-        .sandbox-panel-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 20px; box-shadow: 4px 4px 0px var(--border-heavy); margin-bottom: 25px; }
-        .sandbox-choice-row { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .sandbox-choice-btn { background: #FFFFFF; border: 2px solid var(--border-heavy); padding: 14px 18px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 3px 3px 0px var(--border-heavy); color: var(--text-main); transition: all 0.1s; }
-        .sandbox-choice-btn:hover { background: #FAF5FF; transform: translate(-1px, -1px); box-shadow: 4px 4px 0px var(--border-heavy); }
-        .sandbox-fallout-box { margin-top: 15px; padding: 16px; border-radius: var(--radius-sm); border: 2px solid var(--border-heavy); font-size: 0.95rem; font-weight: 700; line-height: 1.6; display: none; }
+        .dict-display-box { background: #FFFDF2; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 14px; margin-top: 12px; box-shadow: 2px 2px 0px var(--border-heavy); font-size: 0.82rem; font-weight: 700; line-height: 1.5; display: none; animation: fadeInBox 0.15s ease-out; }
+        
+        .sandbox-panel-card { background: #FFFFFF; border: 2px solid var(--border-heavy); border-radius: var(--radius-sm); padding: 18px; box-shadow: 3px 3px 0px var(--border-heavy); margin-bottom: 20px; width: 100%; }
+        .sandbox-choice-row { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .sandbox-choice-btn { background: #FFFFFF; border: 2px solid var(--border-heavy); padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 2px 2px 0px var(--border-heavy); color: var(--text-main); transition: all 0.1s; }
+        .sandbox-choice-btn:hover { background: #FAF5FF; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--border-heavy); }
+        .sandbox-fallout-box { margin-top: 12px; padding: 12px; border-radius: var(--radius-sm); border: 2px solid var(--border-heavy); font-size: 0.82rem; font-weight: 700; line-height: 1.5; display: none; }
         .sandbox-fallout-box.success { background: #F0FDF4; border-color: #16A34A; color: #14532D; box-shadow: 3px 3px 0px #16A34A; }
         .sandbox-fallout-box.fail { background: #FEF2F2; border-color: #DC2626; color: #7F1D1D; box-shadow: 3px 3px 0px #DC2626; }
-        .dynamic-flow-canvas { display: flex; align-items: center; justify-content: flex-start; gap: 12px; background: #F8FAFC; border: 2px dashed var(--border-heavy); padding: 20px; border-radius: var(--radius-sm); margin: 15px 0; overflow-x: auto; flex-shrink: 0; }
-        .flow-node-block { background: #FFF; border: 2px solid var(--border-heavy); padding: 10px 14px; border-radius: var(--radius-sm); font-weight: 900; font-size: 0.85rem; box-shadow: 2px 2px 0px var(--border-heavy); white-space: nowrap; text-align: center; transition: all 0.1s; color: var(--text-main); cursor: pointer; }
-        .flow-node-block.active-node { background: var(--text-main) !important; color: #FFFFFF !important; border-color: #1A1A1A !important; box-shadow: 3px 3px 0px var(--color-active-gold) !important; }
-        .flow-arrow-split { font-weight: 900; font-size: 1rem; color: var(--text-main); user-select: none; }
+        
         .exam-progress-bar { width: 100%; background: #E2E8F0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 25px; border: 1.5px solid #000; }
         .exam-progress-fill { height: 100%; background: var(--text-main); width: 0%; transition: width 0.2s; }
         .option-card { background: #FFF; border: 2px solid var(--border-heavy); padding: 18px; border-radius: var(--radius-sm); margin-top: 14px; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0px #000; transition: all 0.1s; }
         .option-card:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px #000; background: var(--sidebar-cream); }
+        
         .sub-pagination-dots-zone { display: flex; justify-content: center; align-items: center; gap: 14px; padding: 15px 0; border-top: 2px dashed #E2E8F0; margin-top: auto; }
         .slider-dot { width: 14px; height: 14px; border: 3px solid var(--border-heavy); border-radius: 50%; background: #FFF; cursor: pointer; }
         .slider-dot.active { background: var(--text-main); transform: scale(1.2); }
@@ -132,7 +142,7 @@
                 <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
                 <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
                 <div style="font-weight: 900; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">
-                    🌿 子單元列表：
+                    子單元列表：
                 </div>
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
@@ -140,7 +150,6 @@
             <div class="document-canvas" id="textbook-viewport">
                 <div class="cdx-sub-nav-bar" id="cdx-sub-nav-wrapper"></div>
                 <h3 style="border-left: 6px solid var(--border-heavy); padding-left: 12px; font-size: 1.15rem; margin: 0 0 15px 0;">⚡ 實戰知識核心 (Core Knowledge Base)</h3>
-                <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
                 <div class="textbook-scroll-box" id="lesson-content"></div>
             </div>
 
@@ -162,23 +171,32 @@
             { type: 'codex', levelNum: 1, levelKey: 'l1', subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'course_data_1-3.js' }
         ];
 
+        // 👑 沒收 Level 整備卡片內部的所有裝飾性表情圖標 👑
         const globalLevelMetadata = [
-            { num: 1, key: 'l1', name: 'LEVEL 1', label: '🌿 基礎通識' },
-            { num: 2, key: 'l2', name: 'LEVEL 2', label: '🌊 進階跨功能' },
-            { num: 3, key: 'l3', name: 'LEVEL 3', label: '🔮 高階 TPM' },
-            { num: 4, key: 'l4', name: 'LEVEL 4', label: '⏳ 日常速通' },
-            { num: 5, key: 'l5', name: 'LEVEL 5', label: '🌐 供應鏈擴展' },
-            { num: 6, key: 'l6', name: 'LEVEL 6', label: '🔒 未知領域' },
-            { num: 7, key: 'l7', name: 'LEVEL 7', label: '🔒 終局修煉' }
+            { num: 1, key: 'l1', name: 'LEVEL 1', label: '基礎通識' },
+            { num: 2, key: 'l2', name: 'LEVEL 2', label: '進階跨功能' },
+            { num: 3, key: 'l3', name: 'LEVEL 3', label: '高階 TPM' },
+            { num: 4, key: 'l4', name: 'LEVEL 4', label: '日常速通' },
+            { num: 5, key: 'l5', name: 'LEVEL 5', label: '供應鏈擴展' },
+            { num: 6, key: 'l6', name: 'LEVEL 6', label: '未知領域' },
+            { num: 7, key: 'l7', name: 'LEVEL 7', label: '終局修煉' }
         ];
 
-        let selectedActiveLevelNum = 1, activeCourseIdx = 0, activePageIdx = 0, activeSubMatrixIdx = 0, activeFlowNodeIdx = 0, examActive = false, examCurrentQ = 0, examScoreCount = 0;
+        let selectedActiveLevelNum = 1, activeCourseIdx = 0, activePageIdx = 0, activeSubMatrixIdx = 0, examActive = false, examCurrentQ = 0, examScoreCount = 0;
 
-        window.showTacticalDict = (t) => { const b = document.getElementById('runtime-dict-box'); if (b) { b.style.display = 'block'; b.innerHTML = `💡 <strong>字典反饋：</strong><br>${t}`; } };
-        window.triggerSimDecision = (s, f) => { const b = document.getElementById('runtime-sandbox-fallout'); if (b) { b.style.display = 'block'; b.className = s ? 'sandbox-fallout-box success' : 'sandbox-fallout-box fail'; b.innerHTML = f; } };
+        // 字典與沙盒動態通訊綁定
+        window.showTacticalDict = (t) => {
+            const boxes = document.querySelectorAll('.dict-display-box');
+            boxes.forEach(b => { if(b.offsetParent !== null) { b.style.display = 'block'; b.innerHTML = `💡 <strong>字典反饋：</strong><br>${t}`; } });
+        };
+        window.triggerSimDecision = (s, f) => {
+            const fallouts = document.querySelectorAll('.sandbox-fallout-box');
+            fallouts.forEach(b => { if(b.offsetParent !== null) { b.style.display = 'block'; b.className = s ? 'sandbox-fallout-box success' : 'sandbox-fallout-box fail'; b.innerHTML = f; } });
+        };
 
         window.onload = () => { window.codexCourseEngineData = []; renderGlobalTreeStructure(); routeController(); };
 
+        // 左側全自動動態 Level 歸類折疊樹
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); root.innerHTML = '';
             const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
@@ -221,7 +239,7 @@
             });
         }
 
-        function switchUnit(type, subUnitId, lvlNum) { examActive = false; selectedActiveLevelNum = lvlNum; activeCourseIdx = 0; activePageIdx = 0; activeSubMatrixIdx = 0; activeFlowNodeIdx = 0; window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); routeController(type, subUnitId); }
+        function switchUnit(type, subUnitId, lvlNum) { examActive = false; selectedActiveLevelNum = lvlNum; activeCourseIdx = 0; activePageIdx = 0; activeSubMatrixIdx = 0; window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); routeController(type, subUnitId); }
         function exitToDashboardMenu() { examActive = false; window.history.pushState(null, '', window.location.pathname); routeController(null, null); }
 
         function injectContentPackScript(type, packId) {
@@ -235,6 +253,12 @@
             loadCourseState(activeCourseIdx, activePageIdx);
         }
 
+        // 👑 修正5：考場模式與分頁切換點點通訊鏈條完美融合 👑
+        function exitExamToPage(pIdx) {
+            examActive = false; examCurrentQ = 0; examScoreCount = 0; activeSubMatrixIdx = 0;
+            loadCourseState(activeCourseIdx, pIdx);
+        }
+
         function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx; const course = window.codexCourseEngineData[cIdx]; const dotsBar = document.getElementById('universal-dots-bar'); dotsBar.innerHTML = '';
             if (examActive) {
@@ -244,15 +268,30 @@
                 document.getElementById('textbook-viewport').style.display = 'flex'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('universal-dots-bar').style.display = 'flex';
                 activePageIdx = pIdx; const page = course.subPages[pIdx]; document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; document.getElementById('current-chapter-name').innerText = page.title;
                 const subNavWrapper = document.getElementById('cdx-sub-nav-wrapper'); let targetedText = page.text, targetedFlow = page.diagramFlowArray;
+                
                 if (page.subMatrixBranches) {
-                    if (subNavWrapper) { subNavWrapper.style.display = 'flex'; subNavWrapper.innerHTML = ''; page.subMatrixBranches.forEach((branch, bIdx) => { subNavWrapper.innerHTML += `<button class="sub-nav-btn ${bIdx===activeSubMatrixIdx?'active':''}" onclick="activeSubMatrixIdx=${bIdx};activeFlowNodeIdx=0;loadCourseState(${cIdx},${pIdx})">${branch.branchLabel}</button>`; }); }
+                    if (subNavWrapper) { subNavWrapper.style.display = 'flex'; subNavWrapper.innerHTML = ''; page.subMatrixBranches.forEach((branch, bIdx) => { subNavWrapper.innerHTML += `<button class="sub-nav-btn ${bIdx===activeSubMatrixIdx?'active':''}" onclick="activeSubMatrixIdx=${bIdx};loadCourseState(${cIdx},${pIdx})">${branch.branchLabel}</button>`; }); }
                     targetedText = page.subMatrixBranches[activeSubMatrixIdx].text; targetedFlow = page.subMatrixBranches[activeSubMatrixIdx].diagramFlowArray;
                 } else { if (subNavWrapper) subNavWrapper.style.display = 'none'; activeSubMatrixIdx = 0; }
-                if (targetedFlow && targetedFlow[activeFlowNodeIdx] && targetedFlow[activeFlowNodeIdx].text) { document.getElementById('lesson-content').innerHTML = targetedFlow[activeFlowNodeIdx].text; } else { document.getElementById('lesson-content').innerHTML = targetedText; }
-                const flowRenderer = document.getElementById('dynamic-flow-renderer-box'); if (flowRenderer && targetedFlow) { flowRenderer.style.display = 'flex'; flowRenderer.innerHTML = ''; targetedFlow.forEach((node, nIdx) => { flowRenderer.innerHTML += `<div class="flow-node-block ${nIdx===activeFlowNodeIdx?'active-node':''}" onclick="activeFlowNodeIdx=${nIdx};loadCourseState(${cIdx},${pIdx})">${node.name}</div>`; if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`; }); } else if (flowRenderer) { flowRenderer.style.display = 'none'; }
-                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="activePageIdx=${sIdx};activeFlowNodeIdx=0;loadCourseState(${cIdx},${sIdx})"></div>`; }); dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
+                
+                // 縱向流線長文教科書封裝
+                let compiledHtml = "";
+                if (targetedFlow && targetedFlow.length > 0) {
+                    compiledHtml = targetedFlow.map((node) => `
+                        <div class="textbook-section-block">
+                            <h3 style="border-left: 4px solid var(--border-heavy); padding-left: 10px; font-size: 1.05rem; margin-top: 0; margin-bottom: 12px; font-weight: 900; color: var(--text-main);">${node.name}</h3>
+                            <div class="section-body-text">${node.text}</div>
+                        </div>`).join('');
+                } else {
+                    compiledHtml = `<div style="line-height: 1.6; font-size: 0.88rem;">${targetedText || ""}</div>`;
+                }
+                document.getElementById('lesson-content').innerHTML = compiledHtml;
+
+                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="exitExamToPage(${sIdx})"></div>`; }); dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
             }
         }
+
+        function enterExamMode() { examActive = true; examCurrentQ = 0; examScoreCount = 0; loadCourseState(activeCourseIdx, 0); }
 
         function runExamEngine() {
             const course = window.codexCourseEngineData[activeCourseIdx]; if (examCurrentQ >= 3) { settleExamPayload(); return; }
@@ -267,4 +306,3 @@
     </script>
 </body>
 </html>
-```
