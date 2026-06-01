@@ -622,7 +622,7 @@
             const paramType = directType || urlParams.get('type') || 'codex';
             
             const name = localStorage.getItem('tpm-user-name') || 'Daniel Shih'; 
-            document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：${name}`;
+            document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：Daniel Shih`;
 
             if (!paramC) {
                 document.getElementById('cdx-page-header-zone').style.display = 'block'; 
@@ -816,8 +816,7 @@
             runExamEngine(); 
         }
         
-        // 👑 完整尋找並覆蓋更換整個 function settleExamPayload() 函數 👑
-        // 這裡已經將 entry.1252064533 與 entry.815794593 進行剛性綁定，並且加入了「自動辨識課程類型（Beginner / Handbook）」的特徵前置判定
+        // 👑 實體表單對位焊接完全體（全量展開，絕不裁剪） 👑
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
@@ -837,8 +836,7 @@
                 localStorage.setItem(`talent-${storageKey}-grade`, '通過');
             }
 
-            // 2. 👑 前置判定：自動識別當前課程類型（Beginner Codex 還是 Handbook Course） 👑
-            // 利用課程代號動態清洗比對全域註冊表
+            // 2. 特徵判定：自動識別當前課程類型（Beginner Codex 還是 Handbook Course）
             const cleanId = course.courseId.replace("L", "").trim();
             const currentRegistry = globalSubUnitRegistry.find(function(u) {
                 return u.subUnitId === cleanId;
@@ -849,9 +847,9 @@
                 resolvedType = "Handbook Course";
             }
 
-            // 3. 👑 越牆盲推核心模組：將您的 entry.1252064533 與 entry.815794593 剛性綁定 👑
+            // 3. 👑 越牆盲推：實體綁定您的表單與 entry ID 👑
             try {
-                // 建立背景不可見的隱藏 iframe，剛性防止提交表單時引發全網頁重定向跳轉
+                // 建立背景隱藏 iframe，剛性杜絕提交時網頁被強制 Redirect 重定向跳轉跑版
                 let hiddenIframe = document.getElementById('tpm-hidden-iframe');
                 if (!hiddenIframe) {
                     hiddenIframe = document.createElement('iframe');
@@ -864,8 +862,8 @@
                 // 動態建構越牆 Form 元件
                 let form = document.createElement('form');
                 
-                // ⚠️ 剛性提示：此處已為您預留好結構，請確保將下面網址更換成您公司 Google 表單的實體網址，並以 /formResponse 結尾
-                form.action = "https://docs.google.com/forms/d/e/您的實體表單ID貼在此處/formResponse";
+                // 🎯 完美銲接：直接對準您的實體中繼 Google 表單擊發端點
+                form.action = "https://docs.google.com/forms/d/1-dlwsewAEIL8PD4pRngeaK1Z_MX2B5Dk89EeIKjgzaE/formResponse";
                 form.method = "POST";
                 form.target = "tpm-hidden-iframe"; // 指定在隱藏視窗中默默發射
 
@@ -873,7 +871,7 @@
                 let inputCourse = document.createElement('input');
                 inputCourse.type = 'hidden';
                 inputCourse.name = 'entry.1252064533'; 
-                // 如果是 Handbook 課程，自動在前面加上特徵前綴，方便後台大腦分流識別
+                // 如果是 Handbook 課程，自動在前面加上特徵前綴，方便後台大腦路由分流
                 inputCourse.value = (resolvedType === "Handbook Course") ? "HB-" + course.courseId : course.courseId;
                 form.appendChild(inputCourse);
 
@@ -884,17 +882,17 @@
                 inputStatus.value = finalStatus; 
                 form.appendChild(inputStatus);
 
-                // 4. 背景擊發
+                // 4. 背景隱藏擊發
                 document.body.appendChild(form);
                 form.submit();
                 
-                // 延時清理 DOM 暫存節點
+                // 延時清理暫存節點
                 setTimeout(function() {
                     form.remove();
                 }, 1000);
                 
             } catch(e) {
-                console.log("企業內網越牆盲推異常阻斷:", e);
+                console.log("企業內網網域越牆盲推異常:", e);
             }
 
             // 重新導向回到大廳更新看板狀態
