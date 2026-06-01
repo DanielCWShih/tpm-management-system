@@ -101,6 +101,27 @@
             white-space: nowrap;
         }
 
+        .sync-cloud-btn {
+            background: #22C55E;
+            color: #FFFFFF;
+            border: 3px solid var(--border-heavy);
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 0.85rem;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sync-cloud-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
+        }
+
         .back-btn {
             background: var(--card-white);
             border: 3px solid var(--border-heavy);
@@ -519,6 +540,7 @@
         </div>
         <div class="navbar-controls">
             <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
+            <button class="sync-cloud-btn" onclick="triggerCloudPullSync()">🔄 同步雲端進度</button>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
                 <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
@@ -616,8 +638,33 @@
             if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
         }
 
+        // 👑 全新升級：整合反向記憶注入器的網頁初始化路由控制器 👑
         function routeController(directType, directC) {
             const urlParams = new URLSearchParams(window.location.search);
+            
+            // 🔥 核心增強：檢查網址中是否帶有從雲端大腦反向拉回來的記憶字串
+            const pulledData = urlParams.get('pulledData');
+            if (pulledData !== null) {
+                // 如果是空字串代表雲端沒有他的過關紀錄，如果不為空，進行強行拆解注入
+                if (pulledData !== "") {
+                    const lessons = pulledData.split(",");
+                    lessons.forEach(function(code) {
+                        const cleanCode = code.trim(); // 如 "1-1"
+                        if (cleanCode !== "") {
+                            // 還原地端考核憑證
+                            localStorage.setItem("codex-L1-A" + cleanCode.split('-')[1] + "-clear", "true");
+                            localStorage.setItem("talent-L1-A" + cleanCode.split('-')[1] + "-grade", "通過");
+                        }
+                    });
+                    alert("🧠 雲端記憶同步成功！已成功還原您的考核天賦點亮紀錄。");
+                } else {
+                    alert("⚠️ 雲端查無進度：您在看盤矩陣中尚未有任何通過紀錄。");
+                }
+                
+                // 清洗乾淨網址上的 Query 參數，讓畫面恢復簡潔乾淨的高階外觀
+                window.history.pushState(null, '', window.location.pathname);
+            }
+
             const paramC = directC || urlParams.get('c');
             const paramType = directType || urlParams.get('type') || 'codex';
             
@@ -816,13 +863,12 @@
             runExamEngine(); 
         }
         
-        // 👑 頂層第一方導航重定向同步模組（V7.70-PROD 完璧版） 👑
+        // 👑 頂層第一方正向投遞改寫模組 👑
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
             const storageKey = "L1-A" + course.courseId.split('-')[1];
             
-            // 1. 判定大考結果
             let finalStatus = "";
             if (examScoreCount < 2) {
                 alert("💥 失敗重考");
@@ -836,7 +882,6 @@
                 localStorage.setItem(`talent-${storageKey}-grade`, '通過');
             }
 
-            // 2. 特徵前置判定：自動識別當前課程類型
             const cleanId = course.courseId.replace("L", "").trim();
             const currentRegistry = globalSubUnitRegistry.find(function(u) {
                 return u.subUnitId === cleanId;
@@ -847,27 +892,40 @@
                 resolvedType = "Handbook Course";
             }
 
-            // 3. 🔥 絕殺 Cookie 牆：放棄背景 iframe，改走「頂層第一方重定向閉環通道」 🔥
             try {
-                // 🎯 完美銲接：直接對準您的實體公司內網 Web App 部署 URL 端點
                 const gasDeploymentUrl = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
+                const currentReturnUrl = window.location.origin + window.location.pathname; // 乾淨回航路徑
                 
-                // 抓取目前的完整網址，以便 Apps Script 在後台改寫完格子後，能精確回航
-                const currentReturnUrl = window.location.href;
-                
-                // 拼接四維標準 Query 參數串
                 const finalTargetUrl = gasDeploymentUrl + 
-                    "?courseId=" + encodeURIComponent(course.courseId) + 
+                    "?action=push" +
+                    "&courseId=" + encodeURIComponent(course.courseId) + 
                     "&status=" + encodeURIComponent(finalStatus) + 
                     "&redirect=" + encodeURIComponent(currentReturnUrl);
                 
-                // 擊發頂層第一方航線跳轉（強制夾帶 Foxconn 企業身分驗證，絕不上火線碰壁）
                 window.location.href = finalTargetUrl;
                 return;
                 
             } catch(e) {
-                console.log("全域頂層導航重定向執行異常:", e);
+                console.log("全域頂層導航正向投遞異常:", e);
                 exitToDashboardMenu();
+            }
+        }
+
+        // 👑 🔥 全新焊接：雲端記憶反向回拉擊發模組 🔥 👑
+        function triggerCloudPullSync() {
+            try {
+                const gasDeploymentUrl = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
+                const currentReturnUrl = window.location.origin + window.location.pathname;
+                
+                // 拼接 action=pull 核心金鑰，通知內網大腦執行反向讀取
+                const finalPullUrl = gasDeploymentUrl + 
+                    "?action=pull" + 
+                    "&redirect=" + encodeURIComponent(currentReturnUrl);
+                
+                // 頂層出海，強制激活 Foxconn Cookies 權限越牆
+                window.location.href = finalPullUrl;
+            } catch(e) {
+                console.log("發動雲端回拉記憶異常:", e);
             }
         }
     </script>
