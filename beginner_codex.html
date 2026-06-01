@@ -28,10 +28,14 @@
             overflow: hidden;
             background-color: var(--bg-color);
             font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
+        /* 頂部全域控制導航列 */
         .tactical-navbar {
             width: 100vw;
             height: 85px;
@@ -45,8 +49,16 @@
             z-index: 1000;
         }
 
-        .navbar-brand { display: flex; flex-direction: column; }
-        .navbar-controls { display: flex; align-items: center; gap: 15px; }
+        .navbar-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
         .lang-switcher-wrapper {
             display: flex;
@@ -70,6 +82,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 4px;
+            transition: all 0.1s;
         }
 
         .lang-btn-core.active {
@@ -101,6 +114,7 @@
             text-align: center;
             min-width: 95px;
             color: var(--text-main);
+            transition: all 0.1s;
         }
 
         .back-btn:hover {
@@ -108,6 +122,7 @@
             box-shadow: 5px 5px 0px var(--border-heavy);
         }
 
+        /* 雙區塊主流線體框架 */
         .workspace-container {
             display: flex;
             width: 100vw;
@@ -115,6 +130,7 @@
             overflow: hidden;
         }
 
+        /* 左側常駐導航折疊樹 */
         .sidebar-panel {
             display: flex;
             width: 350px;
@@ -149,7 +165,10 @@
             box-shadow: 5px 5px 0px var(--border-heavy);
         }
 
-        .menu-category-block { width: 100%; margin-bottom: 4px; }
+        .menu-category-block {
+            width: 100%;
+            margin-bottom: 4px;
+        }
 
         .tree-main-toggle {
             background: var(--card-white);
@@ -207,6 +226,7 @@
             box-shadow: 1px 1px 0px var(--border-heavy) !important;
         }
 
+        /* 右側主學習畫布 */
         .content-panel {
             flex: 1;
             height: 100%;
@@ -214,18 +234,22 @@
             background-color: var(--card-white);
             display: flex;
             flex-direction: column;
-            overflow: visible;
+            overflow: hidden;
         }
 
-        .dashboard-view-hall, .document-canvas, .exam-session-box, .sub-pagination-dots-zone {
+        .dashboard-view-hall,
+        .document-canvas,
+        .exam-session-box,
+        .sub-pagination-dots-zone {
             display: none;
             width: 100%;
         }
 
+        /* 大廳狀態區：兩排並列剛性兩網格佈局 */
         .dashboard-view-hall {
             height: 100%;
             overflow-y: auto;
-            padding: 10px 12px 30px 12px;
+            padding: 5px 5px 30px 5px; 
         }
 
         .level-cards-parallel-grid {
@@ -277,7 +301,11 @@
             line-height: 1;
         }
 
-        .progress-stats { font-size: 0.75rem; font-weight: 800; color: var(--text-main); }
+        .progress-stats {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
 
         .progress-bar-bg {
             width: 100%;
@@ -296,6 +324,7 @@
             transition: width 0.4s ease-out;
         }
 
+        /* 子單元純粹列表區 */
         .cdx-dashboard-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -323,7 +352,12 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        .document-canvas { flex: 1; overflow: hidden; }
+        .document-canvas {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
         .textbook-scroll-box {
             flex: 1;
@@ -333,6 +367,14 @@
             font-size: 0.85rem;
         }
 
+        .textbook-section-block {
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            width: 100%;
+            animation: fadeInBox 0.12s ease-out;
+        }
+
+        /* 第一層大項導航頁籤（由數據包資料庫動態沖刷） */
         .dynamic-flow-canvas {
             display: flex;
             align-items: center;
@@ -361,6 +403,7 @@
             transition: all 0.1s;
             color: var(--text-main);
             cursor: pointer;
+            user-select: none;
         }
 
         .flow-node-block.active-node {
@@ -377,6 +420,13 @@
             user-select: none;
         }
 
+        /* 考核 Session 控制站 */
+        .exam-session-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
         .exam-progress-bar {
             width: 100%;
             background: #E2E8F0;
@@ -384,7 +434,7 @@
             border-radius: 6px;
             overflow: hidden;
             margin-bottom: 25px;
-            border: 1.5px solid #000;
+            border: 2px solid #1A1A1A;
         }
 
         .exam-progress-fill {
@@ -402,24 +452,26 @@
             margin-top: 14px;
             cursor: pointer;
             font-weight: 700;
-            box-shadow: 3px 3px 0px #000;
+            box-shadow: 3px 3px 0px #1A1A1A;
             transition: all 0.1s;
         }
 
         .option-card:hover {
             transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0px #000;
+            box-shadow: 5px 5px 0px #1A1A1A;
             background: var(--sidebar-cream);
         }
 
+        /* 底部頁碼緩衝列 */
         .sub-pagination-dots-zone {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 14px;
             padding: 15px 0;
-            margin-top: auto;
             border-top: 2px dashed #E2E8F0;
+            margin-top: auto;
+            flex-shrink: 0;
         }
 
         .slider-dot {
@@ -452,9 +504,70 @@
             background: var(--color-fail);
             color: #FFF;
         }
-    </script>
+
+        @keyframes fadeInBox {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tactical-navbar">
+        <div class="navbar-brand">
+            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
+        </div>
+        <div class="navbar-controls">
+            <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
+            <div class="lang-switcher-wrapper">
+                <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
+                <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
+            </div>
+            <a href="index.html" class="back-btn">返回首頁</a>
+        </div>
+    </div>
+
+    <div class="workspace-container">
+        <aside class="sidebar-panel">
+            <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
+            <div id="global-tree-root"></div>
+        </aside>
+
+        <main class="content-panel">
+            <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
+                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">公會戰術天賦大廳</h2>
+            </div>
+
+            <div class="dashboard-view-hall" id="dashboard-menu-hall">
+                <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
+                <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
+                <div style="font-weight: 900; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">子單元列表：</div>
+                <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
+            </div>
+
+            <div class="document-canvas" id="textbook-viewport">
+                <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
+                <div class="textbook-scroll-box">
+                    <div id="lesson-content"></div>
+                </div>
+            </div>
+
+            <div class="exam-session-box" id="exam-viewport">
+                <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
+                    <span style="color:var(--color-fail);" id="exam-title-text">🔥 隨機能力考核大考</span>
+                    <span id="exam-counter">1 / 3</span>
+                </div>
+                <div class="exam-progress-bar"><div class="exam-progress-fill" id="exam-progress"></div></div>
+                <h3 id="exam-question-text" style="font-size:1.2rem; line-height:1.5; margin-bottom:25px; font-weight: 800;">載入中...</h3>
+                <div id="exam-options-container"></div>
+            </div>
+
+            <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
+        </main>
+    </div>
+
     <script>
-        // 👑 鐵血對位：核心通訊排產控制大腦 👑
         const globalSubUnitRegistry = [
             { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
             { type: 'codex', levelNum: 1, subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'course_data_1-2.js' },
@@ -464,113 +577,254 @@
         const globalLevelMetadata = [
             { num: 1, name: 'LEVEL 1', label: '基礎通識' },
             { num: 2, name: 'LEVEL 2', label: '進階跨功能' },
-            { num: 3, name: 'LEVEL 3', label: '高階 TPM' }
+            { num: 3, name: 'LEVEL 3', label: '高階 TPM' },
+            { num: 4, name: 'LEVEL 4', label: '日常速通' },
+            { num: 5, name: 'LEVEL 5', label: '供應鏈擴展' },
+            { num: 6, name: 'LEVEL 6', label: '未知領域' },
+            { num: 7, name: 'LEVEL 7', label: '終局修煉' }
         ];
 
         let selectedActiveLevelNum = 1; 
-        let activeCourseIdx = 0, activePageIdx = 0, activeFlowNodeIdx = 0, examActive = false, examCurrentQ = 0, examScoreCount = 0;
+        let activeCourseIdx = 0, activePageIdx = 0, activeFlowNodeIdx = 0;
+        let examActive = false, examCurrentQ = 0, examScoreCount = 0;
 
-        window.onload = () => { renderGlobalTreeStructure(); routeController(); };
+        window.onload = () => {
+            renderGlobalTreeStructure();
+            routeController();
+        };
 
         function renderGlobalTreeStructure() {
-            const root = document.getElementById('global-tree-root'); root.innerHTML = '';
+            const root = document.getElementById('global-tree-root'); 
+            root.innerHTML = '';
             const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
+            
             presentLevels.forEach(lvlNum => {
                 const subset = globalSubUnitRegistry.filter(u => u.levelNum === lvlNum);
-                const block = document.createElement('div'); block.className = 'menu-category-block';
-                block.innerHTML = `<button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} 展開</button><div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">${subset.map(u => `<button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}</div>`;
+                const block = document.createElement('div'); 
+                block.className = 'menu-category-block';
+                block.innerHTML = `
+                    <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} 展開</button>
+                    <div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">
+                        ${subset.map(u => `<button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}
+                    </div>`;
                 root.appendChild(block);
             });
         }
 
-        function toggleMenuSection(id) { const el = document.getElementById(id); if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; }
+        function toggleMenuSection(id) { 
+            const el = document.getElementById(id); 
+            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
+        }
 
         function routeController(directType, directC) {
-            const urlParams = new URLSearchParams(window.location.search), paramC = directC || urlParams.get('c'), paramType = directType || urlParams.get('type') || 'codex';
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramC = directC || urlParams.get('c');
+            const paramType = directType || urlParams.get('type') || 'codex';
+            
+            const name = localStorage.getItem('tpm-user-name') || 'Daniel Shih'; 
+            document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：${name}`;
+
             if (!paramC) {
-                document.getElementById('cdx-page-header-zone').style.display = 'block'; document.getElementById('current-chapter-id').innerText = "DASHBOARD"; document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
-                document.getElementById('dashboard-menu-hall').style.display = 'block'; document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('universal-dots-bar').style.display = 'none';
+                document.getElementById('cdx-page-header-zone').style.display = 'block'; 
+                document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
+                document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
+                document.getElementById('dashboard-menu-hall').style.display = 'block'; 
+                document.getElementById('textbook-viewport').style.display = 'none'; 
+                document.getElementById('exam-viewport').style.display = 'none'; 
+                document.getElementById('universal-dots-bar').style.display = 'none';
                 renderMultiLevelHubDashboard();
             } else {
-                document.getElementById('dashboard-menu-hall').style.display = 'none'; document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); const leaf = document.getElementById(`lf-${paramType}-${paramC}`); if (leaf) leaf.classList.add('active'); injectContentPackScript(paramType, paramC);
+                document.getElementById('dashboard-menu-hall').style.display = 'none'; 
+                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
+                const leaf = document.getElementById(`lf-${paramType}-${paramC}`); 
+                if (leaf) leaf.classList.add('active'); 
+                injectContentPackScript(paramType, paramC);
             }
         }
 
         function renderMultiLevelHubDashboard() {
-            const deckRow = document.getElementById('global-level-flex-deck'), grid = document.getElementById('l1-cards-grid'); if (!deckRow || !grid) return;
-            deckRow.innerHTML = ''; grid.innerHTML = '';
+            const deckRow = document.getElementById('global-level-flex-deck');
+            const grid = document.getElementById('l1-cards-grid'); 
+            if (!deckRow || !grid) return;
+            
+            deckRow.innerHTML = ''; 
+            grid.innerHTML = '';
+            
             globalLevelMetadata.forEach(lvl => {
-                const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num); let total = subUnitsInLvl.length, done = 0;
-                subUnitsInLvl.forEach(u => { if (localStorage.getItem(`codex-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') done++; });
+                const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num); 
+                let total = subUnitsInLvl.length, done = 0;
+                subUnitsInLvl.forEach(u => { 
+                    if (localStorage.getItem(`codex-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') done++; 
+                });
                 const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-                deckRow.innerHTML += `<div class="progress-card-master ${lvl.num===selectedActiveLevelNum?'active-level':''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();"><div class="progress-label">${lvl.name} : ${lvl.label}</div><div class="progress-percentage">${pct}%</div><div class="progress-stats">完成指標: ${done} / ${total}</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%;"></div></div></div>`;
+                deckRow.innerHTML += `
+                    <div class="progress-card-master ${lvl.num===selectedActiveLevelNum?'active-level':''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();">
+                        <div class="progress-label">${lvl.name} : ${lvl.label}</div>
+                        <div class="progress-percentage">${pct}%</div>
+                        <div class="progress-stats">完成指標: ${done} / ${total}</div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%;"></div></div>
+                    </div>`;
             });
+
             const filteredUnits = globalSubUnitRegistry.filter(u => u.levelNum === selectedActiveLevelNum);
             filteredUnits.forEach(unit => {
-                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`, isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
-                // 👑 剛性對位：「待考核」與「通過」文字清洗 👑
-                grid.innerHTML += `<div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})"><div style="display:flex; align-items:center; gap:8px;"><span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span><h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3></div><div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isClear ? `✅ [通過]` : '⏳ 待考核'}</div></div>`;
+                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
+                const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
+                // 👑 剛性修正：全面將「待攻堅」變更為「待考核」，過關後移除 S/A 噪音，一律剛性文字顯示為 [通過] 👑
+                grid.innerHTML += `
+                    <div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span>
+                            <h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
+                        </div>
+                        <div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isClear ? `✅ [通過]` : '⏳ 待考核'}</div>
+                    </div>`;
             });
         }
 
-        function switchUnit(type, subUnitId, lvlNum) { examActive = false; selectedActiveLevelNum = lvlNum; activeCourseIdx = 0; activePageIdx = 0; activeFlowNodeIdx = 0; window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); routeController(type, subUnitId); }
-        function exitToDashboardMenu() { examActive = false; window.history.pushState(null, '', window.location.pathname); routeController(null, null); }
+        function switchUnit(type, subUnitId, lvlNum) { 
+            examActive = false; 
+            selectedActiveLevelNum = lvlNum; 
+            activeCourseIdx = 0; 
+            activePageIdx = 0; 
+            activeFlowNodeIdx = 0; 
+            window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); 
+            routeController(type, subUnitId); 
+        }
+
+        function exitToDashboardMenu() { 
+            examActive = false; 
+            window.history.pushState(null, '', window.location.pathname); 
+            routeController(null, null); 
+        }
 
         function injectContentPackScript(type, packId) {
-            window.codexCourseEngineData = []; const old = document.getElementById('dynamic-course-pack'); if (old) old.remove();
-            const script = document.createElement('script'); script.id = 'dynamic-course-pack'; script.src = `${globalSubUnitRegistry.find(u=>u.subUnitId===packId).file}?v=${Date.now()}`;
-            script.onload = () => { initEngine(); }; document.head.appendChild(script);
+            window.codexCourseEngineData = []; 
+            const old = document.getElementById('dynamic-course-pack'); 
+            if (old) old.remove();
+            
+            const script = document.createElement('script'); 
+            script.id = 'dynamic-course-pack'; 
+            script.src = `${globalSubUnitRegistry.find(u=>u.subUnitId===packId).file}?v=${Date.now()}`;
+            script.onload = () => { initEngine(); }; 
+            document.head.appendChild(script);
         }
 
         function initEngine() {
-            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) { document.getElementById('current-chapter-name').innerText = "數據解讀失敗"; return; }
+            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) { 
+                document.getElementById('current-chapter-name').innerText = "數據解讀失敗"; 
+                return; 
+            }
             loadCourseState(activeCourseIdx, activePageIdx);
         }
 
-        function exitExamToPage(pIdx) { examActive = false; examCurrentQ = 0; examScoreCount = 0; activeFlowNodeIdx = 0; loadCourseState(activeCourseIdx, pIdx); }
+        function exitExamToPage(pIdx) { 
+            examActive = false; 
+            examCurrentQ = 0; 
+            examScoreCount = 0; 
+            activeFlowNodeIdx = 0; 
+            loadCourseState(activeCourseIdx, pIdx); 
+        }
 
         function loadCourseState(cIdx, pIdx) {
-            activeCourseIdx = cIdx; const course = window.codexCourseEngineData[cIdx]; const dotsBar = document.getElementById('universal-dots-bar'); dotsBar.innerHTML = '';
+            activeCourseIdx = cIdx; 
+            const course = window.codexCourseEngineData[cIdx]; 
+            const dotsBar = document.getElementById('universal-dots-bar'); 
+            dotsBar.innerHTML = '';
+            
             if (examActive) {
-                document.getElementById('textbook-viewport').style.display = 'none'; document.getElementById('exam-viewport').style.display = 'block'; document.getElementById('universal-dots-bar').style.display = 'flex';
-                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; }); dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; runExamEngine();
+                document.getElementById('textbook-viewport').style.display = 'none'; 
+                document.getElementById('exam-viewport').style.display = 'block'; 
+                document.getElementById('universal-dots-bar').style.display = 'flex';
+                course.subPages.forEach((_, sIdx) => { 
+                    dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; 
+                }); 
+                dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; 
+                runExamEngine();
             } else {
-                document.getElementById('textbook-viewport').style.display = 'flex'; document.getElementById('exam-viewport').style.display = 'none'; document.getElementById('universal-dots-bar').style.display = 'flex';
-                activePageIdx = pIdx; const page = course.subPages[pIdx]; document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; document.getElementById('current-chapter-name').innerText = page.title;
+                document.getElementById('textbook-viewport').style.display = 'flex'; 
+                document.getElementById('exam-viewport').style.display = 'none'; 
+                document.getElementById('universal-dots-bar').style.display = 'flex';
                 
-                let targetedText = page.text, targetedFlow = page.diagramFlowArray;
+                activePageIdx = pIdx; 
+                const page = course.subPages[pIdx]; 
+                document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; 
+                document.getElementById('current-chapter-name').innerText = page.title;
                 
+                let targetedText = page.text;
+                let targetedFlow = page.diagramFlowArray;
+                
+                // 第一層大項導航頁籤渲染（相容舊格式）
                 const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
                 if (flowRenderer && targetedFlow && targetedFlow.length > 0) {
-                    flowRenderer.style.display = 'flex'; flowRenderer.innerHTML = '';
+                    flowRenderer.style.display = 'flex'; 
+                    flowRenderer.innerHTML = '';
                     targetedFlow.forEach((node, nIdx) => {
                         flowRenderer.innerHTML += `<div class="flow-node-block ${nIdx===activeFlowNodeIdx?'active-node':''}" onclick="activeFlowNodeIdx=${nIdx};loadCourseState(${cIdx},${pIdx})">${node.name}</div>`;
                         if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
                     });
-                } else if (flowRenderer) { flowRenderer.style.display = 'none'; }
-
-                if (targetedFlow && targetedFlow.length > 0 && targetedFlow[activeFlowNodeIdx]) {
-                    document.getElementById('lesson-content').innerHTML = targetedFlow[activeFlowNodeIdx].text;
-                } else {
-                    document.getElementById('lesson-content').innerHTML = targetedText || '';
+                } else if (flowRenderer) { 
+                    flowRenderer.style.display = 'none'; 
                 }
 
-                course.subPages.forEach((_, sIdx) => { dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="exitExamToPage(${sIdx})"></div>`; }); dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
+                // 剛性限制單一節點渲染，杜絕垂直堆疊
+                let compiledHtml = "";
+                if (targetedFlow && targetedFlow.length > 0) {
+                    if (targetedFlow[activeFlowNodeIdx]) {
+                        compiledHtml = `
+                            <div class="textbook-section-block">
+                                <div style="line-height:1.6;">${targetedFlow[activeFlowNodeIdx].text}</div>
+                            </div>`;
+                    }
+                } else {
+                    compiledHtml = `<div style="line-height: 1.6; font-size: 0.88rem;">${targetedText || ""}</div>`;
+                }
+                document.getElementById('lesson-content').innerHTML = compiledHtml;
+
+                course.subPages.forEach((_, sIdx) => { 
+                    dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="exitExamToPage(${sIdx})"></div>`; 
+                }); 
+                dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
             }
         }
 
-        function enterExamMode() { examActive = true; examCurrentQ = 0; examScoreCount = 0; loadCourseState(activeCourseIdx, 0); }
-        function runExamEngine() {
-            const course = window.codexCourseEngineData[activeCourseIdx]; if (examCurrentQ >= 3) { settleExamPayload(); return; }
-            const qData = course.examVault[examCurrentQ]; document.getElementById('current-chapter-id').innerText = "EXAM MODE"; document.getElementById('current-chapter-name').innerText = "隨機能力考核大考"; document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`; document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`; document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
-            const container = document.getElementById('exam-options-container'); container.innerHTML = qData.o.map((opt, idx) => `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`).join('');
+        function enterExamMode() { 
+            examActive = true; 
+            examCurrentQ = 0; 
+            examScoreCount = 0; 
+            loadCourseState(activeCourseIdx, 0); 
         }
-        function submitAnswer(idx) { const course = window.codexCourseEngineData[activeCourseIdx]; if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } examCurrentQ++; runExamEngine(); }
+
+        function runExamEngine() {
+            const course = window.codexCourseEngineData[activeCourseIdx]; 
+            if (examCurrentQ >= 3) { 
+                settleExamPayload(); 
+                return; 
+            }
+            const qData = course.examVault[examCurrentQ]; 
+            document.getElementById('current-chapter-id').innerText = "EXAM MODE"; 
+            document.getElementById('current-chapter-name').innerText = "隨機能力考核大考"; 
+            document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`; 
+            document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`; 
+            document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
+            
+            const container = document.getElementById('exam-options-container'); 
+            container.innerHTML = qData.o.map((opt, idx) => `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`).join('');
+        }
+
+        function submitAnswer(idx) { 
+            const course = window.codexCourseEngineData[activeCourseIdx]; 
+            if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } 
+            examCurrentQ++; 
+            runExamEngine(); 
+        }
         
-        // 👑 剛性對位：「失敗重考」與「通過」兩極判定 👑
+        // 👑 考核結算硬核卡口：2 題以上過關，文字簡化對位 👑
         function settleExamPayload() {
-            examActive = false; const course = window.codexCourseEngineData[activeCourseIdx];
-            let storageKey = "L1-A" + course.courseId.split('-')[1];
+            examActive = false; 
+            const course = window.codexCourseEngineData[activeCourseIdx];
+            const storageKey = "L1-A" + course.courseId.split('-')[1];
+            
             if (examScoreCount < 2) {
                 alert("💥 失敗重考");
                 localStorage.setItem(`codex-${storageKey}-clear`, 'false');
@@ -582,8 +836,6 @@
             }
             exitToDashboardMenu();
         }
-        function syncNavbarState() {}
-        function executeLangSwitch(lang) {}
     </script>
 </body>
 </html>
