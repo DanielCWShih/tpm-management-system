@@ -1,27 +1,11 @@
 var courseData = [
-  // ─── 🗺️ PAGE 1 / 4: 大廳導讀 ───
+  // ─── 🗺️ PAGE 1 / 4: 大廳導讀（100% 還原純圖片總覽結構） ───
   {
     pageTitle: "1. 核心大廳導讀：硬體世界的權力對位",
-    tabs: [
-      {
-        tabName: "戰術導讀",
-        what: "主導並梳理品牌客戶廠（Brand）、元件供應商（Vendor）與代工製造廠（EMS）三方在高頻專案排產與量產中的利益糾葛與賽局關係。",
-        purpose: "徹底打破單一職能的盲人摸象視角，建立系統級 TPM 大局觀，透視各端在品質、成本、交期上的核心底線與談判籌碼。",
-        expectation: "期待學員不再盲目看盤，在未來產線開線、發生突發流產時，能秒速抓出是哪一方的圖面、公差或物料呆料在引發產線癱瘓，並給出代償方案。",
-        keywords: [
-          { 
-            name: "三方賽局", 
-            fullName: "Three-Party Game Theory", 
-            meaning: "硬體開發中品牌、元件廠、代工廠之間，基於技術實力、採購總量與產能分配進行的動態利益博弈與權力平衡。" 
-          },
-          { 
-            name: "TPM 大局觀", 
-            fullName: "Technical Project Management Overview", 
-            meaning: "跨越純技術與純專案管理的綜合視野，能同時看懂研發圖面公差、供應鏈交期風險與工廠線體直通率的核心大腦。" 
-          }
-        ]
-      }
-    ]
+    overviewImage: "beginner_codex_assets/overview_1-1.png",
+    imageUrl: "beginner_codex_assets/overview_1-1.png",
+    image: "beginner_codex_assets/overview_1-1.png",
+    isOverview: true
   },
 
   // ─── 📱 PAGE 2 / 4: 客戶研發端 (Brand R&D) ───
@@ -153,7 +137,7 @@ var courseData = [
             fullName: "Dual Sourcing Strategy", 
             meaning: "雙料源分散斷料風險戰術。同一個零件認證兩家供應商，打破獨家價格壟斷，提升採購議價彈性。" 
           }
-          // 🎯 已精確原位移除 Pin-to-Pin 呆料
+          // 🎯 Pin-to-Pin 關鍵詞已遵照指令實體原位撤除
         ]
       },
       {
@@ -193,20 +177,20 @@ var courseData = [
         ]
       },
       {
-        tabName: "IQC (進料品保)", // 🎯 重工業級擴充完畢
-        what: "這【絕對不是】供應商自家的檢驗，而是由我們代工廠/EMS廠這邊主導、在工廠門口架設的鋼鐵防線（Incoming Quality Control）。針對所有送抵工廠倉庫的實體原物料、晶片、外殼，實施最嚴格的實體抽樣核檢。",
+        tabName: "IQC (進料品保)", // 🎯 工廠進料端重工業級擴充，100% 補齊三要素
+        what: "這絕對不是供應商自家的檢驗，而是由我們代工廠/EMS廠這邊主導、在工廠門口架設的鋼鐵防線（Incoming Quality Control）。針對所有送抵工廠倉庫的實體原物料、晶片、外殼，實施最嚴格的實體抽樣核檢。",
         purpose: "在最前端強行攔截因跨境運輸震動、或原廠 OQC 漏檢而混入的缺陷呆料，確保只有 100% 完美的零件能流向生產線，徹底杜絕不良零件一上線就引發整條線癱瘓流產的連鎖災難。",
         expectation: "工廠 IQC 端的量測治具、電性手法與檢驗規格，與後段實際生產線 100% 完全校準咬合，達成缺陷零件零漏檢。",
         keywords: [
           { 
-            name: "尺寸合規基準", // 🎯 新增關鍵詞
+            name: "尺寸合規基準", 
             fullName: "Dimensional Tolerance Verification", 
             meaning: "運用精密二次元或三次元 OMM 機台，嚴格抽向量測進料結構件之物理外觀。確認實體尺寸精確落於標準圖面公差鏈範圍內，杜絕因射出成型形變引發後續防水結構幾何崩潰。" 
           },
           { 
-            name: "測站方法同步", // 🎯 新增關鍵詞
+            name: "測站方法同步", 
             fullName: "Test Methodology Synchronization", 
-            meaning: "工廠 IQC 在抽驗原物料時所套用的量測手法、電路硬體治具與軟體測試演算法，必須與生產線後段的實體量產測站保持 100% 剛性同步，徹底封死因兩端測試方法不對位引發的誤判或漏檢盲區。" 
+            meaning: "工廠 IQC 在抽驗原物料時所套用的量測手法、電路硬體治具與軟體測試演算法，必須與生產線後段的實體量產測站保持 100% 剛性同步，徹底封死因兩端測試方法不對位引發的誤判 or 漏檢盲區。" 
           },
           { 
             name: "黃金樣機", 
