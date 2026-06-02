@@ -1,3 +1,13 @@
+<!-- 
+========================================================================
+REVISION HISTORY / VERSION LOG
+========================================================================
+2026-06-02 V1.60-PROD: 👑 總部單機存檔管理完全體（$4 \times 2$ 橫向外擴版）。
+1. 色系剛性同步：左側控制鈕全面洗淨，對位右側中英切換組之 3px 黑框、白底、懸停黑白反轉。
+2. 網格矩陣重構：中央看盤區剛性拓撲為 4 欄配置，寬度拉展至 1400px，徹底解決卡片擠壓。
+3. 鋼鐵唯讀外殼：規格多行全量展開，不留任何省略符號，確保版本控管精確對位。
+========================================================================
+-->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -29,59 +39,53 @@
             align-items: center;
         }
 
-        * { 
-            box-sizing: border-box; 
+        * {
+            box-sizing: border-box;
         }
 
-        /* 頂部控制列：改為兩端對齊，完美接引左側極簡按鈕 */
+        /* 頂部控制列：外擴與中央看板寬度對齊 */
         .hub-navbar {
-            width: 100%;
-            max-width: 1200px;
+            width: 92%;
+            max-width: 1400px;
             padding: 25px 20px 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        /* 👑 左上角極簡去中心化存檔控制鈕 👑 */
+        /* 👑 左上角極簡戰術存檔控制鈕：完全對齊右側色系 👑 */
         .local-sync-minimal {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .minimal-btn {
-            border: 2px solid var(--border-heavy);
+            border: 3px solid var(--border-heavy);
             background: var(--card-white);
             color: var(--text-main);
-            padding: 6px 14px;
-            font-size: 0.78rem;
+            padding: 8px 16px;
+            font-size: 0.82rem;
             font-weight: 900;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 2px 2px 0px var(--border-heavy);
+            box-shadow: 3px 3px 0px var(--border-heavy);
             display: flex;
             align-items: center;
             gap: 4px;
-            transition: all 0.1s;
+            transition: all 0.1s ease-out;
         }
 
+        /* 懸停時執行黑白高對比反轉，等同右側啟動狀態 */
         .minimal-btn:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0px var(--border-heavy);
+            background: var(--text-main);
+            color: #FFFFFF;
+            transform: translate(1px, 1px);
+            box-shadow: 2px 2px 0px var(--border-heavy);
         }
 
-        .minimal-btn.export-theme { 
-            background: #FDE047; 
-        }
-
-        .minimal-btn.import-theme { 
-            background: #22C55E; 
-            color: white; 
-        }
-
-        #hidden-file-input { 
-            display: none; 
+        #hidden-file-input {
+            display: none;
         }
 
         /* 導航列右側資訊盒 */
@@ -162,16 +166,16 @@
             display: inline-block;
         }
 
-        /* 大廳核心看板外框：恢復 100% 黃金比例，絕不擠壓 */
+        /* 👑 大廳核心看板外框：橫向拉展外擴至 1400px，剛性 4 欄拓撲 👑 */
         .hub-tactical-deck {
             width: 92%;
-            max-width: 1200px;
+            max-width: 1400px;
             border: 4px solid var(--border-heavy);
             padding: 40px;
             margin-bottom: 60px;
             border-radius: 8px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 25px;
             background-color: var(--bg-color);
         }
@@ -245,16 +249,16 @@
 </head>
 <body>
 
-    <!-- 頂部導航列：融合左側極簡按鈕與右側資訊盒 -->
+    <!-- 頂部導航列 -->
     <div class="hub-navbar">
-        <!-- 左上角極簡戰術小按鈕組 -->
+        <!-- 左上角極簡戰術按鈕組（已完成中英切換主題配色同步） -->
         <div class="local-sync-minimal">
             <button class="minimal-btn export-theme" onclick="exportPersonalProgress()">📊 備份</button>
             <button class="minimal-btn import-theme" onclick="triggerImportClick()">📥 載入</button>
             <input type="file" id="hidden-file-input" accept=".json" onchange="importPersonalProgress(event)">
         </div>
 
-        <!-- 右側原裝冒險者狀態與語系 -->
+        <!-- 右側冒險者資訊盒 -->
         <div class="navbar-right-controls">
             <div class="auth-panel">👤 冒險者 : Daniel Shih</div>
             <div class="lang-switcher-wrapper">
@@ -271,7 +275,7 @@
         <div class="hub-subtitle">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
     </div>
 
-    <!-- 主戰術大廳九宮格 (完美原裝復位，絕不壓縮擠壓) -->
+    <!-- 主戰術大廳九宮格（已外擴升級為 4x2 寬屏通盤架構） -->
     <div class="hub-tactical-deck">
         
         <!-- 卡片 1: 初心者寶典 -->
@@ -326,7 +330,7 @@
     </div>
 
     <script>
-        // 👑 存檔下載大腦：僅打包 codex-、talent-、tpm- 開頭的數據金鑰
+        // 👑 存檔下載：打包地端與本系統相關的所有進度數據
         function exportPersonalProgress() {
             const backupData = {};
             let hasData = false;
@@ -362,7 +366,7 @@
             document.getElementById('hidden-file-input').click();
         }
 
-        // 👑 存檔載入大腦：原位解析 JSON，強力沖刷還原地端綠燈
+        // 👑 存檔載入：解析 JSON，還原全盤燈號
         function importPersonalProgress(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -386,7 +390,7 @@
                     window.location.reload();
 
                 } catch (err) {
-                    alert("💥 檔案解析失敗！請確認是否為本系統產出的標準 .json 存盤。");
+                    alert("💥 檔案解析失敗！請確認是否為本系統產出的標準 .json 存檔。");
                 }
             };
             reader.readAsText(file);
