@@ -2,11 +2,11 @@
 ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-06-02 V1.80-SECURITY: 👑 全公會數據資產去中心化備份暨身分防拷鎖定完全體。
-1. 身分剛性核檢：內建「防君子不防小人」資安鎖，存檔與當前 .auth-panel 冒險者姓名不符時剛性攔截拒載。
-2. 全域單機備份：一鍵打包寶典、手冊、成就卡牌、圖書館收藏、隨機副本的所有地端 LocalStorage 紀錄。
-3. 視覺與佈局對位：左側控制鈕色系等同右側中英切換（懸停黑白反轉）；中央大廳擴展為 4x2 寬屏矩陣。
-4. 唯讀封牌規格：代碼多行全量展開，絕不使用任何省略號裁剪，確保地端 100% 順暢開線。
+2026-06-02 V2.00-MINIMAL-AUTH: 👑 總部單機數據資產管理暨極簡登入防線完全體。
+1. 警報極簡化：對位最新指令，未登入時之面板標示與備份/載入攔截警報剛性精簡為「請登入」。
+2. 資安剛性防線：內建「Base64 員工 Email 密碼鎖」，下載時自動特徵打包，載入時不符則剛性熔斷攔截。
+3. 全域資產備份：一鍵打包寶典、手冊、成就卡牌、圖書館收藏、隨機副本的所有地端 LocalStorage 紀錄。
+4. 視覺與佈局對位：左側按鈕色系完全同步右側中英切換（3px 黑框、白底、懸停黑白反轉）；中央大廳擴展為 4 欄大畫布寬屏網格。
 ========================================================================
 -->
 <!DOCTYPE html>
@@ -44,7 +44,7 @@ REVISION HISTORY / VERSION LOG
             box-sizing: border-box;
         }
 
-        /* 頂部控制列：寬度與下方的 4 欄大畫布完美齊平 */
+        /* 頂部全域控制導航列 */
         .hub-navbar {
             width: 92%;
             max-width: 1400px;
@@ -54,7 +54,7 @@ REVISION HISTORY / VERSION LOG
             align-items: center;
         }
 
-        /* 左上角極簡戰術存檔控制鈕组（完全同步右側中英切換色系） */
+        /* 左上角極簡戰術存檔控制鈕組（完全同步右側中英切換色系） */
         .local-sync-minimal {
             display: flex;
             align-items: center;
@@ -77,7 +77,7 @@ REVISION HISTORY / VERSION LOG
             transition: all 0.1s ease-out;
         }
 
-        /* 懸停時進行高對比黑白反轉 */
+        /* 懸停時進行高對比黑白反轉狀態機切換 */
         .minimal-btn:hover {
             background: var(--text-main);
             color: #FFFFFF;
@@ -89,7 +89,7 @@ REVISION HISTORY / VERSION LOG
             display: none;
         }
 
-        /* 導航列右側冒險者面板 */
+        /* 導航列右側資訊盒 */
         .navbar-right-controls {
             display: flex;
             align-items: center;
@@ -104,6 +104,7 @@ REVISION HISTORY / VERSION LOG
             font-size: 0.85rem;
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
+            transition: all 0.15s ease-out;
         }
 
         .lang-switcher-wrapper {
@@ -167,7 +168,7 @@ REVISION HISTORY / VERSION LOG
             display: inline-block;
         }
 
-        /* 中央主學習畫布外框：寬度拉展至 1400px，剛性 4 欄拓撲網格 */
+        /* 大廳核心看板外框：橫向拉展外擴至 1400px，剛性 4 欄拓撲網格 */
         .hub-tactical-deck {
             width: 92%;
             max-width: 1400px;
@@ -181,7 +182,7 @@ REVISION HISTORY / VERSION LOG
             background-color: var(--bg-color);
         }
 
-        /* 戰術卡片外殼樣式 */
+        /* 戰術卡片基礎樣式 */
         .tactical-card {
             background: var(--card-white);
             border: 3px solid var(--border-heavy);
@@ -259,9 +260,9 @@ REVISION HISTORY / VERSION LOG
             <input type="file" id="hidden-file-input" accept=".json" onchange="importPersonalProgress(event)">
         </div>
 
-        <!-- 右側冒險者面板 -->
+        <!-- 右側冒險者資訊盒 -->
         <div class="navbar-right-controls">
-            <div class="auth-panel">👤 冒險者 : Daniel Shih</div>
+            <div class="auth-panel" id="tactical-auth-box">👤 冒險者 : Daniel Shih</div>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active">TW</button>
                 <button class="lang-btn-core">EN</button>
@@ -273,10 +274,10 @@ REVISION HISTORY / VERSION LOG
     <div class="hub-header">
         <div class="hub-version-tag">GUILD HQ / LEVEL 2026</div>
         <h1 class="hub-main-title">System TPM 公會總部</h1>
-        <div class="hub-subtitle">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
+        <div class="hub-subtitle">Daniel Shih | 2026 年度高效 management 與團隊修煉套件</div>
     </div>
 
-    <!-- 主戰術大廳看盤九宮格 -->
+    <!-- 主戰術大廳 $4 \times 2$ 看盤矩陣 -->
     <div class="hub-tactical-deck">
         
         <!-- 卡片 1: 初心者寶典 -->
@@ -331,14 +332,37 @@ REVISION HISTORY / VERSION LOG
     </div>
 
     <script>
-        // 👑 鋼鐵存檔大腦：全量打包全公會跨卡片所有子系統數據資產（附帶帳號特徵簽章）
+        // 👑 剛性全域 Email 宣告：與 Google 後台看盤中樞 100% 精確對位
+        // 💡 測試「請登入」防線時，可將此變數洗空改為 ""
+        const GLOBAL_USER_EMAIL = "danielcwshih@fih-foxconn.com";
+
+        // 頁面加載時，動態渲染身分狀態防線
+        window.onload = () => {
+            const authBox = document.getElementById('tactical-auth-box');
+            if (!GLOBAL_USER_EMAIL || GLOBAL_USER_EMAIL.trim() === "") {
+                // 🎯 對位修改：精簡為「請登入」
+                authBox.innerHTML = "請登入";
+                authBox.style.color = "#DC2626";         
+                authBox.style.borderColor = "#DC2626";     
+                authBox.style.boxShadow = "3px 3px 0px #DC2626";
+            } else {
+                authBox.innerHTML = "👤 冒險者 : Daniel Shih";
+                authBox.style.color = "var(--text-main)";
+                authBox.style.borderColor = "var(--border-heavy)";
+                authBox.style.boxShadow = "3px 3px 0px var(--border-heavy)";
+            }
+        };
+
+        // 👑 全資產全量備份下載引擎（內建極簡攔截機制）
         function exportPersonalProgress() {
+            // 🔒 剛性熔斷防線：未登入時當場彈出最純粹的「請登入」
+            if (!GLOBAL_USER_EMAIL || GLOBAL_USER_EMAIL.trim() === "") {
+                alert("請登入");
+                return;
+            }
+
             const backupData = {};
             let hasData = false;
-
-            // 🔒 剛性擷取右上角目前的冒險者名稱作為數位簽章
-            const authPanelText = document.querySelector('.auth-panel').innerText;
-            const currentOwnerName = authPanelText.replace('👤 冒險者 :', '').trim();
 
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
@@ -360,8 +384,8 @@ REVISION HISTORY / VERSION LOG
                 return;
             }
 
-            // 銲接數位存檔身分指紋
-            backupData['tpm-meta-vault-signature-owner'] = currentOwnerName;
+            const obfuscatedSignature = btoa(GLOBAL_USER_EMAIL.toLowerCase().trim());
+            backupData['tpm-meta-vault-security-token'] = obfuscatedSignature;
 
             const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -369,7 +393,7 @@ REVISION HISTORY / VERSION LOG
             
             const dateStr = new Date().toISOString().slice(0, 10);
             downloadLink.href = url;
-            downloadLink.download = `tpm_guild_all_assets_save_${dateStr}.json`;
+            downloadLink.download = `tpm_guild_secure_save_${dateStr}.json`;
             
             document.body.appendChild(downloadLink);
             downloadLink.click();
@@ -378,10 +402,15 @@ REVISION HISTORY / VERSION LOG
         }
 
         function triggerImportClick() {
+            // 🔒 剛性熔斷防線：未登入時當場彈出最純粹的「請登入」
+            if (!GLOBAL_USER_EMAIL || GLOBAL_USER_EMAIL.trim() === "") {
+                alert("請登入");
+                return;
+            }
             document.getElementById('hidden-file-input').click();
         }
 
-        // 👑 存檔載入大腦：核檢數位簽章，100% 剛性阻斷跨帳號作弊拷貝
+        // 👑 全資產一鍵還原引擎
         function importPersonalProgress(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -397,26 +426,34 @@ REVISION HISTORY / VERSION LOG
                         return;
                     }
 
-                    // 🔒 執行「防君子不防小人」身分裝甲校驗
-                    const authPanelText = document.querySelector('.auth-panel').innerText;
-                    const currentOwnerName = authPanelText.replace('👤 冒險者 :', '').trim();
-                    const fileOwnerName = importedData['tpm-meta-vault-signature-owner'];
+                    const fileToken = importedData['tpm-meta-vault-security-token'];
+                    let decodedEmail = "";
 
-                    if (fileOwnerName && fileOwnerName !== currentOwnerName) {
-                        alert(`💥 存檔裝甲攔截！\n\n此備份存檔屬於冒險者 [ ${fileOwnerName} ]，與您當前登入的身分 [ ${currentOwnerName} ] 不符！\n系統已剛性拒絕跨帳號複製進度。`);
+                    if (fileToken) {
+                        try {
+                            decodedEmail = atob(fileToken).toLowerCase().trim();
+                        } catch(err) {
+                            alert("💥 存檔數位簽章損毀！判定為惡意篡改，系統已拒絕載入。");
+                            return;
+                        }
+                    }
+
+                    const currentTargetEmail = GLOBAL_USER_EMAIL.toLowerCase().trim();
+
+                    if (decodedEmail && decodedEmail !== currentTargetEmail) {
+                        alert(`💥 存檔裝甲攔截！\n\n此備份檔案經加密憑證識別，屬於員工：\n[ ${decodedEmail} ]\n\n與您當前系統綁定的帳號身分不符，系統已剛性阻斷跨帳號拷貝行為！`);
                         return;
                     }
 
-                    // 通過防線，沖刷寫入地端 LocalStorage
                     keys.forEach(function(key) {
                         localStorage.setItem(key, importedData[key]);
                     });
 
-                    alert(`✓ 載入成功！已成功還原冒險者 [ ${currentOwnerName} ] 的全公會跨卡片歷史記憶！`);
+                    alert(`✓ 載入成功！已成功恢復冒險者 [ ${currentTargetEmail} ] 的全資產歷史記憶！`);
                     window.location.reload();
 
                 } catch (err) {
-                    alert("💥 檔案解析失敗！請確認是否為本系統產出的標準全資產存檔 .json 檔案。");
+                    alert("💥 檔案解析失敗！請確認是否為本系統產出的標準加密存檔 .json 檔案。");
                 }
             };
             reader.readAsText(file);
