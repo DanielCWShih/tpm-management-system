@@ -1,9 +1,20 @@
+<!-- 
+========================================================================
+REVISION HISTORY / VERSION LOG
+========================================================================
+2026-06-02 V2.00-LIBRARY-ENGINE: 👑 知識圖書館動態解耦核心引擎（完璧封牌版）。
+1. UIUX 剛性對位：100% 複製克隆 beginner_codex.html 的全視窗佈局、Dashboard 大廳與分頁點狀態機。
+2. 數據外掛化（Data Pack）：主網頁不帶一絲呆料數據，全面透過 URL 路由動態載入外部文獻腳本。
+3. 命名規範咬合：全面支持 library_data_beginner_1-1.js 與 library_data_handbook_1-1.js 標準路由。
+4. 全量展模規格：代碼全展開、零省略號，與 index.html 去中心化備份下載金鑰（library-）無縫閉環。
+========================================================================
+-->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>知識圖書館 | System TPM Library</title>
+    <title>知識圖書館 | System TPM Tactical Library</title>
     <style>
         :root {
             --bg-color: #FEF9E7;
@@ -14,8 +25,10 @@
             --border-heavy: #1A1A1A;
             --shadow-tactical: 5px 5px 0px #1A1A1A;
             --radius-sm: 8px;
+            --color-completed: #22C55E;
             --color-active-gold: #FDE047;
             --color-bookmark-red: #EF4444;
+            --color-locked-gray: #E2E8F0;
         }
 
         html, body {
@@ -33,7 +46,6 @@
             box-sizing: border-box;
         }
 
-        /* 頂部全域控制導航列 */
         .tactical-navbar {
             width: 100vw;
             height: 85px;
@@ -69,6 +81,35 @@
             white-space: nowrap;
         }
 
+        .lang-switcher-wrapper {
+            display: flex;
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            padding: 2px;
+        }
+
+        .lang-btn-core {
+            width: 50px;
+            height: 35px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .lang-btn-core.active {
+            background: var(--text-main) !important;
+            color: white !important;
+        }
+
         .back-btn {
             background: var(--card-white);
             border: 3px solid var(--border-heavy);
@@ -90,7 +131,6 @@
             box-shadow: 5px 5px 0px var(--border-heavy);
         }
 
-        /* 主工作框架 */
         .workspace-container {
             display: flex;
             width: 100vw;
@@ -98,56 +138,77 @@
             overflow: hidden;
         }
 
-        /* 左側文獻目錄樹 */
         .sidebar-panel {
             display: flex;
-            width: 380px;
+            width: 350px;
             background-color: var(--sidebar-cream);
             border-right: 4px solid var(--border-heavy);
             padding: 25px 18px;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             overflow-y: auto;
             flex-shrink: 0;
             height: 100%;
         }
 
-        /* 搜尋框戰術重工業封裝 */
-        .search-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 10px 12px;
+        .hub-return-btn {
+            background: var(--card-white);
             border: 3px solid var(--border-heavy);
+            padding: 12px 15px;
             border-radius: var(--radius-sm);
-            font-weight: 700;
-            font-size: 0.85rem;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            outline: none;
+            cursor: pointer;
+            font-weight: 900;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            width: 100%;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-main);
+            transition: all 0.1s;
         }
 
-        .document-tree-group {
+        .hub-return-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
+        }
+
+        .menu-category-block {
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        .tree-main-toggle {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.95rem;
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            width: 100%;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .tree-sub-group {
+            padding-left: 10px;
+            border-left: 3px solid var(--border-heavy);
+            margin-left: 8px;
+            margin-top: 5px;
             display: flex;
             flex-direction: column;
             gap: 8px;
-            width: 100%;
         }
 
-        .tree-folder-title {
-            font-size: 0.85rem;
-            font-weight: 900;
-            color: var(--text-secondary);
-            margin: 10px 0 4px 4px;
-            letter-spacing: 0.5px;
-        }
-
-        .doc-leaf-btn {
+        .leaf-btn {
             background: var(--card-white);
             border: 2px solid var(--border-heavy);
-            padding: 12px 14px;
+            padding: 10px 14px;
             border-radius: var(--radius-sm);
             font-weight: 800;
             font-size: 0.82rem;
@@ -157,29 +218,29 @@
             color: var(--text-main);
             box-shadow: 2px 2px 0px var(--border-heavy);
             transition: all 0.1s;
+            line-height: 1.4;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            line-height: 1.4;
         }
 
-        .doc-leaf-btn:hover {
+        .leaf-btn:hover {
             transform: translate(2px, -2px);
             box-shadow: 2px 4px 0px var(--border-heavy);
         }
 
-        .doc-leaf-btn.active {
+        .leaf-btn.active {
             background: var(--color-active-gold) !important;
-            box-shadow: 1px 1px 0px var(--border-heavy) !important;
+            color: var(--text-main) !important;
             transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px var(--border-heavy) !important;
         }
 
-        .mini-bookmark-indicator {
-            font-size: 0.8rem;
+        .mini-bookmark-dot {
             color: var(--color-bookmark-red);
+            font-size: 0.8rem;
         }
 
-        /* 右側主閱讀畫布 */
         .content-panel {
             flex: 1;
             height: 100%;
@@ -190,17 +251,191 @@
             overflow: hidden;
         }
 
-        .library-header-zone {
+        .dashboard-view-hall,
+        .document-canvas,
+        .sub-pagination-dots-zone {
+            display: none;
+            width: 100%;
+        }
+
+        .dashboard-view-hall {
+            height: 100%;
+            overflow-y: auto;
+            padding: 5px 5px 30px 5px; 
+        }
+
+        .level-cards-parallel-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
             margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px dashed var(--border-heavy);
+            padding: 5px 2px;
+        }
+
+        .progress-card-master {
+            background: var(--card-white);
+            border: 2px solid var(--border-heavy);
+            border-radius: 10px;
+            padding: 16px 20px;
+            box-shadow: var(--shadow-tactical);
+            cursor: pointer;
+            transition: all 0.15s;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: flex-start;
+            min-height: 100px;
+        }
+
+        .progress-card-master:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 6px 6px 0px var(--border-heavy);
+        }
+
+        .progress-card-master.active-level {
+            background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important;
+            border-width: 3px !important;
+            box-shadow: 5px 5px 0px var(--border-heavy) !important;
+        }
+
+        .progress-label {
+            font-family: monospace;
+            font-weight: 900;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        .progress-stats {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .cdx-dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+            padding: 5px 2px;
+        }
+
+        .cdx-dashboard-card {
+            border: 2px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            cursor: pointer;
+            box-shadow: var(--shadow-tactical);
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 60px;
+        }
+
+        .cdx-dashboard-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 6px 6px 0px var(--text-main);
+        }
+
+        .document-canvas {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .textbook-scroll-box {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .textbook-section-block {
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            width: 100%;
+            animation: fadeInBox 0.12s ease-out;
+        }
+
+        /* 3D 流程節點畫布（與寶典 100% 同步） */
+        .dynamic-flow-canvas {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            background: #FEF9E7;
+            border: 2px solid var(--border-heavy);
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            margin: 0 0 20px 0;
+            overflow-x: auto;
+            flex-shrink: 0;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+        }
+
+        .flow-node-block {
+            background: #FFF;
+            border: 2px solid var(--border-heavy);
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.88rem;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            white-space: nowrap;
+            text-align: center;
+            transition: all 0.1s;
+            color: var(--text-main);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .flow-node-block.active-node {
+            background: var(--color-active-gold) !important;
+            color: var(--text-main) !important;
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px var(--border-heavy) !important;
+        }
+
+        .flow-arrow-split {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--border-heavy);
+            user-select: none;
+        }
+
+        .sub-pagination-dots-zone {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            padding: 15px 0;
+            border-top: 2px dashed #E2E8F0;
+            margin-top: auto;
             flex-shrink: 0;
         }
 
-        .bookmark-toggle-btn {
+        .slider-dot {
+            width: 14px;
+            height: 14px;
+            border: 3px solid var(--border-heavy);
+            border-radius: 50%;
+            background: #FFF;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .slider-dot.active {
+            background: var(--text-main);
+            transform: scale(1.2);
+        }
+
+        /* 圖書館專屬高定組件 */
+        .library-bookmark-btn {
             background: var(--card-white);
             border: 2px solid var(--border-heavy);
             padding: 6px 12px;
@@ -215,58 +450,31 @@
             gap: 4px;
         }
 
-        .bookmark-toggle-btn:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0px var(--border-heavy);
-        }
-
-        .bookmark-toggle-btn.is-bookmarked {
+        .library-bookmark-btn.is-bookmarked {
             background: #FEE2E2;
             color: var(--color-bookmark-red);
         }
 
-        .scrollable-article-body {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 14px;
-            line-height: 1.7;
-            font-size: 0.92rem;
-            color: var(--text-main);
-        }
-
-        /* 內文戰術排版組件 */
         .library-blockquote {
             border-left: 4px solid var(--border-heavy);
             background: var(--sidebar-cream);
-            padding: 16px 20px;
+            padding: 15px 20px;
             margin: 20px 0;
             font-weight: 700;
             border-radius: 0 6px 6px 0;
-            font-size: 0.9rem;
         }
 
         .library-h3 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 900;
-            margin: 30px 0 12px 0;
+            margin: 25px 0 10px 0;
             border-bottom: 2px solid var(--border-heavy);
-            padding-bottom: 6px;
-            color: #000000;
+            padding-bottom: 4px;
         }
 
-        .library-ol {
-            margin: 10px 0 20px 0;
-            padding-left: 20px;
-        }
-
-        .library-ol li {
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .library-ol li span {
-            font-weight: 500;
-            color: var(--text-secondary);
+        @keyframes fadeInBox {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -274,188 +482,270 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;">知識圖書館</h1>
+            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">知識圖書館</h1>
         </div>
         <div class="navbar-controls">
-            <div class="auth-panel">👤 冒險者：Daniel Shih</div>
+            <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
+            <div class="lang-switcher-wrapper">
+                <button class="lang-btn-core active">TW</button>
+                <button class="lang-btn-core">EN</button>
+            </div>
             <a href="index.html" class="back-btn">返回總部</a>
         </div>
     </div>
 
     <div class="workspace-container">
         <aside class="sidebar-panel">
-            <div class="search-wrapper">
-                <input type="text" id="library-search" class="search-input" placeholder="🔍 輸入關鍵字檢索卷軸..." oninput="executeLibrarySearch()">
-            </div>
-            <div id="document-tree-root" style="display: flex; flex-direction: column; gap: 15px; width: 100%;"></div>
+            <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回圖書大廳</button>
+            <div id="global-tree-root"></div>
         </aside>
 
         <main class="content-panel">
-            <div class="library-header-zone">
+            <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0; display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <span id="doc-meta-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
-                    <h2 id="doc-meta-title" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">請選擇要研讀的戰術文獻</h2>
+                    <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
+                    <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
                 </div>
-                <button id="bookmark-btn" class="bookmark-toggle-btn" onclick="toggleCurrentBookmark()" style="display: none;">🔖 收藏卷軸</button>
+                <button id="global-bookmark-trigger" class="library-bookmark-btn" onclick="toggleLibraryAssetBookmark()" style="display:none;">🔖 收藏卷軸</button>
             </div>
 
-            <div class="scrollable-article-body" id="article-viewport">
-                <p style="color: var(--text-secondary); font-weight: 700; text-align: center; margin-top: 100px;">
-                    ⚔️ 點擊左側目錄，即可調閱公會歷史戰役文件與 Lessons Learned 心得卷軸。
-                </p>
+            <!-- 視覺大廳 Dashboard -->
+            <div class="dashboard-view-hall" id="dashboard-menu-hall">
+                <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
+                <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
+                <div style="font-weight: 900; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">文獻卷軸列表：</div>
+                <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
+
+            <!-- 文獻 CANVAS 閱讀區 -->
+            <div class="document-canvas" id="textbook-viewport">
+                <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
+                <div class="textbook-scroll-box">
+                    <div id="lesson-content"></div>
+                </div>
+            </div>
+
+            <!-- 跨頁控制點 -->
+            <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
         </main>
     </div>
 
     <script>
-        // 👑 滿血版：全量硬核歷史文獻資料庫（高達 800+ 行對位容量） 👑
+        // 👑 剛性動態路由註冊矩陣 👑
         const globalLibraryRegistry = [
-            {
-                category: "戰役心得 (Lessons Learned)",
-                docs: [
-                    {
-                        id: "LL-2026-001",
-                        title: "EVT 階段防水結構流產與公差鏈幾何崩潰分析",
-                        content: "<div class='library-blockquote'>摘要：本卷軸記錄了某高階智慧型手機專案於 EVT 階段時，因 O-ring 壓縮比計算未將工廠公差鏈（Tolerance Stackup）計入，導致氣密測試（IPX8）全量流產的慘痛教訓。</div>" +
-                                 "<h3 class='library-h3'>1. 核心病灶剖析</h3>" +
-                                 "<p>在地端產線進行實體組裝時，因結構件前殼（Front Housing）射出成型公差達 ±0.05mm，加上黏膠固化時的微型幾何形變，導致實體 O-ring 壓縮比由理論值的 25% 驟降至 11%，完全無法形成剛性有效水封阻抗。</p>" +
-                                 "<h3 class='library-h3'>2. DFMEA 失效模式分析</h3>" +
-                                 "<p>在設計初期，工程團隊過度依賴 CAD 標稱尺寸（Nominal Dimension）進行壓縮比校驗，忽略了 A 殼、B 殼與防水矽膠圈三者公差在最壞狀況下（Worst-Case Scenario）的疊加偏位。當線體組裝下壓速度恆定時，變形量直接在結構脆弱處崩潰，引發氣密測試全面 sad face 殘廢。</p>" +
-                                 "<h3 class='library-h3'>3. 改善戰術防線與排產整改</h3>" +
-                                 "<ol class='library-ol'>" +
-                                 "  <li>公差模擬剛性防禦：<span>未來所有硬體專案之防水結構，公差分析必須強制導入 Monte Carlo 及 Worst-Case 雙重模擬，壓縮比極限下限必須剛性維持在 22% 以上。</span></li>" +
-                                 "  <li>產線量測實裝：<span>NPI 開線時，前 模生產件必須 100% 進行三次元及 OMM 尺寸洗刷洗檢，確保尺寸呆料在首件檢查（FAI）時被當場擊落。</span></li>" +
-                                 "  <li>治具下壓時序修正：<span>組裝線下壓治具加裝壓力感測器，實施扭力與行程雙重閉環控制，嚴防二次形變引發應力集中。</span></li>" +
-                                 "</ol>"
-                    },
-                    {
-                        id: "LL-2026-002",
-                        title: "軟韌體高頻死機與 GitHub Actions 燒錄時序衝突",
-                        content: "<div class='library-blockquote'>摘要：記錄因地端排產測試腳本與 GitHub 雲端自動化構建時序未完全咬合，引發快閃記憶體（Flash）高頻寫入死鎖與直通率暴跌案。</div>" +
-                                 "<h3 class='library-h3'>1. 衝突現象與根因</h3>" +
-                                 "<p>當產線以 4 路並行（4-Way Parallel Test）進行高頻韌體燒錄時，地端測試程式在晶片進行全區擦除（Bulk Erase）完成前，便提前擊發下一條暫存器改寫指令。此時適逢 GitHub 雲端派發帶有時間戳記的二進位憑證（Binary Payload），兩者在通訊通路上發生非同步競爭條件（Race Condition），暫存器溢位溢出，產線直通率（FPY）瞬間暴跌至 42%。</p>" +
-                                 "<h3 class='library-h3'>2. 防禦性程式碼焊接</h3>" +
-                                 "<p>為絕殺此時序競爭，團隊徹底捨棄盲推測試邏輯，改在驅動底層加入剛性 Busy-Wait 握手訊號校驗。程式必須強行確認 Flash 狀態暫存器的 WIP（Write In Progress）位元回歸為 0 之後，才准許釋放下一發數據封包，燒錄延時緩衝剛性限制不低於 120ms。</p>" +
-                                 "<h3 class='library-h3'>3. 產線產能大補償</h3>" +
-                                 "<p>在 GitHub CI/CD 端鎖定特定穩定版編譯憑證，避免動態拉取第三方庫引發的特徵偏位。實裝後，燒錄時延穩定在 4.2 秒，產線重回穩健量產軌道。</p>"
-                    },
-                    {
-                        id: "LL-2026-003",
-                        title: "DVT 階段射出成型件浮凸與應力集中裂紋整改",
-                        content: "<div class='library-blockquote'>摘要：詳解 DVT 里程碑進行高低溫循環測試（Thermal Shock）時，PC+GF30 結構外殼在螺絲嵌件（Insert Nut）周圍發生微型裂紋（Crazing）的應力解法。</div>" +
-                                 "<h3 class='library-h3'>1. 實體失效表現</h3>" +
-                                 "<p>樣機在經歷 -40°C 至 85°C 達 100 個循環的戰術折磨後，外殼角落的固定柱（Boss Pillar）出現肉眼可見的放射狀裂紋。經金相顯微鏡高倍率掃描，判定為射出成型時的殘留應力（Residual Stress），在低溫收縮時被二次放大，最終超越材料剪切極限而發生的脆性斷裂。</p>" +
-                                 "<h3 class='library-h3'>2. 4M1E現地整改措施</h3>" +
-                                 "<ol class='library-ol'>" +
-                                 "  <li>Material (材料與模溫) ：<span>將保壓壓力調降 15%，延長冷卻時間 4 秒，並將模溫由 90°C 提升至 115°C，強迫高分子鏈緩慢結晶，釋放內部呆料應力。</span></li>" +
-                                 "  <li>Method (組裝工法) ：<span>嵌件熱熔製程全面改為超音波埋植，並將固定螺絲的鎖付扭力由 1.2 kgf-cm 精確剛性調降至 0.9 kgf-cm，由墊片承載二次下壓力。</span></li>" +
-                                 "</ol>"
-                    },
-                    {
-                        id: "LL-2026-004",
-                        title: "鏡頭模組 AA 補正與點膠溢膠流產案例",
-                        content: "<div class='library-blockquote'>摘要：記錄高階相機鏡頭在進行 AA（Active Alignment）主動對位貼合時，因點膠機閥門氣壓微幅偏位，引發膠體溢出污染 CMOS 感光元件的線體流產案。</div>" +
-                                 "<h3 class='library-h3'>1. 根因查找與幾何死鎖</h3>" +
-                                 "<p>AA 機台在六自由度（6-DOF）軸向補正時，UV 環氧樹脂膠（Epoxy）的點膠高度理論上應維持在 0.15mm。然而，線體點膠閥因供氣氣壓波動達 ±0.03 MPa，導致單次出膠量暴增 35%。當鏡頭下壓至聚焦平面時，多餘的膠體順著鏡座邊緣發生毛細管溢流，直接擴散侵入 CMOS 防塵玻璃表面，造成光學成像全面報廢。</p>" +
-                                 "<h3 class='library-h3'>2. 戰術整改封牌</h3>" +
-                                 "<p>全面拔除傳統氣壓點膠閥，升級為高精度壓電噴射閥（Piezoelectric Jet Valve），出膠量精度直接鎖定在微克級。並在 AA 機台視覺演算法中，強制加入「下壓前點膠形狀邊緣高空掃描」防禦機制，一旦外觀邊緣偏位超過 5%，機台當場剛性踩煞車停機，徹底封死溢膠雷區。</p>"
-                    }
-                ]
-            },
-            {
-                category: "系統規格與架構書 (Specs)",
-                docs: [
-                    {
-                        id: "SPEC-TPM-077",
-                        title: "Foxconn 4M1E 標準線體通識與自動化量產開線規範",
-                        content: "<div class='library-blockquote'>摘要：本規範詳解自動化 3C 硬體開線量產時，針對人員、機器、材料、方法、環境（4M1E）的剛性核檢指標與防線。</div>" +
-                                 "<h3 class='library-h3'>1. Man (人員規範)</h3>" +
-                                 "<p>產線關鍵工位（如防水測試、高頻終檢、射頻校正）之操作員，上崗前必須 100% 通過初心者寶典大考，地端 LocalStorage 必須持有通過綠燈憑證，嚴禁匿名或代考作業。</p>" +
-                                 "<h3 class='library-h3'>2. Machine (機器重複精度)</h3>" +
-                                 "<p>線體所有多軸手臂、點膠手臂之重複定位精度，經地端金屬治具剛性校正後，三軸位移偏位必須嚴格鎖定在 ±0.02mm 以內，每 24 小時強制發動一次自動原點校準路徑。</p>" +
-                                 "<h3 class='library-h3'>3. Environment (環境與潔淨度管理)</h3>" +
-                                 "<p>光學、鏡頭貼合及螢幕背光模組組裝專區，環境潔淨度必須剛性維持在 ISO Class 6（靜態萬級/局部百級）標準。線體內網溫濕度感測器每 10 秒高空採樣一次，嚴格錨定在溫度 22°C ±2°C、濕度 45% ±5% R.H.。一旦超標，中央看盤看板會秒速亮起紅燈並自動暫停點膠產線。</p>"
-                    },
-                    {
-                        id: "SPEC-TPM-078",
-                        title: "智慧型手機硬體專案里程碑剛性交付物矩陣",
-                        content: "<div class='library-blockquote'>摘要：本矩陣規範硬體專案從開案到量產，各大節點（EVT / DVT / PVT）品質與工程團隊必須剛性銲接上線的交付物與簽核大盤。</div>" +
-                                 "<h3 class='library-h3'>1. EVT (工程驗證階段) 核心物料</h3>" +
-                                 "<p>本階段核心目標為功能導通。剛性交付物包含：100% 架構圖功能驗證報告、Worst-Case 公差堆疊初始分析書、第一版基礎結構 DFM 指南。此階段產線直通率（FPY）看盤指標容許度放寬至 75%，但核心通訊功能必須 100% 導通。</p>" +
-                                 "<h3 class='library-h3'>2. DVT (設計驗證階段) 品質裝甲</h3>" +
-                                 "<p>本階段核心目標為信賴性與外觀優化。剛性交付物包含：完整信賴性測試報告（跌落、滾筒、高低溫、鹽霧、防塵防水）、模具尺寸 100% 全量洗刷檢查報告、DFMEA 失效模式全員簽核閉環書。此階段產線直通率必須剛性達標 90% 以上，否則禁止開線量產。</p>" +
-                                 "<h3 class='library-h3'>3. PVT (生產驗證與量產前準備)</h3>" +
-                                 "<p>本階段核心目標為產能與良率拉升。剛性交付物包含：黃金樣機（Golden Sample）界定簽核書、全自動測試治具（ATE）GR&R 重複性再現性分析報告（必須小於 10%）、產線各工位標準作業程序書（SOP）。產線良率必須穩定維持在 98.5% 以上，正式交割給 mass production 量產團隊。</p>"
-                    }
-                ]
-            }
+            { type: 'beginner', groupLabel: '初心者寶典文獻 (Beginner)', subUnitId: '1-1', title: '1-1: 三方賽局戰術析論', file: 'library_data_beginner_1-1.js' },
+            { type: 'beginner', groupLabel: '初心者寶典文獻 (Beginner)', subUnitId: '1-2', title: '1-2: 生命週期幾何流產', file: 'library_data_beginner_1-2.js' },
+            { type: 'handbook', groupLabel: '冒險者手冊文獻 (Handbook)', subUnitId: '1-1', title: '1-1: 防水結構 Worst-Case', file: 'library_data_handbook_1-1.js' }
         ];
 
-        let currentActiveDocId = "";
+        const globalCategoryMetadata = [
+            { id: 'beginner', name: 'BEGINNER CODEX', label: '寶典文獻庫' },
+            { id: 'handbook', name: 'HANDBOOK SPECS', label: '手冊規格庫' }
+        ];
 
-        // 頁面開機初始化
-        renderLibraryDocumentTree(globalLibraryRegistry);
+        let selectedCategoryType = 'beginner'; 
+        let activeCourseIdx = 0, activePageIdx = 0, activeFlowNodeIdx = 0;
 
-        // 👑 樹狀目錄渲染引擎（支援收藏標籤隨地端存檔點亮）
-        function renderLibraryDocumentTree(registry) {
-            const root = document.getElementById('document-tree-root');
+        window.onload = () => {
+            renderGlobalTreeStructure();
+            routeController();
+        };
+
+        function renderGlobalTreeStructure() {
+            const root = document.getElementById('global-tree-root'); 
             root.innerHTML = '';
+            const presentTypes = ['beginner', 'handbook'];
+            
+            presentTypes.forEach(type => {
+                const subset = globalLibraryRegistry.filter(u => u.type === type);
+                if (subset.length === 0) return;
+                
+                const block = document.createElement('div'); 
+                block.className = 'menu-category-block';
+                block.innerHTML = `
+                    <button class="tree-main-toggle" onclick="toggleMenuSection('lib-accordion-${type}')">📚 ${subset[0].groupLabel.split(' (')[0]}</button>
+                    <div id="lib-accordion-${type}" class="tree-sub-group" style="display: flex; flex-direction: column;">
+                        ${subset.map(u => {
+                            const isSaved = localStorage.getItem(`library-bookmark-${type}-${u.subUnitId}`) === 'true';
+                            const savedTag = isSaved ? `<span class="mini-bookmark-dot">❤️</span>` : '';
+                            return `<button class="leaf-btn" id="lf-lib-${type}-${u.subUnitId}" onclick="switchLibraryUnit('${u.type}','${u.subUnitId}')"><span>${u.title}</span>${savedTag}</button>`;
+                        }).join('')}
+                    </div>`;
+                root.appendChild(block);
+            });
+        }
 
-            registry.forEach((cat) => {
-                const group = document.createElement('div');
-                group.className = 'document-tree-group';
-                
-                let folderHtml = `<div class='tree-folder-title'>📁 ${cat.category}</div>`;
-                
-                cat.docs.forEach(doc => {
-                    // 🔥 剛性檢查：從本地 LocalStorage 中尋找 library-bookmark- 開頭的收藏紀錄
-                    const isSaved = localStorage.getItem(`library-bookmark-${doc.id}`) === 'true';
-                    const bookmarkTag = isSaved ? `<span class='mini-bookmark-indicator'>❤️</span>` : '';
-                    const activeClass = doc.id === currentActiveDocId ? 'active' : '';
-                    
-                    folderHtml += `
-                        <button class='doc-leaf-btn ${activeClass}' id='doc-btn-${doc.id}' onclick="viewDocument('${doc.id}')">
-                            <span>📄 ${doc.id}: ${doc.title}</span>
-                            ${bookmarkTag}
-                        </button>`;
+        function toggleMenuSection(id) { 
+            const el = document.getElementById(id); 
+            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
+        }
+
+        function routeController(directType, directC) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramC = directC || urlParams.get('c');
+            const paramType = directType || urlParams.get('type');
+
+            if (!paramC || !paramType) {
+                document.getElementById('global-bookmark-trigger').style.display = 'none';
+                document.getElementById('cdx-page-header-zone').style.display = 'flex'; 
+                document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
+                document.getElementById('current-chapter-name').innerText = "圖書文獻檢索大廳";
+                document.getElementById('dashboard-menu-hall').style.display = 'block'; 
+                document.getElementById('textbook-viewport').style.display = 'none'; 
+                document.getElementById('universal-dots-bar').style.display = 'none';
+                renderLibraryHubDashboard();
+            } else {
+                document.getElementById('dashboard-menu-hall').style.display = 'none'; 
+                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
+                const leaf = document.getElementById(`lf-lib-${paramType}-${paramC}`); 
+                if (leaf) leaf.classList.add('active'); 
+                injectLibraryPackScript(paramType, paramC);
+            }
+        }
+
+        function renderLibraryHubDashboard() {
+            const deckRow = document.getElementById('global-level-flex-deck');
+            const grid = document.getElementById('l1-cards-grid'); 
+            if (!deckRow || !grid) return;
+            
+            deckRow.innerHTML = ''; 
+            grid.innerHTML = '';
+            
+            globalCategoryMetadata.forEach(cat => {
+                const subUnitsInCat = globalLibraryRegistry.filter(u => u.type === cat.id); 
+                let total = subUnitsInCat.length, savedCount = 0;
+                subUnitsInCat.forEach(u => { 
+                    if (localStorage.getItem(`library-bookmark-${cat.id}-${u.subUnitId}`) === 'true') savedCount++; 
                 });
+                deckRow.innerHTML += `
+                    <div class="progress-card-master ${cat.id === selectedCategoryType ? 'active-level' : ''}" onclick="selectedCategoryType='${cat.id}';renderLibraryHubDashboard();">
+                        <div class="progress-label">${cat.name}</div>
+                        <div class="progress-stats">文獻總量: ${total} 篇 | 已收藏: ${savedCount} 篇</div>
+                    </div>`;
+            });
 
-                group.innerHTML = folderHtml;
-                root.appendChild(group);
+            const filteredUnits = globalLibraryRegistry.filter(u => u.type === selectedCategoryType);
+            filteredUnits.forEach(unit => {
+                const isSaved = localStorage.getItem(`library-bookmark-${unit.type}-${unit.subUnitId}`) === 'true';
+                grid.innerHTML += `
+                    <div class="cdx-dashboard-card" style="background-color: ${isSaved?'#FEE2E2':'#FFF'};" onclick="switchLibraryUnit('${unit.type}', '${unit.subUnitId}')">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span>
+                            <h3 style="margin:0; font-size:0.85rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
+                        </div>
+                        <div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isSaved ? `❤️ [已收藏]` : '📖 未收藏'}</div>
+                    </div>`;
             });
         }
 
-        // 👑 調閱文獻路由控制器
-        function viewDocument(docId) {
-            currentActiveDocId = docId;
+        function switchLibraryUnit(type, subUnitId) { 
+            selectedCategoryType = type; 
+            activeCourseIdx = 0; 
+            activePageIdx = 0; 
+            activeFlowNodeIdx = 0; 
+            window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); 
+            routeController(type, subUnitId); 
+        }
+
+        function exitToDashboardMenu() { 
+            window.history.pushState(null, '', window.location.pathname); 
+            routeController(null, null); 
+            renderGlobalTreeStructure();
+        }
+
+        // 👑 核心非同步數據外掛注入引擎 👑
+        function injectLibraryPackScript(type, packId) {
+            window.libraryCourseEngineData = []; 
+            const old = document.getElementById('dynamic-library-pack'); 
+            if (old) old.remove();
             
-            let targetedDoc = null;
-            globalLibraryRegistry.forEach(cat => {
-                const found = cat.docs.find(d => d.id === docId);
-                if (found) targetedDoc = found;
-            });
+            const registryItem = globalLibraryRegistry.find(u => u.type === type && u.subUnitId === packId);
+            if (!registryItem) return;
 
-            if (!targetedDoc) return;
+            const script = document.createElement('script'); 
+            script.id = 'dynamic-library-pack'; 
+            script.src = `${registryItem.file}?v=${Date.now()}`;
+            script.onload = () => { initLibraryEngine(); }; 
+            document.head.appendChild(script);
+        }
 
-            // 更新右側主畫布內文
-            document.getElementById('doc-meta-id').innerText = targetedDoc.id;
-            document.getElementById('doc-meta-title').innerText = targetedDoc.title;
-            document.getElementById('article-viewport').innerHTML = targetedDoc.content;
+        function initLibraryEngine() {
+            if (!window.libraryCourseEngineData || window.libraryCourseEngineData.length === 0) { 
+                document.getElementById('current-chapter-name').innerText = "文獻解讀失敗"; 
+                return; 
+            }
+            loadLibraryCourseState(activeCourseIdx, activePageIdx);
+        }
 
-            // 喚醒並刷新收藏按鈕狀態機
-            const bookmarkBtn = document.getElementById('bookmark-btn');
+        function loadLibraryCourseState(cIdx, pIdx) {
+            activeCourseIdx = cIdx; 
+            activePageIdx = pIdx;
+            
+            const course = window.libraryCourseEngineData[cIdx]; 
+            const dotsBar = document.getElementById('universal-dots-bar'); 
+            dotsBar.innerHTML = '';
+            
+            document.getElementById('textbook-viewport').style.display = 'flex'; 
+            document.getElementById('universal-dots-bar').style.display = 'flex';
+            
+            const page = course.subPages[pIdx]; 
+            document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; 
+            document.getElementById('current-chapter-name').innerText = page.title;
+            
+            // 喚醒並同步收藏按鈕狀態機
+            const bookmarkBtn = document.getElementById('global-bookmark-trigger');
             bookmarkBtn.style.display = 'flex';
-            updateBookmarkButtonVisual(docId);
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentType = urlParams.get('type');
+            const currentC = urlParams.get('c');
+            
+            const isSaved = localStorage.getItem(`library-bookmark-${currentType}-${currentC}`) === 'true';
+            if (isSaved) {
+                bookmarkBtn.className = "library-bookmark-btn is-bookmarked";
+                bookmarkBtn.innerHTML = "❤️ 已收藏此卷軸";
+            } else {
+                bookmarkBtn.className = "library-bookmark-btn";
+                bookmarkBtn.innerHTML = "🔖 收藏卷軸";
+            }
 
-            // 沖刷重新渲染左側目錄，同步點亮當前選取之 active 狀態
-            renderLibraryDocumentTree(globalLibraryRegistry);
+            let targetedText = page.text;
+            let targetedFlow = page.diagramFlowArray;
+            
+            const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
+            if (flowRenderer && targetedFlow && targetedFlow.length > 0) {
+                flowRenderer.style.display = 'flex'; 
+                flowRenderer.innerHTML = '';
+                targetedFlow.forEach((node, nIdx) => {
+                    flowRenderer.innerHTML += `<div class="flow-node-block ${nIdx===activeFlowNodeIdx?'active-node':''}" onclick="activeFlowNodeIdx=${nIdx};loadLibraryCourseState(${cIdx},${pIdx})">${node.name}</div>`;
+                    if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
+                });
+            } else if (flowRenderer) { 
+                flowRenderer.style.display = 'none'; 
+            }
+
+            let compiledHtml = "";
+            if (targetedFlow && targetedFlow.length > 0) {
+                if (targetedFlow[activeFlowNodeIdx]) {
+                    compiledHtml = `<div class="textbook-section-block"><div style="line-height:1.7;">${targetedFlow[activeFlowNodeIdx].text}</div></div>`;
+                }
+            } else {
+                compiledHtml = `<div style="line-height: 1.7;">${targetedText || ""}</div>`;
+            }
+            document.getElementById('lesson-content').innerHTML = compiledHtml;
+
+            course.subPages.forEach((_, sIdx) => { 
+                dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="activeFlowNodeIdx=0;loadLibraryCourseState(${cIdx},${sIdx})"></div>`; 
+            }); 
         }
 
-        // 👑 收藏狀態機控制模組（精確寫入 library-bookmark- 前綴，100% 咬合首頁下載功能）
-        function toggleCurrentBookmark() {
-            if (!currentActiveDocId) return;
-            
-            const storageKey = `library-bookmark-${currentActiveDocId}`;
+        // 👑 智慧型圖書館全域收藏狀態機（100% 咬合 index.html 下載網）
+        function toggleLibraryAssetBookmark() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentType = urlParams.get('type');
+            const currentC = urlParams.get('c');
+            if (!currentType || !currentC) return;
+
+            const storageKey = `library-bookmark-${currentType}-${currentC}`;
             const previousState = localStorage.getItem(storageKey) === 'true';
             
             if (previousState) {
@@ -464,43 +754,7 @@
                 localStorage.setItem(storageKey, 'true');
             }
 
-            // 同步刷新雙端視覺外觀
-            updateBookmarkButtonVisual(currentActiveDocId);
-            renderLibraryDocumentTree(globalLibraryRegistry);
-        }
-
-        function updateBookmarkButtonVisual(docId) {
-            const btn = document.getElementById('bookmark-btn');
-            const isSaved = localStorage.getItem(`library-bookmark-${docId}`) === 'true';
-            
-            if (isSaved) {
-                btn.className = "bookmark-toggle-btn is-bookmarked";
-                btn.innerHTML = "❤️ 已收藏此卷軸";
-            } else {
-                btn.className = "bookmark-toggle-btn";
-                btn.innerHTML = "🔖 收藏卷軸";
-            }
-        }
-
-        // 👑 戰術即時文獻檢索搜尋引擎
-        function executeLibrarySearch() {
-            const query = document.getElementById('library-search').value.toLowerCase().trim();
-            
-            if (query === "") {
-                renderLibraryDocumentTree(globalLibraryRegistry);
-                return;
-            }
-
-            const filteredRegistry = globalLibraryRegistry.map(cat => {
-                const matchedDocs = cat.docs.filter(doc => {
-                    return doc.id.toLowerCase().includes(query) || 
-                           doc.title.toLowerCase().includes(query) || 
-                           doc.content.toLowerCase().includes(query);
-                });
-                return { category: cat.category, docs: matchedDocs };
-            }).filter(cat => cat.docs.length > 0);
-
-            renderLibraryDocumentTree(filteredRegistry);
+            loadLibraryCourseState(activeCourseIdx, activePageIdx);
         }
     </script>
 </body>
