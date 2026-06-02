@@ -1,3 +1,14 @@
+<!-- 
+========================================================================
+REVISION HISTORY / VERSION LOG
+========================================================================
+2026-06-02 V1.80-SECURITY: 👑 全公會數據資產去中心化備份暨身分防拷鎖定完全體。
+1. 身分剛性核檢：內建「防君子不防小人」資安鎖，存檔與當前 .auth-panel 冒險者姓名不符時剛性攔截拒載。
+2. 全域單機備份：一鍵打包寶典、手冊、成就卡牌、圖書館收藏、隨機副本的所有地端 LocalStorage 紀錄。
+3. 視覺與佈局對位：左側控制鈕色系等同右側中英切換（懸停黑白反轉）；中央大廳擴展為 4x2 寬屏矩陣。
+4. 唯讀封牌規格：代碼多行全量展開，絕不使用任何省略號裁剪，確保地端 100% 順暢開線。
+========================================================================
+-->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -239,13 +250,16 @@
 </head>
 <body>
 
+    <!-- 頂部控制列 -->
     <div class="hub-navbar">
+        <!-- 左上角極簡按鈕組 -->
         <div class="local-sync-minimal">
             <button class="minimal-btn export-theme" onclick="exportPersonalProgress()">📊 備份</button>
             <button class="minimal-btn import-theme" onclick="triggerImportClick()">📥 載入</button>
             <input type="file" id="hidden-file-input" accept=".json" onchange="importPersonalProgress(event)">
         </div>
 
+        <!-- 右側冒險者面板 -->
         <div class="navbar-right-controls">
             <div class="auth-panel">👤 冒險者 : Daniel Shih</div>
             <div class="lang-switcher-wrapper">
@@ -255,50 +269,59 @@
         </div>
     </div>
 
+    <!-- 總部中心標頭 -->
     <div class="hub-header">
         <div class="hub-version-tag">GUILD HQ / LEVEL 2026</div>
         <h1 class="hub-main-title">System TPM 公會總部</h1>
         <div class="hub-subtitle">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
     </div>
 
+    <!-- 主戰術大廳看盤九宮格 -->
     <div class="hub-tactical-deck">
         
+        <!-- 卡片 1: 初心者寶典 -->
         <a href="beginner_codex.html" class="tactical-card">
             <div class="card-icon-frame">🗺️</div>
             <h3 class="card-title" style="color: #1D4ED8;">初心者寶典</h3>
             <p class="card-desc">工廠基礎與 System TPM 基礎概括：點亮硬體世界第一步的核心知識大本營。</p>
         </a>
 
+        <!-- 卡片 2: 冒險者手冊 -->
         <a href="handbook.html" class="tactical-card">
             <div class="card-icon-frame">📜</div>
             <h3 class="card-title" style="color: #B45309;">冒險者手冊</h3>
             <p class="card-desc">功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
         </a>
 
+        <!-- 卡片 3: 階級晉級試煉 -->
         <div class="tactical-card locked-stripe">
             <div class="card-icon-frame">⚔️</div>
             <h3 class="card-title" style="color: #64748B;">階級晉級試煉</h3>
             <p class="card-desc">綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
         </div>
 
+        <!-- 卡片 4: 賢者之識 -->
         <div class="tactical-card locked-stripe">
             <div class="card-icon-frame">🤖</div>
             <h3 class="card-title" style="color: #64748B;">賢者之識</h3>
             <p class="card-desc">智慧核心：整合大語言模型 (LLM) 知識庫，自動化輔助生成全新標準化作業教材。</p>
         </div>
 
+        <!-- 卡片 5: 成就 -->
         <a href="talent_tree.html" class="tactical-card">
             <div class="card-icon-frame">🌿</div>
             <h3 class="card-title" style="color: #047857;">成就</h3>
             <p class="card-desc">RPG 樹狀指南路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
         </a>
 
+        <!-- 卡片 6: 隨機副本挑戰 -->
         <div class="tactical-card locked-stripe">
             <div class="card-icon-frame">🛡️</div>
             <h3 class="card-title" style="color: #64748B;">隨機副本挑戰</h3>
             <p class="card-desc">動態隨機題庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
         </div>
 
+        <!-- 卡片 7: 知識圖書館 -->
         <a href="library.html" class="tactical-card">
             <div class="card-icon-frame">📚</div>
             <h3 class="card-title" style="color: #6D28D9;">知識圖書館</h3>
@@ -308,15 +331,18 @@
     </div>
 
     <script>
-        // 👑 鋼鐵存檔大腦：全量打包全公會跨卡片所有子系統數據資產
+        // 👑 鋼鐵存檔大腦：全量打包全公會跨卡片所有子系統數據資產（附帶帳號特徵簽章）
         function exportPersonalProgress() {
             const backupData = {};
             let hasData = false;
 
+            // 🔒 剛性擷取右上角目前的冒險者名稱作為數位簽章
+            const authPanelText = document.querySelector('.auth-panel').innerText;
+            const currentOwnerName = authPanelText.replace('👤 冒險者 :', '').trim();
+
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 
-                // 剛性過濾：全面網羅捕捉包含寶典、手冊、天樹/成就、圖書館、隨機副本在內的所有進度
                 if (key.startsWith('codex-') || 
                     key.startsWith('handbook-') || 
                     key.startsWith('talent-') || 
@@ -333,6 +359,9 @@
                 alert("⏳ 地端目前查無任何通關或收藏紀錄，無需備份。");
                 return;
             }
+
+            // 銲接數位存檔身分指紋
+            backupData['tpm-meta-vault-signature-owner'] = currentOwnerName;
 
             const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -352,7 +381,7 @@
             document.getElementById('hidden-file-input').click();
         }
 
-        // 👑 存檔載入大腦：解析 JSON 數據，原地強力沖刷還原跨卡片全天賦綠燈
+        // 👑 存檔載入大腦：核檢數位簽章，100% 剛性阻斷跨帳號作弊拷貝
         function importPersonalProgress(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -368,12 +397,22 @@
                         return;
                     }
 
-                    // 全量原位改寫地端 LocalStorage
+                    // 🔒 執行「防君子不防小人」身分裝甲校驗
+                    const authPanelText = document.querySelector('.auth-panel').innerText;
+                    const currentOwnerName = authPanelText.replace('👤 冒險者 :', '').trim();
+                    const fileOwnerName = importedData['tpm-meta-vault-signature-owner'];
+
+                    if (fileOwnerName && fileOwnerName !== currentOwnerName) {
+                        alert(`💥 存檔裝甲攔截！\n\n此備份存檔屬於冒險者 [ ${fileOwnerName} ]，與您當前登入的身分 [ ${currentOwnerName} ] 不符！\n系統已剛性拒絕跨帳號複製進度。`);
+                        return;
+                    }
+
+                    // 通過防線，沖刷寫入地端 LocalStorage
                     keys.forEach(function(key) {
                         localStorage.setItem(key, importedData[key]);
                     });
 
-                    alert(`✓ 載入成功！已成功恢復全公會跨卡片共 ${keys.length} 項歷史進度記憶！`);
+                    alert(`✓ 載入成功！已成功還原冒險者 [ ${currentOwnerName} ] 的全公會跨卡片歷史記憶！`);
                     window.location.reload();
 
                 } catch (err) {
