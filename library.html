@@ -2,11 +2,11 @@
 ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-06-02 V2.00-LIBRARY-ENGINE: 👑 知識圖書館動態解耦核心引擎（完璧封牌版）。
-1. UIUX 剛性對位：100% 複製克隆 beginner_codex.html 的全視窗佈局、Dashboard 大廳與分頁點狀態機。
-2. 數據外掛化（Data Pack）：主網頁不帶一絲呆料數據，全面透過 URL 路由動態載入外部文獻腳本。
-3. 命名規範咬合：全面支持 library_data_beginner_1-1.js 與 library_data_handbook_1-1.js 標準路由。
-4. 全量展模規格：代碼全展開、零省略號，與 index.html 去中心化備份下載金鑰（library-）無縫閉環。
+2026-06-02 V2.10-LIBRARY-CN: 👑 知識圖書館看板名稱剛性中文化對位版。
+1. 看板語意對齊：對位 image_b8f11e.png 截圖修正，全面洗淨英文標籤，改為「初心者寶典」與「冒險者手冊」。
+2. 數據資產合流：內建以 library-bookmark- 開頭的收藏狀態機，完美咬合總部一鍵備份下載功能。
+3. 視覺剛性同步：採用 3px 剛性黑框、重工業戰術陰影與大氣奶油背景（#FEF9E7），絕不擠壓卡片。
+4. 全量展模規格：代碼全展開、零省略號，與 index.html 去中心化備份下載金鑰無縫閉環。
 ========================================================================
 -->
 <!DOCTYPE html>
@@ -301,7 +301,7 @@ REVISION HISTORY / VERSION LOG
         .progress-label {
             font-family: monospace;
             font-weight: 900;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             color: var(--text-main);
             letter-spacing: 0.5px;
         }
@@ -362,7 +362,6 @@ REVISION HISTORY / VERSION LOG
             animation: fadeInBox 0.12s ease-out;
         }
 
-        /* 3D 流程節點畫布（與寶典 100% 同步） */
         .dynamic-flow-canvas {
             display: flex;
             align-items: center;
@@ -434,7 +433,6 @@ REVISION HISTORY / VERSION LOG
             transform: scale(1.2);
         }
 
-        /* 圖書館專屬高定組件 */
         .library-bookmark-btn {
             background: var(--card-white);
             border: 2px solid var(--border-heavy);
@@ -538,9 +536,10 @@ REVISION HISTORY / VERSION LOG
             { type: 'handbook', groupLabel: '冒險者手冊文獻 (Handbook)', subUnitId: '1-1', title: '1-1: 防水結構 Worst-Case', file: 'library_data_handbook_1-1.js' }
         ];
 
+        // 👑 對位中文化修正：BEGINNER CODEX -> 初心者寶典 | HANDBOOK SPECS -> 冒險者手冊 👑
         const globalCategoryMetadata = [
-            { id: 'beginner', name: 'BEGINNER CODEX', label: '寶典文獻庫' },
-            { id: 'handbook', name: 'HANDBOOK SPECS', label: '手冊規格庫' }
+            { id: 'beginner', name: '初心者寶典', label: '寶典文獻庫' },
+            { id: 'handbook', name: '冒險者手冊', label: '手冊規格庫' }
         ];
 
         let selectedCategoryType = 'beginner'; 
@@ -653,7 +652,6 @@ REVISION HISTORY / VERSION LOG
             renderGlobalTreeStructure();
         }
 
-        // 👑 核心非同步數據外掛注入引擎 👑
         function injectLibraryPackScript(type, packId) {
             window.libraryCourseEngineData = []; 
             const old = document.getElementById('dynamic-library-pack'); 
@@ -692,7 +690,6 @@ REVISION HISTORY / VERSION LOG
             document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; 
             document.getElementById('current-chapter-name').innerText = page.title;
             
-            // 喚醒並同步收藏按鈕狀態機
             const bookmarkBtn = document.getElementById('global-bookmark-trigger');
             bookmarkBtn.style.display = 'flex';
             const urlParams = new URLSearchParams(window.location.search);
@@ -738,7 +735,6 @@ REVISION HISTORY / VERSION LOG
             }); 
         }
 
-        // 👑 智慧型圖書館全域收藏狀態機（100% 咬合 index.html 下載網）
         function toggleLibraryAssetBookmark() {
             const urlParams = new URLSearchParams(window.location.search);
             const currentType = urlParams.get('type');
