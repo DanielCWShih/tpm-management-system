@@ -1,10 +1,11 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-06-02 V7.8: 👑 關鍵詞網格 4 分法剛性對齊完璧版。
-1. 視覺完美修正：Page 4 所有關鍵詞面板全面強制綁定 repeat(4, 1fr) 拓撲，徹底絕殺單一卡牌拉長變形的視覺缺陷。
-2. 外殼完全唯讀：100% 不動用、不修改主殼播放器外殼與動態路由名稱。
-3. 現地數據合流：Page 1 流程圖、Page 3 撤除 Pin-to-Pin 暨 OQC 更名與 IQC 擴寫全量剛性保留。
+2026-06-02 V7.9: 👑 全域 4 分法網格暨雙層亂序大考題庫終極完全體（唯讀封牌版）。
+1. 全域視覺對齊：全面重構 Page 2、Page 3、Page 4 所有 Keywords 網格為 repeat(4, 1fr)，按鈕尺寸剛性統一，完美防拉伸。
+2. 題庫滿血擴充：examVault 擴容至 12 道重工業實戰考題（每個領域 4 題）。
+3. 雙層動態亂序：內建隨機編碼引擎，自動「抽 3 題」＋「100% 打亂選項順序」並動態重算正確索引，絕無作弊盲區。
+4. 唯讀封牌規格：100% 完整多行全展開，拒絕任何未授權的裁剪與優化省略號。
 ========================================================================
 */
 
@@ -84,7 +85,7 @@ window.codexCourseEngineData = [
                         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
                             <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">主導全球市場與競品技術調研，定義硬體規格，發佈產品規格需求書（PRD）。</div></div>
                             <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">追求極致的硬體功能參數，用技術專利護城河拉高市售機台之品牌溢價。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">期待代工廠（EMS）產線能 100% 完美復刻複雜結構，不接受 any 組裝公差導致的妥協。</div></div>
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">期待代工廠（EMS）產線能 100% 完美復刻複雜結構，不接受任何組裝公差導致的妥協。</div></div>
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords (點擊下方卡片直接原位顯影解鎖)</div>
@@ -110,7 +111,7 @@ window.codexCourseEngineData = [
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
                             <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-brand-1" id="kbtn-brand-1-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 1, 0, 'Draft Angle (鋼模脫模拔模角)', '在五金或塑膠殼體垂直外觀表面保留的微小物理斜度（通常為 0.5~2 度）。若無此角度，模具在大量生產頂出時會將機器外殼刮傷。')">Draft Angle</div>
+                                <div class="kbtn-brand-1" id="kbtn-brand-1-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 1, 0, 'Draft Angle (鋼模脫模拔模角)', '在五金或塑膠殼體垂直外觀表面保留的微小物理斜度（通常為 0.5~2 度）。若無此角度，模具在大量延權頂出時會將機器外殼刮傷。')">Draft Angle</div>
                                 <div class="kbtn-brand-1" id="kbtn-brand-1-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 1, 1, 'Sink Mark (結構冷卻收縮痕)', '當結構內部局部肉厚過厚時，塑料冷卻收縮會將外表面拉出一個微小的肉眼可見凹坑，嚴重汙染並破壞設計質感。')">Sink Mark</div>
                                 <div class="kbtn-brand-1" id="kbtn-brand-1-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 1, 2, 'Mold Texture (模具表面咬花工藝)', '利用化學蝕刻或雷射在模具鋼材表面做出微觀沙粒、皮紋或幾何紋理，賦予成型後的塑料或金屬外殼霧面手感。')">Texture</div>
                                 <div class="kbtn-brand-1" id="kbtn-brand-1-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 1, 3, 'Parting Line (分模接縫線)', '前後鋼模閉合接觸時在產品外殼表面留下的物理接縫線。ID 與 TPM 的戰術防線在於將此線隱蔽在視覺死角，防止毛邊刮手。')">Parting Line</div>
@@ -122,7 +123,7 @@ window.codexCourseEngineData = [
                         </div>
                     </div>
 
-                    <div id="tpm-main-panel-brand-2" style="display:none; width:100%;">
+                    <div id="tpm-main-panel-brand-2" style="none; width:100%;">
                         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
                             <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Color, Material, Finishing。主導產品外觀視覺色彩調配、物理物料材質挑選、與金屬表面陽極氧化拋光等製程細節。</div></div>
                             <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">利用高光 C 角、特殊微觀霧面無視覺紋理，打造產品無懈可擊的高級金屬與玻璃物理手感。</div></div>
@@ -186,7 +187,8 @@ window.codexCourseEngineData = [
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords (點擊下方卡片直接原位顯影解鎖)</div>
-                            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:12px;">
+                            <!-- 🎯 Page 3 LeadTime 剛性對齊 4 分法網格，防止拉伸變形 -->
+                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
                                 <div class="kbtn-vendor-0" id="kbtn-vendor-0-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 0, 0, 'Forecast (排產產能預測水準)', '工廠需提早 3~6 個月提供給零件廠商的滾動產能需求預估表，方便晶圓原廠提前排產鎖死晶圓產能，防止交期崩塌。')">Forecast</div>
                                 <div class="kbtn-vendor-0" id="kbtn-vendor-0-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 0, 1, 'Buffer Stock (安全庫存水位)', '為應對惡劣物流延誤或大流水線上爆發突發拋料損耗缺陷，硬核囤積在製造廠無塵倉庫內的物料儲備。')">Buffer Stock</div>
                                 <div class="kbtn-vendor-0" id="kbtn-vendor-0-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 0, 2, 'Dual Sourcing (多源採購單配比)', '量產 MP 階段通常按照 7:3 比例將同功能零件單拆分發給兩家具備資質的供應商，逼迫兩者拼搶直通率與產速。')">Dual Sourcing</div>
@@ -214,7 +216,8 @@ window.codexCourseEngineData = [
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords (點擊下方卡片直接原位顯影解鎖)</div>
-                            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:12px;">
+                            <!-- 🎯 Page 3 IQC 剛性對齊 4 分法網格，防止拉伸變形 -->
+                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
                                 <div class="kbtn-vendor-3" id="kbtn-vendor-3-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 3, 0, 'Dimensional Tolerance (尺寸合規基準)', '運用精密二次元 OMM 或三次元機台抽向量測進料結構件，確認實體物理尺寸精確落於標準圖面公差範圍內，杜絕因形變引發後續防水結構幾何崩潰。')">尺寸合規基準</div>
                                 <div class="kbtn-vendor-3" id="kbtn-vendor-3-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 3, 1, 'Test Methodology Synchronization (測站方法同步)', '工廠 IQC 抽驗物料所套用的量測手法、電路硬體治具與軟體測試演算法，必須與生產線後段的功能測試站（FCT）保持 100% 剛性同步，徹底封死因方法不對位引發的漏檢盲區。')">測站方法同步</div>
                                 <div class="kbtn-vendor-3" id="kbtn-vendor-3-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 3, 2, 'Golden Sample Alignment (黃金樣機對位指標)', '經品牌研發與品質端雙重簽核封樣、各項電性與物理參數皆最接近名義值的標準硬體標本，用以定期比對並校準 IQC 與線上檢驗機台。')">黃金樣機對位</div>
@@ -248,6 +251,7 @@ window.codexCourseEngineData = [
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
+                            <!-- 🎯 FPY 4 分法網格 -->
                             <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
                                 <div class="kbtn-ems-0" id="kbtn-ems-0-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 0, 'First Pass (首檢直通)', '指產品在生產線上第一次通過測站全檢的良率。不接受任何二次重工、微調探針或重新插拔，是暴露線體製程缺陷與治具穩定度的最真實指標。')">First Pass</div>
                                 <div class="kbtn-ems-0" id="kbtn-ems-0-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 1, 'Retest Pass (複測通過)', '首次測試不合格後，經由作業員重新清理探針或重新置位後再次測試通過。雖然最終判定為良品，但潛藏軟體邊界或微觀接觸不良風險。')">Retest Pass</div>
@@ -269,8 +273,9 @@ window.codexCourseEngineData = [
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
+                            <!-- 🎯 UPH 4 分法網格：按鈕佔 25% 寬度，其餘 3 格自動留白 -->
                             <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-ems-1" id="kbtn-ems-1-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 1, 0, 'Line Down (停線標準)', '當大流水線特定測站連續發生 3 台相同 Error Code（Top Defect），或直通率暴跌破觸發界限時，發動剛性斷電停線機制。不允許帶病生產，直到 TPM 與 PE/QA 排除黃金首件。')">Line Down (停線標準)</div>
+                                <div class="kbtn-ems-1" id="kbtn-ems-1-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 1, 0, 'Line Down (停線標準)', '當大流水線特定測站連續發生 3 台相同 Error Code（Top Defect），或直通率暴跌破觸發界限時，發動剛性斷電停線機制。不允許帶病生產，直到 TPM 與 PE/QA 排除黃金首件。')">Line Down</div>
                             </div>
                             <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
                                 <div id="ktxt-title-ems-1"><b>全稱：</b>Line Down (停線標準)</div>
@@ -287,10 +292,11 @@ window.codexCourseEngineData = [
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
+                            <!-- 🎯 WIP 4 分法網格：3 個按鈕整齊排列，第 4 格優雅空出 -->
                             <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
                                 <div class="kbtn-ems-2" id="kbtn-ems-2-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 0, 'Production WIP (產線製品積壓)', '正常在主流水線上流動、組裝或等待測試的製品。必須設定嚴格的水位上限，嚴防工位平衡崩潰引發集體堆料。')">Production WIP</div>
-                                <div class="kbtn-ems-2" id="kbtn-ems-2-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 1, 'FA WIP (故障分析製品)', '已被測站踢出、滯留在失效分析（Failure Analysis）或重工室等待解剖與更換晶片的製品。是專案 Debug 與追蹤 Top Defect 的黃金數據源。')">FA WIP</div>
-                                <div class="kbtn-ems-2" id="kbtn-ems-2-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 2, 'Buffer (半成品緩衝庫存)', '若此製程製品需要投入到下一個總成產品（如中框總成投入總裝），必須建立剛性安全 Buffer 水位，防止前段設備跳機直接引發後段集體無料停線。')">Buffer</div>
+                                <div class="kbtn-ems-2" id="kbtn-vendor-2-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 1, 'FA WIP (故障分析製品)', '已被測站踢出、滯留在失效分析（Failure Analysis）或重工室等待解剖與更換晶片的製品。是專案 Debug 與追蹤 Top Defect 的黃金數據源。')">FA WIP</div>
+                                <div class="kbtn-ems-2" id="kbtn-vendor-2-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 2, 'Buffer (半成品緩衝製品蓄水池)', '若此製程製品需要投入到下一個總成產品中（例如中框總成投入總裝線），必須建立剛性安全 Buffer 水位，防止前段設備跳機直接引發後段集體無料斷線停線。')">Buffer</div>
                             </div>
                             <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
                                 <div id="ktxt-title-ems-2"><b>全稱：</b>Production WIP (產線製品積壓)</div>
@@ -303,20 +309,55 @@ window.codexCourseEngineData = [
                 `
             }
         ],
+        // ─── 👑 滿血擴充：12 題裝甲題庫大盤 ───
         examVault: [
-            { q: "當研發端要求極限 Clearance，但工廠稱設備公差疊加會撞車，TPM 職責是？", o: ["當傳話筒告知兩邊各自開會", "調閱歷史 Cpk 與公差數據，主導跨功能技術代償方案談判", "全盤聽從客戶 RD 的最高指令"], a: 1 },
-            { q: "工廠最終入庫良率 99.2%，但大流水線直通率 (FPY) 只有 35%，這代表？", o: ["製程非常完美受控", "大批機器在線體被手工反覆拆解重工，帶有物理內傷，客退風險極高", "可以直接開閘放水大量生產"], a: 1 },
-            { q: "大流水線各個工位操作時間不平均，線平衡率低於 85% 時，流水線會發生何種狀況？", o: ["產線拉速全線暴增", "存在嚴重的瓶頸工位，引發產線集體堆料（WIP）、拉速垮台", "產品的電路系統訊號完整性大幅提高"], a: 1 }
+            // [領域 A: Brand R&D - 4題]
+            { q: "在產品開發初期，品牌端（Brand）發布用以定義新產品核心功能、目標售價與規格的最高指導法規文件是？", o: ["PRD 產品規格需求書", "DFM 可製造性設計文件", "AVL 核准供應商清單"], a: 0 },
+            { q: "為了防止五金或塑膠殼體在大量生產成型頂出時表面被生生刮傷，模具或結構設計必須預留何種微小物理斜度？", o: ["Sink Mark 收縮痕", "Draft Angle 脫模拔模角", "Parting Line 分模線"], a: 1 },
+            { q: "使用工業色差儀量測產品外殼色彩偏離度的客觀指標為 Delta E，手機大廠通常剛性規定大量產成品的色差範圍應為？", o: ["ΔE 剛性小於 1.0", "ΔE 剛性小於 3.0", "ΔE 剛性小於 5.0"], a: 0 },
+            { q: "當多零件拼裝時微觀尺寸負公差累積會導致內部避讓失效，TPM 必須主導結構 ME 工程師發動何種數學模擬分析？", o: ["Cpk 製程能力分析", "Tolerance Stack-up 公差鏈疊加模擬", "Interference 實體重疊干涉"], a: 1 },
+            
+            // [領域 B: Vendors - 4題]
+            { q: "元件供應商（Vendor）需要提早 3~6 個月向晶圓原廠提前排產並鎖死產能，其依據的核心供應鏈文件是？", o: ["Demand Forecast 排產產能預測", "Buffer Stock 安全庫存", "AVL 名冊"], a: 0 },
+            { q: "物料在離開原廠大門、污染跨國供應物流鏈前實施的最後成品品質抽樣核檢流程稱為？", o: ["IQC 進料品保", "OQC 出廠檢驗", "BOM 變更凍結"], a: 1 },
+            { q: "為了破除一線元件供應商的技術壟斷與價格控制，在 NPI 流程中引進二線零件廠的防禦策略被稱為？", o: ["Dual Sourcing 雙源採購", "Second Source 備援料認證", "AVL 准入名冊"], a: 1 },
+            { q: "為了徹底封死工廠前端的進料漏檢與誤判盲區，代工廠 IQC 端的量測手法與治具必須與後段測站達成？", o: ["100% 剛性同步化", "完全獨立分開處理", "由供應商隨機決定"], a: 0 },
+            
+            // [領域 C: EMS Factory - 4題]
+            { q: "產品在生產線上『第一次』順暢通過所有測站全檢下線，未經歷 any 在線二次手工修補銲接的真實物理概率稱為？", o: ["First Pass (首檢直通良率)", "Retest Pass (複測通過率)", "Final Fail (最終不良率)"], a: 0 },
+            { q: "當大流水線特定測站連續發生 3 台相同 Error Code（Top Defect），或直通率暴跌破觸發底線時，工廠應發動何種剛性機制？", o: ["Line Down (停線標準) 強制斷電", "WIP Clearing 製品清零大清洗", "Cycle Time 作業時間微調"], a: 0 },
+            { q: "已被測站踢出、滯留在失效分析（Failure Analysis）或維修室等待解剖與更換晶圓晶片的製品積壓，在工廠端屬於？", o: ["Production WIP", "FA WIP", "Buffer 緩衝製品"], a: 1 },
+            { q: "當前製程半成品需要投入到下一個總成產品中，為了防止前段設備跳機直接引發後段集體無料停線，必須剛性建立？", o: ["Production WIP 水位上限", "FA WIP 報廢區", "Buffer 安全緩衝製品庫存"], a: 2 }
         ]
     }
 ];
 
+// 👑 雙層隨機亂序引擎：100% 打亂選項順序並動態重算答案索引 👑
 (function() {
     if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) return;
     const vault = window.codexCourseEngineData[0].examVault;
+    
+    // ─── 第一層：遍歷所有題目，實施「選項 ABC 亂序」並動態重新校準 a 索引 ───
+    for (let i = 0; i < vault.length; i++) {
+        let qItem = vault[i];
+        let correctText = qItem.o[qItem.a]; // 抓取當前正確答案的文字內容
+        
+        // 對該題目的選項陣列發動 Fisher-Yates 隨機洗牌
+        for (let s = qItem.o.length - 1; s > 0; s--) {
+            const r = Math.floor(Math.random() * (s + 1));
+            [qItem.o[s], qItem.o[r]] = [qItem.o[r], qItem.o[s]];
+        }
+        
+        // 重新追蹤正確答案洗牌後的新位置，動態覆寫 a 索引
+        qItem.a = qItem.o.indexOf(correctText);
+    }
+
+    // ─── 第二層：打亂 12 題題庫總大盤，並精確切取 3 題交付主殼 ───
     for (let i = vault.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [vault[i], vault[j]] = [vault[j], vault[i]];
     }
+    
+    // 切割前 3 題，完美交割
     window.codexCourseEngineData[0].examVault = vault.slice(0, 3);
 })();
