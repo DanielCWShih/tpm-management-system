@@ -1,11 +1,21 @@
 var courseData = [
-  // ─── 🗺️ PAGE 1 / 4: 大廳導讀（100% 還原純圖片總覽結構） ───
+  // ─── 🗺️ PAGE 1 / 4: 大廳導讀（👑 內建空分頁剛性防禦之雙棲大圖結構） ───
   {
     pageTitle: "1. 核心大廳導讀：硬體世界的權力對位",
     overviewImage: "beginner_codex_assets/overview_1-1.png",
     imageUrl: "beginner_codex_assets/overview_1-1.png",
     image: "beginner_codex_assets/overview_1-1.png",
-    isOverview: true
+    isOverview: true,
+    // 🛡️ 剛性資安防線：防止主殼無條件初始化讀取 tabs[0] 時發生空指針流產，補上空陣列導通
+    tabs: [
+      {
+        tabName: "總覽大圖",
+        what: "",
+        purpose: "",
+        expectation: "",
+        keywords: []
+      }
+    ]
   },
 
   // ─── 📱 PAGE 2 / 4: 客戶研發端 (Brand R&D) ───
@@ -137,11 +147,11 @@ var courseData = [
             fullName: "Dual Sourcing Strategy", 
             meaning: "雙料源分散斷料風險戰術。同一個零件認證兩家供應商，打破獨家價格壟斷，提升採購議價彈性。" 
           }
-          // 🎯 Pin-to-Pin 關鍵詞已遵照指令實體原位撤除
+          // 🎯 Pin-to-Pin 已精確原位撤除
         ]
       },
       {
-        tabName: "OQC (出廠檢驗)", // 🎯 正式更名為 OQC
+        tabName: "OQC (出廠檢驗)", // 🎯 更名為 OQC
         what: "監督原物料供應商在貨物出廠前實施的最後成品品質檢驗（Outgoing Quality Control），確保品質合格並要求隨貨附帶出廠檢驗報告。",
         purpose: "在物料離開供應商大門前進行第一道品質防線攔截，防堵劣質缺陷品污染跨國供應物流鏈。",
         expectation: "進料一次直通，原廠出貨合格率穩定維持在 99.95% 以上。",
@@ -177,7 +187,7 @@ var courseData = [
         ]
       },
       {
-        tabName: "IQC (進料品保)", // 🎯 工廠進料端重工業級擴充，100% 補齊三要素
+        tabName: "IQC (進料品保)", // 🎯 重工業級擴充，完全體三要素就位
         what: "這絕對不是供應商自家的檢驗，而是由我們代工廠/EMS廠這邊主導、在工廠門口架設的鋼鐵防線（Incoming Quality Control）。針對所有送抵工廠倉庫的實體原物料、晶片、外殼，實施最嚴格的實體抽樣核檢。",
         purpose: "在最前端強行攔截因跨境運輸震動、或原廠 OQC 漏檢而混入的缺陷呆料，確保只有 100% 完美的零件能流向生產線，徹底杜絕不良零件一上線就引發整條線癱瘓流產的連鎖災難。",
         expectation: "工廠 IQC 端的量測治具、電性手法與檢驗規格，與後段實際生產線 100% 完全校準咬合，達成缺陷零件零漏檢。",
