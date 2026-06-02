@@ -12,13 +12,13 @@
             --text-main: #1A1A1A;
             --text-secondary: #475569;
             --border-heavy: #1A1A1A;
-            --shadow-tactical: 5px 5px 0px #1A1A1A;
-            --radius-sm: 12px;
+            --shadow-tactical: 4px 4px 0px #1A1A1A;
+            --radius-sm: 8px;
             --color-completed: #22C55E;
             --color-active-gold: #FDE047;
             --color-stripe-light: #FDF2D0;
             
-            /* 成就專屬傳奇色系 */
+            /* 傳奇卡牌底色 */
             --rarity-common: #F1F5F9;
             --rarity-rare: #DBEAFE;
             --rarity-epic: #F3E8FF;
@@ -130,17 +130,17 @@
         .workspace-container {
             width: 100vw;
             height: calc(100vh - 85px);
-            padding: 35px 40px;
+            padding: 30px 40px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        /* 頂層階層切換分頁標籤（對齊截圖按鈕外觀） */
+        /* 頂層階層切換分頁標籤 */
         .achievement-tabs-deck {
             display: flex;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             flex-shrink: 0;
         }
 
@@ -169,51 +169,68 @@
             box-shadow: 1px 1px 0px var(--border-heavy) !important;
         }
 
-        /* 👑 3D 卡牌看盤大畫布 👑 */
-        .achievement-cards-grid {
+        /* 大存檔閱讀畫布區：改為縱向自適應滾動，容納上下分流專區 */
+        .achievement-scroll-viewport {
             flex: 1;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
             overflow-y: auto;
-            padding: 5px 5px 30px 5px;
+            padding-right: 8px;
             width: 100%;
         }
 
-        /* 3D 翻轉核心容器 */
+        /* 剛性區域標題 */
+        .matrix-section-title {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin: 20px 0 12px 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 5px solid var(--border-heavy);
+            padding-left: 10px;
+        }
+
+        /* 👑 鋼鐵 8 欄網格矩陣 👑 */
+        .achievement-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr); /* 剛性橫向平分 8 欄 */
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        /* 3D 卡牌微縮防身外殼 */
         .card-flip-stage {
-            height: 220px;
-            perspective: 1000px; /* 啟動 3D 空間透視度 */
+            height: 175px; /* 降低高度以適應微縮寬度，達成黃金比例 */
+            perspective: 1000px;
         }
 
         .card-flip-inner {
             width: 100%;
             height: 100%;
             position: relative;
-            transform-style: preserve-3d; /* 強制子組件維持 3D 空間 */
+            transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* 當解鎖狀態機啟動時，卡牌無感旋轉 180 度翻開正面 */
         .card-flip-stage.unlocked .card-flip-inner {
             transform: rotateY(180deg);
         }
 
-        /* 正反面共有鋼鐵外殼 */
         .card-face-front, .card-face-back {
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden; /* 翻到背面時剛性隱藏對方 */
-            border: 3px solid var(--border-heavy);
+            backface-visibility: hidden;
+            border: 2px solid var(--border-heavy);
             border-radius: var(--radius-sm);
-            padding: 20px;
+            padding: 12px; /* 緊縮內襯 Padding，釋放空間 */
             display: flex;
             flex-direction: column;
             box-shadow: var(--shadow-tactical);
         }
 
-        /* 🔴 1. 鎖定面（背面 Back Face）：呈現未解鎖神祕狀態 */
+        /* 未取得面（背面） */
         .card-face-back {
             background-color: var(--card-white);
             background-image: linear-gradient(
@@ -226,111 +243,97 @@
                 transparent 75%, 
                 transparent
             );
-            background-size: 20px 20px;
+            background-size: 16px 16px;
             justify-content: center;
             align-items: center;
-            transform: rotateY(0deg); /* 預設朝上 */
+            transform: rotateY(0deg);
             z-index: 2;
         }
 
         .lock-icon-frame {
-            font-size: 2.2rem;
-            margin-bottom: 12px;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
             filter: grayscale(100%);
             user-select: none;
         }
 
         .lock-condition-hint {
-            font-size: 0.82rem;
+            font-size: 0.68rem;
             font-weight: 800;
             color: var(--text-secondary);
             background: var(--card-white);
-            border: 2px solid var(--border-heavy);
-            padding: 4px 10px;
-            border-radius: 6px;
+            border: 1.5px solid var(--border-heavy);
+            padding: 2px 6px;
+            border-radius: 4px;
             text-align: center;
-            max-width: 90%;
+            width: 100%;
+            line-height: 1.2;
+            word-break: break-all;
         }
 
-        /* 🟢 2. 解鎖面（正面 Front Face）：露出尊榮高定配色 */
+        /* 已取得面（正面） */
         .card-face-front {
-            justify-content: space-between;
-            transform: rotateY(180deg); /* 剛性預先隱藏在 3D 背面 */
+            justify-content: flex-start;
+            transform: rotateY(180deg);
         }
 
         .ach-card-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 8px;
+            flex-shrink: 0;
         }
 
         .ach-badge-icon {
-            font-size: 1.8rem;
-            background: rgba(0, 0, 0, 0.05);
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.04);
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid var(--border-heavy);
+            border: 1.5px solid var(--border-heavy);
         }
 
-        .ach-rarity-tag {
-            font-size: 0.68rem;
+        /* 👑 替代原 Common 標籤的年月日時間戳記 👑 */
+        .ach-date-tag {
+            font-size: 0.62rem;
             font-weight: 900;
-            text-transform: uppercase;
-            border: 2px solid var(--border-heavy);
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: var(--card-white);
+            font-family: monospace;
+            color: var(--text-secondary);
+            letter-spacing: -0.2px;
         }
 
         .ach-card-body {
-            margin-top: 10px;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .ach-card-title {
-            font-size: 1.15rem;
+            font-size: 0.88rem;
             font-weight: 900;
-            margin: 0 0 6px 0;
-            letter-spacing: 0.5px;
+            margin: 0 0 4px 0;
+            letter-spacing: 0px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .ach-card-desc {
-            font-size: 0.78rem;
+            font-size: 0.7rem;
             font-weight: 700;
             color: var(--text-secondary);
-            line-height: 1.4;
+            line-height: 1.3;
             margin: 0;
-        }
-
-        .ach-card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            border-top: 2px dashed rgba(0, 0, 0, 0.1);
-            padding-top: 8px;
-        }
-
-        .ach-points-label {
-            font-size: 0.72rem;
-            font-weight: 900;
-            font-family: monospace;
-            color: #B45309;
-        }
-
-        .ach-clear-badge {
-            font-size: 0.72rem;
-            font-weight: 900;
-            color: #FFFFFF;
-            background: var(--color-completed);
-            border: 2px solid var(--border-heavy);
-            padding: 1px 6px;
-            border-radius: 4px;
-            box-shadow: 1px 1px 0px var(--border-heavy);
+            display: -webkit-box;
+            -webkit-line-clamp: 5; /* 限制敘述行數，嚴防超出卡片底部 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -338,7 +341,7 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;">成就殿堂</h1>
+            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;">成就</h1>
         </div>
         <div class="navbar-controls">
             <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
@@ -357,11 +360,13 @@
             <button class="tab-trigger-btn" id="tab-lvl-3" onclick="switchAchievementLevel(3)">【 傳奇專科 L3 - 高階領域 】</button>
         </div>
 
-        <div class="achievement-cards-grid" id="achievements-canvas-box"></div>
+        <div class="achievement-scroll-viewport">
+            <div id="achievements-canvas-box"></div>
+        </div>
     </div>
 
     <script>
-        // 👑 全公會全量高定成就卡牌資料庫（支援 3D 動態自適應展模） 👑
+        // 全量高定成就卡牌原裝資料庫
         const globalAchievementRegistry = [
             // ─── LEVEL 1 成就群組 ───
             {
@@ -370,11 +375,9 @@
                 badge: "🗺️",
                 title: "初試啼聲",
                 desc: "成功參透硬體世界的「三方賽局」，順利點亮 1-1 常規必修通識。",
-                conditionHint: "解鎖條件：通過單元 1-1 大考",
-                checkKey: "codex-L1-A1-clear", // 剛性比對寶典傳過來的金鑰
-                rarity: "common",
-                color: "var(--rarity-common)",
-                points: "AP +10"
+                conditionHint: "通過單元 1-1 大考",
+                checkKey: "codex-L1-A1-clear", 
+                color: "var(--rarity-common)"
             },
             {
                 levelNum: 1,
@@ -382,11 +385,9 @@
                 badge: "⏳",
                 title: "生命週期掌控者",
                 desc: "掌握硬體生命週期與 NPI 核心交付節點，擊碎排產延遲呆料。",
-                conditionHint: "解鎖條件：通過單元 1-2 大考",
+                conditionHint: "通過單元 1-2 大考",
                 checkKey: "codex-L1-A2-clear",
-                rarity: "rare",
-                color: "var(--rarity-rare)",
-                points: "AP +30"
+                color: "var(--rarity-rare)"
             },
             {
                 levelNum: 1,
@@ -394,11 +395,9 @@
                 badge: "🏭",
                 title: "現地開線大師",
                 desc: "精確走位工廠地理，摸清 4M1E 線體通識，具備駐廠開線通聯威能。",
-                conditionHint: "解鎖條件：通過單元 1-3 大考",
+                conditionHint: "通過單元 1-3 大考",
                 checkKey: "codex-L1-A3-clear",
-                rarity: "rare",
-                color: "var(--rarity-rare)",
-                points: "AP +30"
+                color: "var(--rarity-rare)"
             },
             {
                 levelNum: 1,
@@ -406,51 +405,43 @@
                 badge: "🏆",
                 title: "基礎通識大滿貫",
                 desc: "徹底速通 LEVEL 1 所有基礎學分。恭喜你，你已經不是任人宰割的菜鳥了！",
-                conditionHint: "解鎖條件：LEVEL 1 全單元通關",
-                checkKey: "SPECIAL-L1-ALL", // 特批複合判定
-                rarity: "epic",
-                color: "var(--rarity-epic)",
-                points: "AP +100"
+                conditionHint: "LEVEL 1 全單元通關",
+                checkKey: "SPECIAL-L1-ALL", 
+                color: "var(--rarity-epic)"
             },
             
-            // ─── LEVEL 2 成就群組 (預留擴展開線空間) ───
+            // ─── LEVEL 2 成就群組 ───
             {
                 levelNum: 2,
                 id: "ACH-L2-001",
                 badge: "🔍",
                 title: "光學AA主導者",
                 desc: "深入多軸自動化補正機台，完美解鎖高階相機 AA 主動對位與膠體校正技術。",
-                conditionHint: "解鎖條件：通過單元 2-1 品質試煉",
+                conditionHint: "通過單元 2-1 品質試煉",
                 checkKey: "codex-L2-A1-clear",
-                rarity: "epic",
-                color: "var(--rarity-epic)",
-                points: "AP +50"
+                color: "var(--rarity-epic)"
             },
             {
                 levelNum: 2,
                 id: "ACH-L2-002",
                 badge: "💧",
-                title: " Worst-Case 破局者",
+                title: "Worst-Case 破局者",
                 desc: "在結構防水設計中強行導入 Worst-Case 模擬，徹底封死線體形變流產雷區。",
-                conditionHint: "解鎖條件：通過單元 2-2 結構試煉",
+                conditionHint: "通過單元 2-2 結構試煉",
                 checkKey: "codex-L2-A2-clear",
-                rarity: "legendary",
-                color: "var(--rarity-legendary)",
-                points: "AP +150"
+                color: "var(--rarity-legendary)"
             },
 
-            // ─── LEVEL 3 成就群組 (傳奇里程碑) ───
+            // ─── LEVEL 3 成就群組 ───
             {
                 levelNum: 3,
                 id: "ACH-L3-001",
                 badge: "👑",
                 title: "不朽的 System TPM",
                 desc: "跨功能團隊修煉完成，成功統領多方賽局，具備指揮大型複雜硬體量產之不朽威望。",
-                conditionHint: "解鎖條件：完成終局全專科試煉",
+                conditionHint: "完成終局全專科試煉",
                 checkKey: "codex-L3-A1-clear",
-                rarity: "legendary",
-                color: "var(--rarity-legendary)",
-                points: "AP +500"
+                color: "var(--rarity-legendary)"
             }
         ];
 
@@ -460,34 +451,83 @@
             renderAchievementCardsDeck();
         };
 
-        // 👑 核心卡牌渲染與 3D 狀態機校驗引擎 👑
+        // 👑 滿血版：動態分流與 8 欄位 3D 渲染核心引擎 👑
         function renderAchievementCardsDeck() {
-            const canvas = document.getElementById('achievements-canvas-box');
-            if (!canvas) return;
-            canvas.innerHTML = '';
+            const containerBox = document.getElementById('achievements-canvas-box');
+            if (!containerBox) return;
+            containerBox.innerHTML = '';
 
-            // 1. 過濾當前分頁選定的階層
+            // 1. 篩選當前分頁階層
             const filteredAch = globalAchievementRegistry.filter(ach => ach.levelNum === currentSelectedLevelNum);
 
-            filteredAch.forEach(ach => {
-                // 2. 剛性判定是否解鎖
-                let isUnlocked = false;
+            const unlockedStack = [];
+            const lockedStack = [];
 
+            // 2. 身分與條件判定分流
+            filteredAch.forEach(ach => {
+                let isUnlocked = false;
                 if (ach.checkKey === "SPECIAL-L1-ALL") {
-                    // 特批複合防線：必須 1-1, 1-2, 1-3 全過才算數
                     isUnlocked = (localStorage.getItem("codex-L1-A1-clear") === "true" && 
                                   localStorage.getItem("codex-L1-A2-clear") === "true" && 
                                   localStorage.getItem("codex-L1-A3-clear") === "true");
                 } else {
-                    // 常規單元憑證比對
                     isUnlocked = (localStorage.getItem(ach.checkKey) === "true");
                 }
 
-                // 3. 構造 3D 雙面卡牌 HTML 骨架
-                const cardStage = document.createElement('div');
-                cardStage.className = `card-flip-stage ${isUnlocked ? 'unlocked' : ''}`;
+                if (isUnlocked) {
+                    unlockedStack.push(ach);
+                } else {
+                    lockedStack.push(ach);
+                }
+            });
+
+            // ─── 👑 區塊 A：已取得成就專區（置頂） ───
+            if (unlockedStack.length > 0) {
+                const titleNode = document.createElement('div');
+                titleNode.className = 'matrix-section-title';
+                titleNode.innerHTML = `🏆 已取得成就 (${unlockedStack.length})`;
+                containerBox.appendChild(titleNode);
+
+                const gridNode = document.createElement('div');
+                gridNode.className = 'achievement-cards-grid';
                 
-                cardStage.innerHTML = `
+                unlockedStack.forEach(ach => {
+                    // 🔒 剛性時序鎖：若查無解鎖日期，則現場抓取當前時間戳記並固化存檔
+                    const dateStorageKey = ach.checkKey + "-unlocked-date-stamp";
+                    let savedDateStr = localStorage.getItem(dateStorageKey);
+                    
+                    if (!savedDateStr) {
+                        const now = new Date();
+                        savedDateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                        localStorage.setItem(dateStorageKey, savedDateStr);
+                    }
+
+                    gridNode.innerHTML += compileCardTemplate(ach, true, savedDateStr);
+                });
+                containerBox.appendChild(gridNode);
+            }
+
+            // ─── 👑 區塊 B：未取得成就專區（置底） ───
+            if (lockedStack.length > 0) {
+                const titleNode = document.createElement('div');
+                titleNode.className = 'matrix-section-title';
+                titleNode.innerHTML = `🔒 未取得成就 (${lockedStack.length})`;
+                containerBox.appendChild(titleNode);
+
+                const gridNode = document.createElement('div');
+                gridNode.className = 'achievement-cards-grid';
+                
+                lockedStack.forEach(ach => {
+                    gridNode.innerHTML += compileCardTemplate(ach, false, "");
+                });
+                containerBox.appendChild(gridNode);
+            }
+        }
+
+        // 👑 3D 微縮卡牌網格 HTML 模板產生器
+        function compileCardTemplate(ach, isUnlocked, dateStr) {
+            return `
+                <div class="card-flip-stage ${isUnlocked ? 'unlocked' : ''}">
                     <div class="card-flip-inner">
                         <div class="card-face-back">
                             <div class="lock-icon-frame">🔒</div>
@@ -496,37 +536,25 @@
                         <div class="card-face-front" style="background-color: ${ach.color};">
                             <div class="ach-card-header">
                                 <div class="ach-badge-icon">${ach.badge}</div>
-                                <div class="ach-rarity-tag">${ach.rarity}</div>
+                                <div class="ach-date-tag">${dateStr}</div>
                             </div>
                             <div class="ach-card-body">
                                 <h4 class="ach-card-title">${ach.title}</h4>
                                 <p class="ach-card-desc">${ach.desc}</p>
                             </div>
-                            <div class="ach-card-footer">
-                                <span class="ach-points-label">${ach.points}</span>
-                                <span class="ach-clear-badge">✓ UNLOCKED</span>
-                            </div>
                         </div>
                     </div>
-                `;
-                
-                canvas.appendChild(cardStage);
-            });
+                </div>
+            `;
         }
 
-        // 👑 階層 Tab 切換分流控制器
+        // 階層 Tab 切換分流器
         function switchAchievementLevel(lvlNum) {
             currentSelectedLevelNum = lvlNum;
-            
-            // 復原所有按鈕外觀
             document.querySelectorAll('.tab-trigger-btn').forEach(btn => {
                 btn.classList.remove('active-tab');
             });
-            
-            // 點亮當前按鈕
             document.getElementById(`tab-lvl-${lvlNum}`).classList.add('active-tab');
-            
-            // 重新開線渲染
             renderAchievementCardsDeck();
         }
     </script>
