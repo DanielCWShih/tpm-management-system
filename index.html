@@ -29,17 +29,64 @@
             align-items: center;
         }
 
-        * {
-            box-sizing: border-box;
+        * { 
+            box-sizing: border-box; 
         }
 
-        /* 頂部控制列 */
+        /* 頂部控制列：改為兩端對齊，完美接引左側極簡按鈕 */
         .hub-navbar {
             width: 100%;
             max-width: 1200px;
             padding: 25px 20px 0 20px;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 👑 左上角極簡去中心化存檔控制鈕 👑 */
+        .local-sync-minimal {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .minimal-btn {
+            border: 2px solid var(--border-heavy);
+            background: var(--card-white);
+            color: var(--text-main);
+            padding: 6px 14px;
+            font-size: 0.78rem;
+            font-weight: 900;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.1s;
+        }
+
+        .minimal-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+        }
+
+        .minimal-btn.export-theme { 
+            background: #FDE047; 
+        }
+
+        .minimal-btn.import-theme { 
+            background: #22C55E; 
+            color: white; 
+        }
+
+        #hidden-file-input { 
+            display: none; 
+        }
+
+        /* 導航列右側資訊盒 */
+        .navbar-right-controls {
+            display: flex;
             align-items: center;
             gap: 15px;
         }
@@ -115,7 +162,7 @@
             display: inline-block;
         }
 
-        /* 大廳核心看板外框 */
+        /* 大廳核心看板外框：恢復 100% 黃金比例，絕不擠壓 */
         .hub-tactical-deck {
             width: 92%;
             max-width: 1200px;
@@ -194,112 +241,82 @@
             line-height: 1.5;
             margin: 0;
         }
-
-        /* 👑 右下角地端數據備份控制面板 👑 */
-        .local-storage-panel {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            padding: 12px 16px;
-            border-radius: 8px;
-            box-shadow: var(--shadow-tactical);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 2000;
-        }
-
-        .local-btn {
-            border: 2px solid var(--border-heavy);
-            background: var(--card-white);
-            color: var(--text-main);
-            padding: 8px 14px;
-            font-size: 0.8rem;
-            font-weight: 900;
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.1s;
-        }
-
-        .local-btn:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0px var(--border-heavy);
-        }
-
-        .local-btn.export-theme { 
-            background: #FDE047; 
-        } 
-        
-        .local-btn.import-theme { 
-            background: #22C55E; 
-            color: white; 
-        }
-
-        #hidden-file-input { 
-            display: none; 
-        }
     </style>
 </head>
 <body>
 
+    <!-- 頂部導航列：融合左側極簡按鈕與右側資訊盒 -->
     <div class="hub-navbar">
-        <div class="auth-panel">👤 冒險者 : Daniel Shih</div>
-        <div class="lang-switcher-wrapper">
-            <button class="lang-btn-core active">TW</button>
-            <button class="lang-btn-core">EN</button>
+        <!-- 左上角極簡戰術小按鈕組 -->
+        <div class="local-sync-minimal">
+            <button class="minimal-btn export-theme" onclick="exportPersonalProgress()">📊 備份</button>
+            <button class="minimal-btn import-theme" onclick="triggerImportClick()">📥 載入</button>
+            <input type="file" id="hidden-file-input" accept=".json" onchange="importPersonalProgress(event)">
+        </div>
+
+        <!-- 右側原裝冒險者狀態與語系 -->
+        <div class="navbar-right-controls">
+            <div class="auth-panel">👤 冒險者 : Daniel Shih</div>
+            <div class="lang-switcher-wrapper">
+                <button class="lang-btn-core active">TW</button>
+                <button class="lang-btn-core">EN</button>
+            </div>
         </div>
     </div>
 
+    <!-- 總部標題區 -->
     <div class="hub-header">
         <div class="hub-version-tag">GUILD HQ / LEVEL 2026</div>
         <h1 class="hub-main-title">System TPM 公會總部</h1>
         <div class="hub-subtitle">Daniel Shih | 2026 年度高效管理與團隊修煉套件</div>
     </div>
 
+    <!-- 主戰術大廳九宮格 (完美原裝復位，絕不壓縮擠壓) -->
     <div class="hub-tactical-deck">
         
+        <!-- 卡片 1: 初心者寶典 -->
         <a href="beginner_codex.html" class="tactical-card">
             <div class="card-icon-frame">🗺️</div>
             <h3 class="card-title" style="color: #1D4ED8;">初心者寶典</h3>
             <p class="card-desc">工廠基礎與 System TPM 基礎概括：點亮硬體世界第一步的核心知識大本營。</p>
         </a>
 
+        <!-- 卡片 2: 冒險者手冊 -->
         <a href="handbook.html" class="tactical-card">
             <div class="card-icon-frame">📜</div>
             <h3 class="card-title" style="color: #B45309;">冒險者手冊</h3>
             <p class="card-desc">功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
         </a>
 
+        <!-- 卡片 3: 階級晉級試煉 -->
         <div class="tactical-card locked-stripe">
             <div class="card-icon-frame">⚔️</div>
             <h3 class="card-title" style="color: #64748B;">階級晉級試煉</h3>
             <p class="card-desc">綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
         </div>
 
+        <!-- 卡片 4: 賢者之識 -->
         <div class="tactical-card locked-stripe">
             <div class="card-icon-frame">🤖</div>
             <h3 class="card-title" style="color: #64748B;">賢者之識</h3>
             <p class="card-desc">智慧核心：整合大語言模型 (LLM) 知識庫，自動化輔助生成全新標準化作業教材。</p>
         </div>
 
+        <!-- 卡片 5: 冒險者天賦樹 -->
         <a href="talent_tree.html" class="tactical-card">
             <div class="card-icon-frame">🌿</div>
             <h3 class="card-title" style="color: #047857;">冒險者天賦樹</h3>
             <p class="card-desc">RPG 樹狀指南路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
         </a>
 
+        <!-- 卡片 6: 隨機副本挑戰 -->
         <div class="tactical-card locked-stripe">
             <div class="card-icon-frame">🛡️</div>
             <h3 class="card-title" style="color: #64748B;">隨機副本挑戰</h3>
             <p class="card-desc">動態隨機題庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
         </div>
 
+        <!-- 卡片 7: 知識圖書館 -->
         <a href="library.html" class="tactical-card">
             <div class="card-icon-frame">📚</div>
             <h3 class="card-title" style="color: #6D28D9;">知識圖書館</h3>
@@ -308,22 +325,14 @@
 
     </div>
 
-    <div class="local-storage-panel">
-        <span style="font-size:0.75rem; font-weight:900; color:var(--text-secondary);">💾 進度存檔控制：</span>
-        <button class="local-btn export-theme" onclick="exportPersonalProgress()">📊 備份下載存檔</button>
-        <button class="local-btn import-theme" onclick="triggerImportClick()">📥 載入歷史進度</button>
-        <input type="file" id="hidden-file-input" accept=".json" onchange="importPersonalProgress(event)">
-    </div>
-
     <script>
-        // 👑 存檔下載大腦：打包所有與考核、天賦樹相關的地端 LocalStorage 資料
+        // 👑 存檔下載大腦：僅打包 codex-、talent-、tpm- 開頭的數據金鑰
         function exportPersonalProgress() {
             const backupData = {};
             let hasData = false;
 
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                // 剛性過濾：只抓取與本系統核心相關的資料標籤
                 if (key.startsWith('codex-') || key.startsWith('talent-') || key.startsWith('tpm-')) {
                     backupData[key] = localStorage.getItem(key);
                     hasData = true;
@@ -335,12 +344,10 @@
                 return;
             }
 
-            // 轉化為標準 JSON Blob 並發動流暢下載
             const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const downloadLink = document.createElement('a');
             
-            // 檔名帶上當前日期，方便學員做版本控管
             const dateStr = new Date().toISOString().slice(0, 10);
             downloadLink.href = url;
             downloadLink.download = `tpm_guild_save_${dateStr}.json`;
@@ -351,16 +358,11 @@
             URL.revokeObjectURL(url);
         }
 
-        function triggerCloudPullSync() {
-            // 保留舊接口宣告防止外部組件偏位當機，此處已無縫代償重定向至單機存檔
-            exportPersonalProgress();
-        }
-
         function triggerImportClick() {
             document.getElementById('hidden-file-input').click();
         }
 
-        // 👑 存檔載入大腦：讀取上傳的 JSON，原位滿血復活地端記憶
+        // 👑 存檔載入大腦：原位解析 JSON，強力沖刷還原地端綠燈
         function importPersonalProgress(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -376,21 +378,18 @@
                         return;
                     }
 
-                    // 滿血覆蓋寫入地端
                     keys.forEach(function(key) {
                         localStorage.setItem(key, importedData[key]);
                     });
 
-                    alert(`✓ 載入成功！已成功恢復 ${keys.length} 項考核天賦記憶。大廳即將重新開線！`);
-                    window.location.reload(); // 原地強力刷新
+                    alert(`✓ 載入成功！已成功恢復 ${keys.length} 項考核天賦記憶。`);
+                    window.location.reload();
 
                 } catch (err) {
-                    alert("💥 檔案解析失敗！請確認是否為本系統產出的標準 .json 存檔。");
+                    alert("💥 檔案解析失敗！請確認是否為本系統產出的標準 .json 存盤。");
                 }
             };
             reader.readAsText(file);
-            
-            // 清空 input 暫存，允許學員高頻重複載入同一個檔案
             event.target.value = "";
         }
     </script>
