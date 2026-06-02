@@ -1,11 +1,10 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-06-02 V7.7: 👑 雙層原位切換圖鑑 Page 4 滿血特製完璧版。
-1. 外殼完全唯讀：100% 不動用、不修改 750 列的 HTML 播放器外殼與動態變數名。
-2. 獨立全景分頁：Page 1 穩健長駐 beginner_codex_assets 全景流程圖。
-3. 現地變更合流：精準對位 V7.5，絕殺 Pin-to-Pin，OQC 換裝完畢。
-4. Page 4 總攻：FPY 換裝 Final Pass 鏈條、UPH 新增 Line Down、WIP 解鎖三大實戰製品蓄水池。
+2026-06-02 V7.8: 👑 關鍵詞網格 4 分法剛性對齊完璧版。
+1. 視覺完美修正：Page 4 所有關鍵詞面板全面強制綁定 repeat(4, 1fr) 拓撲，徹底絕殺單一卡牌拉長變形的視覺缺陷。
+2. 外殼完全唯讀：100% 不動用、不修改主殼播放器外殼與動態路由名稱。
+3. 現地數據合流：Page 1 流程圖、Page 3 撤除 Pin-to-Pin 暨 OQC 更名與 IQC 擴寫全量剛性保留。
 ========================================================================
 */
 
@@ -229,7 +228,7 @@ window.codexCourseEngineData = [
                 `
             },
             // ==========================================
-            // PAGE 4: 代工製造廠端 (EMS Factory) 
+            // PAGE 4: 代工製造廠端 (EMS Factory)
             // ==========================================
             {
                 title: "4. 代工製造廠端 (EMS Factory - 大大量產拼裝、產速與直通良率防護)",
@@ -257,7 +256,7 @@ window.codexCourseEngineData = [
                             </div>
                             <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
                                 <div id="ktxt-title-ems-0"><b>全稱：</b>First Pass (首檢直通)</div>
-                                <div id="ktxt-desc-ems-0" style="margin-top:4px; color:#475569;"><b>意思：</b>指產品在生產線上第一次通過測站全檢的良率。不接受任何二次重工、微調探針或重新插拔，是暴露線體製程缺陷與治具穩定度的最真實指標。</div>
+                                <div id="ktxt-desc-ems-0" style="margin-top:4px; color:#475569;"><b>意思：</b>指產品在生產線上第一次通過測站全檢的良率。不接受 any 二次重工、微調探針或重新插拔，是暴露線體製程缺陷與治具穩定度的最真實指標。</div>
                             </div>
                         </div>
                     </div>
@@ -270,7 +269,7 @@ window.codexCourseEngineData = [
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
-                            <div style="display:grid; grid-template-columns:repeat(1, 1fr); gap:10px; margin-bottom:12px;">
+                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
                                 <div class="kbtn-ems-1" id="kbtn-ems-1-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 1, 0, 'Line Down (停線標準)', '當大流水線特定測站連續發生 3 台相同 Error Code（Top Defect），或直通率暴跌破觸發界限時，發動剛性斷電停線機制。不允許帶病生產，直到 TPM 與 PE/QA 排除黃金首件。')">Line Down (停線標準)</div>
                             </div>
                             <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
@@ -288,7 +287,7 @@ window.codexCourseEngineData = [
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
-                            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:12px;">
+                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
                                 <div class="kbtn-ems-2" id="kbtn-ems-2-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 0, 'Production WIP (產線製品積壓)', '正常在主流水線上流動、組裝或等待測試的製品。必須設定嚴格的水位上限，嚴防工位平衡崩潰引發集體堆料。')">Production WIP</div>
                                 <div class="kbtn-ems-2" id="kbtn-ems-2-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 1, 'FA WIP (故障分析製品)', '已被測站踢出、滯留在失效分析（Failure Analysis）或重工室等待解剖與更換晶片的製品。是專案 Debug 與追蹤 Top Defect 的黃金數據源。')">FA WIP</div>
                                 <div class="kbtn-ems-2" id="kbtn-ems-2-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 2, 'Buffer (半成品緩衝庫存)', '若此製程製品需要投入到下一個總成產品（如中框總成投入總裝），必須建立剛性安全 Buffer 水位，防止前段設備跳機直接引發後段集體無料停線。')">Buffer</div>
