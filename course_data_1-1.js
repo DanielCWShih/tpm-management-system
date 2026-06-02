@@ -1,11 +1,11 @@
 /* ========================================================================
 REVISION HISTORY / VERSION LOG
 ========================================================================
-2026-06-02 V7.6: 👑 雙層原位切換圖鑑精確咬合完璧版。
-1. 外殼完全唯讀：100% 不動用、不修改 750 列的 HTML 播放器外殼。
-2. 第一層切換（大頁籤）：PRD、ID、CMF、Clearance 橫向大按鈕封裝在內容最頂部，原地互斥隱藏。
-3. 第二層切換（小卡片）：大頁籤下方常駐「極簡純名詞卡片」，點擊原位刷新解鎖全稱與意思。
-4. 現地變更合流：1-1 Page 1 純圖片總覽地圖完美回歸，Page 3 實現 OQC 更名、Pin-to-Pin 撤除與 IQC 滿血規格擴寫。
+2026-06-02 V7.7: 👑 雙層原位切換圖鑑 Page 4 滿血特製完璧版。
+1. 外殼完全唯讀：100% 不動用、不修改 750 列的 HTML 播放器外殼與動態變數名。
+2. 獨立全景分頁：Page 1 穩健長駐 beginner_codex_assets 全景流程圖。
+3. 現地變更合流：精準對位 V7.5，絕殺 Pin-to-Pin，OQC 換裝完畢。
+4. Page 4 總攻：FPY 換裝 Final Pass 鏈條、UPH 新增 Line Down、WIP 解鎖三大實戰製品蓄水池。
 ========================================================================
 */
 
@@ -85,12 +85,12 @@ window.codexCourseEngineData = [
                         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
                             <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">主導全球市場與競品技術調研，定義硬體規格，發佈產品規格需求書（PRD）。</div></div>
                             <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">追求極致的硬體功能參數，用技術專利護城河拉高市售機台之品牌溢價。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">期待代工廠（EMS）產線能 100% 完美復刻複雜結構，不接受任何組裝公差導致的妥協。</div></div>
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">期待代工廠（EMS）產線能 100% 完美復刻複雜結構，不接受 any 組裝公差導致的妥協。</div></div>
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords (點擊下方卡片直接原位顯影解鎖)</div>
                             <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-brand-0" id="kbtn-brand-0-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 0, 0, 'Product Requirement Document (產品規格需求書)', '定義新手機功能、規格與零件配置 the 最高法規。TPM 必須在開模前清查 CMF 技術文件是否具備產線現有流水線的量產能力，在出圖前剛性攔截幻想規格。')">PRD</div>
+                                <div class="kbtn-brand-0" id="kbtn-brand-0-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 0, 0, 'Product Requirement Document (產品規格需求書)', '定義新手機功能、規格與零件配置的最高法規。TPM 必須在開模前清查 CMF 技術文件是否具備產線現有流水線的量產能力，在出圖前剛性攔截幻想規格。')">PRD</div>
                                 <div class="kbtn-brand-0" id="kbtn-brand-0-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 0, 1, 'Design for Manufacturing (可製造性設計)', '在產品設計初期，由代工廠製造工程師評估該結構是否符合流水線的大規模量產複製工藝。用來提前抓出外殼拔模角不足等致命模具設計瑕疵。')">DFM</div>
                                 <div class="kbtn-brand-0" id="kbtn-brand-0-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 0, 2, 'Specification Freeze (技術規格剛性凍結)', '專案跨入特定試產里程碑（如PVT）時，下發剛性禁令鎖死所有設計參數，不允許研發工程師隨意微調尺寸，以便工廠固化 SOP 與夾具排產。')">Freeze</div>
                                 <div class="kbtn-brand-0" id="kbtn-brand-0-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 0, 3, 'Acceptable Quality Level (驗收抽樣合格標準)', '品質檢驗時買賣雙方商定的最高可接受瑕疵概率。IQC 團隊嚴格以此指標在廠門口進行進料抽驗，一旦不良率超標則整批物料剛性拒收退貨。')">AQL</div>
@@ -229,13 +229,13 @@ window.codexCourseEngineData = [
                 `
             },
             // ==========================================
-            // PAGE 4: 代工製造廠端 (EMS Factory)
+            // PAGE 4: 代工製造廠端 (EMS Factory) 
             // ==========================================
             {
                 title: "4. 代工製造廠端 (EMS Factory - 大大量產拼裝、產速與直通良率防護)",
                 text: `
                     <div style="width:100%; display:flex; gap:12px; margin-bottom:15px; border-bottom:3px solid #1A1A1A; padding-bottom:12px;">
-                        <div id="tpm-main-btn-ems-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A; transform:translate(2px,2px);" onclick="window.tpmSwitchMainTab('ems', 0, 4)">FPY (直通率)</div>
+                        <div id="tpm-main-btn-ems-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A; transform:translate(2px,2px);" onclick="window.tpmSwitchMainTab('ems', 0, 4)">FPY (Final Pass Yield) 直通率</div>
                         <div id="tpm-main-btn-ems-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('ems', 1, 4)">UPH (每小時產速)</div>
                         <div id="tpm-main-btn-ems-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('ems', 2, 4)">WIP (製品積壓)</div>
                         <div id="tpm-main-btn-ems-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('ems', 3, 4)">Line Balance (線平衡)</div>
@@ -243,27 +243,63 @@ window.codexCourseEngineData = [
 
                     <div id="tpm-main-panel-ems-0" style="display:block; width:100%;">
                         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">First Pass Yield。精算機器不經歷 any 在線二次手工修補焊接、一次性高精導通全檢合格下線的真實物理概率。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">真實暴露大流水線治具健康度，硬核阻絕經歷過二度熱應力手工重工損傷的機台流入最終發貨彩盒。</div></div>
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Final Pass Yield。精算產品在流水線上，不經歷 any 二次手動重工修補焊接，一次性順暢通過所有測站全檢下線的真實物理概率。</div></div>
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">真實暴露大流水線製程治具健康度，硬核阻絕經歷過重工熱應力手工重工損傷的機台流入最終發貨彩盒。</div></div>
                             <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">撕開偽良率外衣。專案出關評審剛性鐵律：『不斬最終入庫合格率，只斬大流水線首檢直通率！』。</div></div>
                         </div>
                         <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
                             <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
                             <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-ems-0" id="kbtn-ems-0-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 0, 'False Alarm Rate (治具測試誤判率)', 'FCT測試站因探針老化或射頻纜線磨損漏電，將完全健康的主板錯誤判定為不良零件的極低指標。必須嚴格掐死在 1% 以下。')">False Alarm</div>
-                                <div class="kbtn-ems-0" id="kbtn-ems-0-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 1, 'Rework Counter Control (手工重工次數限制)', '限制單主板被送入維修室高溫更換晶片晶圓的極限次數。過度重工會導致 PCB 走線內部結構硬傷微觀形變受損。')">Rework</div>
-                                <div class="kbtn-ems-0" id="kbtn-ems-0-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 2, 'WIP Clearing Sequence (在線製品大清洗清零)', '在專案試產評審會前夕，強制要求工廠維修室進行在製品清空並結案 Debug，防止工廠囤積呆料、隱瞞不良。')">WIP Block</div>
-                                <div class="kbtn-ems-0" id="kbtn-ems-0-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 3, 'Cycle Time (標準作業工時)', '單一操作工完成扣合排線或鎖螺絲所需花費的純物理秒數。整條大流水線的拉速 UPH 與平衡率完全由最慢的那站決定。')">Cycle Time</div>
+                                <div class="kbtn-ems-0" id="kbtn-ems-0-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 0, 'First Pass (首檢直通)', '指產品在生產線上第一次通過測站全檢的良率。不接受任何二次重工、微調探針或重新插拔，是暴露線體製程缺陷與治具穩定度的最真實指標。')">First Pass</div>
+                                <div class="kbtn-ems-0" id="kbtn-ems-0-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 1, 'Retest Pass (複測通過)', '首次測試不合格後，經由作業員重新清理探針或重新置位後再次測試通過。雖然最終判定為良品，但潛藏軟體邊界或微觀接觸不良風險。')">Retest Pass</div>
+                                <div class="kbtn-ems-0" id="kbtn-ems-0-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 2, 'Final Fail (最終不良)', '經歷標準複測流程後依然無法通過測試，必須被剛性剔除出主流水線，分流至維修站進行實體解剖與晶片更換的報廢品。')">Final Fail</div>
+                                <div class="kbtn-ems-0" id="kbtn-ems-0-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 3, 'Failure Description (不良現象敘述)', '測試機台自動產出的錯誤代碼（Error Code）或測試員登錄的實體外觀缺陷特徵。是維修工程師發動精準追溯與 DFM 逆向修正的數據聖經。')">Failure Description</div>
                             </div>
                             <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-ems-0"><b>全稱：</b>False Alarm Rate (自動化功能治具測試誤判率)</div>
-                                <div id="ktxt-desc-ems-0" style="margin-top:4px; color:#475569;"><b>意思：</b>FCT測試站因探針老化或射頻纜線磨損漏電，將完全健康的主板錯誤判定為不良零件的極低指標。必須嚴格掐死在 1% 以下，否則會引發重工室暴走。</div>
+                                <div id="ktxt-title-ems-0"><b>全稱：</b>First Pass (首檢直通)</div>
+                                <div id="ktxt-desc-ems-0" style="margin-top:4px; color:#475569;"><b>意思：</b>指產品在生產線上第一次通過測站全檢的良率。不接受任何二次重工、微調探針或重新插拔，是暴露線體製程缺陷與治具穩定度的最真實指標。</div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="tpm-main-panel-ems-1" style="display:none; width:100%;"><div style="background:#FFFDF2; border:2px solid #1A1A1A; padding:15px; border-radius:6px;"><b>UPH 產速控制：</b>Units Per Hour。每小時穩定吐出的成品下線總量，平攤人工成本，捍衛製造毛利。</div></div>
-                    <div id="tpm-main-panel-ems-2" style="display:none; width:100%;"><div style="background:#FFFDF2; border:2px solid #1A1A1A; padding:15px; border-radius:6px;"><b>WIP 在製品盤點：</b>Work In Process。滯留在流水線各工位 or 維修室的半成品，開線大會前必須強制發動清線清除淤泥。</div></div>
+                    <div id="tpm-main-panel-ems-1" style="display:none; width:100%;">
+                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Units Per Hour。每小時穩定吐出的成品下線總量，精算並動態追蹤主流水線的即時產速指標。</div></div>
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">平攤工廠固定人工與夾具折舊成本，確保專案生產毛利，按時滿足全球客戶的發貨交期。</div></div>
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">線體拉速達到標竿 UPH（如 240pcs/hr），無任何積壓堵塞，打通流暢的生產拉速。</div></div>
+                        </div>
+                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
+                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
+                            <div style="display:grid; grid-template-columns:repeat(1, 1fr); gap:10px; margin-bottom:12px;">
+                                <div class="kbtn-ems-1" id="kbtn-ems-1-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 1, 0, 'Line Down (停線標準)', '當大流水線特定測站連續發生 3 台相同 Error Code（Top Defect），或直通率暴跌破觸發界限時，發動剛性斷電停線機制。不允許帶病生產，直到 TPM 與 PE/QA 排除黃金首件。')">Line Down (停線標準)</div>
+                            </div>
+                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
+                                <div id="ktxt-title-ems-1"><b>全稱：</b>Line Down (停線標準)</div>
+                                <div id="ktxt-desc-ems-1" style="margin-top:4px; color:#475569;"><b>意思：</b>當大流水線特定測站連續發生 3 台相同 Error Code（Top Defect），或直通率暴跌破觸發界限時，發動剛性斷電停線機制。不允許帶病生產，直到 TPM 與 PE/QA 排除黃金首件。</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tpm-main-panel-ems-2" style="display:none; width:100%;">
+                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Work In Process。滯留在流水線各工位、測試夾具間或維修排隊區的製品積壓總量動態盤點。</div></div>
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">嚴防製品在線體形成堰塞湖，壓死工廠資金周轉，同時預防大量缺陷零件隱瞞堆積。</div></div>
+                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">各製程段製品水位極低且流動流暢，結關試產前發動大清洗（WIP Clearing）回歸零堆積。</div></div>
+                        </div>
+                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
+                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
+                            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:12px;">
+                                <div class="kbtn-ems-2" id="kbtn-ems-2-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 0, 'Production WIP (產線製品積壓)', '正常在主流水線上流動、組裝或等待測試的製品。必須設定嚴格的水位上限，嚴防工位平衡崩潰引發集體堆料。')">Production WIP</div>
+                                <div class="kbtn-ems-2" id="kbtn-ems-2-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 1, 'FA WIP (故障分析製品)', '已被測站踢出、滯留在失效分析（Failure Analysis）或重工室等待解剖與更換晶片的製品。是專案 Debug 與追蹤 Top Defect 的黃金數據源。')">FA WIP</div>
+                                <div class="kbtn-ems-2" id="kbtn-ems-2-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 2, 'Buffer (半成品緩衝庫存)', '若此製程製品需要投入到下一個總成產品（如中框總成投入總裝），必須建立剛性安全 Buffer 水位，防止前段設備跳機直接引發後段集體無料停線。')">Buffer</div>
+                            </div>
+                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
+                                <div id="ktxt-title-ems-2"><b>全稱：</b>Production WIP (產線製品積壓)</div>
+                                <div id="ktxt-desc-ems-2" style="margin-top:4px; color:#475569;"><b>意思：</b>正常在主流水線上流動、組裝 or 等待測試的製品。必須設定嚴格的水位上限，嚴防工位平衡崩潰引發集體堆料。</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="tpm-main-panel-ems-3" style="display:none; width:100%;"><div style="background:#FFFDF2; border:2px solid #1A1A1A; padding:15px; border-radius:6px;"><b>Line Balance 線平衡：</b>全流水線平衡率剛性死守 85% 以上。消除最慢瓶頸工位，打通流暢的生產拉速。</div></div>
                 `
             }
