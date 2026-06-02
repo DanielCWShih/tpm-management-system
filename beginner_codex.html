@@ -3,854 +3,766 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初心者寶典大廳 | System TPM Tactical Hub</title>
+    <!-- 🎯 門面校準 1: 網頁 Title 同步對齊頂部 Header -->
+    <title>初心者寶典 - 專案戰術播放大腦</title>
     <style>
+        /* ========================================================================
+        NEO-BRUTALISM INDUSTRIAL AESTHETIC STYLE SHEET (TOTAL CONTROL)
+        ======================================================================== */
         :root {
-            --bg-color: #FEF9E7;
-            --sidebar-cream: #FDF2D0;
-            --card-white: #FFFFFF;
-            --text-main: #1A1A1A;
-            --text-secondary: #475569;
-            --border-heavy: #1A1A1A;
-            --shadow-tactical: 5px 5px 0px #1A1A1A;
-            --radius-sm: 8px;
-            --color-completed: #22C55E;
-            --color-active-gold: #FDE047;
-            --color-fail: #DC2626;
-            --color-locked-gray: #E2E8F0;
-        }
-
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            background-color: var(--bg-color);
-            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
-            -webkit-font-smoothing: antialiased;
+            --bg-main: #FFFDF2;
+            --border-color: #1A1A1A;
+            --card-bg: #FFFFFF;
+            --brand-yellow: #FDE047;
+            --nav-bg: #FFEAA7;
+            --text-dark: #1A1A1A;
+            --text-muted: #475569;
+            --success-green: #4ADE80;
+            --error-red: #EF4444;
+            --shadow-primary: 3px 3px 0px #1A1A1A;
+            --shadow-heavy: 5px 5px 0px #1A1A1A;
+            --shadow-light: 2px 2px 0px #1A1A1A;
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, "SF Pro TC", "Microsoft JhengHei", sans-serif;
         }
 
-        .tactical-navbar {
-            width: 100vw;
-            height: 85px;
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            padding-top: 80px;
             display: flex;
-            justify-content: space-between;
+            min-height: 100vh;
+        }
+
+        /* ─── 👑 TOP NAVIGATION BAR ─── */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--bg-main);
+            border-bottom: 4px solid var(--border-color);
+            display: flex;
             align-items: center;
-            border-bottom: 4px solid var(--border-heavy);
-            padding: 0 40px;
-            background-color: var(--bg-color);
-            flex-shrink: 0;
+            justify-content: space-between;
+            padding: 0 24px;
             z-index: 1000;
         }
 
-        .navbar-brand {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .navbar-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .lang-switcher-wrapper {
-            display: flex;
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            padding: 2px;
-        }
-
-        .lang-btn-core {
-            width: 50px;
-            height: 35px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 0.8rem;
+        .header-title {
+            font-size: 1.8rem;
             font-weight: 900;
-            color: var(--text-secondary);
+            letter-spacing: -1px;
+            color: var(--text-dark);
+            user-select: none;
+        }
+
+        .header-actions {
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            transition: all 0.1s;
+            gap: 16px;
         }
 
-        .lang-btn-core.active {
-            background: var(--text-main) !important;
-            color: white !important;
+        .user-badge {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 900;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow-light);
         }
 
-        .auth-panel {
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            padding: 10px 20px;
-            border-radius: var(--radius-sm);
+        .btn-toggle-lang, .btn-back {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-weight: 900;
             font-size: 0.85rem;
-            font-weight: 900;
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            white-space: nowrap;
-        }
-
-        .back-btn {
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            padding: 10px 15px;
-            border-radius: var(--radius-sm);
             cursor: pointer;
-            font-weight: 900;
-            text-decoration: none;
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            display: inline-block;
-            text-align: center;
-            min-width: 95px;
-            color: var(--text-main);
-            transition: all 0.1s;
+            box-shadow: var(--shadow-primary);
+            transition: all 0.1s ease;
         }
 
-        .back-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0px var(--border-heavy);
+        .btn-toggle-lang.active {
+            background: var(--border-color);
+            color: #FFF;
         }
 
-        .workspace-container {
+        .btn-toggle-lang:hover, .btn-back:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--border-color);
+        }
+
+        .btn-toggle-lang:active, .btn-back:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px var(--border-color);
+        }
+
+        /* ─── 🗺️ LEFT TACTICAL NAVBAR ─── */
+        .tactical-navbar {
+            width: 320px;
+            height: calc(100vh - 80px);
+            position: fixed;
+            top: 80px;
+            left: 0;
+            background: var(--nav-bg);
+            border-right: 4px solid var(--border-color);
+            padding: 20px 16px;
             display: flex;
-            width: 100vw;
-            height: calc(100vh - 85px);
-            overflow: hidden;
-        }
-
-        .sidebar-panel {
-            display: flex;
-            width: 350px;
-            background-color: var(--sidebar-cream);
-            border-right: 4px solid var(--border-heavy);
-            padding: 25px 18px;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
             overflow-y: auto;
-            flex-shrink: 0;
-            height: 100%;
+            z-index: 900;
         }
 
-        .hub-return-btn {
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            padding: 12px 15px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 900;
-            box-shadow: 3px 3px 0px var(--border-heavy);
+        .btn-return-lobby {
             width: 100%;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
             text-align: center;
-            display: block;
-            margin-bottom: 10px;
-            color: var(--text-main);
-            transition: all 0.1s;
-        }
-
-        .hub-return-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0px var(--border-heavy);
-        }
-
-        .menu-category-block {
-            width: 100%;
-            margin-bottom: 4px;
-        }
-
-        .tree-main-toggle {
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
             font-weight: 900;
             font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-primary);
+            margin-bottom: 10px;
+            transition: all 0.1s ease;
+        }
+
+        .btn-return-lobby:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px var(--border-color);
+        }
+
+        .nav-section-title {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-weight: 900;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            box-shadow: var(--shadow-light);
+        }
+
+        .course-nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .course-nav-item {
+            width: 100%;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 0.85rem;
+            font-weight: 800;
             text-align: left;
             cursor: pointer;
-            box-shadow: 3px 3px 0px var(--border-heavy);
+            box-shadow: var(--shadow-primary);
+            line-height: 1.4;
+            transition: all 0.1s ease;
+        }
+
+        .course-nav-item:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--border-color);
+        }
+
+        .course-nav-item.active {
+            background: var(--brand-yellow);
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px var(--border-color);
+        }
+
+        /* ─── 📱 MAIN WORKSPACE CONTAINER ─── */
+        .workspace-container {
+            margin-left: 320px;
+            width: calc(100vw - 320px);
+            min-height: calc(100vh - 80px);
+            padding: 30px 40px;
+            overflow-y: auto;
+        }
+
+        /* ─── 📊 VIEW 1: CENTRAL DASHBOARD LOBBY ─── */
+        .dashboard-lobby {
+            display: block;
             width: 100%;
-            color: var(--text-main);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        }
+
+        .dashboard-breadcrumbs {
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 6px;
         }
 
-        .tree-sub-group {
-            padding-left: 10px;
-            border-left: 3px solid var(--border-heavy);
-            margin-left: 8px;
-            margin-top: 5px;
+        .dashboard-header-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .dashboard-divider {
+            border: none;
+            border-top: 2px dashed var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .level-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .level-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--shadow-primary);
+            position: relative;
+        }
+
+        .level-card-tag {
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .level-card-percentage {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .level-card-metric {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .level-progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #E2E8F0;
+            border: 1.5px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .level-progress-bar-fill {
+            height: 100%;
+            background: var(--success-green);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .sub-unit-section-title {
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .lobby-unit-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .lobby-unit-block {
+            background: var(--bg-main);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 20px;
+            font-weight: 800;
+            font-size: 0.88rem;
+            box-shadow: var(--shadow-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 320px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .lobby-unit-block:hover {
+            background: var(--brand-yellow);
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--border-color);
+        }
+
+        .lobby-unit-block:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px var(--border-color);
+        }
+
+        .lobby-unit-status {
+            font-size: 0.78rem;
+            font-weight: 900;
+            color: #64748B;
+        }
+
+        /* ─── 🎬 VIEW 2: ENGINE CONTENT PLAYER ─── */
+        .engine-content-player {
+            display: none;
+            width: 100%;
+        }
+
+        .player-page-indicator {
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .player-course-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .player-body-panel {
+            width: 100%;
+            min-height: 250px;
+            margin-bottom: 25px;
+        }
+
+        /* ─── 📝 VIEW 3: EXAM RUNTIME ENGINE ─── */
+        .player-exam-footer {
+            margin-top: 30px;
+            border: 3px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--card-bg);
+            padding: 24px;
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .exam-title-bar {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--error-red);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .exam-q-box {
+            background: var(--bg-main);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .exam-q-text {
+            font-size: 0.95rem;
+            font-weight: 800;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .exam-option-row {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
 
-        .leaf-btn {
-            background: var(--card-white);
-            border: 2px solid var(--border-heavy);
+        .exam-opt-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
             padding: 10px 14px;
-            border-radius: var(--radius-sm);
-            font-weight: 800;
-            font-size: 0.82rem;
+            font-size: 0.88rem;
+            font-weight: 700;
             text-align: left;
             cursor: pointer;
+            transition: all 0.05s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        .exam-opt-btn:hover {
+            background: var(--bg-main);
+            transform: translateX(2px);
+        }
+
+        /* ─── 🧭 FOOTER PAGINATION DOTS ─── */
+        .player-pagination-row {
             width: 100%;
-            color: var(--text-main);
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            transition: all 0.1s;
-            line-height: 1.4;
-        }
-
-        .leaf-btn:hover {
-            transform: translate(2px, -2px);
-            box-shadow: 2px 4px 0px var(--border-heavy);
-        }
-
-        .leaf-btn.active {
-            background: var(--color-active-gold) !important;
-            color: var(--text-main) !important;
-            transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0px var(--border-heavy) !important;
-        }
-
-        .content-panel {
-            flex: 1;
-            height: 100%;
-            padding: 35px 40px;
-            background-color: var(--card-white);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .dashboard-view-hall,
-        .document-canvas,
-        .exam-session-box,
-        .sub-pagination-dots-zone {
-            display: none;
-            width: 100%;
-        }
-
-        .dashboard-view-hall {
-            height: 100%;
-            overflow-y: auto;
-            padding: 5px 5px 30px 5px; 
-        }
-
-        .level-cards-parallel-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            width: 100%;
-            margin-bottom: 20px;
-            padding: 5px 2px;
-        }
-
-        .progress-card-master {
-            background: var(--card-white);
-            border: 2px solid var(--border-heavy);
-            border-radius: 10px;
-            padding: 12px 16px;
-            box-shadow: var(--shadow-tactical);
-            cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .progress-card-master:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 6px 6px 0px var(--border-heavy);
-        }
-
-        .progress-card-master.active-level {
-            background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important;
-            border-width: 3px !important;
-            box-shadow: 5px 5px 0px var(--border-heavy) !important;
-        }
-
-        .progress-label {
-            font-family: monospace;
-            font-weight: 900;
-            font-size: 0.72rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
-        }
-
-        .progress-percentage {
-            font-size: 1.8rem;
-            font-weight: 900;
-            margin: 2px 0;
-            color: var(--text-main);
-            line-height: 1;
-        }
-
-        .progress-stats {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-
-        .progress-bar-bg {
-            width: 100%;
-            height: 10px;
-            background: #E2E8F0;
-            border: 2px solid var(--border-heavy);
-            border-radius: 5px;
-            margin-top: 6px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--color-completed);
-            width: 0%;
-            transition: width 0.4s ease-out;
-        }
-
-        .cdx-dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            width: 100%;
-            padding: 5px 2px;
-        }
-
-        .cdx-dashboard-card {
-            border: 2px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            padding: 10px 14px;
-            cursor: pointer;
-            box-shadow: var(--shadow-tactical);
-            transition: all 0.15s;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 52px;
-        }
-
-        .cdx-dashboard-card:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 6px 6px 0px var(--text-main);
-        }
-
-        .document-canvas {
-            flex: 1;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .textbook-scroll-box {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 8px;
-            width: 100%;
-            font-size: 0.85rem;
-        }
-
-        .textbook-section-block {
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            width: 100%;
-            animation: fadeInBox 0.12s ease-out;
-        }
-
-        .dynamic-flow-canvas {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            gap: 12px;
-            background: #FEF9E7;
-            border: 2px solid var(--border-heavy);
-            padding: 12px 20px;
-            border-radius: var(--radius-sm);
-            margin: 0 0 20px 0;
-            overflow-x: auto;
-            flex-shrink: 0;
-            box-shadow: 3px 3px 0px var(--border-heavy);
-        }
-
-        .flow-node-block {
-            background: #FFF;
-            border: 2px solid var(--border-heavy);
-            padding: 12px 18px;
-            border-radius: var(--radius-sm);
-            font-weight: 900;
-            font-size: 0.88rem;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            white-space: nowrap;
-            text-align: center;
-            transition: all 0.1s;
-            color: var(--text-main);
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .flow-node-block.active-node {
-            background: var(--color-active-gold) !important;
-            color: var(--text-main) !important;
-            transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0px var(--border-heavy) !important;
-        }
-
-        .flow-arrow-split {
-            font-weight: 900;
-            font-size: 1.1rem;
-            color: var(--border-heavy);
-            user-select: none;
-        }
-
-        .exam-session-box {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .exam-progress-bar {
-            width: 100%;
-            background: #E2E8F0;
-            height: 12px;
-            border-radius: 6px;
-            overflow: hidden;
-            margin-bottom: 25px;
-            border: 2px solid #1A1A1A;
-        }
-
-        .exam-progress-fill {
-            height: 100%;
-            background: var(--text-main);
-            width: 0%;
-            transition: width 0.2s;
-        }
-
-        .option-card {
-            background: #FFF;
-            border: 2px solid var(--border-heavy);
-            padding: 18px;
-            border-radius: var(--radius-sm);
-            margin-top: 14px;
-            cursor: pointer;
-            font-weight: 700;
-            box-shadow: 3px 3px 0px #1A1A1A;
-            transition: all 0.1s;
-        }
-
-        .option-card:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0px #1A1A1A;
-            background: var(--sidebar-cream);
-        }
-
-        .sub-pagination-dots-zone {
-            display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 14px;
-            padding: 15px 0;
-            border-top: 2px dashed #E2E8F0;
-            margin-top: auto;
-            flex-shrink: 0;
+            gap: 12px;
+            margin-top: 30px;
+            border-top: 2px dashed var(--border-color);
+            padding-top: 20px;
         }
 
-        .slider-dot {
+        .page-dot {
             width: 14px;
             height: 14px;
-            border: 3px solid var(--border-heavy);
+            border: 2px solid var(--border-color);
             border-radius: 50%;
-            background: #FFF;
+            background: var(--card-bg);
             cursor: pointer;
-            transition: all 0.1s;
+            transition: all 0.1s ease;
         }
 
-        .slider-dot.active {
-            background: var(--text-main);
+        .page-dot.active {
+            background: var(--border-color);
             transform: scale(1.2);
         }
 
-        .slider-dot.exam-dot {
-            border-color: var(--color-fail);
-            background: #FEF2F2;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: #B91C1C;
+        .page-dot.exam-node {
+            border-radius: 4px;
+            background: #FFD2D2;
         }
-
-        .slider-dot.exam-dot.active {
-            background: var(--color-fail);
-            color: #FFF;
-        }
-
-        @keyframes fadeInBox {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        .page-dot.exam-node.active {
+            background: var(--error-red);
         }
     </style>
 </head>
 <body>
 
-    <div class="tactical-navbar">
-        <div class="navbar-brand">
-            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典大廳</h1>
+    <!-- ========================================================================
+    1. TOP CONTAINER BAR (👑 NEO-BRUTALISM GLOBAL SHELL HEADER)
+    ======================================================================== -->
+    <header class="top-header">
+        <!-- 🎯 門面校準 2: 左上角 Headers 剛性替換為「初心者寶典」 -->
+        <div class="header-title" id="shell-logo">初心者寶典</div>
+        <div class="header-actions">
+            <div class="user-badge">👤 冒險者：Daniel Shih</div>
+            <button class="btn-toggle-lang active">TW</button>
+            <button class="btn-toggle-lang">EN</button>
+            <button class="btn-back" onclick="window.renderLobbyView()">返回首頁</button>
         </div>
-        <div class="navbar-controls">
-            <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
-            <div class="lang-switcher-wrapper">
-                <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
-                <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
+    </header>
+
+    <!-- ========================================================================
+    2. LEFT TACTICAL NAVIGATION BAR (🗺️ HARDCORE SIDEBAR TOPOLOGY)
+    ======================================================================== -->
+    <nav class="tactical-navbar">
+        <button class="btn-return-lobby" onclick="window.renderLobbyView()">↩ 返回戰術大廳</button>
+        <!-- 🎯 門面校準 3: 左側 Toolbar - "Level 1 展開" 剛性更名為 "Level 1 世界觀" -->
+        <div class="nav-section-title" id="shell-nav-title">🗺️ Level 1 世界觀</div>
+        <ul class="course-nav-list">
+            <li class="course-nav-item" id="nav-item-1-1" onclick="window.triggerLoadCourse('1-1')">1-1: 基本世界觀與三方賽局</li>
+            <li class="course-nav-item" id="nav-item-1-2" onclick="window.triggerLoadCourse('1-2')">1-2: 硬體生命週期與 NPI 交付</li>
+            <li class="course-nav-item" id="nav-item-1-3" onclick="window.triggerLoadCourse('1-3')">1-3: 工廠地理與 4M1E 線體通識</li>
+        </ul>
+    </nav>
+
+    <!-- ========================================================================
+    3. DYNAMIC CONTENT WORKSPACE CONTAINER (WORKSPACE CONTROLLER)
+    ======================================================================== -->
+    <main class="workspace-container" id="main-workspace">
+        
+        <!-- ─── 📊 VIEW 1: CENTRAL DASHBOARD LOBBY ─── -->
+        <div class="dashboard-lobby" id="view-dashboard-lobby">
+            <div class="dashboard-breadcrumbs">Dashboard</div>
+            <!-- 🎯 門面校準 4: "公會戰術天賦大廳" 剛性更名為 "初心者戰術大廳" -->
+            <h2 class="dashboard-header-title">初心者戰術大廳</h2>
+            <hr class="dashboard-divider">
+            
+            <div class="level-cards-grid">
+                <!-- LEVEL 1 PROGRESS ACCUMULATION CARD -->
+                <div class="level-card" style="border:3px solid var(--border-color); background: #FFFFFF;">
+                    <!-- 🎯 門面校準 5: 中間主進度卡片 "LEVEL 1 : 基礎通識" 剛性變更為 "LEVEL 1 : 世界觀" -->
+                    <div class="level-card-tag" style="font-weight:900; color: var(--border-color);">LEVEL 1 : 世界觀</div>
+                    <div class="level-card-percentage" id="lobby-l1-percent">0%</div>
+                    <div class="level-card-metric">完成指標: <span id="lobby-l1-count">0</span> / 3</div>
+                    <div class="level-progress-bar-bg">
+                        <div class="level-progress-bar-fill" id="lobby-l1-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                
+                <!-- STANDBY RESERVED METRIC CARDS LAYER (DUMMY SLOTS) -->
+                <div class="level-card" style="opacity:0.4;"><div class="level-card-tag">LEVEL 2 : 進階跨功能</div><div class="level-card-percentage">0%</div><div class="level-card-metric">完成指標: 0 / 0</div><div class="level-progress-bar-bg"><div class="level-progress-bar-fill"></div></div></div>
+                <div class="level-card" style="opacity:0.4;"><div class="level-card-tag">LEVEL 3 : 高階 TPM</div><div class="level-card-percentage">0%</div><div class="level-card-metric">完成指標: 0 / 0</div><div class="level-progress-bar-bg"><div class="level-progress-bar-fill"></div></div></div>
+                <div class="level-card" style="opacity:0.4;"><div class="level-card-tag">LEVEL 4 : 日常速通</div><div class="level-card-percentage">0%</div><div class="level-card-metric">完成指標: 0 / 0</div><div class="level-progress-bar-bg"><div class="level-progress-bar-fill"></div></div></div>
             </div>
-            <a href="index.html" class="back-btn">返回首頁</a>
+
+            <h3 class="sub-unit-section-title">子單元列表：</h3>
+            <div class="lobby-unit-row">
+                <div class="lobby-unit-block" onclick="window.triggerLoadCourse('1-1')"><span>1-1 基本世界觀與三方賽局</span><span class="lobby-unit-status" id="status-1-1">⏳ 待考核</span></div>
+                <div class="lobby-unit-block" onclick="window.triggerLoadCourse('1-2')"><span>1-2 硬體生命週期與 NPI 交付</span><span class="lobby-unit-status" id="status-1-2">⏳ 待考核</span></div>
+                <div class="lobby-unit-block" onclick="window.triggerLoadCourse('1-3')"><span>1-3 工廠地理與 4M1E 線體通識</span><span class="lobby-unit-status" id="status-1-3">⏳ 待考核</span></div>
+            </div>
         </div>
-    </div>
 
-    <div class="workspace-container">
-        <aside class="sidebar-panel">
-            <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
-            <div id="global-tree-root"></div>
-        </aside>
+        <!-- ─── 🎬 VIEW 2: ENGINE CONTENT PLAYER (RUN TIME RENDERER) ─── -->
+        <div class="engine-content-player" id="view-content-player">
+            <div class="player-page-indicator" id="runtime-page-index">PAGE 1 / 4</div>
+            <h2 class="player-course-title" id="runtime-page-title">加載中...</h2>
+            
+            <!-- Core Injected Content Slot -->
+            <div class="player-body-panel" id="runtime-embedded-html-box"></div>
+            
+            <!-- Dynamic Exam System Slot -->
+            <div class="player-exam-footer" id="runtime-exam-box" style="display:none;"></div>
 
-        <main class="content-panel">
-            <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
-                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
-                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">公會戰術天賦大廳</h2>
-            </div>
+            <!-- Global Pagination Indicators Array -->
+            <div class="player-pagination-row" id="runtime-dots-row"></div>
+        </div>
 
-            <div class="dashboard-view-hall" id="dashboard-menu-hall">
-                <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
-                <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
-                <div style="font-weight: 900; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">子單元列表：</div>
-                <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
-            </div>
+    </main>
 
-            <div class="document-canvas" id="textbook-viewport">
-                <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
-                <div class="textbook-scroll-box">
-                    <div id="lesson-content"></div>
-                </div>
-            </div>
-
-            <div class="exam-session-box" id="exam-viewport">
-                <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
-                    <span style="color:var(--color-fail);" id="exam-title-text">🔥 隨機能力考核大考</span>
-                    <span id="exam-counter">1 / 3</span>
-                </div>
-                <div class="exam-progress-bar"><div class="exam-progress-fill" id="exam-progress"></div></div>
-                <h3 id="exam-question-text" style="font-size:1.2rem; line-height:1.5; margin-bottom:25px; font-weight: 800;">載入中...</h3>
-                <div id="exam-options-container"></div>
-            </div>
-
-            <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
-        </main>
-    </div>
-
+    <!-- ========================================================================
+    4. SYSTEM STATE MANAGEMENT & RENDERING ENGINE (100% NON-DESTRUCTIVE MOTOR)
+    ======================================================================== -->
     <script>
-        // 👑 剛性綁定：您的 GAS Web App 實體基地台 URL 👑
-        const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
+        // 👑 全域狀態控制中心大腦
+        window.currentCourseId = null;
+        window.currentPageIdx = 0;
+        window.courseScoreMap = { "1-1": false, "1-2": false, "1-3": false };
 
-        const globalSubUnitRegistry = [
-            { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
-            { type: 'codex', levelNum: 1, subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'course_data_1-2.js' },
-            { type: 'codex', levelNum: 1, subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'course_data_1-3.js' }
-        ];
-
-        const globalLevelMetadata = [
-            { num: 1, name: 'LEVEL 1', label: '基礎通識' },
-            { num: 2, name: 'LEVEL 2', label: '進階跨功能' },
-            { num: 3, name: 'LEVEL 3', label: '高階 TPM' },
-            { num: 4, name: 'LEVEL 4', label: '日常速通' },
-            { num: 5, name: 'LEVEL 5', label: '供應鏈擴展' },
-            { num: 6, name: 'LEVEL 6', label: '未知領域' },
-            { num: 7, name: 'LEVEL 7', label: '終局修煉' }
-        ];
-
-        let selectedActiveLevelNum = 1; 
-        let activeCourseIdx = 0, activePageIdx = 0, activeFlowNodeIdx = 0;
-        let examActive = false, examCurrentQ = 0, examScoreCount = 0;
-
-        window.onload = () => {
-            renderGlobalTreeStructure();
-            routeController();
+        // 1. 戰術首頁渲染防線：即時盤點並運算全線製品通關良率
+        window.renderLobbyView = function() {
+            document.getElementById('view-content-player').style.display = 'none';
+            document.getElementById('view-dashboard-lobby').style.display = 'block';
+            
+            // 清除左側選單亮燈狀態
+            document.querySelectorAll('.course-nav-item').forEach(el => el.classList.remove('active'));
+            
+            let passCount = 0;
+            if(window.courseScoreMap["1-1"]) { passCount++; document.getElementById('status-1-1').innerText = "✅ 已通關"; }
+            if(window.courseScoreMap["1-2"]) { passCount++; document.getElementById('status-1-2').innerText = "✅ 已通關"; }
+            if(window.courseScoreMap["1-3"]) { passCount++; document.getElementById('status-1-3').innerText = "✅ 已通關"; }
+            
+            let percentage = Math.round((passCount / 3) * 100);
+            document.getElementById('lobby-l1-percent').innerText = `${percentage}%`;
+            document.getElementById('lobby-l1-count').innerText = passCount;
+            document.getElementById('lobby-l1-fill').style.width = `${percentage}%`;
         };
 
-        function renderGlobalTreeStructure() {
-            const root = document.getElementById('global-tree-root'); 
-            root.innerHTML = '';
-            const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
+        // 2. 高相容動態解包載入器：發動隨機時間戳防禦，清空瀏覽器快取呆料
+        window.triggerLoadCourse = function(courseId) {
+            window.currentCourseId = courseId;
+            window.currentPageIdx = 0;
+
+            // 驅動側邊欄同步亮燈
+            document.querySelectorAll('.course-nav-item').forEach(el => el.classList.remove('active'));
+            const activeNav = document.getElementById(`nav-item-${courseId}`);
+            if (activeNav) activeNav.classList.add('active');
+
+            // 銷毀歷史殘留物件
+            window.codexCourseEngineData = null;
+
+            // 移除舊的腳本防堵記憶體淤泥
+            const oldScript = document.getElementById('runtime-data-script');
+            if (oldScript) oldScript.remove();
+
+            const script = document.createElement('script');
+            script.id = 'runtime-data-script';
+            script.src = `course_data_${courseId}.js?v=${Date.now()}`; // RISK-FREE TIMESTAMP印刷
             
-            presentLevels.forEach(lvlNum => {
-                const subset = globalSubUnitRegistry.filter(u => u.levelNum === lvlNum);
-                const block = document.createElement('div'); 
-                block.className = 'menu-category-block';
-                block.innerHTML = `
-                    <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} 展開</button>
-                    <div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">
-                        ${subset.map(u => `<button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}
-                    </div>`;
-                root.appendChild(block);
-            });
-        }
-
-        function toggleMenuSection(id) { 
-            const el = document.getElementById(id); 
-            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
-        }
-
-        function routeController(directType, directC) {
-            document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：Daniel Shih`;
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const paramC = directC || urlParams.get('c');
-            const paramType = directType || urlParams.get('type') || 'codex';
-
-            if (!paramC) {
-                document.getElementById('cdx-page-header-zone').style.display = 'block'; 
-                document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
-                document.getElementById('current-chapter-name').innerText = "公會戰術天賦大廳";
-                document.getElementById('dashboard-menu-hall').style.display = 'block'; 
-                document.getElementById('textbook-viewport').style.display = 'none'; 
-                document.getElementById('exam-viewport').style.display = 'none'; 
-                document.getElementById('universal-dots-bar').style.display = 'none';
-                renderMultiLevelHubDashboard();
-            } else {
-                document.getElementById('dashboard-menu-hall').style.display = 'none'; 
-                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
-                const leaf = document.getElementById(`lf-${paramType}-${paramC}`); 
-                if (leaf) leaf.classList.add('active'); 
-                injectContentPackScript(paramType, paramC);
-            }
-        }
-
-        function renderMultiLevelHubDashboard() {
-            const deckRow = document.getElementById('global-level-flex-deck');
-            const grid = document.getElementById('l1-cards-grid'); 
-            if (!deckRow || !grid) return;
-            
-            deckRow.innerHTML = ''; 
-            grid.innerHTML = '';
-            
-            globalLevelMetadata.forEach(lvl => {
-                const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num); 
-                let total = subUnitsInLvl.length, done = 0;
-                subUnitsInLvl.forEach(u => { 
-                    if (localStorage.getItem(`codex-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') done++; 
-                });
-                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-                deckRow.innerHTML += `
-                    <div class="progress-card-master ${lvl.num===selectedActiveLevelNum?'active-level':''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();">
-                        <div class="progress-label">${lvl.name} : ${lvl.label}</div>
-                        <div class="progress-percentage">${pct}%</div>
-                        <div class="progress-stats">完成指標: ${done} / ${total}</div>
-                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%;"></div></div>
-                    </div>`;
-            });
-
-            const filteredUnits = globalSubUnitRegistry.filter(u => u.levelNum === selectedActiveLevelNum);
-            filteredUnits.forEach(unit => {
-                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
-                const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
-                grid.innerHTML += `
-                    <div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span>
-                            <h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
-                        </div>
-                        <div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isClear ? `✅ [通過]` : '⏳ 待考核'}</div>
-                    </div>`;
-            });
-        }
-
-        function switchUnit(type, subUnitId, lvlNum) { 
-            examActive = false; 
-            selectedActiveLevelNum = lvlNum; 
-            activeCourseIdx = 0; 
-            activePageIdx = 0; 
-            activeFlowNodeIdx = 0; 
-            window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); 
-            routeController(type, subUnitId); 
-        }
-
-        function exitToDashboardMenu() { 
-            examActive = false; 
-            window.history.pushState(null, '', window.location.pathname); 
-            routeController(null, null); 
-        }
-
-        function injectContentPackScript(type, packId) {
-            window.codexCourseEngineData = []; 
-            const old = document.getElementById('dynamic-course-pack'); 
-            if (old) old.remove();
-            
-            const script = document.createElement('script'); 
-            script.id = 'dynamic-course-pack'; 
-            script.src = `${globalSubUnitRegistry.find(u=>u.subUnitId===packId).file}?v=${Date.now()}`;
-            script.onload = () => { initEngine(); }; 
-            document.head.appendChild(script);
-        }
-
-        function initEngine() {
-            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) { 
-                document.getElementById('current-chapter-name').innerText = "數據解讀失敗"; 
-                return; 
-            }
-            loadCourseState(activeCourseIdx, activePageIdx);
-        }
-
-        function exitExamToPage(pIdx) { 
-            examActive = false; 
-            examCurrentQ = 0; 
-            examScoreCount = 0; 
-            activeFlowNodeIdx = 0; 
-            loadCourseState(activeCourseIdx, pIdx); 
-        }
-
-        function loadCourseState(cIdx, pIdx) {
-            activeCourseIdx = cIdx; 
-            const course = window.codexCourseEngineData[cIdx]; 
-            const dotsBar = document.getElementById('universal-dots-bar'); 
-            dotsBar.innerHTML = '';
-            
-            if (examActive) {
-                document.getElementById('textbook-viewport').style.display = 'none'; 
-                document.getElementById('exam-viewport').style.display = 'block'; 
-                document.getElementById('universal-dots-bar').style.display = 'flex';
-                course.subPages.forEach((_, sIdx) => { 
-                    dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; 
-                }); 
-                dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; 
-                runExamEngine();
-            } else {
-                document.getElementById('textbook-viewport').style.display = 'flex'; 
-                document.getElementById('exam-viewport').style.display = 'none'; 
-                document.getElementById('universal-dots-bar').style.display = 'flex';
-                
-                activePageIdx = pIdx; 
-                const page = course.subPages[pIdx]; 
-                document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; 
-                document.getElementById('current-chapter-name').innerText = page.title;
-                
-                let targetedText = page.text;
-                let targetedFlow = page.diagramFlowArray;
-                
-                const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
-                if (flowRenderer && targetedFlow && targetedFlow.length > 0) {
-                    flowRenderer.style.display = 'flex'; 
-                    flowRenderer.innerHTML = '';
-                    targetedFlow.forEach((node, nIdx) => {
-                        flowRenderer.innerHTML += `<div class="flow-node-block ${nIdx===activeFlowNodeIdx?'active-node':''}" onclick="activeFlowNodeIdx=${nIdx};loadCourseState(${cIdx},${pIdx})">${node.name}</div>`;
-                        if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
-                    });
-                } else if (flowRenderer) { 
-                    flowRenderer.style.display = 'none'; 
-                }
-
-                let compiledHtml = "";
-                if (targetedFlow && targetedFlow.length > 0) {
-                    if (targetedFlow[activeFlowNodeIdx]) {
-                        compiledHtml = `
-                            <div class="textbook-section-block">
-                                <div style="line-height:1.6;">${targetedFlow[activeFlowNodeIdx].text}</div>
-                            </div>`;
-                    }
+            script.onload = function() {
+                if (window.codexCourseEngineData && window.codexCourseEngineData[0]) {
+                    window.executeRenderPlayer();
                 } else {
-                    compiledHtml = `<div style="line-height: 1.6; font-size: 0.88rem;">${targetedText || ""}</div>`;
+                    window.handleDecodeFailure(courseId, "解包合流契約偏位");
                 }
-                document.getElementById('lesson-content').innerHTML = compiledHtml;
+            };
+            script.onerror = function() {
+                window.handleDecodeFailure(courseId, "找不到實體數據文件");
+            };
+            document.body.appendChild(script);
+        };
 
-                course.subPages.forEach((_, sIdx) => { 
-                    dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="exitExamToPage(${sIdx})"></div>`; 
-                }); 
-                dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
-            }
-        }
+        // 3. 故障隔離安全閥
+        window.handleDecodeFailure = function(courseId, reason) {
+            document.getElementById('runtime-page-title').innerText = "數據解讀失敗";
+            document.getElementById('runtime-embedded-html-box').innerHTML = `
+                <div style="border:4px solid var(--border-color); background:#FFFDF2; padding:24px; border-radius:12px; box-shadow:var(--shadow-heavy);">
+                    <h3 style="color:var(--error-red); font-size:1.3rem; margin-bottom:12px;">⚠️ 核心解析引擎流產報告</h3>
+                    <p style="font-weight:700; font-size:0.9rem; line-height:1.6;">無法從地端加載 <span style="background:var(--brand-yellow); padding:2px 6px; border:1px solid #000; border-radius:4px;">course_data_${courseId}.js</span> 變數檔案。</p>
+                    <p style="margin-top:8px; font-weight:800; font-size:0.85rem; color:var(--text-muted);">流產根因：${reason}。請檢核該數據包結尾括號是否100%閉合導通。</p>
+                </div>
+            `;
+            document.getElementById('runtime-exam-box').style.display = 'none';
+            document.getElementById('runtime-dots-row').innerHTML = "";
+            document.getElementById('view-dashboard-lobby').style.display = 'none';
+            document.getElementById('view-content-player').style.display = 'block';
+        };
 
-        function enterExamMode() { 
-            examActive = true; 
-            examCurrentQ = 0; 
-            examScoreCount = 0; 
-            loadCourseState(activeCourseIdx, 0); 
-        }
+        // 4. 核心解包渲染器：100% 順暢轉化 subPages 陣列與內嵌 HTML 奶油卡片
+        window.executeRenderPlayer = function() {
+            document.getElementById('view-dashboard-lobby').style.display = 'none';
+            document.getElementById('view-content-player').style.display = 'block';
 
-        function runExamEngine() {
-            const course = window.codexCourseEngineData[activeCourseIdx]; 
-            if (examCurrentQ >= 3) { 
-                settleExamPayload(); 
-                return; 
-            }
-            const qData = course.examVault[examCurrentQ]; 
-            document.getElementById('current-chapter-id').innerText = "EXAM MODE"; 
-            document.getElementById('current-chapter-name').innerText = "隨機能力考核大考"; 
-            document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`; 
-            document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`; 
-            document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
-            
-            const container = document.getElementById('exam-options-container'); 
-            container.innerHTML = qData.o.map((opt, idx) => `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`).join('');
-        }
+            const coursePayload = window.codexCourseEngineData[0];
+            const subPagesArray = coursePayload.subPages || [];
+            const totalDataPages = subPagesArray.length;
+            const hasExam = (coursePayload.examVault && coursePayload.examVault.length > 0);
+            const totalTotalNodes = totalDataPages + (hasExam ? 1 : 0);
 
-        function submitAnswer(idx) { 
-            const course = window.codexCourseEngineData[activeCourseIdx]; 
-            if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } 
-            examCurrentQ++; 
-            runExamEngine(); 
-        }
-        
-        // 👑 正向獨立新分頁盲推：純單向如實拋送至 Google Sheet，最穩定的封牌開線架構 👑
-        function settleExamPayload() {
-            examActive = false; 
-            const course = window.codexCourseEngineData[activeCourseIdx];
-            const storageKey = "L1-A" + course.courseId.split('-')[1];
-            
-            let finalStatus = "";
-            if (examScoreCount < 2) {
-                alert("💥 失敗重考");
-                finalStatus = "失敗重考";
-                localStorage.setItem(`codex-${storageKey}-clear`, 'false');
-                localStorage.setItem(`talent-${storageKey}-grade`, '失敗重考');
+            if (window.currentPageIdx < totalDataPages) {
+                // 📝 內容節點渲染
+                document.getElementById('runtime-exam-box').style.display = 'none';
+                document.getElementById('runtime-embedded-html-box').style.display = 'block';
+                
+                document.getElementById('runtime-page-index').innerText = `PAGE ${window.currentPageIdx + 1} / ${totalTotalNodes}`;
+                
+                const targetPageData = subPagesArray[window.currentPageIdx];
+                document.getElementById('runtime-page-title').innerText = targetPageData.title || "未命名戰術分頁";
+                document.getElementById('runtime-embedded-html-box').innerHTML = targetPageData.text || "";
             } else {
-                alert("🏆 通過");
-                finalStatus = "通過";
-                localStorage.setItem(`codex-${storageKey}-clear`, 'true');
-                localStorage.setItem(`talent-${storageKey}-grade`, '通過');
+                // 📝 題庫大考節點渲染
+                document.getElementById('runtime-embedded-html-box').style.display = 'none';
+                document.getElementById('runtime-exam-box').style.display = 'block';
+                
+                document.getElementById('runtime-page-index').innerText = `PAGE ${totalTotalNodes} / ${totalTotalNodes}`;
+                document.getElementById('runtime-page-title').innerText = `🔥 隨機能力考核大考 (1-1 完璧通關解鎖防線)`;
+                
+                window.executeRenderExamSection(coursePayload.examVault);
             }
 
-            const cleanId = course.courseId.replace("L", "").trim();
-            const currentRegistry = globalSubUnitRegistry.find(function(u) { return u.subUnitId === cleanId; });
+            // 🧭 刷新底部動態分頁點網格（黃金對位）
+            const dotsRow = document.getElementById('runtime-dots-row');
+            dotsRow.innerHTML = "";
+            for (let i = 0; i < totalTotalNodes; i++) {
+                const dot = document.createElement('div');
+                dot.className = "page-dot";
+                if (i === window.currentPageIdx) dot.classList.add('active');
+                if (i === totalDataPages) dot.classList.add('exam-node'); // 大考節點方塊特徵
+                
+                dot.onclick = function() {
+                    window.currentPageIdx = i;
+                    window.executeRenderPlayer();
+                };
+                dotsRow.appendChild(dot);
+            }
+        };
+
+        // 5. 大考渲染防線
+        window.executeRenderExamSection = function(vault) {
+            const box = document.getElementById('runtime-exam-box');
+            box.innerHTML = `<div class="exam-title-bar"><span>⚔️ 產線實戰現勘評審會</span><span>隨機亂序抽測站 (唯讀)</span></div>`;
             
-            let resolvedType = "Beginner Codex";
-            if (currentRegistry && currentRegistry.type === 'handbook') { resolvedType = "Handbook Course"; }
+            vault.forEach((qItem, qIdx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = "exam-q-box";
+                qDiv.innerHTML = `<div class="exam-q-text">${qIdx + 1}. ${qItem.q}</div>`;
+                
+                const optRow = document.createElement('div');
+                optRow.className = "exam-option-row";
+                
+                qItem.o.forEach((optText, optIdx) => {
+                    const btn = document.createElement('button');
+                    btn.className = "exam-opt-btn";
+                    btn.id = `exam-btn-${qIdx}-${optIdx}`;
+                    btn.innerText = optText;
+                    btn.onclick = function() {
+                        window.tpmSubmitAnswer(qIdx, optIdx, qItem.a, qItem.o.length);
+                    };
+                    optRow.appendChild(btn);
+                });
+                
+                qDiv.appendChild(optRow);
+                box.appendChild(qDiv);
+            });
 
-            try {
-                // 🎯 拼接正向寫入的獨立 URL（action=push），在新視窗中安全加載並攜帶 Cookies 越牆
-                const finalPushUrl = GLOBAL_GAS_URL + 
-                    "?action=push" +
-                    "&courseId=" + encodeURIComponent(course.courseId) + 
-                    "&status=" + encodeURIComponent(finalStatus);
-                
-                // 開啟微型新分頁，後台大腦 V7.99 / V8.00 收到後會自動改寫看盤矩陣並在 0.9 秒內自毀關閉！
-                window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
-                
-            } catch(e) {
-                console.log("獨立正向航線擊發異常:", e);
+            // 常駐提交按鈕
+            const checkBtn = document.createElement('button');
+            checkBtn.className = "btn-back";
+            checkBtn.style.width = "100%";
+            checkBtn.style.marginTop = "20px";
+            checkBtn.style.padding = "14px";
+            checkBtn.style.background = var(--border-color);
+            checkBtn.style.color = "#FFF";
+            checkBtn.style.fontSize = "0.95rem";
+            checkBtn.innerText = "⚡ 送交評審會：核定此單元通關資質";
+            checkBtn.onclick = function() {
+                window.tpmVerifyFinalScore(vault);
+            };
+            box.appendChild(checkBtn);
+        };
+
+        // 6. 答題反饋動態亮燈狀態機
+        window.tpmSubmitAnswer = function(qIdx, selectedIdx, correctIdx, totalOpts) {
+            for (let i = 0; i < totalOpts; i++) {
+                const b = document.getElementById(`exam-btn-${qIdx}-${i}`);
+                if (b) {
+                    b.style.background = "#FFFFFF";
+                    b.style.color = "var(--text-dark)";
+                    b.removeAttribute('data-selected');
+                }
+            }
+            const activeBtn = document.getElementById(`exam-btn-${qIdx}-${selectedIdx}`);
+            if (activeBtn) {
+                activeBtn.style.background = "var(--border-color)";
+                activeBtn.style.color = "#FFFFFF";
+                activeBtn.setAttribute('data-selected', selectedIdx);
+            }
+        };
+
+        // 7. 鋼鐵直通良率判定防線
+        window.tpmVerifyFinalScore = function(vault) {
+            let totalQuestions = vault.length;
+            let correctCount = 0;
+            let unselectedCount = 0;
+
+            vault.forEach((qItem, qIdx) => {
+                let chosen = -1;
+                for (let i = 0; i < qItem.o.length; i++) {
+                    const b = document.getElementById(`exam-btn-${qIdx}-${i}`);
+                    if (b && b.hasAttribute('data-selected')) {
+                        chosen = i;
+                        break;
+                    }
+                }
+                if (chosen === -1) { unselectedCount++; }
+                else if (chosen === qItem.a) { correctCount++; }
+            });
+
+            if (unselectedCount > 0) {
+                alert(`⚠️ 評審報告攔截：尚有 ${unselectedCount} 道實戰題目未作答，禁止強行結關！`);
+                return;
             }
 
-            // 大廳主網頁一秒直接切回 Dashboard 大廳，提供最流暢的使用者體驗
-            exitToDashboardMenu();
-        }
+            if (correctCount === totalQuestions) {
+                alert("🎉 完璧通關！評審會核定一次直通率 100%！Level 1 世界觀資質天賦成功解鎖！");
+                window.courseScoreMap[window.currentCourseId] = true;
+                window.renderLobbyView();
+            } else {
+                alert(`❌ 評審就地駁回！答對題數：${correctCount} / ${totalQuestions}。線體發生過量不良製品拋料，請重新除錯攻堅！`);
+                window.executeRenderPlayer(); // 原位洗牌重刷清空
+            }
+        };
+
+        // 初始加載大廳
+        window.onload = function() {
+            window.renderLobbyView();
+        };
     </script>
 </body>
 </html>
