@@ -152,24 +152,20 @@ var courseData = [
             name: "Dual Sourcing", 
             fullName: "Dual Sourcing Strategy", 
             meaning: "雙料源分散斷料風險戰術。同一個零件認證兩家供應商，打破獨家價格壟斷，提升採購議價彈性。" 
-          },
-          { 
-            name: "Pin-to-Pin", 
-            fullName: "Pin-to-Pin Compatibility", 
-            meaning: "腳位完全導通無縫相容。指二線原物料元件的微觀物理外形、尺寸與引腳位置與一線完全契合，工廠不需修改 Layout 即可代償切換。" 
           }
+          // 🎯 已精確原位移除 Pin-to-Pin 呆料
         ]
       },
       {
-        tabName: "COA (出廠檢驗)",
-        what: "監督原物料供應商在貨物出廠前隨貨附帶的真實品質檢驗憑證（Certificate of Analysis），確保規格合規。",
-        purpose: "在最前端對供應商產出的晶片或材料進行基礎黑箱數據把關，防止大批量惡性不良零件流入跨國物流鏈。",
-        expectation: "原廠隨貨憑證 100% 齊全，出廠外觀與電性測量數據完全符合買賣雙方最初簽核的藍圖標準。",
+        tabName: "OQC (出廠檢驗)", // 🎯 正式更名為 OQC
+        what: "監督原物料供應商在貨物出廠前實施的最後成品品質檢驗（Outgoing Quality Control），確保品質合格並要求隨貨附帶出廠檢驗報告。",
+        purpose: "在物料離開供應商大門前進行第一道品質防線攔截，防堵劣質缺陷品污染跨國供應物流鏈。",
+        expectation: "進料一次直通，原廠出貨合格率穩定維持在 99.95% 以上。",
         keywords: [
           { 
-            name: "COA 報告", 
-            fullName: "Certificate of Analysis", 
-            meaning: "原廠材質/電性檢驗合格書。用以追溯物料批次初始物理特性，是硬體品質防禦的第一道文字裝甲。" 
+            name: "OQC 報告", 
+            fullName: "Outgoing Quality Control Report", 
+            meaning: "出廠檢驗報告。隨貨同行的品質憑證，記錄了該批次零件的出廠物理特徵與關鍵尺寸實測值。" 
           },
           { 
             name: "限度樣品", 
@@ -197,15 +193,20 @@ var courseData = [
         ]
       },
       {
-        tabName: "IQC (進料品保)",
-        what: "在代工廠端（EMS）對所有送抵工廠倉庫的原物料實施抽樣核檢（Incoming Quality Control）。",
-        purpose: "在最前端強行攔截因跨境運輸震動或原廠漏檢而混入的缺陷呆料，嚴防劣質零件污染組裝線。",
-        expectation: "工廠 IQC 端的量測治具與檢驗規格與原廠 OQC 100% 校準咬合，達成缺陷零件零漏檢。",
+        tabName: "IQC (進料品保)", // 🎯 重工業級擴充完畢
+        what: "這【絕對不是】供應商自家的檢驗，而是由我們代工廠/EMS廠這邊主導、在工廠門口架設的鋼鐵防線（Incoming Quality Control）。針對所有送抵工廠倉庫的實體原物料、晶片、外殼，實施最嚴格的實體抽樣核檢。",
+        purpose: "在最前端強行攔截因跨境運輸震動、或原廠 OQC 漏檢而混入的缺陷呆料，確保只有 100% 完美的零件能流向生產線，徹底杜絕不良零件一上線就引發整條線癱瘓流產的連鎖災難。",
+        expectation: "工廠 IQC 端的量測治具、電性手法與檢驗規格，與後段實際生產線 100% 完全校準咬合，達成缺陷零件零漏檢。",
         keywords: [
           { 
-            name: "IQC 抽驗", 
-            fullName: "Incoming Quality Control", 
-            meaning: "進料檢驗。原物料進入生產線前的最後品質裝甲，不合格者一律在廠門口剛性拒收退貨。" 
+            name: "尺寸合規基準", // 🎯 新增關鍵詞
+            fullName: "Dimensional Tolerance Verification", 
+            meaning: "運用精密二次元或三次元 OMM 機台，嚴格抽向量測進料結構件之物理外觀。確認實體尺寸精確落於標準圖面公差鏈範圍內，杜絕因射出成型形變引發後續防水結構幾何崩潰。" 
+          },
+          { 
+            name: "測站方法同步", // 🎯 新增關鍵詞
+            fullName: "Test Methodology Synchronization", 
+            meaning: "工廠 IQC 在抽驗原物料時所套用的量測手法、電路硬體治具與軟體測試演算法，必須與生產線後段的實體量產測站保持 100% 剛性同步，徹底封死因兩端測試方法不對位引發的誤判或漏檢盲區。" 
           },
           { 
             name: "黃金樣機", 
