@@ -496,7 +496,7 @@
             color: #FFF;
         }
 
-        @keyframes fadeInBox {
+        @border-heavy {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -562,14 +562,16 @@
         // 👑 剛性綁定：您的 GAS Web App 實體基地台 URL 👑
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
+        // 🎯 剛性焊接點: 將 1-4 完美補登註冊進看盤名冊中
         const globalSubUnitRegistry = [
             { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
             { type: 'codex', levelNum: 1, subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'course_data_1-2.js' },
-            { type: 'codex', levelNum: 1, subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'course_data_1-3.js' }
+            { type: 'codex', levelNum: 1, subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'course_data_1-3.js' },
+            { type: 'codex', levelNum: 1, subUnitId: '1-4', title: '1-4: 終端市場調查與產品規格定義', file: 'course_data_1-4.js' }
         ];
 
         const globalLevelMetadata = [
-            // 🎯 抽換項目 4: 中間卡片標籤由「基礎通識」剛性更名為「世界觀」
+            // 🎯 門面變更點 3: LEVEL 1 標籤由「基礎通識」原地更名為「世界觀」
             { num: 1, name: 'LEVEL 1', label: '世界觀' },
             { num: 2, name: 'LEVEL 2', label: '進階跨功能' },
             { num: 3, name: 'LEVEL 3', label: '高階 TPM' },
@@ -621,6 +623,7 @@
             if (!paramC) {
                 document.getElementById('cdx-page-header-zone').style.display = 'block'; 
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
+                // 🎯 門面變更點 5: 即時同步路由控制器的主標題為「初心者戰術大廳」
                 document.getElementById('current-chapter-name').innerText = "初心者戰術大廳";
                 document.getElementById('dashboard-menu-hall').style.display = 'block'; 
                 document.getElementById('textbook-viewport').style.display = 'none'; 
@@ -810,7 +813,6 @@
             runExamEngine(); 
         }
         
-        // 👑 正向獨立新分頁盲推
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
