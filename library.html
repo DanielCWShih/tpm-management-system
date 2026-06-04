@@ -161,6 +161,23 @@
             margin-bottom: 12px;
         }
 
+        .tree-level-toggle {
+            width: 100%;
+            background: var(--card-white);
+            border: 2px solid var(--border-heavy);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 0.9rem;
+            text-align: left;
+            cursor: pointer;
+            margin-bottom: 4px;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-main);
+        }
+
         .tree-main-toggle {
             background: var(--card-white);
             border: 3px solid var(--border-heavy);
@@ -188,7 +205,6 @@
             gap: 8px;
         }
 
-        /* 👑 Level 葉子切換鈕：改為書本目錄型態 👑 */
         .level-btn {
             background: var(--card-white);
             border: 2px solid var(--border-heavy);
@@ -235,12 +251,11 @@
         }
 
         .dashboard-view-hall {
-            display: block; /* 初始大廳 */
+            display: block; 
             height: 100%;
             overflow-y: auto;
         }
 
-        /* ─── ⚖️ 左右雙軌戰術分流觀測大盤 (辭典版) ─── */
         .document-canvas {
             flex: 1;
             overflow: hidden;
@@ -249,7 +264,6 @@
             gap: 24px;
         }
 
-        /* 左側：單詞索引列表 */
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
@@ -287,7 +301,6 @@
             box-shadow: 4px 4px 0px var(--border-heavy) !important;
         }
 
-        /* 右側：固定細節觀測儀 */
         .fixed-inspector-panel {
             width: 500px;
             border: 4px solid var(--border-heavy);
@@ -317,7 +330,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 大廳 Level 選擇卡 */
         .level-hero-card {
             border: 3px solid var(--border-heavy);
             border-radius: 12px;
@@ -367,15 +379,12 @@
             </div>
 
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
-                <div style="font-weight: 900; font-size: 1.1rem; margin-bottom: 15px;">📖 請選擇欲檢索之職能階層：</div>
-                <div class="level-cards-parallel-grid" id="category-selector-grid" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:15px;">
-                    </div>
+                <div style="font-weight: 900; font-size: 1.1rem; margin-bottom: 15px;">⌗ 請選擇欲檢索之職能階層：</div>
+                <div class="level-cards-parallel-grid" id="category-selector-grid" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:15px;"></div>
             </div>
 
             <div class="document-canvas" id="lexicon-viewport">
-                <div class="lexicon-index-column" id="lexicon-terms-list">
-                    </div>
-                
+                <div class="lexicon-index-column" id="lexicon-terms-list"></div>
                 <div class="fixed-inspector-panel" id="lexicon-inspector">
                     <div class="inspector-placeholder">
                         🎯 階層合流完成<br>請點擊左側單詞查看技術細節
@@ -387,8 +396,8 @@
 
     <script>
         // ========================================================================
-        // 👑 LEVEL 合流註冊名冊大盤 👑
-        // 我們將單元 (Unit) 降級為屬性，改以 LEVEL 為加載主體
+        // 👑 LEVEL 剛性註冊名冊大盤 👑
+        // 🎯 焊接修正：全面重定向至實體 library_data/ 專屬詞條庫檔案，引爆全量單詞！
         // ========================================================================
         const libraryLevelRegistry = [
             { 
@@ -397,10 +406,8 @@
                 levelNum: 1, 
                 levelName: '基礎通識大辭典',
                 files: [
-                    'beginner_codex_course/course_data_1-1.js',
-                    'beginner_codex_course/course_data_1-2.js',
-                    'beginner_codex_course/course_data_1-3.js',
-                    'beginner_codex_course/course_data_1-4.js'
+                    'library_data/library_data_beginner_1-1.js',
+                    'library_data/library_data_beginner_1-2.js'
                 ]
             },
             { 
@@ -408,14 +415,14 @@
                 catName: '初心者文獻', 
                 levelNum: 2, 
                 levelName: '進階工廠大辭典',
-                files: ['beginner_codex_course/course_data_2-1.js']
+                files: []
             },
             { 
                 category: 'beginner', 
                 catName: '初心者文獻', 
                 levelNum: 3, 
                 levelName: 'TPM思考邏輯辭典',
-                files: ['beginner_codex_course/course_data_3-1.js']
+                files: []
             },
             { 
                 category: 'handbook', 
@@ -429,17 +436,23 @@
             }
         ];
 
-        let currentActiveCategory = 'beginner';
-        let currentActiveLevel = null;
+        const globalCategoryMetadata = [
+            { id: 'beginner', name: '初心者' },
+            { id: 'adventure', name: '冒險者' },
+            { id: 'coordinator', name: '統籌者 (待開發)' },
+            { id: 'slayer', name: '屠龍者 (待開發)' }
+        ];
+
+        let selectedActiveTabType = 'beginner'; 
         let activeTermIdx = -1;
-        window.aggregatedTermsPool = []; // 全量詞條池
+        window.aggregatedTermsPool = []; 
 
         window.onload = () => {
             renderGlobalTree();
             renderDashboard();
         };
 
-        // 🎯 👑 側邊欄：收攏至階層維度
+        // 🎯 👑 變更點 2: 側邊欄按鈕徹底沖洗，移除「辭典」字樣，純淨輸出 LEVEL X
         function renderGlobalTree() {
             const root = document.getElementById('global-tree-root');
             root.innerHTML = '';
@@ -449,12 +462,16 @@
                 const levels = libraryLevelRegistry.filter(r => r.category === catId);
                 const block = document.createElement('div');
                 block.className = 'menu-category-block';
+                
+                const catMeta = globalCategoryMetadata.find(m => m.id === (catId === 'beginner' ? 'beginner' : 'adventure'));
+                const catLabelName = catMeta ? catMeta.name : '未知';
+
                 block.innerHTML = `
                     <div class="tree-main-toggle" onclick="toggleMenuSection('tree-${catId}')">
-                        <span>📖 ${levels[0].catName}</span>
+                        <span>📖 ${catLabelName}文獻</span>
                     </div>
                     <div id="tree-${catId}" class="tree-sub-group">
-                        ${levels.map(l => `<button class="level-btn" id="btn-L${catId}-${l.levelNum}" onclick="loadLevelLexicon('${catId}', ${l.levelNum})">LEVEL ${l.levelNum} 辭典 <span>➔</span></button>`).join('')}
+                        ${levels.map(l => `<button class="level-btn" id="btn-L${catId}-${l.levelNum}" onclick="loadLevelLexicon('${catId}', ${l.levelNum})">LEVEL ${l.levelNum} <span>➔</span></button>`).join('')}
                     </div>
                 `;
                 root.appendChild(block);
@@ -470,9 +487,11 @@
             const grid = document.getElementById('category-selector-grid');
             grid.innerHTML = '';
             libraryLevelRegistry.forEach(l => {
+                const catMeta = globalCategoryMetadata.find(m => m.id === (l.category === 'beginner' ? 'beginner' : 'adventure'));
+                const catLabelName = catMeta ? catMeta.name : '待開發';
                 grid.innerHTML += `
                     <div class="level-hero-card" onclick="loadLevelLexicon('${l.category}', ${l.levelNum})">
-                        <div style="font-family:monospace; font-weight:900; color:#94A3B8;">${l.category.toUpperCase()}</div>
+                        <div style="font-family:monospace; font-weight:900; color:#94A3B8;">${catLabelName.toUpperCase()}</div>
                         <div style="font-size:1.3rem; font-weight:900;">LEVEL ${l.levelNum}</div>
                         <div style="font-size:0.85rem; font-weight:800; color:var(--text-secondary);">${l.levelName}</div>
                     </div>
@@ -481,13 +500,12 @@
         }
 
         // ========================================================================
-        // 👑 核心引擎：多軌並行加載器 (Sequential Batch Loader) 👑
+        // 👑 核心合流大腦：多軌併行批次解包引擎 👑
         // ========================================================================
         async function loadLevelLexicon(catId, lvlNum) {
             const target = libraryLevelRegistry.find(r => r.category === catId && r.levelNum === lvlNum);
             if (!target) return;
 
-            // 視覺狀態重置
             currentActiveLevel = target;
             activeTermIdx = -1;
             window.aggregatedTermsPool = [];
@@ -499,15 +517,14 @@
             document.getElementById('lexicon-viewport').style.display = 'flex';
             document.getElementById('current-category-id').innerText = `${catId.toUpperCase()} / LEVEL ${lvlNum}`;
             document.getElementById('current-level-name').innerText = target.levelName;
-            document.getElementById('lexicon-terms-list').innerHTML = `<div class="inspector-placeholder">正在檢索 Level ${lvlNum} 全量文獻...</div>`;
+            document.getElementById('lexicon-terms-list').innerHTML = `<div class="inspector-placeholder">正在動態清算 LEVEL ${lvlNum} 全量文獻...</div>`;
 
-            // 發動批次載入遞迴
+            // Step 1: 異步逐層清洗、載入實體 .js 檔案
             await sequenceLoadScripts(target.files, 0);
 
-            // 合流 Supplementary 全球增補字典
+            // Step 2: 全球增補字典動態合流互鎖
             const suppKeyBase = (catId === 'beginner' ? 'codex' : 'handbook');
             target.files.forEach(filePath => {
-                // 從路徑抓取 ID (例如 1-1)
                 const match = filePath.match(/(\d-\d)/);
                 if (match) {
                     const unitId = match[0];
@@ -525,7 +542,6 @@
             renderLexiconList();
         }
 
-        // 遞迴按順序載入 JS 檔案並現地解包
         function sequenceLoadScripts(fileList, index) {
             return new Promise((resolve) => {
                 if (index >= fileList.length) {
@@ -536,10 +552,10 @@
                 const script = document.createElement('script');
                 script.src = `${fileList[index]}?v=${Date.now()}`;
                 script.onload = () => {
-                    // 解包目前變數
-                    const payload = (window.codexCourseEngineData && window.codexCourseEngineData.length > 0)
-                                    ? window.codexCourseEngineData
-                                    : window.libraryCourseEngineData;
+                    // 相容性解包：同時融合讀取 window 雙向主全域變數
+                    const payload = (window.libraryCourseEngineData && window.libraryCourseEngineData.length > 0)
+                                    ? window.libraryCourseEngineData
+                                    : window.codexCourseEngineData;
                     
                     if (payload && payload[0]) {
                         payload[0].subPages.forEach(page => {
@@ -552,27 +568,29 @@
                             }
                         });
                     }
-                    // 清空變數防止下一個檔案污染
+                    // 地端原位沖洗，嚴防跨檔變更相互污染
                     window.codexCourseEngineData = [];
                     window.libraryCourseEngineData = [];
                     
                     sequenceLoadScripts(fileList, index + 1).then(resolve);
                 };
                 script.onerror = () => {
-                    console.error("加載遺失:", fileList[index]);
+                    console.log("跳過空白或待開發檔案:", fileList[index]);
                     sequenceLoadScripts(fileList, index + 1).then(resolve);
                 };
                 document.head.appendChild(script);
             });
         }
 
-        // 👑 渲染左側列表
         function renderLexiconList() {
             const list = document.getElementById('lexicon-terms-list');
             list.innerHTML = '';
             
             if (window.aggregatedTermsPool.length === 0) {
-                list.innerHTML = `<div class="inspector-placeholder">該階層尚無術語存檔</div>`;
+                list.innerHTML = `
+                    <div style="border:2px dashed var(--border-heavy); background:#FFF; padding:4px; text-align:center; border-radius:6px; font-weight:900; color:var(--text-secondary); width:100%; margin-top:20px;">
+                        ⚡ 該 LEVEL 階層文獻尚處於待開發排產階段 ⚡
+                    </div>`;
                 return;
             }
 
@@ -580,7 +598,7 @@
                 const row = document.createElement('div');
                 row.className = `lexicon-term-row ${idx === activeTermIdx ? 'active-term' : ''}`;
                 const prefix = term.isSupp ? "🔥" : "📘";
-                row.innerHTML = `<span>${prefix} ${term.name.replace(/🔑/g,'').trim()}</span> <span>➔</span>`;
+                row.innerHTML = `<span>${prefix} ${term.name.replace(/🔑|關鍵詞：/g,'').trim()}</span> <span>➔</span>`;
                 row.onclick = () => {
                     activeTermIdx = idx;
                     renderLexiconList();
@@ -593,7 +611,7 @@
         function showDetail(html) {
             const inspector = document.getElementById('lexicon-inspector');
             inspector.innerHTML = `
-                <div style="animation: fadeInBox 0.2s ease-out; line-height:1.7;">
+                <div style="animation: fadeInBox 0.15s ease-out; line-height:1.7; font-size:0.88rem;">
                     ${html}
                 </div>
             `;
