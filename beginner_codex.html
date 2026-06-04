@@ -562,16 +562,17 @@
         // 👑 剛性綁定：您的 GAS Web App 實體基地台 URL 👑
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
-        // 🎯 剛性焊接點: 將 1-4 完美補登註冊進看盤名冊中
+        // 🎯 👑 註冊名冊大盤：數據路徑全面重定向至新車間 beginner_codex_course/ 👑
         const globalSubUnitRegistry = [
-            { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'course_data_1-1.js' },
-            { type: 'codex', levelNum: 1, subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'course_data_1-2.js' },
-            { type: 'codex', levelNum: 1, subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'course_data_1-3.js' },
-            { type: 'codex', levelNum: 1, subUnitId: '1-4', title: '1-4: 終端市場調查與產品規格定義', file: 'course_data_1-4.js' }
+            { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'beginner_codex_course/course_data_1-1.js' },
+            { type: 'codex', levelNum: 1, subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'beginner_codex_course/course_data_1-2.js' },
+            { type: 'codex', levelNum: 1, subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'beginner_codex_course/course_data_1-3.js' },
+            { type: 'codex', levelNum: 1, subUnitId: '1-4', title: '1-4: 終端市場調查與產品規格定義', file: 'beginner_codex_course/course_data_1-4.js' },
+            { type: 'codex', levelNum: 3, subUnitId: '3-1', title: '3-1: SYSTEM TPM 天職與 TechOps 核心', file: 'beginner_codex_course/course_data_3-1.js' }
         ];
 
+        // 🎯 門面變更點 3: 儀表板 Level 1~6 稱謂全面剛性同步更名
         const globalLevelMetadata = [
-            // 🎯 門面變更點 3: 依據您的要求全面完成 LEVEL 1 至 LEVEL 6 的文字更名
             { num: 1, name: 'LEVEL 1', label: '世界觀' },
             { num: 2, name: 'LEVEL 2', label: '進階工廠' },
             { num: 3, name: 'LEVEL 3', label: 'TPM思考邏輯' },
@@ -600,7 +601,6 @@
                 const block = document.createElement('div'); 
                 block.className = 'menu-category-block';
                 
-                // 🎯 尋找當前層級對應的元數據物件名稱
                 const currentLvlMeta = globalLevelMetadata.find(l => l.num === lvlNum);
                 const lvlLabelName = currentLvlMeta ? currentLvlMeta.label : '展開';
 
@@ -628,7 +628,7 @@
             if (!paramC) {
                 document.getElementById('cdx-page-header-zone').style.display = 'block'; 
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
-                // 🎯 門面變更點 5: 即時同步路由控制器的主標題為「初心者戰術大廳」
+                // 🎯 門面變更點 5: 同步化修正中央儀表板預設主標題為「初心者戰術大廳」
                 document.getElementById('current-chapter-name').innerText = "初心者戰術大廳";
                 document.getElementById('dashboard-menu-hall').style.display = 'block'; 
                 document.getElementById('textbook-viewport').style.display = 'none'; 
