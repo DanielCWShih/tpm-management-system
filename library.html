@@ -8,10 +8,10 @@
         /* ========================================================================
         REVISION HISTORY / VERSION LOG
         ========================================================================
-        2026-06-04 V11.30-AUTH-INTEGRATION: 👑 知識圖書館完全體（全域多階層頭銜連鎖同步版）
-        1. 絕殺身分去同步化：廢除原本硬編碼死鎖的 Daniel Shih 稱謂，改為與總部 100% 同步的動態戰印清算大腦。
-        2. 多階層狀態機：網格自動盤查 LocalStorage 數據，實時解包並動態升級「請登入/初心者/冒險者/統籌者」職能頭銜。
-        3. 3D 懸浮防火牆：100% 維持外襯四邊安全 Padding 緩衝，留足卡牌 3D 浮起像素空間，左側邊緣絕不切邊。
+        2026-06-04 V11.40-DYNAMIC-SaaS: 👑 知識圖書館終極動態完全體（多用戶最愛隔離版）
+        1. 數據隔離防線：將「我的最愛」快取金鑰與動態 Email 深度熱咬合。不同員工登入自動分流至獨立收藏夾，100% 絕殺跨用戶數據覆蓋大坑。
+        2. 變數防禦工程：宣告全域變數 GLOBAL_USER_EMAIL 與 currentActiveLevel，徹底修正隱式變數風險，確保異步線路 100% 安全通航。
+        3. 大師級排版對位：移除小標籤標籤，純淨輸出 A-Z 排序方塊網格，外襯安全 Padding 防火牆，最左側卡牌 3D 按壓絕不切邊。
         ========================================================================
         */
         :root {
@@ -376,6 +376,7 @@
             box-shadow: 5px 5px 0px var(--border-heavy);
         }
     </style>
+    <script src="library_data/library_supplementary.js?v=20260604"></script>
 </head>
 <body>
 
@@ -465,6 +466,9 @@
 
         let selectedActiveTabType = 'beginner'; 
         let activeTermIdx = -1;
+        let currentActiveLevel = null; // 🎯 修正點 1: 補齊常規全域變數宣告，嚴防隱式變數休克
+        let GLOBAL_USER_EMAIL = localStorage.getItem('tpm-user-current-email') || ""; // 🎯 修正點 2: 接通全域動態帳號，啟動數據隔離
+
         window.aggregatedTermsPool = []; 
         window.currentlyViewedTerm = null;
         window.isInsideFavoritesView = false;
@@ -598,6 +602,7 @@
             window.isInsideFavoritesView = false;
             activeTermIdx = -1;
             window.aggregatedTermsPool = [];
+            currentActiveLevel = target; // 原位同步指針
             
             document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-L${catId}-${lvlNum}`);
@@ -660,7 +665,9 @@
             if (categoryEl) categoryEl.innerText = `PERSONAL / FAVORITES`;
             if (levelEl) levelEl.innerText = `我的最愛收藏庫`;
 
-            window.aggregatedTermsPool = JSON.parse(localStorage.getItem('library-favorites-pool') || '[]');
+            // 🎯 修正點 3: 「我的最愛」獲取金鑰動態與 Email 互鎖綁定，達成跨用戶隔離
+            const favKey = GLOBAL_USER_EMAIL ? `library-favorites-pool_${GLOBAL_USER_EMAIL}` : 'library-favorites-pool';
+            window.aggregatedTermsPool = JSON.parse(localStorage.getItem(favKey) || '[]');
             
             window.aggregatedTermsPool.sort((a, b) => {
                 let nameA = getCleanTermName(a.name);
@@ -695,7 +702,7 @@
                     }
                     
                     const match = filePath.match(/(\d-\d)/);
-                    const unitLabel = match ? `Level ${match[0]}` : `Level ${currentActiveLevel.levelNum}`;
+                    const unitLabel = match ? `Level ${match[0]}` : `Level ${currentActiveLevel ? currentActiveLevel.levelNum : '1-1'}`;
 
                     combined.forEach(course => {
                         if (course.subPages) {
@@ -791,7 +798,9 @@
             const inspector = document.getElementById('lexicon-inspector');
             if (!inspector) return;
 
-            const favoritesPool = JSON.parse(localStorage.getItem('library-favorites-pool') || '[]');
+            // 🎯 修正點 4: showDetail 切換鈕讀取欄位改為動態動態特徵金鑰
+            const favKey = GLOBAL_USER_EMAIL ? `library-favorites-pool_${GLOBAL_USER_EMAIL}` : 'library-favorites-pool';
+            const favoritesPool = JSON.parse(localStorage.getItem(favKey) || '[]');
             const isFav = favoritesPool.some(f => f.name === term.name);
             const finalSourceLabel = term.sourceLabel || `Level ${currentActiveLevel ? currentActiveLevel.levelNum : '1-1'}`;
 
@@ -818,7 +827,9 @@
             const term = window.currentlyViewedTerm;
             if (!term) return;
 
-            let favoritesPool = JSON.parse(localStorage.getItem('library-favorites-pool') || '[]');
+            // 🎯 修正點 5: 寫入與點擊最愛時的儲存金鑰一併改寫為動態特徵金鑰
+            const favKey = GLOBAL_USER_EMAIL ? `library-favorites-pool_${GLOBAL_USER_EMAIL}` : 'library-favorites-pool';
+            let favoritesPool = JSON.parse(localStorage.getItem(favKey) || '[]');
             const index = favoritesPool.findIndex(f => f.name === term.name);
 
             if (index > -1) {
@@ -826,7 +837,7 @@
             } else {
                 favoritesPool.push(term); 
             }
-            localStorage.setItem('library-favorites-pool', JSON.stringify(favoritesPool));
+            localStorage.setItem(favKey, JSON.stringify(favoritesPool));
 
             const btn = document.getElementById('fav-toggle-btn');
             if (btn) {
@@ -849,7 +860,7 @@
         function exitToDashboard() {
             const menuHall = document.getElementById('dashboard-menu-hall');
             const viewport = document.getElementById('lexicon-viewport');
-            const categoryEl = document.getElementById('current-chapter-id');
+            const categoryEl = document.getElementById('current-category-id');
             const levelEl = document.getElementById('current-chapter-name');
 
             if (menuHall) menuHall.style.display = 'block';
