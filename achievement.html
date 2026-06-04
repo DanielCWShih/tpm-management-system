@@ -355,9 +355,9 @@
 
     <div class="workspace-container">
         <div class="achievement-tabs-deck">
-            <button class="tab-trigger-btn active-tab" id="tab-lvl-1" onclick="switchAchievementLevel(1)">【 初心者階層 L1 - 基礎通識 】</button>
-            <button class="tab-trigger-btn" id="tab-lvl-2" onclick="switchAchievementLevel(2)">【 冒險者階層 L2 - 進階通識 】</button>
-            <button class="tab-trigger-btn" id="tab-lvl-3" onclick="switchAchievementLevel(3)">【 傳奇專科 L3 - 高階領域 】</button>
+            <button class="tab-trigger-btn active-tab" id="tab-lvl-1" onclick="switchAchievementLevel(1)">【 初心者階層 L1 - 世界觀 】</button>
+            <button class="tab-trigger-btn" id="tab-lvl-2" onclick="switchAchievementLevel(2)">【 冒險者階層 L2 - 進階工廠 】</button>
+            <button class="tab-trigger-btn" id="tab-lvl-3" onclick="switchAchievementLevel(3)">【 傳奇專科 L3 - TPM思考邏輯 】</button>
         </div>
 
         <div class="achievement-scroll-viewport">
@@ -399,6 +399,17 @@
                 checkKey: "codex-L1-A3-clear",
                 color: "var(--rarity-rare)"
             },
+            // 🎯 剛性焊接：將 1-4 獨立關卡加載併入 Level 1 資料鏈大盤
+            {
+                levelNum: 1,
+                id: "ACH-L1-005",
+                badge: "📊",
+                title: "市場預言術",
+                desc: "參透終端市場大數據調研與用戶痛點，在有限預算下完美平衡產品定義與規格賽局。",
+                conditionHint: "通過單元 1-4 大考",
+                checkKey: "codex-L1-A4-clear",
+                color: "var(--rarity-rare)"
+            },
             {
                 levelNum: 1,
                 id: "ACH-L1-004",
@@ -421,12 +432,33 @@
                 checkKey: "codex-L2-A1-clear",
                 color: "var(--rarity-epic)"
             },
+            // 🎯 剛性焊接：將 handbook 1-1 與手冊最新拋料的 1-2 補登入冊
+            {
+                levelNum: 2,
+                id: "ACH-L2-003",
+                badge: "📕",
+                title: "職能天職大腦",
+                desc: "通讀系統 TPM 職能運作實戰手冊，掌握跨維度品質防線與製程剛性管控法規。",
+                conditionHint: "通過手冊 1-1 大考",
+                checkKey: "handbook-L1-A1-clear",
+                color: "var(--rarity-common)"
+            },
+            {
+                levelNum: 2,
+                id: "ACH-L2-004",
+                badge: "💧",
+                title: "防水結構防線",
+                desc: "在結構防水設計中強行導入 Worst-Case 模擬，徹底封死線體形變與幾何流產盲區。",
+                conditionHint: "通過手冊 1-2 大考",
+                checkKey: "handbook-L1-A2-clear",
+                color: "var(--rarity-rare)"
+            },
             {
                 levelNum: 2,
                 id: "ACH-L2-002",
-                badge: "💧",
+                badge: "🛡️",
                 title: "Worst-Case 破局者",
-                desc: "在結構防水設計中強行導入 Worst-Case 模擬，徹底封死線體形變流產雷區。",
+                desc: "常規版級工程師克星。精確演算最壞狀況與RSS統計模型，解鎖多零件公差鏈重疊大盤。",
                 conditionHint: "通過單元 2-2 結構試煉",
                 checkKey: "codex-L2-A2-clear",
                 color: "var(--rarity-legendary)"
@@ -466,10 +498,12 @@
             // 2. 身分與條件判定分流
             filteredAch.forEach(ach => {
                 let isUnlocked = false;
+                // 🎯 門面變更點 5: 大滿貫特殊鍵熔斷邏輯修正，必須 1-1, 1-2, 1-3, 1-4 四軌全面過閘放水！
                 if (ach.checkKey === "SPECIAL-L1-ALL") {
                     isUnlocked = (localStorage.getItem("codex-L1-A1-clear") === "true" && 
                                   localStorage.getItem("codex-L1-A2-clear") === "true" && 
-                                  localStorage.getItem("codex-L1-A3-clear") === "true");
+                                  localStorage.getItem("codex-L1-A3-clear") === "true" &&
+                                  localStorage.getItem("codex-L1-A4-clear") === "true");
                 } else {
                     isUnlocked = (localStorage.getItem(ach.checkKey) === "true");
                 }
