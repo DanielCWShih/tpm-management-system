@@ -6,7 +6,7 @@
     <title>職能手冊大廳 | System TPM Handbook Hub</title>
     <style>
         :root {
-            /* 👑 外襯粗獷主義核心色盤 (100% 對齊寶典大廳與總部) */
+            /* 👑 外襯粗獷主義核心色盤 */
             --bg-color: #FEF9E7;
             --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
@@ -57,6 +57,11 @@
             z-index: 1000;
         }
 
+        .navbar-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
         .navbar-controls {
             display: flex;
             align-items: center;
@@ -72,6 +77,37 @@
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
             white-space: nowrap;
+            transition: all 0.15s ease-out;
+        }
+
+        .lang-switcher-wrapper {
+            display: flex;
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            border-radius: var(--radius-sm);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            padding: 2px;
+        }
+
+        .lang-btn-core {
+            width: 50px;
+            height: 35px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.1s;
+        }
+
+        .lang-btn-core.active {
+            background: var(--text-main) !important;
+            color: white !important;
         }
 
         .back-btn {
@@ -349,7 +385,6 @@
             z-index: 1;
         }
 
-        /* 北歐極簡剛性圓點 */
         .map-node-dot {
             position: absolute;
             width: 24px;
@@ -687,9 +722,6 @@
             localStorage.setItem(`tpm-sandbox-unlocked-${activePackUnitId}`, JSON.stringify(unlockedNodesList));
         }
 
-        // ========================================================================
-        // 👑 換裝優化核心：動態戰爭迷霧與歷史腳印清算大腦 👑
-        // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
             const svgCanvas = document.getElementById('map-svg-canvas');
@@ -699,8 +731,6 @@
             svgCanvas.innerHTML = '';
 
             const tree = window.tpmSandboxScriptTree;
-
-            // 🎯 判定當前單元是否已經大滿貫通關 (解鎖終極全知視角)
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
             // 1. 繪製 SVG 戰術線路層
@@ -713,10 +743,8 @@
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
 
-                    // 🎯 迷霧過濾線路：如果未通關，且連線兩端有任何一端完全沒解鎖，則不渲染此線條！
                     if (!isUnitCleared && (!unlockedNodesList.includes(srcId) || !unlockedNodesList.includes(tarId))) return;
 
-                    const isLinePassed = passedNodesList.includes(srcId) && passedNodesList.includes(tarId);
                     const isLineActive = passedNodesList.includes(srcId) && unlockedNodesList.includes(tarId);
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -726,15 +754,12 @@
                     line.setAttribute("y2", tarPos.y);
 
                     if (isUnitCleared) {
-                        // 通關後的極簡灰色全知連線
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
                     } else if (isLineActive) {
-                        // 當前正在推進的亮黃色軌跡
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "2.5");
                     } else {
-                        // 失敗歷史存留的實心冷灰色歷史連線
                         line.setAttribute("stroke", "#E2E8F0");
                         line.setAttribute("stroke-width", "1.5");
                     }
@@ -747,7 +772,6 @@
                 const pos = nodeLayoutCoordinates[nodeId];
                 if (!pos) return;
 
-                // 🎯 迷霧過濾圓點：如果不是全知通關狀態，且地端快取未解鎖該節點，則直接剛性阻斷（完全不渲染）！
                 if (!isUnitCleared && !unlockedNodesList.includes(nodeId)) return;
 
                 const dot = document.createElement('div');
@@ -761,22 +785,19 @@
                 const isUnlocked = unlockedNodesList.includes(nodeId);
 
                 if (isUnitCleared) {
-                    // 🌟 大滿貫通關視角樣式：全量洗出節點，並微縮突顯失敗結局
                     if (nodeId === "WIN-NODE-CONQUER" || nodeId === "完美通關") {
                         dot.className += ' passed';
                     } else if (nodeId.includes("FAIL") || nodeId.includes("WARN")) {
-                        dot.style.backgroundColor = "#FCA5A5"; // 戰敗分流淡紅色
+                        dot.style.backgroundColor = "#FCA5A5"; 
                         dot.style.border = "1.5px solid #EF4444";
                     } else {
                         dot.className += ' passed';
                     }
                     if (nodeId === currentlySelectedNodeId) dot.className += ' active-target';
                 } else {
-                    // 🎮 常規考核視角樣式
                     if (isPassed) {
                         dot.className += ' passed';
                     } else if (isUnlocked) {
-                        // 失敗歷史腳印會以標準極簡灰色圓點存留在畫布上，當前挑戰節點發動黑環呼吸燈
                         if (nodeId === currentlySelectedNodeId) dot.className += ' active-target';
                     }
                 }
@@ -896,8 +917,6 @@
 
         window.executeSettleHandbookUnit = function(isWin) {
             if (!isWin) {
-                // 🎯 戰敗重來優化：清空當前的推進狀態，但「不刪除」已解鎖的未通關節點清單
-                // 這樣走失敗的路徑就會作為踩雷痕跡，永久留存顯影在地圖畫布上！
                 passedNodesList = [];
                 currentlySelectedNodeId = "START-NODE";
                 saveSandboxProgress();
@@ -906,7 +925,14 @@
                 return;
             }
 
-            // 成功通過，寫入總進度鋼印
+            // 🎯 剛性防火牆攔截機制
+            const checkLiveEmail = localStorage.getItem('tpm-user-current-email');
+            if (!checkLiveEmail || checkLiveEmail.trim() === "") {
+                alert("❌ 偵測到未登入身分！請先返回首頁完成企業 Email 認證，否則公會將拒絕保存您的實戰進度與 GAS 戰績。");
+                exitToDashboardMenu();
+                return;
+            }
+
             localStorage.setItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`, 'true');
             
             try {
@@ -921,9 +947,6 @@
             exitToDashboardMenu();
         };
 
-        // ========================================================================
-        // 👑 換裝定位點 2: 全域多階層頭銜連鎖同步大腦 (V11.50-AUTH-SHIELD) 👑
-        // ========================================================================
         (function() {
             const PILOT_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
 
