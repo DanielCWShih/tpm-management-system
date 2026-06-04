@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>知識圖書館 | System TPM Library Hub</title>
     <style>
-        /* ========================================================================
-        REVISION HISTORY / VERSION LOG
-        ========================================================================
-        2026-06-04 V11.50-AUTH-SHIELD: 👑 知識圖書館完全體（首頁登入防線與返回導航對位版）
-        1. 導航規格對位：遵照最高指示，右上角返回按鈕洗鏈修正為「返回首頁」，與公會總部全面接軌。
-        2. 首頁登入導引：未登入之身分狀態面板剛性更名為「首頁登入」，並維持單向常駐看板模式，不開放頁面直接點擊，守住單一登入點。
-        3. 隔離快取大腦：續存 A-Z 剛性排序方塊網格、多用戶最愛快取隔離與 Padding 防火牆，最左側卡牌 3D 按壓絕不切邊。
-        ========================================================================
-        */
         :root {
             --bg-color: #FEF9E7;
             --sidebar-cream: #FDF2D0;
@@ -174,23 +165,6 @@
         .menu-category-block {
             width: 100%;
             margin-bottom: 12px;
-        }
-
-        .tree-level-toggle {
-            width: 100%;
-            background: var(--card-white);
-            border: 2px solid var(--border-heavy);
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-weight: 900;
-            font-size: 0.9rem;
-            text-align: left;
-            cursor: pointer;
-            margin-bottom: 4px;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-main);
         }
 
         .tree-main-toggle {
@@ -402,7 +376,7 @@
 
         <main class="content-panel">
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
-                <span id="current-category-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">LEXICON INDEX</span>
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">LEXICON INDEX</span>
                 <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
             </div>
 
@@ -611,7 +585,7 @@
             document.getElementById('dashboard-menu-hall').style.display = 'none';
             document.getElementById('lexicon-viewport').style.display = 'flex';
             
-            const categoryEl = document.getElementById('current-category-id');
+            const categoryEl = document.getElementById('current-chapter-id');
             const levelEl = document.getElementById('current-chapter-name');
             if (categoryEl) categoryEl.innerText = `${catId.toUpperCase()} / LEVEL ${lvlNum}`;
             if (levelEl) levelEl.innerText = `LEVEL ${lvlNum} 大辭典`;
@@ -660,7 +634,7 @@
             document.getElementById('dashboard-menu-hall').style.display = 'none';
             document.getElementById('lexicon-viewport').style.display = 'flex';
             
-            const categoryEl = document.getElementById('current-category-id');
+            const categoryEl = document.getElementById('current-chapter-id');
             const levelEl = document.getElementById('current-chapter-name');
             if (categoryEl) categoryEl.innerText = `PERSONAL / FAVORITES`;
             if (levelEl) levelEl.innerText = `我的最愛收藏庫`;
@@ -703,6 +677,7 @@
                     const match = filePath.match(/(\d-\d)/);
                     const unitLabel = match ? `Level ${match[0]}` : `Level ${currentActiveLevel ? currentActiveLevel.levelNum : '1-1'}`;
 
+                    // 1. 常規線性課文解析
                     combined.forEach(course => {
                         if (course.subPages) {
                             course.subPages.forEach(page => {
@@ -735,6 +710,39 @@
                             });
                         }
                     });
+
+                    // 2. 🎯 雙軌導通升級：新版沙盒圖形拓撲地圖自動解包雷達！
+                    if (window.tpmSandboxScriptTree && Object.keys(window.tpmSandboxScriptTree).length > 0) {
+                        Object.keys(window.tpmSandboxScriptTree).forEach(nodeId => {
+                            const node = window.tpmSandboxScriptTree[nodeId];
+                            if (node.title && (node.text || node.question)) {
+                                const rawText = node.text || node.question;
+                                if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(node.title))) {
+                                    window.aggregatedTermsPool.push({
+                                        name: node.title,
+                                        text: `<h3>劇本節點：${node.title}</h3><div style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin:12px 0; font-weight:700;">沙盒模擬情境回放</div><div style="line-height:1.7; color:#475569;">${rawText}</div>`,
+                                        sourceLabel: `${unitLabel} (沙盒)`
+                                    });
+                                }
+                            }
+                        });
+                        window.tpmSandboxScriptTree = null; // 釋放快取防跨頁面溢出
+                    }
+
+                    // 3. 🎯 原生獨立辭典接口：允許會長直接在 js 尾端放 window.tpmStandaloneKeywords
+                    if (window.tpmStandaloneKeywords && window.tpmStandaloneKeywords.length > 0) {
+                        window.tpmStandaloneKeywords.forEach(kw => {
+                            if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(kw.name))) {
+                                window.aggregatedTermsPool.push({
+                                    name: kw.name,
+                                    text: kw.text,
+                                    sourceLabel: unitLabel
+                                });
+                            }
+                        });
+                        window.tpmStandaloneKeywords = null; // 原位重置
+                    }
+
                     window.codexCourseEngineData = [];
                     window.libraryCourseEngineData = [];
                 };
@@ -869,14 +877,10 @@
             renderDashboard();
         }
 
-        // ========================================================================
-        // 👑 換裝定位點 2: 全域多階層頭銜連鎖同步大腦 👑
-        // ========================================================================
         (function() {
             const PILOT_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
 
             function computeLocalUserRankTitle() {
-                // 🎯 變更點 3: 未登入提示文字剛性修改為「首頁登入」
                 if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "首頁登入", isLogged: false };
 
                 let nameStr = "Daniel Shih";
