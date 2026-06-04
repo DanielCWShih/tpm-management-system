@@ -506,7 +506,7 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典</h1>
+            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">冒險者手冊</h1>
         </div>
         <div class="navbar-controls">
             <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
@@ -527,7 +527,7 @@
         <main class="content-panel">
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
                 <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
-                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">職能手冊大廳</h2>
+                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">冒險者戰術大廳</h2>
             </div>
 
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
@@ -561,19 +561,21 @@
     <script>
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
-        // 🎯 剛性焊接點: handbook 資料重導向至「handbook_data_course/」車間資料夾
+        // 🔒 雙向互鎖手冊車間註冊名冊大盤
         const globalSubUnitRegistry = [
-            { type: 'handbook', levelNum: 1, subUnitId: '1-1', title: '1-1: 系統 TPM 職能運作實戰手冊', file: 'handbook_data_course/handbook_data_1-1.js' }
+            { type: 'handbook', levelNum: 1, subUnitId: '1-1', title: '1-1: 系統 TPM 職能運作實戰手冊', file: 'handbook_data_course/handbook_data_1-1.js' },
+            { type: 'handbook', levelNum: 1, subUnitId: '1-2', title: '1-2: 系統 TPM 職能運作實戰手冊二', file: 'handbook_data_course/handbook_data_1-2.js' }
         ];
 
+        // 🎯 門面變更點 3: 依據最高指令，將 Level 1 至 Level 7 的標籤全部更名為「待開發」
         const globalLevelMetadata = [
-            { num: 1, name: 'LEVEL 1', label: '世界觀' },
-            { num: 2, name: 'LEVEL 2', label: '進階工廠' },
-            { num: 3, name: 'LEVEL 3', label: 'TPM思考邏輯' },
-            { num: 4, name: 'LEVEL 4', label: '日常作業' },
-            { num: 5, name: 'LEVEL 5', label: '跨部門協調' },
-            { num: 6, name: 'LEVEL 6', label: '其他知識' },
-            { num: 7, name: 'LEVEL 7', label: '終局修煉' }
+            { num: 1, name: 'LEVEL 1', label: '待開發' },
+            { num: 2, name: 'LEVEL 2', label: '待開發' },
+            { num: 3, name: 'LEVEL 3', label: '待開發' },
+            { num: 4, name: 'LEVEL 4', label: '待開發' },
+            { num: 5, name: 'LEVEL 5', label: '待開發' },
+            { num: 6, name: 'LEVEL 6', label: '待開發' },
+            { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
         let selectedActiveLevelNum = 1; 
@@ -601,7 +603,7 @@
                 block.innerHTML = `
                     <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} ${lvlLabelName}</button>
                     <div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">
-                        ${subset.map(u => `<button class="leaf-btn" id="lf-handbook-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}
+                        ${subset.map(u => `<button class="leaf-btn" id="lf-${u.type}-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}
                     </div>`;
                 root.appendChild(block);
             });
@@ -622,7 +624,8 @@
             if (!paramC) {
                 document.getElementById('cdx-page-header-zone').style.display = 'block'; 
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
-                document.getElementById('current-chapter-name').innerText = "初心者戰術大廳";
+                // 🎯 門面變更點 4: 同步路由控制器的初始名稱為「冒險者戰術大廳」
+                document.getElementById('current-chapter-name').innerText = "冒險者戰術大廳";
                 document.getElementById('dashboard-menu-hall').style.display = 'block'; 
                 document.getElementById('textbook-viewport').style.display = 'none'; 
                 document.getElementById('exam-viewport').style.display = 'none'; 
@@ -692,20 +695,49 @@
             routeController(null, null); 
         }
 
+        // 🧠 核心加載大腦：完美封裝雙向互鎖防線與安全閥線路
         function injectContentPackScript(type, packId) {
             window.codexCourseEngineData = []; 
+            window.libraryCourseEngineData = [];
             const old = document.getElementById('dynamic-course-pack'); 
             if (old) old.remove();
             
             const script = document.createElement('script'); 
             script.id = 'dynamic-course-pack'; 
-            script.src = `${globalSubUnitRegistry.find(u=>u.subUnitId===packId).file}?v=${Date.now()}`;
+            
+            const currentUnit = globalSubUnitRegistry.find(u => u.type === type && u.subUnitId === packId);
+            if (!currentUnit) {
+                console.error("無法在註冊名冊中定位手冊:", type, packId);
+                return;
+            }
+            
+            const targetFile = currentUnit.file;
+            script.src = `${targetFile}?v=${Date.now()}`;
+            
             script.onload = () => { initEngine(); }; 
+            
+            script.onerror = () => {
+                document.getElementById('current-chapter-name').innerText = "數據解讀失敗 (404)";
+                document.getElementById('lesson-content').innerHTML = `
+                    <div style="border:4px solid var(--border-heavy); background:#FFFDF2; padding:24px; border-radius:8px; box-shadow:var(--shadow-tactical); margin-top:20px;">
+                        <h3 style="color:var(--color-fail); font-size:1.3rem; margin-bottom:12px;">⚠️ 核心解析引擎流產報告</h3>
+                        <p style="font-weight:800; font-size:0.95rem; line-height:1.6;">無法從地端加載路徑： <span style="background:var(--color-active-gold); padding:2px 6px; border:1px solid #000; border-radius:4px; font-family:monospace;">${targetFile}</span></p>
+                    </div>
+                `;
+                document.getElementById('textbook-viewport').style.display = 'flex';
+                document.getElementById('exam-viewport').style.display = 'none';
+                document.getElementById('universal-dots-bar').style.display = 'none';
+            };
+            
             document.head.appendChild(script);
         }
 
         function initEngine() {
-            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) { 
+            window.currentHandbookData = (window.codexCourseEngineData && window.codexCourseEngineData.length > 0) 
+                                        ? window.codexCourseEngineData 
+                                        : window.libraryCourseEngineData;
+
+            if (!window.currentHandbookData || window.currentHandbookData.length === 0) { 
                 document.getElementById('current-chapter-name').innerText = "數據解讀失敗"; 
                 return; 
             }
@@ -722,7 +754,7 @@
 
         function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx; 
-            const course = window.codexCourseEngineData[cIdx]; 
+            const course = window.currentHandbookData[cIdx]; 
             const dotsBar = document.getElementById('universal-dots-bar'); 
             dotsBar.innerHTML = '';
             
@@ -791,7 +823,7 @@
         }
 
         function runExamEngine() {
-            const course = window.codexCourseEngineData[activeCourseIdx]; 
+            const course = window.currentHandbookData[activeCourseIdx]; 
             if (examCurrentQ >= 3) { 
                 settleExamPayload(); 
                 return; 
@@ -808,7 +840,7 @@
         }
 
         function submitAnswer(idx) { 
-            const course = window.codexCourseEngineData[activeCourseIdx]; 
+            const course = window.currentHandbookData[activeCourseIdx]; 
             if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } 
             examCurrentQ++; 
             runExamEngine(); 
@@ -816,7 +848,7 @@
         
         function settleExamPayload() {
             examActive = false; 
-            const course = window.codexCourseEngineData[activeCourseIdx];
+            const course = window.currentHandbookData[activeCourseIdx];
             const storageKey = "L1-A" + course.courseId.split('-')[1];
             
             let finalStatus = "";
