@@ -94,6 +94,7 @@
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
             transition: all 0.15s ease-out;
+            cursor: pointer; /* 🎯 變更：讓使用者直覺發現此元件可點擊交互 */
         }
 
         .lang-switcher-wrapper {
@@ -248,7 +249,7 @@
         </div>
 
         <div class="navbar-right-controls">
-            <div class="auth-panel" id="tactical-auth-box">請登入</div>
+            <div class="auth-panel" id="tactical-auth-box" onclick="handleAuthBoxAction()">請登入</div>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active">TW</button>
                 <button class="lang-btn-core">EN</button>
@@ -259,7 +260,7 @@
     <div class="hub-header">
         <div class="hub-version-tag">GUILD HQ / LEVEL 2026</div>
         <h1 class="hub-main-title">System TPM 公會總部</h1>
-        <div class="hub-subtitle" id="global-sub-header-name">Daniel Shih | 2026 年度高效 management 與團隊修煉套件</div>
+        <div class="hub-subtitle" id="global-sub-header-name">請先完成身分認證解鎖總部套件</div>
     </div>
 
     <div class="hub-tactical-deck">
@@ -309,9 +310,10 @@
     </div>
 
     <script>
-        // 👑 剛性全域 Email 宣告：與 Google 後台看盤中樞 100% 精確對位
-        // 💡 測試「請登入」防線時，可將此變數洗空改為 ""
-        const GLOBAL_USER_EMAIL = "danielcwshih@fih-foxconn.com";
+        // ========================================================================
+        // 👑 全域解耦：從 localStorage 熱調閱當前用戶綁定的動態 Email 👑
+        // ========================================================================
+        let GLOBAL_USER_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
 
         // ========================================================================
         // 👑 全域動態頭銜清算大腦 (Dynamic Rank Progression Engine) 👑
@@ -321,12 +323,14 @@
                 return { text: "請登入", isLogged: false };
             }
 
-            // 1. 智能解析並還原真實姓名稱謂
+            // 1. 智能解包 Email 特徵，自動完成千人千面姓名推算
             let userName = "Daniel Shih"; 
             const emailLower = GLOBAL_USER_EMAIL.toLowerCase().trim();
-            if (emailLower !== "danielcwshih@fih-foxconn.com") {
+            if (emailLower === "danielcwshih@fih-foxconn.com") {
+                userName = "Daniel Shih";
+            } else {
                 let prefix = emailLower.split('@')[0];
-                // 格式化特殊符號如點或底線
+                // 格式化點、底線、減號，並剛性將首字母大寫化
                 userName = prefix.replace(/[\._\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
             }
 
@@ -341,13 +345,13 @@
             const adventureKeys = ['handbook-L1-A1-clear', 'handbook-L1-A2-clear'];
             const isAllAdventureCleared = adventureKeys.every(k => localStorage.getItem(k) === 'true');
 
-            // 4. 剛性階層狀態機熔斷判定
+            // 4. 剛性階層狀態機頭銜晉升
             if (isAllBeginnerCleared && isAllAdventureCleared) {
-                return { text: `👤 統籌者 : ${userName}`, isLogged: true, color: "var(--text-main)" };
+                return { text: `👤 統籌者 : ${userName}`, isLogged: true };
             } else if (isAllBeginnerCleared) {
-                return { text: `👤 冒險者 : ${userName}`, isLogged: true, color: "var(--text-main)" };
+                return { text: `👤 冒險者 : ${userName}`, isLogged: true };
             } else {
-                return { text: `👤 初心者 : ${userName}`, isLogged: true, color: "var(--text-main)" };
+                return { text: `👤 初心者 : ${userName}`, isLogged: true };
             }
         }
 
@@ -362,6 +366,7 @@
                 authBox.style.color = "#DC2626";         
                 authBox.style.borderColor = "#DC2626";     
                 authBox.style.boxShadow = "3px 3px 0px #DC2626";
+                if (subHeaderBox) subHeaderBox.innerHTML = "請先點擊右上角認證登入，以開線加載地端戰術記憶體";
             } else {
                 authBox.innerHTML = identity.text;
                 authBox.style.color = "var(--text-main)";
@@ -376,7 +381,29 @@
             }
         };
 
-        // 👑 全資產全量備份下載引擎（內建極簡攔截機制）
+        // ========================================================================
+        // 👑 交互式登入狀態控制大腦 👑
+        // ========================================================================
+        function handleAuthBoxAction() {
+            if (!GLOBAL_USER_EMAIL || GLOBAL_USER_EMAIL.trim() === "") {
+                const emailInput = prompt("請輸入您的企業 Email（例: name@fih-foxconn.com）以開線加載全域動態進度：");
+                if (emailInput && emailInput.trim() !== "") {
+                    if (!emailInput.includes('@')) {
+                        alert("💥 格式錯誤！請輸入正確的 Email 地址。");
+                        return;
+                    }
+                    localStorage.setItem('tpm-user-current-email', emailInput.trim().toLowerCase());
+                    window.location.reload();
+                }
+            } else {
+                if (confirm(`👤 當前帳號身分：${GLOBAL_USER_EMAIL}\n\n是否要確認登出當前帳號並切換身分？\n(注意：登出動作僅重置安全裝甲特徵鎖，不會刪除您的地端通關分數)`)) {
+                    localStorage.removeItem('tpm-user-current-email');
+                    window.location.reload();
+                }
+            }
+        }
+
+        // 👑 全資產全量備份下載引擎（內建動態解包機制）
         function exportPersonalProgress() {
             if (!GLOBAL_USER_EMAIL || GLOBAL_USER_EMAIL.trim() === "") {
                 alert("請登入");
