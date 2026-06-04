@@ -817,6 +817,15 @@
         function settleExamPayload() {
             examActive = false; 
             const course = window.codexCourseEngineData[activeCourseIdx];
+
+            // 🎯 👑 剛性防火牆：上傳前極限攔截未登入學員
+            const checkLiveEmail = localStorage.getItem('tpm-user-current-email');
+            if (!checkLiveEmail || checkLiveEmail.trim() === "") {
+                alert("❌ 偵測到未登入身分！請先返回首頁完成企業 Email 認證，否則公會將拒絕保存您的寶典進度與 GAS 戰績。");
+                exitToDashboardMenu();
+                return;
+            }
+
             const storageKey = "L1-A" + course.courseId.split('-')[1];
             
             let finalStatus = "";
@@ -860,7 +869,7 @@
             const PILOT_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
 
             function computeLocalUserRankTitle() {
-                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "請登入", isLogged: false };
+                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "首頁登入", isLogged: false };
 
                 let nameStr = "Daniel Shih";
                 const emailLower = PILOT_EMAIL.toLowerCase().trim();
@@ -868,20 +877,17 @@
                     nameStr = emailLower.split('@')[0].replace(/[\._\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
                 }
 
-                // 盤查地端通關戰印
                 const beginnerKeys = ['codex-L1-A1-clear', 'codex-L1-A2-clear', 'codex-L1-A3-clear', 'codex-L1-A4-clear', 'codex-L2-A1-clear', 'codex-L3-A1-clear'];
                 const isAllBeginnerCleared = beginnerKeys.every(k => localStorage.getItem(k) === 'true');
 
                 const adventureKeys = ['handbook-L1-A1-clear', 'handbook-L1-A2-clear'];
                 const isAllAdventureCleared = adventureKeys.every(k => localStorage.getItem(k) === 'true');
 
-                // 剛性判定頭銜位階
                 if (isAllBeginnerCleared && isAllAdventureCleared) return { text: `👤 統籌者 : ${nameStr}`, isLogged: true };
                 if (isAllBeginnerCleared) return { text: `👤 冒險者 : ${nameStr}`, isLogged: true };
                 return { text: `👤 初心者 : ${nameStr}`, isLogged: true };
             }
 
-            // 智能焊接：將程序融入加載器，在 DOM 準備就緒時動態洗出頭銜
             const originalOnload = window.onload;
             window.onload = function() {
                 if (originalOnload) originalOnload();
