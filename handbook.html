@@ -98,6 +98,7 @@
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
             white-space: nowrap;
+            transition: all 0.15s ease-out;
         }
 
         .back-btn {
@@ -496,7 +497,7 @@
             color: #FFF;
         }
 
-        @border-heavy {
+        @keyframes fadeInBox {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -509,7 +510,7 @@
             <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">冒險者手冊</h1>
         </div>
         <div class="navbar-controls">
-            <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
+            <div id="global-user-profile-card" class="auth-panel">請登入</div>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
                 <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
@@ -561,13 +562,11 @@
     <script>
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
-        // 🔒 雙向互鎖手冊車間註冊名冊大盤
         const globalSubUnitRegistry = [
             { type: 'handbook', levelNum: 1, subUnitId: '1-1', title: '1-1: 系統 TPM 職能運作實戰手冊', file: 'handbook_data_course/handbook_data_1-1.js' },
             { type: 'handbook', levelNum: 1, subUnitId: '1-2', title: '1-2: 系統 TPM 職能運作實戰手冊二', file: 'handbook_data_course/handbook_data_1-2.js' }
         ];
 
-        // 🎯 門面變更點 3: 依據最高指令，將 Level 1 至 Level 7 的標籤全部更名為「待開發」
         const globalLevelMetadata = [
             { num: 1, name: 'LEVEL 1', label: '待開發' },
             { num: 2, name: 'LEVEL 2', label: '待開發' },
@@ -615,8 +614,6 @@
         }
 
         function routeController(directType, directC) {
-            document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：Daniel Shih`;
-
             const urlParams = new URLSearchParams(window.location.search);
             const paramC = directC || urlParams.get('c');
             const paramType = directType || urlParams.get('type') || 'handbook';
@@ -624,7 +621,6 @@
             if (!paramC) {
                 document.getElementById('cdx-page-header-zone').style.display = 'block'; 
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
-                // 🎯 門面變更點 4: 同步路由控制器的初始名稱為「冒險者戰術大廳」
                 document.getElementById('current-chapter-name').innerText = "冒險者戰術大廳";
                 document.getElementById('dashboard-menu-hall').style.display = 'block'; 
                 document.getElementById('textbook-viewport').style.display = 'none'; 
@@ -695,7 +691,6 @@
             routeController(null, null); 
         }
 
-        // 🧠 核心加載大腦：完美封裝雙向互鎖防線與安全閥線路
         function injectContentPackScript(type, packId) {
             window.codexCourseEngineData = []; 
             window.libraryCourseEngineData = [];
@@ -876,6 +871,51 @@
 
             exitToDashboardMenu();
         }
+
+        // ========================================================================
+        // 👑 換裝定位點 2: 全域多階層頭銜連鎖同步大腦 👑
+        // ========================================================================
+        (function() {
+            const PILOT_EMAIL = "danielcwshih@fih-foxconn.com"; // 🎯 剛性對位憑證
+
+            function computeLocalUserRankTitle() {
+                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "請登入", isLogged: false };
+
+                let nameStr = "Daniel Shih";
+                const emailLower = PILOT_EMAIL.toLowerCase().trim();
+                if (emailLower !== "danielcwshih@fih-foxconn.com") {
+                    nameStr = emailLower.split('@')[0].replace(/[\._\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                }
+
+                // 盤查地端進度戰印
+                const beginnerKeys = ['codex-L1-A1-clear', 'codex-L1-A2-clear', 'codex-L1-A3-clear', 'codex-L1-A4-clear', 'codex-L2-A1-clear', 'codex-L3-A1-clear'];
+                const isAllBeginnerCleared = beginnerKeys.every(k => localStorage.getItem(k) === 'true');
+
+                const adventureKeys = ['handbook-L1-A1-clear', 'handbook-L1-A2-clear'];
+                const isAllAdventureCleared = adventureKeys.every(k => localStorage.getItem(k) === 'true');
+
+                // 動態判別當前職能頭銜等級
+                if (isAllBeginnerCleared && isAllAdventureCleared) return { text: `👤 統籌者 : ${nameStr}`, isLogged: true };
+                if (isAllBeginnerCleared) return { text: `👤 冒險者 : ${nameStr}`, isLogged: true };
+                return { text: `👤 初心者 : ${nameStr}`, isLogged: true };
+            }
+
+            // 智能焊接線路：在現有的 window.onload 大腦載入完畢後發動
+            const originalOnload = window.onload;
+            window.onload = function() {
+                if (originalOnload) originalOnload();
+                const profileBox = document.getElementById('global-user-profile-card');
+                if (profileBox) {
+                    const rankInfo = computeLocalUserRankTitle();
+                    profileBox.innerHTML = rankInfo.text;
+                    if (!rankInfo.isLogged) {
+                        profileBox.style.color = "#DC2626";
+                        profileBox.style.borderColor = "#DC2626";
+                        profileBox.style.boxShadow = "3px 3px 0px #DC2626";
+                    }
+                }
+            };
+        })();
     </script>
 </body>
 </html>
