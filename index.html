@@ -1,14 +1,3 @@
-<!-- 
-========================================================================
-REVISION HISTORY / VERSION LOG
-========================================================================
-2026-06-02 V2.00-MINIMAL-AUTH: 👑 總部單機數據資產管理暨極簡登入防線完全體。
-1. 警報極簡化：對位最新指令，未登入時之面板標示與備份/載入攔截警報剛性精簡為「請登入」。
-2. 資安剛性防線：內建「Base64 員工 Email 密碼鎖」，下載時自動特徵打包，載入時不符則剛性熔斷攔截。
-3. 全域資產備份：一鍵打包寶典、手冊、成就卡牌、圖書館收藏、隨機副本的所有地端 LocalStorage 紀錄。
-4. 視覺與佈局對位：左側按鈕色系完全同步右側中英切換（3px 黑框、白底、懸停黑白反轉）；中央大廳擴展為 4 欄大畫布寬屏網格。
-========================================================================
--->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -54,7 +43,7 @@ REVISION HISTORY / VERSION LOG
             align-items: center;
         }
 
-        /* 左上角極簡戰術存檔控制鈕組（完全同步右側中英切換色系） */
+        /* 左上角極簡戰術存檔控制鈕組 */
         .local-sync-minimal {
             display: flex;
             align-items: center;
@@ -251,18 +240,15 @@ REVISION HISTORY / VERSION LOG
 </head>
 <body>
 
-    <!-- 頂部控制列 -->
     <div class="hub-navbar">
-        <!-- 左上角極簡按鈕組 -->
         <div class="local-sync-minimal">
             <button class="minimal-btn export-theme" onclick="exportPersonalProgress()">📊 備份</button>
             <button class="minimal-btn import-theme" onclick="triggerImportClick()">📥 載入</button>
             <input type="file" id="hidden-file-input" accept=".json" onchange="importPersonalProgress(event)">
         </div>
 
-        <!-- 右側冒險者資訊盒 -->
         <div class="navbar-right-controls">
-            <div class="auth-panel" id="tactical-auth-box">👤 冒險者 : Daniel Shih</div>
+            <div class="auth-panel" id="tactical-auth-box">請登入</div>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active">TW</button>
                 <button class="lang-btn-core">EN</button>
@@ -270,59 +256,50 @@ REVISION HISTORY / VERSION LOG
         </div>
     </div>
 
-    <!-- 總部中心標頭 -->
     <div class="hub-header">
         <div class="hub-version-tag">GUILD HQ / LEVEL 2026</div>
         <h1 class="hub-main-title">System TPM 公會總部</h1>
-        <div class="hub-subtitle">Daniel Shih | 2026 年度高效 management 與團隊修煉套件</div>
+        <div class="hub-subtitle" id="global-sub-header-name">Daniel Shih | 2026 年度高效 management 與團隊修煉套件</div>
     </div>
 
-    <!-- 主戰術大廳 $4 \times 2$ 看盤矩陣 -->
     <div class="hub-tactical-deck">
         
-        <!-- 卡片 1: 初心者寶典 -->
         <a href="beginner_codex.html" class="tactical-card">
             <div class="card-icon-frame">🗺️</div>
             <h3 class="card-title" style="color: #1D4ED8;">初心者寶典</h3>
             <p class="card-desc">工廠基礎與 System TPM 基礎概括：點亮硬體世界第一步的核心知識大本營。</p>
         </a>
 
-        <!-- 卡片 2: 冒險者手冊 -->
         <a href="handbook.html" class="tactical-card">
             <div class="card-icon-frame">📜</div>
             <h3 class="card-title" style="color: #B45309;">冒險者手冊</h3>
             <p class="card-desc">功能單位進階修煉指南：深度解析防水、光學、軟韌體與結構協作之核心細節。</p>
         </a>
 
-        <!-- 卡片 3: 階級晉級試煉 -->
         <div class="tactical-card locked-stripe">
             <div class="card-icon-frame">⚔️</div>
             <h3 class="card-title" style="color: #64748B;">階級晉級試煉</h3>
             <p class="card-desc">綜合案例大會考：挑戰多重災難複合式 Boss 戰，檢驗技術整合並晉升公會序列位階。</p>
         </div>
 
-        <!-- 卡片 4: 賢者之識 -->
         <div class="tactical-card locked-stripe">
             <div class="card-icon-frame">🤖</div>
             <h3 class="card-title" style="color: #64748B;">賢者之識</h3>
             <p class="card-desc">智慧核心：整合大語言模型 (LLM) 知識庫，自動化輔助生成全新標準化作業教材。</p>
         </div>
 
-        <!-- 卡片 5: 成就 -->
         <a href="achievement.html" class="tactical-card">
             <div class="card-icon-frame">🌿</div>
             <h3 class="card-title" style="color: #047857;">成就</h3>
             <p class="card-desc">RPG 樹狀指南路徑呈現：清晰追蹤、配點並點亮個人已完成的技能樹與課題。</p>
         </a>
 
-        <!-- 卡片 6: 隨機副本挑戰 -->
         <div class="tactical-card locked-stripe">
             <div class="card-icon-frame">🛡️</div>
             <h3 class="card-title" style="color: #64748B;">隨機副本挑戰</h3>
             <p class="card-desc">動態隨機題庫：隨機抽取公會核心歷史 Bug 進行突襲秒通考核，強化反射神經。</p>
         </div>
 
-        <!-- 卡片 7: 知識圖書館 -->
         <a href="library.html" class="tactical-card">
             <div class="card-icon-frame">📚</div>
             <h3 class="card-title" style="color: #6D28D9;">知識圖書館</h3>
@@ -336,26 +313,71 @@ REVISION HISTORY / VERSION LOG
         // 💡 測試「請登入」防線時，可將此變數洗空改為 ""
         const GLOBAL_USER_EMAIL = "danielcwshih@fih-foxconn.com";
 
+        // ========================================================================
+        // 👑 全域動態頭銜清算大腦 (Dynamic Rank Progression Engine) 👑
+        // ========================================================================
+        function computeTacticalIdentityTitle() {
+            if (!GLOBAL_USER_EMAIL || GLOBAL_USER_EMAIL.trim() === "") {
+                return { text: "請登入", isLogged: false };
+            }
+
+            // 1. 智能解析並還原真實姓名稱謂
+            let userName = "Daniel Shih"; 
+            const emailLower = GLOBAL_USER_EMAIL.toLowerCase().trim();
+            if (emailLower !== "danielcwshih@fih-foxconn.com") {
+                let prefix = emailLower.split('@')[0];
+                // 格式化特殊符號如點或底線
+                userName = prefix.replace(/[\._\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            }
+
+            // 2. 盤查「初心者」Codex 寶典大盤戰印
+            const beginnerKeys = [
+                'codex-L1-A1-clear', 'codex-L1-A2-clear', 'codex-L1-A3-clear', 
+                'codex-L1-A4-clear', 'codex-L2-A1-clear', 'codex-L3-A1-clear'
+            ];
+            const isAllBeginnerCleared = beginnerKeys.every(k => localStorage.getItem(k) === 'true');
+
+            // 3. 盤查「冒險者」Handbook 手冊大盤戰印
+            const adventureKeys = ['handbook-L1-A1-clear', 'handbook-L1-A2-clear'];
+            const isAllAdventureCleared = adventureKeys.every(k => localStorage.getItem(k) === 'true');
+
+            // 4. 剛性階層狀態機熔斷判定
+            if (isAllBeginnerCleared && isAllAdventureCleared) {
+                return { text: `👤 統籌者 : ${userName}`, isLogged: true, color: "var(--text-main)" };
+            } else if (isAllBeginnerCleared) {
+                return { text: `👤 冒險者 : ${userName}`, isLogged: true, color: "var(--text-main)" };
+            } else {
+                return { text: `👤 初心者 : ${userName}`, isLogged: true, color: "var(--text-main)" };
+            }
+        }
+
         // 頁面加載時，動態渲染身分狀態防線
         window.onload = () => {
             const authBox = document.getElementById('tactical-auth-box');
-            if (!GLOBAL_USER_EMAIL || GLOBAL_USER_EMAIL.trim() === "") {
-                // 🎯 對位修改：精簡為「請登入」
-                authBox.innerHTML = "請登入";
+            const subHeaderBox = document.getElementById('global-sub-header-name');
+            const identity = computeTacticalIdentityTitle();
+
+            if (!identity.isLogged) {
+                authBox.innerHTML = identity.text;
                 authBox.style.color = "#DC2626";         
                 authBox.style.borderColor = "#DC2626";     
                 authBox.style.boxShadow = "3px 3px 0px #DC2626";
             } else {
-                authBox.innerHTML = "👤 冒險者 : Daniel Shih";
+                authBox.innerHTML = identity.text;
                 authBox.style.color = "var(--text-main)";
                 authBox.style.borderColor = "var(--border-heavy)";
                 authBox.style.boxShadow = "3px 3px 0px var(--border-heavy)";
+                
+                // 動態同步副標題
+                if (subHeaderBox) {
+                    const rawName = identity.text.split(' : ')[1];
+                    subHeaderBox.innerHTML = `${rawName} | 2026 年度高效 management 與團隊修煉套件`;
+                }
             }
         };
 
         // 👑 全資產全量備份下載引擎（內建極簡攔截機制）
         function exportPersonalProgress() {
-            // 🔒 剛性熔斷防線：未登入時當場彈出最純粹的「請登入」
             if (!GLOBAL_USER_EMAIL || GLOBAL_USER_EMAIL.trim() === "") {
                 alert("請登入");
                 return;
@@ -402,7 +424,6 @@ REVISION HISTORY / VERSION LOG
         }
 
         function triggerImportClick() {
-            // 🔒 剛性熔斷防線：未登入時當場彈出最純粹的「請登入」
             if (!GLOBAL_USER_EMAIL || GLOBAL_USER_EMAIL.trim() === "") {
                 alert("請登入");
                 return;
