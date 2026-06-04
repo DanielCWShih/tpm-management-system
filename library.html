@@ -8,10 +8,10 @@
         /* ========================================================================
         REVISION HISTORY / VERSION LOG
         ========================================================================
-        2026-06-04 V11.40-DYNAMIC-SaaS: 👑 知識圖書館終極動態完全體（多用戶最愛隔離版）
-        1. 數據隔離防線：將「我的最愛」快取金鑰與動態 Email 深度熱咬合。不同員工登入自動分流至獨立收藏夾，100% 絕殺跨用戶數據覆蓋大坑。
-        2. 變數防禦工程：宣告全域變數 GLOBAL_USER_EMAIL 與 currentActiveLevel，徹底修正隱式變數風險，確保異步線路 100% 安全通航。
-        3. 大師級排版對位：移除小標籤標籤，純淨輸出 A-Z 排序方塊網格，外襯安全 Padding 防火牆，最左側卡牌 3D 按壓絕不切邊。
+        2026-06-04 V11.50-AUTH-SHIELD: 👑 知識圖書館完全體（首頁登入防線與返回導航對位版）
+        1. 導航規格對位：遵照最高指示，右上角返回按鈕洗鏈修正為「返回首頁」，與公會總部全面接軌。
+        2. 首頁登入導引：未登入之身分狀態面板剛性更名為「首頁登入」，並維持單向常駐看板模式，不開放頁面直接點擊，守住單一登入點。
+        3. 隔離快取大腦：續存 A-Z 剛性排序方塊網格、多用戶最愛快取隔離與 Padding 防火牆，最左側卡牌 3D 按壓絕不切邊。
         ========================================================================
         */
         :root {
@@ -385,12 +385,12 @@
             <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;">知識圖書館</h1>
         </div>
         <div class="navbar-controls">
-            <div id="global-user-profile-card" class="auth-panel">請登入</div>
+            <div id="global-user-profile-card" class="auth-panel">首頁登入</div>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active">TW</button>
                 <button class="lang-btn-core">EN</button>
             </div>
-            <a href="index.html" class="back-btn">返回總部</a>
+            <a href="index.html" class="back-btn">返回首頁</a>
         </div>
     </div>
 
@@ -402,7 +402,7 @@
 
         <main class="content-panel">
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
-                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">LEXICON INDEX</span>
+                <span id="current-category-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">LEXICON INDEX</span>
                 <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
             </div>
 
@@ -466,8 +466,8 @@
 
         let selectedActiveTabType = 'beginner'; 
         let activeTermIdx = -1;
-        let currentActiveLevel = null; // 🎯 修正點 1: 補齊常規全域變數宣告，嚴防隱式變數休克
-        let GLOBAL_USER_EMAIL = localStorage.getItem('tpm-user-current-email') || ""; // 🎯 修正點 2: 接通全域動態帳號，啟動數據隔離
+        let currentActiveLevel = null; 
+        let GLOBAL_USER_EMAIL = localStorage.getItem('tpm-user-current-email') || ""; 
 
         window.aggregatedTermsPool = []; 
         window.currentlyViewedTerm = null;
@@ -602,7 +602,7 @@
             window.isInsideFavoritesView = false;
             activeTermIdx = -1;
             window.aggregatedTermsPool = [];
-            currentActiveLevel = target; // 原位同步指針
+            currentActiveLevel = target; 
             
             document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-L${catId}-${lvlNum}`);
@@ -611,7 +611,7 @@
             document.getElementById('dashboard-menu-hall').style.display = 'none';
             document.getElementById('lexicon-viewport').style.display = 'flex';
             
-            const categoryEl = document.getElementById('current-chapter-id');
+            const categoryEl = document.getElementById('current-category-id');
             const levelEl = document.getElementById('current-chapter-name');
             if (categoryEl) categoryEl.innerText = `${catId.toUpperCase()} / LEVEL ${lvlNum}`;
             if (levelEl) levelEl.innerText = `LEVEL ${lvlNum} 大辭典`;
@@ -660,12 +660,11 @@
             document.getElementById('dashboard-menu-hall').style.display = 'none';
             document.getElementById('lexicon-viewport').style.display = 'flex';
             
-            const categoryEl = document.getElementById('current-chapter-id');
+            const categoryEl = document.getElementById('current-category-id');
             const levelEl = document.getElementById('current-chapter-name');
             if (categoryEl) categoryEl.innerText = `PERSONAL / FAVORITES`;
             if (levelEl) levelEl.innerText = `我的最愛收藏庫`;
 
-            // 🎯 修正點 3: 「我的最愛」獲取金鑰動態與 Email 互鎖綁定，達成跨用戶隔離
             const favKey = GLOBAL_USER_EMAIL ? `library-favorites-pool_${GLOBAL_USER_EMAIL}` : 'library-favorites-pool';
             window.aggregatedTermsPool = JSON.parse(localStorage.getItem(favKey) || '[]');
             
@@ -798,7 +797,6 @@
             const inspector = document.getElementById('lexicon-inspector');
             if (!inspector) return;
 
-            // 🎯 修正點 4: showDetail 切換鈕讀取欄位改為動態動態特徵金鑰
             const favKey = GLOBAL_USER_EMAIL ? `library-favorites-pool_${GLOBAL_USER_EMAIL}` : 'library-favorites-pool';
             const favoritesPool = JSON.parse(localStorage.getItem(favKey) || '[]');
             const isFav = favoritesPool.some(f => f.name === term.name);
@@ -827,7 +825,6 @@
             const term = window.currentlyViewedTerm;
             if (!term) return;
 
-            // 🎯 修正點 5: 寫入與點擊最愛時的儲存金鑰一併改寫為動態特徵金鑰
             const favKey = GLOBAL_USER_EMAIL ? `library-favorites-pool_${GLOBAL_USER_EMAIL}` : 'library-favorites-pool';
             let favoritesPool = JSON.parse(localStorage.getItem(favKey) || '[]');
             const index = favoritesPool.findIndex(f => f.name === term.name);
@@ -879,7 +876,8 @@
             const PILOT_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
 
             function computeLocalUserRankTitle() {
-                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "請登入", isLogged: false };
+                // 🎯 變更點 3: 未登入提示文字剛性修改為「首頁登入」
+                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "首頁登入", isLogged: false };
 
                 let nameStr = "Daniel Shih";
                 const emailLower = PILOT_EMAIL.toLowerCase().trim();
