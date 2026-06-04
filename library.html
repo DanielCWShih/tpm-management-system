@@ -254,6 +254,8 @@
             display: block; 
             height: 100%;
             overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 4px;
         }
 
         .document-canvas {
@@ -264,27 +266,25 @@
             gap: 24px;
         }
 
-        /* ─── ⚖️ 左右雙軌戰術分流觀測大盤 (小卡片網格版) ─── */
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden; /* 🎯 剛性禁制：徹底不允許左右拖曳 */
+            overflow-x: hidden; 
             display: grid;
-            grid-template-columns: repeat(6, 1fr); /* 🎯 剛性網格：固定 6 欄拓撲排版 */
+            grid-template-columns: repeat(6, 1fr); 
             grid-auto-rows: min-content;
             gap: 12px;
             padding-right: 8px;
-            align-content: start; /* 緊緻靠頂堆疊 */
+            align-content: start; 
         }
 
-        /* 🎯 UI 重構點：從長橫條收攏成 3D 微縮小卡片 */
         .lexicon-term-row {
             background: #FFFFFF;
             border: 2px solid var(--border-heavy);
             border-radius: 6px;
             padding: 12px 8px;
             font-weight: 900;
-            font-size: 0.82rem; /* 緊湊型卡片字體 */
+            font-size: 0.82rem; 
             color: var(--text-main);
             cursor: pointer;
             box-shadow: 2px 2px 0px var(--border-heavy);
@@ -294,8 +294,8 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            min-height: 75px; /* 卡片黃金微縮高度 */
-            word-break: break-word; /* 嚴防長單詞撐破邊界 */
+            min-height: 75px; 
+            word-break: break-word; 
         }
 
         .lexicon-term-row:hover {
@@ -339,22 +339,27 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* 🎯 UI 重構點：Dashboard 全新 7 欄精緻硬核小卡片樣式 */
         .level-hero-card {
-            border: 3px solid var(--border-heavy);
-            border-radius: 12px;
-            padding: 24px;
+            border: 2px solid var(--border-heavy);
+            border-radius: 8px;
+            padding: 20px 8px;
             background: #FFF;
             cursor: pointer;
-            box-shadow: var(--shadow-tactical);
-            transition: all 0.15s;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            transition: all 0.12s;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 70px;
         }
 
         .level-hero-card:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 8px 8px 0px var(--border-heavy);
+            background: var(--sidebar-cream);
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
         }
     </style>
     <script src="library_data/library_supplementary.js?v=20260604"></script>
@@ -387,10 +392,7 @@
                 <h2 id="current-level-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
             </div>
 
-            <div class="dashboard-view-hall" id="dashboard-menu-hall">
-                <div style="font-weight: 900; font-size: 1.1rem; margin-bottom: 15px;">⌗ 請選擇欲檢索之職能階層：</div>
-                <div class="level-cards-parallel-grid" id="category-selector-grid" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:15px;"></div>
-            </div>
+            <div class="dashboard-view-hall" id="dashboard-menu-hall"></div>
 
             <div class="document-canvas" id="lexicon-viewport">
                 <div class="lexicon-index-column" id="lexicon-terms-list"></div>
@@ -404,6 +406,9 @@
     </div>
 
     <script>
+        // ========================================================================
+        // 👑 LEVEL 剛性註冊名冊大盤 👑
+        // ========================================================================
         const libraryLevelRegistry = [
             { 
                 category: 'beginner', 
@@ -487,22 +492,79 @@
             if (el) el.style.display = (el.style.display === 'none' ? 'flex' : 'none');
         }
 
+        // ========================================================================
+        // 👑 儀表板大腦優化：拆分群組、橫向 7 欄網格、精簡只吐 LEVEL X 👑
+        // ========================================================================
         function renderDashboard() {
-            const grid = document.getElementById('category-selector-grid');
-            grid.innerHTML = '';
-            libraryLevelRegistry.forEach(l => {
-                const catMeta = globalCategoryMetadata.find(m => m.id === (l.category === 'beginner' ? 'beginner' : 'adventure'));
-                const catLabelName = catMeta ? catMeta.name : '待開發';
-                grid.innerHTML += `
-                    <div class="level-hero-card" onclick="loadLevelLexicon('${l.category}', ${l.levelNum})">
-                        <div style="font-family:monospace; font-weight:900; color:#94A3B8;">${catLabelName.toUpperCase()}</div>
-                        <div style="font-size:1.3rem; font-weight:900;">LEVEL ${l.levelNum}</div>
-                        <div style="font-size:0.85rem; font-weight:800; color:var(--text-secondary);">${l.levelName}</div>
-                    </div>
-                `;
+            const container = document.getElementById('dashboard-menu-hall');
+            if (!container) return;
+            container.innerHTML = '';
+
+            // 定義需要平行平鋪展示的核心子分類
+            const targetGroups = [
+                { id: 'beginner', title: '初心者:' },
+                { id: 'handbook', title: '冒險者:' }
+            ];
+
+            targetGroups.forEach((group, gIdx) => {
+                // 1. 建立剛性分群子標題
+                const heading = document.createElement('div');
+                heading.style.fontWeight = '900';
+                heading.style.fontSize = '1.15rem';
+                heading.style.margin = '20px 0 12px 2px';
+                heading.style.color = 'var(--text-main)';
+                heading.innerText = group.title;
+                container.appendChild(heading);
+
+                // 2. 建立剛性 7 欄平鋪網格容器
+                const grid = document.createElement('div');
+                grid.style.display = 'grid';
+                grid.style.gridTemplateColumns = 'repeat(7, 1fr)'; /* 🎯 剛性控制：一排 7 張 */
+                grid.style.gap = '15px';
+                grid.style.width = '100%';
+                grid.style.marginBottom = '20px';
+
+                // 3. 篩選對應文獻料件
+                const subset = libraryLevelRegistry.filter(l => l.category === group.id);
+                
+                subset.forEach(l => {
+                    const card = document.createElement('div');
+                    card.className = 'level-hero-card';
+                    card.onclick = () => loadLevelLexicon(l.category, l.levelNum);
+                    // 🎯 剛性精簡：卡片內容只允許吐出 LEVEL X
+                    card.innerHTML = `<div style="font-size:1.1rem; font-weight:900; letter-spacing:0.5px;">LEVEL ${l.levelNum}</div>`;
+                    grid.appendChild(card);
+                });
+
+                // 如果該區塊尚未開線（雖然目前註冊表都有，預留安全牆）
+                if (subset.length === 0) {
+                    const fallbackCard = document.createElement('div');
+                    fallbackCard.style.gridColumn = 'span 7';
+                    fallbackCard.style.border = '2px dashed var(--border-heavy)';
+                    fallbackCard.style.padding = '20px';
+                    fallbackCard.style.textAlign = 'center';
+                    fallbackCard.style.fontWeight = '900';
+                    fallbackCard.style.color = 'var(--text-secondary)';
+                    fallbackCard.innerText = '⚡ 該階層領域正處於排產封裝階段 (待開發)';
+                    grid.appendChild(fallbackCard);
+                }
+
+                container.appendChild(grid);
+
+                // 4. 在群組間架設剛性分隔線
+                if (gIdx < targetGroups.length - 1) {
+                    const separator = document.createElement('div');
+                    separator.style.borderBottom = '3px dashed var(--border-heavy)';
+                    separator.style.width = '100%';
+                    separator.style.margin = '25px 0 15px 0';
+                    container.appendChild(separator);
+                }
             });
         }
 
+        // ========================================================================
+        // 👑 核心加載模組
+        // ========================================================================
         async function loadLevelLexicon(catId, lvlNum) {
             const target = libraryLevelRegistry.find(r => r.category === catId && r.levelNum === lvlNum);
             if (!target) return;
@@ -517,7 +579,7 @@
             document.getElementById('dashboard-menu-hall').style.display = 'none';
             document.getElementById('lexicon-viewport').style.display = 'flex';
             document.getElementById('current-category-id').innerText = `${catId.toUpperCase()} / LEVEL ${lvlNum}`;
-            document.getElementById('current-level-name').innerText = target.levelName;
+            document.getElementById('current-level-name').innerText = `LEVEL ${lvlNum} 大辭典`;
             document.getElementById('lexicon-terms-list').innerHTML = `<div class="inspector-placeholder">正在動態清算 LEVEL ${lvlNum} 全量文獻...</div>`;
 
             await sequenceLoadScripts(target.files, 0);
@@ -579,7 +641,6 @@
             });
         }
 
-        // 🎯 👑 變更點 5: 徹底摘除 ➔ 箭頭，改造成極簡 3D 方塊小牌
         function renderLexiconList() {
             const list = document.getElementById('lexicon-terms-list');
             list.innerHTML = '';
@@ -598,7 +659,6 @@
                 const prefix = term.isSupp ? "🔥" : "📘";
                 const cleanName = term.name.replace(/🔑|關鍵詞：|增補：/g,'').trim();
                 
-                // 🛠️ 改造點：上置小徽章，中央大標，全體置中，0 箭頭
                 row.innerHTML = `
                     <div style="font-size:0.7rem; opacity:0.6; margin-bottom:4px; font-weight:900;">${prefix} ${term.isSupp?'SUPP':'CORE'}</div>
                     <div style="line-height:1.2; font-size:0.8rem; display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;">${cleanName}</div>
@@ -616,7 +676,7 @@
         function showDetail(html) {
             const inspector = document.getElementById('lexicon-inspector');
             inspector.innerHTML = `
-                <div style="animation: fadeInBox 0.15s var(--border-heavy) ease-out; line-height:1.7; font-size:0.88rem;">
+                <div style="animation: fadeInBox 0.15s ease-out; line-height:1.7; font-size:0.88rem;">
                     ${html}
                 </div>
             `;
@@ -628,6 +688,7 @@
             document.getElementById('current-category-id').innerText = `LEXICON INDEX`;
             document.getElementById('current-level-name').innerText = "圖書文獻檢索大廳";
             document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+            renderDashboard();
         }
     </script>
 </body>
