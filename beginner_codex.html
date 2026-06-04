@@ -571,13 +571,13 @@
         ];
 
         const globalLevelMetadata = [
-            // 🎯 門面變更點 3: LEVEL 1 標籤由「基礎通識」原地更名為「世界觀」
+            // 🎯 門面變更點 3: 依據您的要求全面完成 LEVEL 1 至 LEVEL 6 的文字更名
             { num: 1, name: 'LEVEL 1', label: '世界觀' },
-            { num: 2, name: 'LEVEL 2', label: '進階跨功能' },
-            { num: 3, name: 'LEVEL 3', label: '高階 TPM' },
-            { num: 4, name: 'LEVEL 4', label: '日常速通' },
-            { num: 5, name: 'LEVEL 5', label: '供應鏈擴展' },
-            { num: 6, name: 'LEVEL 6', label: '未知領域' },
+            { num: 2, name: 'LEVEL 2', label: '進階工廠' },
+            { num: 3, name: 'LEVEL 3', label: 'TPM思考邏輯' },
+            { num: 4, name: 'LEVEL 4', label: '日常作業' },
+            { num: 5, name: 'LEVEL 5', label: '跨部門協調' },
+            { num: 6, name: 'LEVEL 6', label: '其他知識' },
             { num: 7, name: 'LEVEL 7', label: '終局修煉' }
         ];
 
@@ -599,8 +599,13 @@
                 const subset = globalSubUnitRegistry.filter(u => u.levelNum === lvlNum);
                 const block = document.createElement('div'); 
                 block.className = 'menu-category-block';
+                
+                // 🎯 尋找當前層級對應的元數據物件名稱
+                const currentLvlMeta = globalLevelMetadata.find(l => l.num === lvlNum);
+                const lvlLabelName = currentLvlMeta ? currentLvlMeta.label : '展開';
+
                 block.innerHTML = `
-                    <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} 世界觀</button>
+                    <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} ${lvlLabelName}</button>
                     <div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">
                         ${subset.map(u => `<button class="leaf-btn" id="lf-codex-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}
                     </div>`;
