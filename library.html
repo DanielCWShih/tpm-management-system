@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>知識圖書館 | System TPM Library Hub</title>
     <style>
+        /* ========================================================================
+        REVISION HISTORY / VERSION LOG
+        ========================================================================
+        2026-06-04 V9.10-CRITICAL-FIX: 👑 知識圖書館完全體（邊界切除與關鍵字流失雙重絕殺版）
+        1. 絕殺邊界切除：優化 .lexicon-index-column 側 Padding 緩衝防線，留出 3D 浮起與陰影空間，徹底解決最左側卡片被切掉邊界的大坑。
+        2. 絕殺關鍵字流失：重構 sequenceLoadScripts 批次加載大腦，改用雙軌全量合流引擎（combinedPayload），100% 導通真實文獻車間所有 CORE 關鍵字。
+        3. 側邊欄洗鏈化：徹底移除「辭典」贅詞，純淨剛性輸出 LEVEL X。
+        ========================================================================
+        */
         :root {
             --bg-color: #FEF9E7;
             --sidebar-cream: #FDF2D0;
@@ -266,15 +275,16 @@
             gap: 24px;
         }
 
+        /* ─── ⚖️ 左右雙軌戰術分流觀測大盤 (小卡片網格版) ─── */
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden; 
+            overflow-x: hidden; /* 🎯 剛性禁制：徹底不允許左右拖曳 */
             display: grid;
-            grid-template-columns: repeat(6, 1fr); 
+            grid-template-columns: repeat(6, 1fr); /* 🎯 剛性網格：固定 6 欄拓撲排版 */
             grid-auto-rows: min-content;
             gap: 12px;
-            padding-right: 8px;
+            padding: 6px 8px 6px 6px; /* 🎯 剛性修正 Bug 1: 增加左側與頂部安全 Padding 緩衝線，留足 3D 按壓位移空間，阻絕左邊被切 */
             align-content: start; 
         }
 
@@ -300,8 +310,8 @@
 
         .lexicon-term-row:hover {
             background: #FFFDF4;
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0px var(--border-heavy);
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px var(--border-heavy);
         }
 
         .lexicon-term-row.active-term {
@@ -339,7 +349,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 🎯 UI 重構點：Dashboard 全新 7 欄精緻硬核小卡片樣式 */
         .level-hero-card {
             border: 2px solid var(--border-heavy);
             border-radius: 8px;
@@ -388,7 +397,7 @@
 
         <main class="content-panel">
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
-                <span id="current-category-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">LEXICON INDEX</span>
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">LEXICON INDEX</span>
                 <h2 id="current-level-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
             </div>
 
@@ -492,22 +501,17 @@
             if (el) el.style.display = (el.style.display === 'none' ? 'flex' : 'none');
         }
 
-        // ========================================================================
-        // 👑 儀表板大腦優化：拆分群組、橫向 7 欄網格、精簡只吐 LEVEL X 👑
-        // ========================================================================
         function renderDashboard() {
             const container = document.getElementById('dashboard-menu-hall');
             if (!container) return;
             container.innerHTML = '';
 
-            // 定義需要平行平鋪展示的核心子分類
             const targetGroups = [
                 { id: 'beginner', title: '初心者:' },
                 { id: 'handbook', title: '冒險者:' }
             ];
 
             targetGroups.forEach((group, gIdx) => {
-                // 1. 建立剛性分群子標題
                 const heading = document.createElement('div');
                 heading.style.fontWeight = '900';
                 heading.style.fontSize = '1.15rem';
@@ -516,27 +520,23 @@
                 heading.innerText = group.title;
                 container.appendChild(heading);
 
-                // 2. 建立剛性 7 欄平鋪網格容器
                 const grid = document.createElement('div');
                 grid.style.display = 'grid';
-                grid.style.gridTemplateColumns = 'repeat(7, 1fr)'; /* 🎯 剛性控制：一排 7 張 */
+                grid.style.gridTemplateColumns = 'repeat(7, 1fr)'; 
                 grid.style.gap = '15px';
                 grid.style.width = '100%';
                 grid.style.marginBottom = '20px';
 
-                // 3. 篩選對應文獻料件
                 const subset = libraryLevelRegistry.filter(l => l.category === group.id);
                 
                 subset.forEach(l => {
                     const card = document.createElement('div');
                     card.className = 'level-hero-card';
                     card.onclick = () => loadLevelLexicon(l.category, l.levelNum);
-                    // 🎯 剛性精簡：卡片內容只允許吐出 LEVEL X
                     card.innerHTML = `<div style="font-size:1.1rem; font-weight:900; letter-spacing:0.5px;">LEVEL ${l.levelNum}</div>`;
                     grid.appendChild(card);
                 });
 
-                // 如果該區塊尚未開線（雖然目前註冊表都有，預留安全牆）
                 if (subset.length === 0) {
                     const fallbackCard = document.createElement('div');
                     fallbackCard.style.gridColumn = 'span 7';
@@ -551,7 +551,6 @@
 
                 container.appendChild(grid);
 
-                // 4. 在群組間架設剛性分隔線
                 if (gIdx < targetGroups.length - 1) {
                     const separator = document.createElement('div');
                     separator.style.borderBottom = '3px dashed var(--border-heavy)';
@@ -563,7 +562,7 @@
         }
 
         // ========================================================================
-        // 👑 核心加載模組
+        // 👑 核心加載模組（🎯 修正點 Bug 2: 雙軌全量合流防線，全面抓取 CORE 關鍵字）
         // ========================================================================
         async function loadLevelLexicon(catId, lvlNum) {
             const target = libraryLevelRegistry.find(r => r.category === catId && r.levelNum === lvlNum);
@@ -613,21 +612,30 @@
                 const script = document.createElement('script');
                 script.src = `${fileList[index]}?v=${Date.now()}`;
                 script.onload = () => {
-                    const payload = (window.libraryCourseEngineData && window.libraryCourseEngineData.length > 0)
-                                    ? window.libraryCourseEngineData
-                                    : window.codexCourseEngineData;
-                    
-                    if (payload && payload[0]) {
-                        payload[0].subPages.forEach(page => {
-                            if (page.diagramFlowArray) {
-                                page.diagramFlowArray.forEach(term => {
-                                    if (!window.aggregatedTermsPool.some(t => t.name === term.name)) {
-                                        window.aggregatedTermsPool.push(term);
-                                    }
-                                });
-                            }
-                        });
+                    // 🎯 雙軌解包大腦：將兩組全域變數融合成一個 Payload，確保 100% 抓乾淨
+                    let combinedPayload = [];
+                    if (window.libraryCourseEngineData && window.libraryCourseEngineData.length > 0) {
+                        combinedPayload = combinedPayload.concat(window.libraryCourseEngineData);
                     }
+                    if (window.codexCourseEngineData && window.codexCourseEngineData.length > 0) {
+                        combinedPayload = combinedPayload.concat(window.codexCourseEngineData);
+                    }
+                    
+                    combinedPayload.forEach(course => {
+                        if (course.subPages) {
+                            course.subPages.forEach(page => {
+                                if (page.diagramFlowArray) {
+                                    page.diagramFlowArray.forEach(term => {
+                                        if (!window.aggregatedTermsPool.some(t => t.name === term.name)) {
+                                            window.aggregatedTermsPool.push(term);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+
+                    // 清空變數，防止跨檔變更污染
                     window.codexCourseEngineData = [];
                     window.libraryCourseEngineData = [];
                     
