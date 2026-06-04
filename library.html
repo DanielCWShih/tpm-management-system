@@ -8,11 +8,10 @@
         /* ========================================================================
         REVISION HISTORY / VERSION LOG
         ========================================================================
-        2026-06-04 V11.00-LEXICON-SUPREME: 👑 知識圖書館終極完全體（A-Z排序與我的最愛快取合流完璧版）
-        1. 移除卡牌標籤：全面摘除小卡片頂部的 Core 與 SUPP 標籤字樣，卡片畫面純淨輸出單個核心名詞縮寫。
-        2. A-Z 剛性數理排序：不論進入何種 LEVEL 或是我的最愛收藏庫，字盤大腦全自動依據 A-Z 字母與音序進行剛性升序排列。
-        3. 我的最愛全域大腦：Dashboard 頂部全新增設「個人:」群組與「❤️ 我的最愛」大卡牌，內頁觀測儀內建 🤍/❤️ 狀態機切換。
-        4. 3D 邊界防火牆：100% 維持外襯四邊安全 Padding 緩衝，留足 3D 按壓懸浮像素空間，絕不切除最左側卡片黑框邊界。
+        2026-06-04 V11.10-UX-REMASTER: 👑 知識圖書館 UI/UX 終極大師版
+        1. 絕殺最愛重疊：廢除面板絕對定位懸浮鈕，重構頂部「操作通聯列」，將最愛切換鈕與內文完全解耦，100% 根除與標題字樣撞車缺陷。
+        2. 淨化個人卡牌：移除大廳個人專區大卡片的「❤️」圖標，遵照指令純淨輸出「我的最愛」剛性洗鍊文字。
+        3. 3D 懸浮安全帶：維持外襯四邊 Padding 緩衝，留足卡牌 3D 浮起像素空間，左側邊緣絕不切邊。
         ========================================================================
         */
         :root {
@@ -294,7 +293,6 @@
             align-content: start; 
         }
 
-        /* 🎯 UI 重構：極簡純淨小卡片樣式 */
         .lexicon-term-row {
             background: #FFFFFF;
             border: 2px solid var(--border-heavy);
@@ -331,14 +329,13 @@
             border: 4px solid var(--border-heavy);
             background: #FFFDF2;
             border-radius: 12px;
-            padding: 30px;
+            padding: 24px;
             box-shadow: var(--shadow-tactical);
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            overflow: hidden;
             height: 100%;
             flex-shrink: 0;
-            position: relative; /* 預留心形釘死定位 */
         }
 
         .inspector-placeholder {
@@ -377,6 +374,7 @@
             box-shadow: 5px 5px 0px var(--border-heavy);
         }
     </style>
+    <script src="library_data/library_supplementary.js?v=20260604"></script>
 </head>
 <body>
 
@@ -506,13 +504,11 @@
             if (el) el.style.display = (el.style.display === 'none' ? 'flex' : 'none');
         }
 
-        // 🎯 👑 變更點：完美平鋪「個人、初心者、冒險者」三大層級 7欄網格矩陣
         function renderDashboard() {
             const container = document.getElementById('dashboard-menu-hall');
             if (!container) return;
             container.innerHTML = '';
 
-            // ─── 👑 1. 個人專區 (置頂首發) ───
             const personalHeading = document.createElement('div');
             personalHeading.style.fontWeight = '900';
             personalHeading.style.fontSize = '1.15rem';
@@ -532,7 +528,8 @@
             const favCard = document.createElement('div');
             favCard.className = 'level-hero-card';
             favCard.onclick = () => loadFavoritesLexicon();
-            favCard.innerHTML = `<div style="font-size:1.1rem; font-weight:900; letter-spacing:0.5px;">❤️ 我的最愛</div>`;
+            // 🎯 修正點 1: 完美移除「❤️」圖標，純文字極簡顯影
+            favCard.innerHTML = `<div style="font-size:1.1rem; font-weight:900; letter-spacing:0.5px;">我的最愛</div>`;
             personalGrid.appendChild(favCard);
             container.appendChild(personalGrid);
 
@@ -542,7 +539,6 @@
             personalSep.style.margin = '25px 0 15px 0';
             container.appendChild(personalSep);
 
-            // ─── 👑 2. 核心文獻專區分流 ───
             const targetGroups = [
                 { id: 'beginner', title: '初心者:' },
                 { id: 'handbook', title: '冒險者:' }
@@ -562,7 +558,6 @@
                 grid.style.gridTemplateColumns = 'repeat(7, 1fr)'; 
                 grid.style.gap = '15px';
                 grid.style.width = '100%';
-                grid.style.padding = '6px';
                 grid.style.marginBottom = '20px';
 
                 const subset = libraryLevelRegistry.filter(l => l.category === group.id);
@@ -587,7 +582,6 @@
             });
         }
 
-        // 🎯 👑 變更點：清洗提取名詞大腦，只留單個純淨代碼
         function getCleanTermName(name) {
             let clean = (name || '').replace(/🔑|關鍵詞：|關鍵詞:|增補：|增補:/g, '').trim();
             let engMatch = clean.match(/^([A-Za-z0-9\s\-]+)/);
@@ -639,7 +633,6 @@
                 }
             });
 
-            // 🎯 👑 變更點：強制 A-Z 剛性排序
             window.aggregatedTermsPool.sort((a, b) => {
                 let nameA = getCleanTermName(a.name);
                 let nameB = getCleanTermName(b.name);
@@ -649,7 +642,6 @@
             renderLexiconList();
         }
 
-        // ─── 👑 4. 我的最愛動態解包引擎 ───
         window.loadFavoritesLexicon = function() {
             window.isInsideFavoritesView = true;
             activeTermIdx = -1;
@@ -678,7 +670,7 @@
             if (inspector) {
                 inspector.innerHTML = `
                     <div class="inspector-placeholder">
-                        ❤️ 收藏庫載入完成<br>請點擊左側單詞查看詳細技術文獻
+                        🎯 收藏庫載入完成<br>請點擊左側單詞查看詳細技術文獻
                     </div>
                 `;
             }
@@ -756,7 +748,6 @@
             });
         }
 
-        // 🎯 👑 變更點：完全移除 Core/SUPP 大頭行，只吐純粹名詞
         function renderLexiconList() {
             const list = document.getElementById('lexicon-terms-list');
             if (!list) return;
@@ -787,7 +778,10 @@
             });
         }
 
-        // ─── 👑 5. 觀測儀我的最愛雙向切換引擎 ───
+        // ========================================================================
+        // 👑 修正點 2: 大師級 UI/UX 頂層融合控制列 👑
+        // 🎯 絕殺：完美融入排版，建立置頂控制線，按鈕伴隨「文件觀測標籤」精確並列
+        // ========================================================================
         function showDetail(term) {
             const inspector = document.getElementById('lexicon-inspector');
             if (!inspector) return;
@@ -796,13 +790,18 @@
             const isFav = favoritesPool.some(f => f.name === term.name);
 
             inspector.innerHTML = `
-                <div style="position:relative; width:100%; height:100%; animation: fadeInBox 0.15s ease-out;">
-                    <div style="position:absolute; top:-10px; right:-10px; z-index:100;">
-                        <button id="fav-toggle-btn" style="background:${isFav ? '#FFD2D2' : '#FFFFFF'}; border:2px solid var(--border-heavy); border-radius:6px; width:40px; height:40px; font-size:1.3rem; cursor:pointer; box-shadow:2px 2px 0px var(--border-heavy); display:flex; align-items:center; justify-content:center; transition:transform 0.1s;" onclick="window.toggleFavoriteCurrentTerm()">
-                            ${isFav ? '❤️' : '🤍'}
+                <div style="display: flex; flex-direction: column; height: 100%; width: 100%; animation: fadeInBox 0.15s ease-out;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--border-heavy); padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0; width: 100%;">
+                        <div style="font-size: 0.75rem; font-weight: 900; background: var(--text-main); color: #FFF; padding: 4px 8px; border-radius: 4px; font-family: monospace; letter-spacing: 0.5px;">
+                            DOCUMENT INSPECTOR
+                        </div>
+                        <button id="fav-toggle-btn" style="background:${isFav ? '#FFD2D2' : '#FFFFFF'}; border: 2px solid var(--border-heavy); border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: 900; cursor:pointer; box-shadow: 2px 2px 0px var(--border-heavy); display:flex; align-items:center; gap:6px; transition: all 0.1s;" onclick="window.toggleFavoriteCurrentTerm()">
+                            <span>${isFav ? '❤️' : '🤍'}</span>
+                            <span style="font-size:0.75rem; font-weight:900;">${isFav ? '已收藏' : '加入最愛'}</span>
                         </button>
                     </div>
-                    <div style="line-height:1.7; font-size:0.88rem; padding-top:10px;">
+                    
+                    <div style="line-height: 1.7; font-size: 0.88rem; overflow-y: auto; flex: 1; padding-right: 4px; color: var(--text-main);">
                         ${term.text}
                     </div>
                 </div>
@@ -827,7 +826,7 @@
             if (btn) {
                 const isFav = favoritesPool.some(f => f.name === term.name);
                 btn.style.background = isFav ? '#FFD2D2' : '#FFFFFF';
-                btn.innerText = isFav ? '❤️' : '🤍';
+                btn.innerHTML = `<span>${isFav ? '❤️' : '🤍'}</span><span style="font-size:0.75rem; font-weight:900;">${isFav ? '已收藏' : '加入最愛'}</span>`;
             }
 
             if (window.isInsideFavoritesView) {
@@ -844,8 +843,8 @@
         function exitToDashboard() {
             const menuHall = document.getElementById('dashboard-menu-hall');
             const viewport = document.getElementById('lexicon-viewport');
-            const categoryEl = document.getElementById('current-category-id');
-            const levelEl = document.getElementById('current-level-name');
+            const categoryEl = document.getElementById('current-chapter-id');
+            const levelEl = document.getElementById('current-chapter-name');
 
             if (menuHall) menuHall.style.display = 'block';
             if (viewport) viewport.style.display = 'none';
