@@ -1,20 +1,9 @@
-<!-- 
-========================================================================
-REVISION HISTORY / VERSION LOG
-========================================================================
-2026-06-02 V2.10-LIBRARY-CN: 👑 知識圖書館看板名稱剛性中文化對位版。
-1. 看板語意對齊：對位 image_b8f11e.png 截圖修正，全面洗淨英文標籤，改為「初心者寶典」與「冒險者手冊」。
-2. 數據資產合流：內建以 library-bookmark- 開頭的收藏狀態機，完美咬合總部一鍵備份下載功能。
-3. 視覺剛性同步：採用 3px 剛性黑框、重工業戰術陰影與大氣奶油背景（#FEF9E7），絕不擠壓卡片。
-4. 全量展模規格：代碼全展開、零省略號，與 index.html 去中心化備份下載金鑰無縫閉環。
-========================================================================
--->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>知識圖書館 | System TPM Tactical Library</title>
+    <title>知識圖書館 | System TPM Library Hub</title>
     <style>
         :root {
             --bg-color: #FEF9E7;
@@ -27,7 +16,7 @@ REVISION HISTORY / VERSION LOG
             --radius-sm: 8px;
             --color-completed: #22C55E;
             --color-active-gold: #FDE047;
-            --color-bookmark-red: #EF4444;
+            --color-fail: #DC2626;
             --color-locked-gray: #E2E8F0;
         }
 
@@ -70,17 +59,6 @@ REVISION HISTORY / VERSION LOG
             gap: 15px;
         }
 
-        .auth-panel {
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            padding: 10px 20px;
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-            font-weight: 900;
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            white-space: nowrap;
-        }
-
         .lang-switcher-wrapper {
             display: flex;
             background: var(--card-white);
@@ -103,11 +81,23 @@ REVISION HISTORY / VERSION LOG
             align-items: center;
             justify-content: center;
             border-radius: 4px;
+            transition: all 0.1s;
         }
 
         .lang-btn-core.active {
             background: var(--text-main) !important;
             color: white !important;
+        }
+
+        .auth-panel {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 900;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            white-space: nowrap;
         }
 
         .back-btn {
@@ -219,9 +209,6 @@ REVISION HISTORY / VERSION LOG
             box-shadow: 2px 2px 0px var(--border-heavy);
             transition: all 0.1s;
             line-height: 1.4;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .leaf-btn:hover {
@@ -236,11 +223,6 @@ REVISION HISTORY / VERSION LOG
             box-shadow: 1px 1px 0px var(--border-heavy) !important;
         }
 
-        .mini-bookmark-dot {
-            color: var(--color-bookmark-red);
-            font-size: 0.8rem;
-        }
-
         .content-panel {
             flex: 1;
             height: 100%;
@@ -253,6 +235,7 @@ REVISION HISTORY / VERSION LOG
 
         .dashboard-view-hall,
         .document-canvas,
+        .exam-session-box,
         .sub-pagination-dots-zone {
             display: none;
             width: 100%;
@@ -266,7 +249,7 @@ REVISION HISTORY / VERSION LOG
 
         .level-cards-parallel-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
             width: 100%;
             margin-bottom: 20px;
@@ -277,14 +260,13 @@ REVISION HISTORY / VERSION LOG
             background: var(--card-white);
             border: 2px solid var(--border-heavy);
             border-radius: 10px;
-            padding: 16px 20px;
+            padding: 12px 16px;
             box-shadow: var(--shadow-tactical);
             cursor: pointer;
             transition: all 0.15s;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 100px;
         }
 
         .progress-card-master:hover {
@@ -301,22 +283,46 @@ REVISION HISTORY / VERSION LOG
         .progress-label {
             font-family: monospace;
             font-weight: 900;
-            font-size: 0.95rem;
-            color: var(--text-main);
+            font-size: 0.72rem;
+            color: var(--text-secondary);
             letter-spacing: 0.5px;
         }
 
+        .progress-percentage {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin: 2px 0;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
         .progress-stats {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 800;
-            color: var(--text-secondary);
-            margin-top: 5px;
+            color: var(--text-main);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #E2E8F0;
+            border: 2px solid var(--border-heavy);
+            border-radius: 5px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--color-completed);
+            width: 0%;
+            transition: width 0.4s ease-out;
         }
 
         .cdx-dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
             width: 100%;
             padding: 5px 2px;
         }
@@ -324,7 +330,7 @@ REVISION HISTORY / VERSION LOG
         .cdx-dashboard-card {
             border: 2px solid var(--border-heavy);
             border-radius: var(--radius-sm);
-            padding: 14px;
+            padding: 10px 14px;
             cursor: pointer;
             box-shadow: var(--shadow-tactical);
             transition: all 0.15s;
@@ -332,7 +338,7 @@ REVISION HISTORY / VERSION LOG
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            min-height: 60px;
+            min-height: 52px;
         }
 
         .cdx-dashboard-card:hover {
@@ -352,7 +358,7 @@ REVISION HISTORY / VERSION LOG
             overflow-y: auto;
             padding-right: 8px;
             width: 100%;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .textbook-section-block {
@@ -407,6 +413,47 @@ REVISION HISTORY / VERSION LOG
             user-select: none;
         }
 
+        .exam-session-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .exam-progress-bar {
+            width: 100%;
+            background: #E2E8F0;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 2px solid #1A1A1A;
+        }
+
+        .exam-progress-fill {
+            height: 100%;
+            background: var(--text-main);
+            width: 0%;
+            transition: width 0.2s;
+        }
+
+        .option-card {
+            background: #FFF;
+            border: 2px solid var(--border-heavy);
+            padding: 18px;
+            border-radius: var(--radius-sm);
+            margin-top: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 3px 3px 0px #1A1A1A;
+            transition: all 0.1s;
+        }
+
+        .option-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px #1A1A1A;
+            background: var(--sidebar-cream);
+        }
+
         .sub-pagination-dots-zone {
             display: flex;
             justify-content: center;
@@ -433,44 +480,23 @@ REVISION HISTORY / VERSION LOG
             transform: scale(1.2);
         }
 
-        .library-bookmark-btn {
-            background: var(--card-white);
-            border: 2px solid var(--border-heavy);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 900;
-            font-size: 0.8rem;
-            cursor: pointer;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            transition: all 0.1s;
+        .slider-dot.exam-dot {
+            border-color: var(--color-fail);
+            background: #FEF2F2;
+            font-size: 10px;
             display: flex;
             align-items: center;
-            gap: 4px;
-        }
-
-        .library-bookmark-btn.is-bookmarked {
-            background: #FEE2E2;
-            color: var(--color-bookmark-red);
-        }
-
-        .library-blockquote {
-            border-left: 4px solid var(--border-heavy);
-            background: var(--sidebar-cream);
-            padding: 15px 20px;
-            margin: 20px 0;
-            font-weight: 700;
-            border-radius: 0 6px 6px 0;
-        }
-
-        .library-h3 {
-            font-size: 1.2rem;
+            justify-content: center;
             font-weight: 900;
-            margin: 25px 0 10px 0;
-            border-bottom: 2px solid var(--border-heavy);
-            padding-bottom: 4px;
+            color: #B91C1C;
         }
 
-        @keyframes fadeInBox {
+        .slider-dot.exam-dot.active {
+            background: var(--color-fail);
+            color: #FFF;
+        }
+
+        @border-heavy {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -485,8 +511,8 @@ REVISION HISTORY / VERSION LOG
         <div class="navbar-controls">
             <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
             <div class="lang-switcher-wrapper">
-                <button class="lang-btn-core active">TW</button>
-                <button class="lang-btn-core">EN</button>
+                <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
+                <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
             </div>
             <a href="index.html" class="back-btn">返回總部</a>
         </div>
@@ -499,15 +525,11 @@ REVISION HISTORY / VERSION LOG
         </aside>
 
         <main class="content-panel">
-            <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0; display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
-                    <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
-                </div>
-                <button id="global-bookmark-trigger" class="library-bookmark-btn" onclick="toggleLibraryAssetBookmark()" style="display:none;">🔖 收藏卷軸</button>
+            <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
+                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
             </div>
 
-            <!-- 視覺大廳 Dashboard -->
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
                 <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
                 <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
@@ -515,7 +537,6 @@ REVISION HISTORY / VERSION LOG
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
 
-            <!-- 文獻 CANVAS 閱讀區 -->
             <div class="document-canvas" id="textbook-viewport">
                 <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
                 <div class="textbook-scroll-box">
@@ -523,52 +544,60 @@ REVISION HISTORY / VERSION LOG
                 </div>
             </div>
 
-            <!-- 跨頁控制點 -->
+            <div class="exam-session-box" id="exam-viewport">
+                <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
+                    <span style="color:var(--color-fail);" id="exam-title-text">🔥 隨機能力考核大考</span>
+                    <span id="exam-counter">1 / 3</span>
+                </div>
+                <div class="exam-progress-bar"><div class="exam-progress-fill" id="exam-progress"></div></div>
+                <h3 id="exam-question-text" style="font-size:1.2rem; line-height:1.5; margin-bottom:25px; font-weight: 800;">載入中...</h3>
+                <div id="exam-options-container"></div>
+            </div>
+
             <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
         </main>
     </div>
 
     <script>
-        // 👑 剛性動態路由註冊矩陣 👑
-        const globalLibraryRegistry = [
-            { type: 'beginner', groupLabel: '初心者寶典文獻 (Beginner)', subUnitId: '1-1', title: '1-1: 三方賽局戰術析論', file: 'library_data_beginner_1-1.js' },
-            { type: 'beginner', groupLabel: '初心者寶典文獻 (Beginner)', subUnitId: '1-2', title: '1-2: 生命週期幾何流產', file: 'library_data_beginner_1-2.js' },
-            { type: 'handbook', groupLabel: '冒險者手冊文獻 (Handbook)', subUnitId: '1-1', title: '1-1: 防水結構 Worst-Case', file: 'library_data_handbook_1-1.js' }
+        const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
+
+        // 🎯 剛性焊接點: 100% 映射 image_76c204.png 檔案樹，全面對位至獨立資料夾
+        const globalSubUnitRegistry = [
+            { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 三方賽局戰術析論', file: 'library_data/library_data_beginner_1-1.js' },
+            { type: 'codex', levelNum: 1, subUnitId: '1-2', title: '1-2: 生命週期幾何流產', file: 'library_data/library_data_beginner_1-2.js' },
+            { type: 'handbook', levelNum: 1, subUnitId: '1-1', title: '1-1: 防水結構 Worst-Case', file: 'handbook_data_course/handbook_data_1-1.js' }
         ];
 
-        // 👑 對位中文化修正：BEGINNER CODEX -> 初心者寶典 | HANDBOOK SPECS -> 冒險者手冊 👑
-        const globalCategoryMetadata = [
-            { id: 'beginner', name: '初心者寶典', label: '寶典文獻庫' },
-            { id: 'handbook', name: '冒險者手冊', label: '手冊規格庫' }
-        ];
-
-        let selectedCategoryType = 'beginner'; 
+        // 🎯 儀表板分類元數據大盤（對齊文獻分類視野）
+        let selectedActiveTabType = 'codex'; 
         let activeCourseIdx = 0, activePageIdx = 0, activeFlowNodeIdx = 0;
+        let examActive = false, examCurrentQ = 0, examScoreCount = 0;
 
         window.onload = () => {
             renderGlobalTreeStructure();
             routeController();
         };
 
+        // 🎯 樹狀大腦重構：依據文獻類別（type）而非等級（levelNum）分段渲染
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); 
             root.innerHTML = '';
-            const presentTypes = ['beginner', 'handbook'];
             
-            presentTypes.forEach(type => {
-                const subset = globalLibraryRegistry.filter(u => u.type === type);
+            const categories = [
+                { type: 'codex', label: '📖 初心者寶典文獻' },
+                { type: 'handbook', label: '📖 冒險者手冊文獻' }
+            ];
+            
+            categories.forEach(cat => {
+                const subset = globalSubUnitRegistry.filter(u => u.type === cat.type);
                 if (subset.length === 0) return;
                 
                 const block = document.createElement('div'); 
                 block.className = 'menu-category-block';
                 block.innerHTML = `
-                    <button class="tree-main-toggle" onclick="toggleMenuSection('lib-accordion-${type}')">📚 ${subset[0].groupLabel.split(' (')[0]}</button>
-                    <div id="lib-accordion-${type}" class="tree-sub-group" style="display: flex; flex-direction: column;">
-                        ${subset.map(u => {
-                            const isSaved = localStorage.getItem(`library-bookmark-${type}-${u.subUnitId}`) === 'true';
-                            const savedTag = isSaved ? `<span class="mini-bookmark-dot">❤️</span>` : '';
-                            return `<button class="leaf-btn" id="lf-lib-${type}-${u.subUnitId}" onclick="switchLibraryUnit('${u.type}','${u.subUnitId}')"><span>${u.title}</span>${savedTag}</button>`;
-                        }).join('')}
+                    <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${cat.type}')">${cat.label}</button>
+                    <div id="lvl-accordion-${cat.type}" class="tree-sub-group" style="display: flex; flex-direction: column;">
+                        ${subset.map(u => `<button class="leaf-btn" id="lf-${u.type}-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}
                     </div>`;
                 root.appendChild(block);
             });
@@ -580,29 +609,32 @@ REVISION HISTORY / VERSION LOG
         }
 
         function routeController(directType, directC) {
+            document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：Daniel Shih`;
+
             const urlParams = new URLSearchParams(window.location.search);
             const paramC = directC || urlParams.get('c');
-            const paramType = directType || urlParams.get('type');
+            const paramType = directType || urlParams.get('type') || 'codex';
 
-            if (!paramC || !paramType) {
-                document.getElementById('global-bookmark-trigger').style.display = 'none';
-                document.getElementById('cdx-page-header-zone').style.display = 'flex'; 
+            if (!paramC) {
+                document.getElementById('cdx-page-header-zone').style.display = 'block'; 
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
                 document.getElementById('current-chapter-name').innerText = "圖書文獻檢索大廳";
                 document.getElementById('dashboard-menu-hall').style.display = 'block'; 
                 document.getElementById('textbook-viewport').style.display = 'none'; 
+                document.getElementById('exam-viewport').style.display = 'none'; 
                 document.getElementById('universal-dots-bar').style.display = 'none';
-                renderLibraryHubDashboard();
+                renderMultiLevelHubDashboard();
             } else {
                 document.getElementById('dashboard-menu-hall').style.display = 'none'; 
                 document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
-                const leaf = document.getElementById(`lf-lib-${paramType}-${paramC}`); 
+                const leaf = document.getElementById(`lf-${paramType}-${paramC}`); 
                 if (leaf) leaf.classList.add('active'); 
-                injectLibraryPackScript(paramType, paramC);
+                injectContentPackScript(paramType, paramC);
             }
         }
 
-        function renderLibraryHubDashboard() {
+        // 🎯 儀表板看板大腦重構：完美實體化 image_766065.png 雙模卡片與文獻卷軸數據清算
+        function renderMultiLevelHubDashboard() {
             const deckRow = document.getElementById('global-level-flex-deck');
             const grid = document.getElementById('l1-cards-grid'); 
             if (!deckRow || !grid) return;
@@ -610,35 +642,45 @@ REVISION HISTORY / VERSION LOG
             deckRow.innerHTML = ''; 
             grid.innerHTML = '';
             
-            globalCategoryMetadata.forEach(cat => {
-                const subUnitsInCat = globalLibraryRegistry.filter(u => u.type === cat.id); 
-                let total = subUnitsInCat.length, savedCount = 0;
-                subUnitsInCat.forEach(u => { 
-                    if (localStorage.getItem(`library-bookmark-${cat.id}-${u.subUnitId}`) === 'true') savedCount++; 
+            const categories = [
+                { type: 'codex', name: '初心者寶典' },
+                { type: 'handbook', name: '冒險者手冊' }
+            ];
+            
+            categories.forEach(cat => {
+                const subset = globalSubUnitRegistry.filter(u => u.type === cat.type);
+                let total = subset.length;
+                let collected = 0;
+                subset.forEach(u => { 
+                    if (localStorage.getItem(`library-${u.type}-${u.subUnitId}-clear`) === 'true') collected++; 
                 });
+                
                 deckRow.innerHTML += `
-                    <div class="progress-card-master ${cat.id === selectedCategoryType ? 'active-level' : ''}" onclick="selectedCategoryType='${cat.id}';renderLibraryHubDashboard();">
-                        <div class="progress-label">${cat.name}</div>
-                        <div class="progress-stats">文獻總量: ${total} 篇 | 已收藏: ${savedCount} 篇</div>
+                    <div class="progress-card-master ${cat.type === selectedActiveTabType ? 'active-level' : ''}" onclick="selectedActiveTabType='${cat.type}';renderMultiLevelHubDashboard();" style="min-height:100px;">
+                        <div style="font-weight:900; font-size:1.05rem; color:var(--text-main); margin-bottom:8px;">${cat.name}</div>
+                        <div class="progress-stats" style="font-size:0.8rem; font-weight:800; color:var(--text-secondary);">文獻總量: ${total} 篇 | 已收藏: ${collected} 篇</div>
                     </div>`;
             });
 
-            const filteredUnits = globalLibraryRegistry.filter(u => u.type === selectedCategoryType);
+            const filteredUnits = globalSubUnitRegistry.filter(u => u.type === selectedActiveTabType);
             filteredUnits.forEach(unit => {
-                const isSaved = localStorage.getItem(`library-bookmark-${unit.type}-${unit.subUnitId}`) === 'true';
+                const isClear = localStorage.getItem(`library-${unit.type}-${unit.subUnitId}-clear`) === 'true';
                 grid.innerHTML += `
-                    <div class="cdx-dashboard-card" style="background-color: ${isSaved?'#FEE2E2':'#FFF'};" onclick="switchLibraryUnit('${unit.type}', '${unit.subUnitId}')">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span>
-                            <h3 style="margin:0; font-size:0.85rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
+                    <div class="cdx-dashboard-card" style="background-color: ${isClear ? '#DCFCE7' : '#FFFFFF'}; border: 2px solid var(--border-heavy);" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:4px 8px; border-radius:4px; font-size:0.8rem;">${unit.subUnitId}</span>
+                            <h3 style="margin:0; font-size:0.88rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
                         </div>
-                        <div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isSaved ? `❤️ [已收藏]` : '📖 未收藏'}</div>
+                        <div style="font-size:0.8rem; font-weight:900; color:var(--text-secondary); white-space:nowrap; display:flex; align-items:center; gap:4px; padding-left:10px;">
+                            <span> 📖</span> ${isClear ? '已收藏' : '未收藏'}
+                        </div>
                     </div>`;
             });
         }
 
-        function switchLibraryUnit(type, subUnitId) { 
-            selectedCategoryType = type; 
+        function switchUnit(type, subUnitId, lvlNum) { 
+            examActive = false; 
+            selectedActiveTabType = type; 
             activeCourseIdx = 0; 
             activePageIdx = 0; 
             activeFlowNodeIdx = 0; 
@@ -647,110 +689,194 @@ REVISION HISTORY / VERSION LOG
         }
 
         function exitToDashboardMenu() { 
+            examActive = false; 
             window.history.pushState(null, '', window.location.pathname); 
             routeController(null, null); 
-            renderGlobalTreeStructure();
         }
 
-        function injectLibraryPackScript(type, packId) {
+        // 🎯 載入大腦重大修復：採用 (Type + subUnitId) 雙維度二進制互鎖，徹底解決 1-1 同名路徑死鎖！
+        function injectContentPackScript(type, packId) {
             window.libraryCourseEngineData = []; 
-            const old = document.getElementById('dynamic-library-pack'); 
+            window.codexCourseEngineData = [];
+            const old = document.getElementById('dynamic-course-pack'); 
             if (old) old.remove();
             
-            const registryItem = globalLibraryRegistry.find(u => u.type === type && u.subUnitId === packId);
-            if (!registryItem) return;
-
             const script = document.createElement('script'); 
-            script.id = 'dynamic-library-pack'; 
-            script.src = `${registryItem.file}?v=${Date.now()}`;
-            script.onload = () => { initLibraryEngine(); }; 
+            script.id = 'dynamic-course-pack'; 
+            
+            // 🔒 互鎖防禦：精確尋找符合該文獻類別與ID的實體路徑
+            const currentUnit = globalSubUnitRegistry.find(u => u.type === type && u.subUnitId === packId);
+            if (!currentUnit) {
+                console.error("無法在註冊名冊中定位文獻:", type, packId);
+                return;
+            }
+            
+            const targetFile = currentUnit.file;
+            script.src = `${targetFile}?v=${Date.now()}`;
+            
+            script.onload = () => { initEngine(); }; 
+            
+            // 🚨 容錯安全閥線路
+            script.onerror = () => {
+                document.getElementById('current-chapter-name').innerText = "數據解讀失敗 (404)";
+                document.getElementById('lesson-content').innerHTML = `
+                    <div style="border:4px solid var(--border-heavy); background:#FFFDF2; padding:24px; border-radius:8px; box-shadow:var(--shadow-tactical); margin-top:20px;">
+                        <h3 style="color:var(--color-fail); font-size:1.3rem; margin-bottom:12px;">⚠️ 核心解析引擎流產報告</h3>
+                        <p style="font-weight:800; font-size:0.95rem; line-height:1.6;">無法從地端加載路徑： <span style="background:var(--color-active-gold); padding:2px 6px; border:1px solid #000; border-radius:4px; font-family:monospace;">${targetFile}</span></p>
+                    </div>
+                `;
+                document.getElementById('textbook-viewport').style.display = 'flex';
+                document.getElementById('exam-viewport').style.display = 'none';
+                document.getElementById('universal-dots-bar').style.display = 'none';
+            };
+            
             document.head.appendChild(script);
         }
 
-        function initLibraryEngine() {
-            if (!window.libraryCourseEngineData || window.libraryCourseEngineData.length === 0) { 
-                document.getElementById('current-chapter-name').innerText = "文獻解讀失敗"; 
+        function initEngine() {
+            // 🎯 多維變數相容兼容防線：自動融合讀取 library 或是 codex 的全域大腦變數
+            window.currentLibraryData = (window.libraryCourseEngineData && window.libraryCourseEngineData.length > 0) 
+                                        ? window.libraryCourseEngineData 
+                                        : window.codexCourseEngineData;
+
+            if (!window.currentLibraryData || window.currentLibraryData.length === 0) { 
+                document.getElementById('current-chapter-name').innerText = "數據解讀失敗 (變數未註冊)"; 
                 return; 
             }
-            loadLibraryCourseState(activeCourseIdx, activePageIdx);
+            loadCourseState(activeCourseIdx, activePageIdx);
         }
 
-        function loadLibraryCourseState(cIdx, pIdx) {
+        function exitExamToPage(pIdx) { 
+            examActive = false; 
+            examCurrentQ = 0; 
+            examScoreCount = 0; 
+            activeFlowNodeIdx = 0; 
+            loadCourseState(activeCourseIdx, pIdx); 
+        }
+
+        function loadCourseState(cIdx, pIdx) {
             activeCourseIdx = cIdx; 
-            activePageIdx = pIdx;
-            
-            const course = window.libraryCourseEngineData[cIdx]; 
+            const course = window.currentLibraryData[cIdx]; 
             const dotsBar = document.getElementById('universal-dots-bar'); 
             dotsBar.innerHTML = '';
             
-            document.getElementById('textbook-viewport').style.display = 'flex'; 
-            document.getElementById('universal-dots-bar').style.display = 'flex';
-            
-            const page = course.subPages[pIdx]; 
-            document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; 
-            document.getElementById('current-chapter-name').innerText = page.title;
-            
-            const bookmarkBtn = document.getElementById('global-bookmark-trigger');
-            bookmarkBtn.style.display = 'flex';
-            const urlParams = new URLSearchParams(window.location.search);
-            const currentType = urlParams.get('type');
-            const currentC = urlParams.get('c');
-            
-            const isSaved = localStorage.getItem(`library-bookmark-${currentType}-${currentC}`) === 'true';
-            if (isSaved) {
-                bookmarkBtn.className = "library-bookmark-btn is-bookmarked";
-                bookmarkBtn.innerHTML = "❤️ 已收藏此卷軸";
+            if (examActive) {
+                document.getElementById('textbook-viewport').style.display = 'none'; 
+                document.getElementById('exam-viewport').style.display = 'block'; 
+                document.getElementById('universal-dots-bar').style.display = 'flex';
+                course.subPages.forEach((_, sIdx) => { 
+                    dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; 
+                }); 
+                dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; 
+                runExamEngine();
             } else {
-                bookmarkBtn.className = "library-bookmark-btn";
-                bookmarkBtn.innerHTML = "🔖 收藏卷軸";
-            }
-
-            let targetedText = page.text;
-            let targetedFlow = page.diagramFlowArray;
-            
-            const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
-            if (flowRenderer && targetedFlow && targetedFlow.length > 0) {
-                flowRenderer.style.display = 'flex'; 
-                flowRenderer.innerHTML = '';
-                targetedFlow.forEach((node, nIdx) => {
-                    flowRenderer.innerHTML += `<div class="flow-node-block ${nIdx===activeFlowNodeIdx?'active-node':''}" onclick="activeFlowNodeIdx=${nIdx};loadLibraryCourseState(${cIdx},${pIdx})">${node.name}</div>`;
-                    if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
-                });
-            } else if (flowRenderer) { 
-                flowRenderer.style.display = 'none'; 
-            }
-
-            let compiledHtml = "";
-            if (targetedFlow && targetedFlow.length > 0) {
-                if (targetedFlow[activeFlowNodeIdx]) {
-                    compiledHtml = `<div class="textbook-section-block"><div style="line-height:1.7;">${targetedFlow[activeFlowNodeIdx].text}</div></div>`;
+                document.getElementById('textbook-viewport').style.display = 'flex'; 
+                document.getElementById('exam-viewport').style.display = 'none'; 
+                document.getElementById('universal-dots-bar').style.display = 'flex';
+                
+                activePageIdx = pIdx; 
+                const page = course.subPages[pIdx]; 
+                document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; 
+                document.getElementById('current-chapter-name').innerText = page.title;
+                
+                let targetedText = page.text;
+                let targetedFlow = page.diagramFlowArray;
+                
+                const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
+                if (flowRenderer && targetedFlow && targetedFlow.length > 0) {
+                    flowRenderer.style.display = 'flex'; 
+                    flowRenderer.innerHTML = '';
+                    targetedFlow.forEach((node, nIdx) => {
+                        flowRenderer.innerHTML += `<div class="flow-node-block ${nIdx===activeFlowNodeIdx?'active-node':''}" onclick="activeFlowNodeIdx=${nIdx};loadCourseState(${cIdx},${pIdx})">${node.name}</div>`;
+                        if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
+                    });
+                } else if (flowRenderer) { 
+                    flowRenderer.style.display = 'none'; 
                 }
-            } else {
-                compiledHtml = `<div style="line-height: 1.7;">${targetedText || ""}</div>`;
-            }
-            document.getElementById('lesson-content').innerHTML = compiledHtml;
 
-            course.subPages.forEach((_, sIdx) => { 
-                dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="activeFlowNodeIdx=0;loadLibraryCourseState(${cIdx},${sIdx})"></div>`; 
-            }); 
+                let compiledHtml = "";
+                if (targetedFlow && targetedFlow.length > 0) {
+                    if (targetedFlow[activeFlowNodeIdx]) {
+                        compiledHtml = `
+                            <div class="textbook-section-block">
+                                <div style="line-height:1.6;">${targetedFlow[activeFlowNodeIdx].text}</div>
+                            </div>`;
+                    }
+                } else {
+                    compiledHtml = `<div style="line-height: 1.6; font-size: 0.88rem;">${targetedText || ""}</div>`;
+                }
+                document.getElementById('lesson-content').innerHTML = compiledHtml;
+
+                course.subPages.forEach((_, sIdx) => { 
+                    dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="exitExamToPage(${sIdx})"></div>`; 
+                }); 
+                
+                if (course.examVault && course.examVault.length > 0) {
+                    dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
+                }
+            }
         }
 
-        function toggleLibraryAssetBookmark() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const currentType = urlParams.get('type');
-            const currentC = urlParams.get('c');
-            if (!currentType || !currentC) return;
+        function enterExamMode() { 
+            examActive = true; 
+            examCurrentQ = 0; 
+            examScoreCount = 0; 
+            loadCourseState(activeCourseIdx, 0); 
+        }
 
-            const storageKey = `library-bookmark-${currentType}-${currentC}`;
-            const previousState = localStorage.getItem(storageKey) === 'true';
+        function runExamEngine() {
+            const course = window.currentLibraryData[activeCourseIdx]; 
+            if (examCurrentQ >= 3) { 
+                settleExamPayload(); 
+                return; 
+            }
+            const qData = course.examVault[examCurrentQ]; 
+            document.getElementById('current-chapter-id').innerText = "EXAM MODE"; 
+            document.getElementById('current-chapter-name').innerText = "隨機能力考核大考"; 
+            document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`; 
+            document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`; 
+            document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
             
-            if (previousState) {
-                localStorage.removeItem(storageKey);
+            const container = document.getElementById('exam-options-container'); 
+            container.innerHTML = qData.o.map((opt, idx) => `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`).join('');
+        }
+
+        function submitAnswer(idx) { 
+            const course = window.currentLibraryData[activeCourseIdx]; 
+            if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } 
+            examCurrentQ++; 
+            runExamEngine(); 
+        }
+        
+        function settleExamPayload() {
+            examActive = false; 
+            const course = window.currentLibraryData[activeCourseIdx];
+            const storageKey = "L1-A" + course.courseId.split('-')[1];
+            
+            let finalStatus = "";
+            if (examScoreCount < 2) {
+                alert("💥 失敗重考");
+                finalStatus = "失敗重考";
+                localStorage.setItem(`library-${selectedActiveTabType}-${course.courseId.split('-')[1]}-clear`, 'false');
             } else {
-                localStorage.setItem(storageKey, 'true');
+                alert("🏆 通過");
+                finalStatus = "通過";
+                localStorage.setItem(`library-${selectedActiveTabType}-${course.courseId.split('-')[1]}-clear`, 'true');
             }
 
-            loadLibraryCourseState(activeCourseIdx, activePageIdx);
+            try {
+                const finalPushUrl = GLOBAL_GAS_URL + 
+                    "?action=push" +
+                    "&courseId=" + encodeURIComponent("LIB-" + course.courseId) + 
+                    "&status=" + encodeURIComponent(finalStatus);
+                
+                window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
+                
+            } catch(e) {
+                console.log("獨立正向航線擊發異常:", e);
+            }
+
+            exitToDashboardMenu();
         }
     </script>
 </body>
