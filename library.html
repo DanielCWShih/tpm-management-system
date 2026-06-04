@@ -164,7 +164,24 @@
 
         .menu-category-block {
             width: 100%;
+            margin-bottom: 6px;
+        }
+
+        /* 👑 側邊欄 Level 子分類次級折疊鈕 👑 */
+        .tree-level-toggle {
+            width: 100%;
+            background: var(--card-white);
+            border: 2px solid var(--border-heavy);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 0.85rem;
+            text-align: left;
+            cursor: pointer;
             margin-bottom: 4px;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            display: flex;
+            justify-content: space-between;
         }
 
         .tree-main-toggle {
@@ -192,7 +209,7 @@
             margin-top: 5px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .leaf-btn {
@@ -234,9 +251,7 @@
         }
 
         .dashboard-view-hall,
-        .document-canvas,
-        .exam-session-box,
-        .sub-pagination-dots-zone {
+        .document-canvas {
             display: none;
             width: 100%;
         }
@@ -302,23 +317,6 @@
             color: var(--text-main);
         }
 
-        .progress-bar-bg {
-            width: 100%;
-            height: 10px;
-            background: #E2E8F0;
-            border: 2px solid var(--border-heavy);
-            border-radius: 5px;
-            margin-top: 6px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--color-completed);
-            width: 0%;
-            transition: width 0.4s ease-out;
-        }
-
         .cdx-dashboard-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -346,161 +344,77 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
+        /* ─── ⚖️ 左右雙軌戰術分流觀測大盤 ─── */
         .document-canvas {
             flex: 1;
             overflow: hidden;
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* 剛性左右並行 */
+            gap: 24px;
+            width: 100%;
+            height: 100%;
         }
 
-        .textbook-scroll-box {
+        /* 左側：全局關鍵字大會總牌海 */
+        .library-deck-column {
             flex: 1;
             overflow-y: auto;
-            padding-right: 8px;
-            width: 100%;
-            font-size: 0.85rem;
-        }
-
-        .textbook-section-block {
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            width: 100%;
-            animation: fadeInBox 0.12s ease-out;
-        }
-
-        .dynamic-flow-canvas {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 雙列剛性咬合 */
             gap: 12px;
-            background: #FEF9E7;
-            border: 2px solid var(--border-heavy);
-            padding: 12px 20px;
-            border-radius: var(--radius-sm);
-            margin: 0 0 20px 0;
-            overflow-x: auto;
-            flex-shrink: 0;
-            box-shadow: 3px 3px 0px var(--border-heavy);
+            padding-right: 6px;
+            height: 100%;
         }
 
-        .flow-node-block {
-            background: #FFF;
+        .library-term-badge-card {
+            background: #FFFFFF;
             border: 2px solid var(--border-heavy);
-            padding: 12px 18px;
             border-radius: var(--radius-sm);
+            padding: 16px;
             font-weight: 900;
             font-size: 0.88rem;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            white-space: nowrap;
-            text-align: center;
-            transition: all 0.1s;
             color: var(--text-main);
             cursor: pointer;
-            user-select: none;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .flow-node-block.active-node {
+        .library-term-badge-card:hover {
+            background: #FFFDF4;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--border-heavy);
+        }
+
+        .library-term-badge-card.active-term {
             background: var(--color-active-gold) !important;
-            color: var(--text-main) !important;
-            transform: translate(1px, 1px);
+            transform: translate(2px, 2px);
             box-shadow: 1px 1px 0px var(--border-heavy) !important;
         }
 
-        .flow-arrow-split {
-            font-weight: 900;
-            font-size: 1.1rem;
-            color: var(--border-heavy);
-            user-select: none;
-        }
-
-        .exam-session-box {
-            flex: 1;
+        /* 右側：固定式戰術解包觀測儀 */
+        .fixed-inspector-panel {
+            width: 440px;
+            border: 3px solid var(--border-heavy);
+            background: #FFFDF2;
+            border-radius: var(--radius-sm);
+            padding: 24px;
+            box-shadow: var(--shadow-tactical);
             display: flex;
             flex-direction: column;
-        }
-
-        .exam-progress-bar {
-            width: 100%;
-            background: #E2E8F0;
-            height: 12px;
-            border-radius: 6px;
-            overflow: hidden;
-            margin-bottom: 25px;
-            border: 2px solid #1A1A1A;
-        }
-
-        .exam-progress-fill {
+            overflow-y: auto;
             height: 100%;
-            background: var(--text-main);
-            width: 0%;
-            transition: width 0.2s;
-        }
-
-        .option-card {
-            background: #FFF;
-            border: 2px solid var(--border-heavy);
-            padding: 18px;
-            border-radius: var(--radius-sm);
-            margin-top: 14px;
-            cursor: pointer;
-            font-weight: 700;
-            box-shadow: 3px 3px 0px #1A1A1A;
-            transition: all 0.1s;
-        }
-
-        .option-card:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0px #1A1A1A;
-            background: var(--sidebar-cream);
-        }
-
-        .sub-pagination-dots-zone {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 14px;
-            padding: 15px 0;
-            border-top: 2px dashed #E2E8F0;
-            margin-top: auto;
             flex-shrink: 0;
         }
 
-        .slider-dot {
-            width: 14px;
-            height: 14px;
-            border: 3px solid var(--border-heavy);
-            border-radius: 50%;
-            background: #FFF;
-            cursor: pointer;
-            transition: all 0.1s;
-        }
-
-        .slider-dot.active {
-            background: var(--text-main);
-            transform: scale(1.2);
-        }
-
-        .slider-dot.exam-dot {
-            border-color: var(--color-fail);
-            background: #FEF2F2;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: #B91C1C;
-        }
-
-        .slider-dot.exam-dot.active {
-            background: var(--color-fail);
-            color: #FFF;
-        }
-
-        @border-heavy {
+        @keyframes fadeInBox {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
+    <script src="library_data/library_supplementary.js?v=20260604"></script>
 </head>
 <body>
 
@@ -511,8 +425,8 @@
         <div class="navbar-controls">
             <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
             <div class="lang-switcher-wrapper">
-                <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
-                <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
+                <button class="lang-btn-core active">TW</button>
+                <button class="lang-btn-core">EN</button>
             </div>
             <a href="index.html" class="back-btn">返回總部</a>
         </div>
@@ -538,44 +452,32 @@
             </div>
 
             <div class="document-canvas" id="textbook-viewport">
-                <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
-                <div class="textbook-scroll-box">
-                    <div id="lesson-content"></div>
+                <div class="library-deck-column" id="library-master-badge-deck"></div>
+                
+                <div class="fixed-inspector-panel" id="library-fixed-inspector">
+                    <div style="color:var(--text-secondary); font-weight:800; text-align:center; margin-top:auto; margin-bottom:auto;">
+                        🎯 請點擊左側關鍵字卡牌<br>發動現地技術解包
+                    </div>
                 </div>
             </div>
-
-            <div class="exam-session-box" id="exam-viewport">
-                <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
-                    <span style="color:var(--color-fail);" id="exam-title-text">🔥 隨機能力考核大考</span>
-                    <span id="exam-counter">1 / 3</span>
-                </div>
-                <div class="exam-progress-bar"><div class="exam-progress-fill" id="exam-progress"></div></div>
-                <h3 id="exam-question-text" style="font-size:1.2rem; line-height:1.5; margin-bottom:25px; font-weight: 800;">載入中...</h3>
-                <div id="exam-options-container"></div>
-            </div>
-
-            <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
         </main>
     </div>
 
     <script>
-        const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
-
         // ========================================================================
-        // 👑 零二階工程：自動化文獻合流註冊名冊 👑
-        // 直接通聯現有的課程實體數據包，實現「一料雙出投產」，不再撰寫重複的獨立數據包！
+        // 👑 靜態資料結構對位清單 👑
         // ========================================================================
         const globalSubUnitRegistry = [
-            { category: 'beginner', subUnitId: '1-1', title: '1-1: 三方賽局戰術析論', file: 'beginner_codex_course/course_data_1-1.js' },
-            { category: 'beginner', subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'beginner_codex_course/course_data_1-2.js' },
-            { category: 'beginner', subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'beginner_codex_course/course_data_1-3.js' },
-            { category: 'beginner', subUnitId: '1-4', title: '1-4: 終端市場調查與產品規格定義', file: 'beginner_codex_course/course_data_1-4.js' },
-            { category: 'beginner', subUnitId: '3-1', title: '3-1: SYSTEM TPM 天職與 TechOps 核心', file: 'beginner_codex_course/course_data_3-1.js' },
-            { category: 'adventure', subUnitId: '1-1', title: '1-1: 系統 TPM 職能運作實戰手冊', file: 'handbook_data_course/handbook_data_1-1.js' },
-            { category: 'adventure', subUnitId: '1-2', title: '1-2: 系統 TPM 職能運作實戰手冊二', file: 'handbook_data_course/handbook_data_1-2.js' }
+            { category: 'beginner', levelNum: 1, subUnitId: '1-1', title: '1-1: 三方賽局戰術析論', file: 'beginner_codex_course/course_data_1-1.js' },
+            { category: 'beginner', levelNum: 1, subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'beginner_codex_course/course_data_1-2.js' },
+            { category: 'beginner', levelNum: 1, subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'beginner_codex_course/course_data_1-3.js' },
+            { category: 'beginner', levelNum: 1, subUnitId: '1-4', title: '1-4: 終端市場調查與產品規格定義', file: 'beginner_codex_course/course_data_1-4.js' },
+            { category: 'beginner', levelNum: 2, subUnitId: '2-1', title: '2-1: 相機AA品質大氣大考', file: 'beginner_codex_course/course_data_2-1.js' },
+            { category: 'beginner', levelNum: 3, subUnitId: '3-1', title: '3-1: SYSTEM TPM 天職與 TechOps 核心', file: 'beginner_codex_course/course_data_3-1.js' },
+            { category: 'adventure', levelNum: 1, subUnitId: '1-1', title: '1-1: 系統 TPM 職能運作實戰手冊', file: 'handbook_data_course/handbook_data_1-1.js' },
+            { category: 'adventure', levelNum: 1, subUnitId: '1-2', title: '1-2: 系統 TPM 職能運作實戰手冊二', file: 'handbook_data_course/handbook_data_1-2.js' }
         ];
 
-        // 🎯 依最高指令：精確對齊四大上層大廳子分類
         const globalCategoryMetadata = [
             { id: 'beginner', name: '初心者' },
             { id: 'adventure', name: '冒險者' },
@@ -583,56 +485,49 @@
             { id: 'slayer', name: '屠龍者 (待開發)' }
         ];
 
-        // ========================================================================
-        // 👑 內置增補詞條大腦 (Supplementary Dictionary Matrix) 👑
-        // 無需新增任何外部 .js 檔案！您想為任何單元「額外多塞」的額外關鍵字與詞條，
-        // 直接在下方按格式追加，大腦會在加載時自動與原課程物料進行現地合流渲染！
-        // ========================================================================
-        const globalSupplementaryDictionary = {
-            // 🎯 初心者 1-1 單元想要額外補充的詞條
-            "beginner-1-1": [
-                { 
-                    name: "🔑 增補：AVL 戰術准入白名單", 
-                    text: "<h3>全稱：Approved Vendor List (認證供應商清冊)</h3><div style='background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; margin:10px 0; font-weight:700;'>意思：只有列入品牌客戶此份白名單的核心原廠元器件，才准許上線排產。</div><p style='line-height:1.6; font-weight:700;'>在 TPM 的戰術防線中，嚴防 R&D 團隊在最前端誤用非 AVL 廠商的呆料。一旦在 NPI 開線當天被客戶稽核抓到未列入 AVL，整條產線將當場流產、就地熔斷！</p>" 
-                },
-                {
-                    name: "🔑 增補：MCO 專案緊急資金",
-                    text: "<h3>全稱：Management Change Order (管理級變更令)</h3><div style='background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; margin:10px 0; font-weight:700;'>意思：非技術圖紙原因、純因商務或時程緊急追趕引發的管理變更。</div><p style='line-height:1.6; font-weight:700;'>例如遭遇大罷工緊急動用海運改空運運費，這筆溢價必須走 MCO 機制釐清財務代償責任，守住製造毛利底線。</p>"
-                }
-            ],
-            // 🎯 初心者 1-2 單元想要額外補充的詞條
-            "beginner-1-2": [
-                { 
-                    name: "🔑 增補： Lessons Learned 資料庫庫存", 
-                    text: "<h3>全稱：Lessons Learned 文獻歷史資料庫</h3><div style='background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; margin:10px 0; font-weight:700;'>意思：在前代專案生命週期中踩過的技術、公差與流產大坑的剛性防護文獻。</div><p style='line-height:1.6; font-weight:700;'>新專案在 Kick-off 當天，TPM 必須強制發動 CFT 小組清查歷史 Lessons Learned 資料庫，嚴防在新生產線上發生同樣的低級組裝偏位缺陷。</p>" 
-                }
-            ]
-        };
-
         let selectedActiveTabType = 'beginner'; 
-        let activeCourseIdx = 0, activePageIdx = 0, activeFlowNodeIdx = 0;
-        let examActive = false, examCurrentQ = 0, examScoreCount = 0;
+        let activeTermIdx = 0;
 
         window.onload = () => {
             renderGlobalTreeStructure();
             routeController();
         };
 
+        // 🎯 👑 樹狀大腦進化：完美對齊 「種類大分類 ➔ LEVEL 子標籤 ➔ 單元葉子」 三級剛性網格
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); 
             root.innerHTML = '';
             
             globalCategoryMetadata.forEach(cat => {
                 const subset = globalSubUnitRegistry.filter(u => u.category === cat.id);
-                // 待開發分頁雖然在大廳顯示卡牌，但在左側欄無資料時自動隱蔽
                 if (subset.length === 0) return;
                 
-                block = document.createElement('div'); 
+                const block = document.createElement('div'); 
                 block.className = 'menu-category-block';
+                
+                // 1. 抓出該文獻大類底下所有的不重複 LEVEL 階層
+                const presentLevels = [...new Set(subset.map(u => u.levelNum))].sort();
+                
+                // 2. 迭代組裝子選單 HTML 結構體
+                let subLevelsHtml = "";
+                presentLevels.forEach(lvlNum => {
+                    const levelUnits = subset.filter(u => u.levelNum === lvlNum);
+                    subLevelsHtml += `
+                        <div style="margin-bottom: 6px;">
+                            <div class="tree-level-toggle" onclick="toggleMenuSection('sub-accordion-${cat.id}-${lvlNum}')">
+                                <span>📁 LEVEL ${lvlNum}</span><span>▾</span>
+                            </div>
+                            <div id="sub-accordion-${cat.id}-${lvlNum}" style="display:flex; flex-direction:column; gap:6px; padding-left:8px; margin-top:4px;">
+                                ${levelUnits.map(u => `<button class="leaf-btn" id="lf-${u.category}-${u.subUnitId}" onclick="switchUnit('${u.category}','${u.subUnitId}')">${u.title}</button>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+
                 block.innerHTML = `
-                    <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${cat.id}')">📖 ${cat.name}文獻</button>
-                    <div id="lvl-accordion-${cat.id}" class="tree-sub-group" style="display: flex; flex-direction: column;">
-                        ${subset.map(u => `<button class="leaf-btn" id="lf-${u.category}-${u.subUnitId}" onclick="switchUnit('${u.category}','${u.subUnitId}', 1)">${u.title}</button>`).join('')}
+                    <button class="tree-main-toggle" onclick="toggleMenuSection('main-accordion-${cat.id}')">📖 ${cat.name}文獻</button>
+                    <div id="main-accordion-${cat.id}" class="tree-sub-group" style="display: flex; flex-direction: column;">
+                        ${subLevelsHtml}
                     </div>`;
                 root.appendChild(block);
             });
@@ -656,8 +551,6 @@
                 document.getElementById('current-chapter-name').innerText = "圖書文獻檢索大廳";
                 document.getElementById('dashboard-menu-hall').style.display = 'block'; 
                 document.getElementById('textbook-viewport').style.display = 'none'; 
-                document.getElementById('exam-viewport').style.display = 'none'; 
-                document.getElementById('universal-dots-bar').style.display = 'none';
                 renderMultiLevelHubDashboard();
             } else {
                 document.getElementById('dashboard-menu-hall').style.display = 'none'; 
@@ -686,7 +579,7 @@
                 
                 deckRow.innerHTML += `
                     <div class="progress-card-master ${cat.id === selectedActiveTabType ? 'active-level' : ''}" onclick="selectedActiveTabType='${cat.id}';renderMultiLevelHubDashboard();" style="min-height:100px;">
-                        <div style="font-weight:900; font-size:1.05rem; color:var(--text-main); margin-bottom:8px;">${cat.name}</div>
+                        <div style="font-weight:900; font-size:1.05rem; color:var(--text-main); margin-bottom:8px;">${cat.name}文獻</div>
                         <div class="progress-stats" style="font-size:0.8rem; font-weight:800; color:var(--text-secondary);">文獻總量: ${total} 篇 | 已收藏: ${collected} 篇</div>
                     </div>`;
             });
@@ -695,7 +588,7 @@
             filteredUnits.forEach(unit => {
                 const isClear = localStorage.getItem(`library-${unit.category}-${unit.subUnitId}-clear`) === 'true';
                 grid.innerHTML += `
-                    <div class="cdx-dashboard-card" style="background-color: ${isClear ? '#DCFCE7' : '#FFFFFF'}; border: 2px solid var(--border-heavy);" onclick="switchUnit('${unit.category}', '${unit.subUnitId}', 1)">
+                    <div class="cdx-dashboard-card" style="background-color: ${isClear ? '#DCFCE7' : '#FFFFFF'}; border: 2px solid var(--border-heavy);" onclick="switchUnit('${unit.category}', '${unit.subUnitId}')">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:4px 8px; border-radius:4px; font-size:0.8rem;">${unit.subUnitId}</span>
                             <h3 style="margin:0; font-size:0.88rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
@@ -714,18 +607,14 @@
             }
         }
 
-        function switchUnit(type, subUnitId, lvlNum) { 
-            examActive = false; 
+        function switchUnit(type, subUnitId) { 
             selectedActiveTabType = type; 
-            activeCourseIdx = 0; 
-            activePageIdx = 0; 
-            activeFlowNodeIdx = 0; 
+            activeTermIdx = 0; 
             window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); 
             routeController(type, subUnitId); 
         }
 
         function exitToDashboardMenu() { 
-            examActive = false; 
             window.history.pushState(null, '', window.location.pathname); 
             routeController(null, null); 
         }
@@ -740,205 +629,100 @@
             script.id = 'dynamic-course-pack'; 
             
             const currentUnit = globalSubUnitRegistry.find(u => u.category === type && u.subUnitId === packId);
-            if (!currentUnit) {
-                console.error("無法在註冊名冊中定位文獻:", type, packId);
-                return;
-            }
+            if (!currentUnit) return;
             
             const targetFile = currentUnit.file;
             script.src = `${targetFile}?v=${Date.now()}`;
             script.onload = () => { initEngine(); }; 
-            
-            script.onerror = () => {
-                document.getElementById('current-chapter-name').innerText = "數據解讀失敗 (404)";
-                document.getElementById('lesson-content').innerHTML = `
-                    <div style="border:4px solid var(--border-heavy); background:#FFFDF2; padding:24px; border-radius:8px; box-shadow:var(--shadow-tactical); margin-top:20px;">
-                        <h3 style="color:var(--color-fail); font-size:1.3rem; margin-bottom:12px;">⚠️ 核心解析引擎流產報告</h3>
-                        <p style="font-weight:800; font-size:0.95rem; line-height:1.6;">無法從地端加載路徑： <span style="background:var(--color-active-gold); padding:2px 6px; border:1px solid #000; border-radius:4px; font-family:monospace;">${targetFile}</span></p>
-                    </div>
-                `;
-                document.getElementById('textbook-viewport').style.display = 'flex';
-                document.getElementById('exam-viewport').style.display = 'none';
-                document.getElementById('universal-dots-bar').style.display = 'none';
-            };
+            script.onerror = () => { console.error("加載失敗:", targetFile); };
             document.head.appendChild(script);
         }
 
         // ========================================================================
-        // 👑 核心合流大腦 (Data Merge Matrix) 👑
-        // 自動清查並深拷貝 loaded 變數，原地注入增補矩陣內的硬核卡牌
+        // 👑 核心大腦：關鍵字矩陣動態收攏合流渲染矩陣 (0 重工) 👑
         // ========================================================================
         function initEngine() {
             const rawPayload = (window.libraryCourseEngineData && window.libraryCourseEngineData.length > 0) 
                                         ? window.libraryCourseEngineData 
                                         : window.codexCourseEngineData;
 
-            if (!rawPayload || rawPayload.length === 0) { 
-                document.getElementById('current-chapter-name').innerText = "數據解讀失敗 (變數未註冊)"; 
-                return; 
-            }
+            if (!rawPayload || rawPayload.length === 0) return;
 
-            // 1. 執行資產防禦性解包深拷貝，避免污染原裝大廳記憶體
-            window.currentLibraryData = JSON.parse(JSON.stringify(rawPayload));
+            const course = rawPayload[0];
+            document.getElementById('current-chapter-id').innerText = `LIBRARY DIRECTORY`; 
+            document.getElementById('current-chapter-name').innerText = `技術圖書特輯：${course.menuTitle}`;
 
-            // 2. 抓取目前 URL 參數指針
+            // 1. 全域合流緩衝區陣列初始化
+            window.libraryMergedTermsPool = [];
+
+            // 2. 迴圈自動抓取：將該課程所有 subPages 內含的 diagramFlowArray 詞條通統原位抓取
+            course.subPages.forEach(page => {
+                if (page.diagramFlowArray && page.diagramFlowArray.length > 0) {
+                    page.diagramFlowArray.forEach(term => {
+                        // 防重複注入
+                        if (!window.libraryMergedTermsPool.some(t => t.name === term.name)) {
+                            window.libraryMergedTermsPool.push({
+                                name: term.name.replace(/🔑/g, "").trim(),
+                                text: term.text
+                            });
+                        }
+                    });
+                }
+            });
+
+            // 3. 全球字典互鎖合流：自動到全域 supplementary 檔案中提取額外增補詞條
             const urlParams = new URLSearchParams(window.location.search);
             const packId = urlParams.get('c');
             const dictKey = `${selectedActiveTabType}-${packId}`;
-
-            // 3. 調閱本地增補詞條清冊
-            const extraTerms = globalSupplementaryDictionary[dictKey];
-
-            // 4. 發動現地自動化合流焊接
-            if (extraTerms && extraTerms.length > 0) {
-                window.currentLibraryData.forEach(course => {
-                    course.subPages.forEach(page => {
-                        // 如果該頁面沒有關鍵字序列，自動初始化剛性網格
-                        if (!page.diagramFlowArray) page.diagramFlowArray = [];
-                        
-                        extraTerms.forEach(term => {
-                            // 剛性防重排查
-                            if (!page.diagramFlowArray.some(existingNode => existingNode.name === term.name)) {
-                                page.diagramFlowArray.push(term);
-                            }
-                        });
-                    });
+            
+            if (window.globalSupplementaryDictionary && window.globalSupplementaryDictionary[dictKey]) {
+                const suppTerms = window.globalSupplementaryDictionary[dictKey];
+                suppTerms.forEach(sterm => {
+                    if (!window.libraryMergedTermsPool.some(t => t.name === sterm.name)) {
+                        window.libraryMergedTermsPool.push(sterm);
+                    }
                 });
             }
 
-            loadCourseState(activeCourseIdx, activePageIdx);
+            // 4. 擊發雙軌制渲染
+            executeRenderLibraryWorkspace();
         }
 
-        function exitExamToPage(pIdx) { 
-            examActive = false; 
-            examCurrentQ = 0; 
-            examScoreCount = 0; 
-            activeFlowNodeIdx = 0; 
-            loadCourseState(activeCourseIdx, pIdx); 
-        }
+        // 👑 左右分流戰術觀測台實體渲染器
+        function executeRenderLibraryWorkspace() {
+            document.getElementById('dashboard-menu-hall').style.display = 'none'; 
+            document.getElementById('textbook-viewport').style.display = 'flex'; 
 
-        function loadCourseState(cIdx, pIdx) {
-            activeCourseIdx = cIdx; 
-            const course = window.currentLibraryData[cIdx]; 
-            const dotsBar = document.getElementById('universal-dots-bar'); 
-            dotsBar.innerHTML = '';
-            
-            if (examActive) {
-                document.getElementById('textbook-viewport').style.display = 'none'; 
-                document.getElementById('exam-viewport').style.display = 'block'; 
-                document.getElementById('universal-dots-bar').style.display = 'flex';
-                course.subPages.forEach((_, sIdx) => { 
-                    dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; 
-                }); 
-                dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; 
-                runExamEngine();
+            const deckColumn = document.getElementById('library-master-badge-deck');
+            if (!deckColumn) return;
+            deckColumn.innerHTML = '';
+
+            // 1. 渲染左側牌海
+            window.libraryMergedTermsPool.forEach((term, idx) => {
+                const card = document.createElement('div');
+                card.className = `library-term-badge-card ${idx === activeTermIdx ? 'active-term' : ''}`;
+                // 判定是否為增補詞條，賦予不同的前置小標籤
+                const iconPrefix = term.name.includes("增補") ? "🔥" : "🏷️";
+                card.innerHTML = `<span>${iconPrefix}</span> <span>${term.name}</span>`;
+                
+                card.onclick = () => {
+                    activeTermIdx = idx;
+                    window.executeRenderLibraryWorkspace();
+                };
+                deckColumn.appendChild(card);
+            });
+
+            // 2. 渲染右側固定解包觀測面板
+            const inspector = document.getElementById('library-fixed-inspector');
+            if (window.libraryMergedTermsPool[activeTermIdx]) {
+                inspector.innerHTML = `
+                    <div style="animation: fadeInBox 0.15s ease-out; line-height: 1.6; font-size:0.88rem;">
+                        ${window.libraryMergedTermsPool[activeTermIdx].text}
+                    </div>
+                `;
             } else {
-                document.getElementById('textbook-viewport').style.display = 'flex'; 
-                document.getElementById('exam-viewport').style.display = 'none'; 
-                document.getElementById('universal-dots-bar').style.display = 'flex';
-                
-                activePageIdx = pIdx; 
-                const page = course.subPages[pIdx]; 
-                document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; 
-                document.getElementById('current-chapter-name').innerText = page.title;
-                
-                let targetedText = page.text;
-                let targetedFlow = page.diagramFlowArray;
-                
-                const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
-                if (flowRenderer && targetedFlow && targetedFlow.length > 0) {
-                    flowRenderer.style.display = 'flex'; 
-                    flowRenderer.innerHTML = '';
-                    targetedFlow.forEach((node, nIdx) => {
-                        flowRenderer.innerHTML += `<div class="flow-node-block ${nIdx===activeFlowNodeIdx?'active-node':''}" onclick="activeFlowNodeIdx=${nIdx};loadCourseState(${cIdx},${pIdx})">${node.name}</div>`;
-                        if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
-                    });
-                } else if (flowRenderer) { 
-                    flowRenderer.style.display = 'none'; 
-                }
-
-                let compiledHtml = "";
-                if (targetedFlow && targetedFlow.length > 0) {
-                    if (targetedFlow[activeFlowNodeIdx]) {
-                        compiledHtml = `
-                            <div class="textbook-section-block">
-                                <div style="line-height:1.6;">${targetedFlow[activeFlowNodeIdx].text}</div>
-                            </div>`;
-                    }
-                } else {
-                    compiledHtml = `<div style="line-height: 1.6; font-size: 0.88rem;">${targetedText || ""}</div>`;
-                }
-                document.getElementById('lesson-content').innerHTML = compiledHtml;
-
-                course.subPages.forEach((_, sIdx) => { 
-                    dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="exitExamToPage(${sIdx})"></div>`; 
-                }); 
-                
-                if (course.examVault && course.examVault.length > 0) {
-                    dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
-                }
+                inspector.innerHTML = `<div style='color:var(--text-secondary); text-align:center; margin:auto;'>鎖片解鎖失敗</div>`;
             }
-        }
-
-        function enterExamMode() { 
-            examActive = true; 
-            examCurrentQ = 0; 
-            examScoreCount = 0; 
-            loadCourseState(activeCourseIdx, 0); 
-        }
-
-        function runExamEngine() {
-            const course = window.currentLibraryData[activeCourseIdx]; 
-            if (examCurrentQ >= 3) { 
-                settleExamPayload(); 
-                return; 
-            }
-            const qData = course.examVault[examCurrentQ]; 
-            document.getElementById('current-chapter-id').innerText = "EXAM MODE"; 
-            document.getElementById('current-chapter-name').innerText = "隨機能力考核大考"; 
-            document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`; 
-            document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`; 
-            document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
-            
-            const container = document.getElementById('exam-options-container'); 
-            container.innerHTML = qData.o.map((opt, idx) => `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`).join('');
-        }
-
-        function submitAnswer(idx) { 
-            const course = window.currentLibraryData[activeCourseIdx]; 
-            if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } 
-            examCurrentQ++; 
-            runExamEngine(); 
-        }
-        
-        function settleExamPayload() {
-            examActive = false; 
-            const course = window.currentLibraryData[activeCourseIdx];
-            
-            let finalStatus = "";
-            if (examScoreCount < 2) {
-                alert("💥 失敗重考");
-                finalStatus = "失敗重考";
-                localStorage.setItem(`library-${selectedActiveTabType}-${course.courseId.split('-')[1]}-clear`, 'false');
-            } else {
-                alert("🏆 通過");
-                finalStatus = "通過";
-                localStorage.setItem(`library-${selectedActiveTabType}-${course.courseId.split('-')[1]}-clear`, 'true');
-            }
-
-            try {
-                const finalPushUrl = GLOBAL_GAS_URL + 
-                    "?action=push" +
-                    "&courseId=" + encodeURIComponent("LIB-" + course.courseId) + 
-                    "&status=" + encodeURIComponent(finalStatus);
-                
-                window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
-                
-            } catch(e) {
-                console.log("獨立正向航線擊發異常:", e);
-            }
-
-            exitToDashboardMenu();
         }
     </script>
 </body>
