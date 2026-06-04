@@ -8,10 +8,10 @@
         /* ========================================================================
         REVISION HISTORY / VERSION LOG
         ========================================================================
-        2026-06-04 V11.20-LABEL-DYNAMIC: 👑 知識圖書館終極完全體（單元追溯動態標籤優化版）
-        1. 動態單元追溯：徹底廢除固定不變的 "DOCUMENT INSPECTOR"，改用單位追溯錨點。核心單詞顯示 Level X-X，增補詞條自動標註（擴展包）。
-        2. 我的最愛全域大腦：Dashboard 頂部個人專區大卡片僅輸出純文字「我的最愛」，內頁觀測儀操作列解耦並列，100% 根除撞車缺陷。
-        3. 3D 懸浮防火牆：精準配置 Grid 四周安全內襯 (Padding)，留足位移像素，最左側卡牌黑框絕對不再遭邊界切除。
+        2026-06-04 V11.30-AUTH-INTEGRATION: 👑 知識圖書館完全體（全域多階層頭銜連鎖同步版）
+        1. 絕殺身分去同步化：廢除原本硬編碼死鎖的 Daniel Shih 稱謂，改為與總部 100% 同步的動態戰印清算大腦。
+        2. 多階層狀態機：網格自動盤查 LocalStorage 數據，實時解包並動態升級「請登入/初心者/冒險者/統籌者」職能頭銜。
+        3. 3D 懸浮防火牆：100% 維持外襯四邊安全 Padding 緩衝，留足卡牌 3D 浮起像素空間，左側邊緣絕不切邊。
         ========================================================================
         */
         :root {
@@ -106,6 +106,7 @@
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
             white-space: nowrap;
+            transition: all 0.15s ease-out;
         }
 
         .back-btn {
@@ -284,12 +285,12 @@
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden; /* 剛性禁制：徹底不允許左右拖曳晃動 */
+            overflow-x: hidden; 
             display: grid;
-            grid-template-columns: repeat(6, 1fr); /* 剛性網格：固定 6 欄拓撲排版 */
+            grid-template-columns: repeat(6, 1fr); 
             grid-auto-rows: min-content;
             gap: 12px;
-            padding: 10px 14px 14px 10px; /* 增加內頁網格四周安全 Padding 緩衝線，防禦卡牌左邊緣黑線遭切斷 */
+            padding: 10px 14px 14px 10px; 
             align-content: start; 
         }
 
@@ -375,7 +376,6 @@
             box-shadow: 5px 5px 0px var(--border-heavy);
         }
     </style>
-    <script src="library_data/library_supplementary.js?v=20260604"></script>
 </head>
 <body>
 
@@ -384,7 +384,7 @@
             <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;">知識圖書館</h1>
         </div>
         <div class="navbar-controls">
-            <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
+            <div id="global-user-profile-card" class="auth-panel">請登入</div>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active">TW</button>
                 <button class="lang-btn-core">EN</button>
@@ -629,7 +629,6 @@
                                 window.aggregatedTermsPool.push({ 
                                     ...supp, 
                                     isSupp: true,
-                                    // 🎯 剛性焊接：在擴展包詞條被塞入時，原地烙下帶有「擴展包」字樣的動態對位印記
                                     sourceLabel: `Level ${unitId} (擴展包)`
                                 });
                             }
@@ -695,7 +694,6 @@
                         combined = combined.concat(window.codexCourseEngineData);
                     }
                     
-                    // 🎯 剛性捕捉：精確抓取當前載入檔案的單元 ID（如 1-1、1-2 等）
                     const match = filePath.match(/(\d-\d)/);
                     const unitLabel = match ? `Level ${match[0]}` : `Level ${currentActiveLevel.levelNum}`;
 
@@ -705,7 +703,6 @@
                                 if (page.diagramFlowArray && page.diagramFlowArray.length > 0) {
                                     page.diagramFlowArray.forEach(term => {
                                         if (!window.aggregatedTermsPool.some(t => t.name === term.name)) {
-                                            // 賦予常規 CORE 詞條動態來源印記
                                             term.sourceLabel = unitLabel;
                                             window.aggregatedTermsPool.push(term);
                                         }
@@ -724,7 +721,6 @@
                                             window.aggregatedTermsPool.push({
                                                 name: termName,
                                                 text: syntheticText,
-                                                // 賦予正則大深度雷達解包詞條來源印記
                                                 sourceLabel: unitLabel
                                             });
                                         }
@@ -791,18 +787,12 @@
             });
         }
 
-        // ========================================================================
-        // 👑 修正點：大師級操作通聯列 UI/UX 全置頂微創換裝 👑
-        // 🎯 絕殺：完美融入排版，建立置頂控制線，動態印記伴隨收藏鈕精確並列，0撞車
-        // ========================================================================
         function showDetail(term) {
             const inspector = document.getElementById('lexicon-inspector');
             if (!inspector) return;
 
             const favoritesPool = JSON.parse(localStorage.getItem('library-favorites-pool') || '[]');
             const isFav = favoritesPool.some(f => f.name === term.name);
-
-            // 🎯 剛性動態識別分配：若讀取無標籤物件，降維以常規大廳資訊為基準安全閥
             const finalSourceLabel = term.sourceLabel || `Level ${currentActiveLevel ? currentActiveLevel.levelNum : '1-1'}`;
 
             inspector.innerHTML = `
@@ -859,7 +849,7 @@
         function exitToDashboard() {
             const menuHall = document.getElementById('dashboard-menu-hall');
             const viewport = document.getElementById('lexicon-viewport');
-            const categoryEl = document.getElementById('current-category-id');
+            const categoryEl = document.getElementById('current-chapter-id');
             const levelEl = document.getElementById('current-chapter-name');
 
             if (menuHall) menuHall.style.display = 'block';
@@ -870,6 +860,48 @@
             document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
             renderDashboard();
         }
+
+        // ========================================================================
+        // 👑 換裝定位點 2: 全域多階層頭銜連鎖同步大腦 👑
+        // ========================================================================
+        (function() {
+            const PILOT_EMAIL = "danielcwshih@fih-foxconn.com"; // 🎯 剛性對位憑證
+
+            function computeLocalUserRankTitle() {
+                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "請登入", isLogged: false };
+
+                let nameStr = "Daniel Shih";
+                const emailLower = PILOT_EMAIL.toLowerCase().trim();
+                if (emailLower !== "danielcwshih@fih-foxconn.com") {
+                    nameStr = emailLower.split('@')[0].replace(/[\._\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                }
+
+                const beginnerKeys = ['codex-L1-A1-clear', 'codex-L1-A2-clear', 'codex-L1-A3-clear', 'codex-L1-A4-clear', 'codex-L2-A1-clear', 'codex-L3-A1-clear'];
+                const isAllBeginnerCleared = beginnerKeys.every(k => localStorage.getItem(k) === 'true');
+
+                const adventureKeys = ['handbook-L1-A1-clear', 'handbook-L1-A2-clear'];
+                const isAllAdventureCleared = adventureKeys.every(k => localStorage.getItem(k) === 'true');
+
+                if (isAllBeginnerCleared && isAllAdventureCleared) return { text: `👤 統籌者 : ${nameStr}`, isLogged: true };
+                if (isAllBeginnerCleared) return { text: `👤 冒險者 : ${nameStr}`, isLogged: true };
+                return { text: `👤 初心者 : ${nameStr}`, isLogged: true };
+            }
+
+            const originalOnload = window.onload;
+            window.onload = function() {
+                if (originalOnload) originalOnload();
+                const profileBox = document.getElementById('global-user-profile-card');
+                if (profileBox) {
+                    const rankInfo = computeLocalUserRankTitle();
+                    profileBox.innerHTML = rankInfo.text;
+                    if (!rankInfo.isLogged) {
+                        profileBox.style.color = "#DC2626";
+                        profileBox.style.borderColor = "#DC2626";
+                        profileBox.style.boxShadow = "3px 3px 0px #DC2626";
+                    }
+                }
+            };
+        })();
     </script>
 </body>
 </html>
