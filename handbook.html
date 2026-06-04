@@ -43,7 +43,7 @@
             box-sizing: border-box;
         }
 
-        /* 👑 剛性頂部全域控制導航列 (原廠 UI/UX 滿血復活) */
+        /* 👑 剛性頂部全域控制導航列 */
         .tactical-navbar {
             width: 100vw;
             height: 85px;
@@ -55,11 +55,6 @@
             background-color: var(--bg-color);
             flex-shrink: 0;
             z-index: 1000;
-        }
-
-        .navbar-brand {
-            display: flex;
-            flex-direction: column;
         }
 
         .navbar-controls {
@@ -77,37 +72,6 @@
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
             white-space: nowrap;
-            transition: all 0.15s ease-out;
-        }
-
-        .lang-switcher-wrapper {
-            display: flex;
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            padding: 2px;
-        }
-
-        .lang-btn-core {
-            width: 50px;
-            height: 35px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 900;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            transition: all 0.1s;
-        }
-
-        .lang-btn-core.active {
-            background: var(--text-main) !important;
-            color: white !important;
         }
 
         .back-btn {
@@ -138,7 +102,7 @@
             overflow: hidden;
         }
 
-        /* 👑 左側戰術選單清單欄 (工具欄 Dashboard 回歸) */
+        /* 👑 左側戰術選單清單欄 */
         .sidebar-panel {
             display: flex;
             width: 350px;
@@ -251,7 +215,6 @@
             height: 100%;
         }
 
-        /* 儀表板中央首頁大廳 */
         .dashboard-view-hall {
             display: block; 
             overflow-y: auto;
@@ -357,7 +320,7 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 雙軌分流：內頁北歐沙盒地圖雙區結構 ─── */
+        /* ─── 🎨 雙軌分流：內頁北歐沙盒地圖結構 ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -553,7 +516,6 @@
     <script>
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
-        // 🔒 雙向互鎖註冊手冊名冊
         const globalSubUnitRegistry = [
             { type: 'handbook', levelNum: 1, subUnitId: '1-1', title: '1-1: 系統 TPM 職能運作實戰手冊', file: 'handbook_data_course/handbook_data_1-1.js' },
             { type: 'handbook', levelNum: 1, subUnitId: '1-2', title: '1-2: 防水結構 Worst-Case 模擬與幾何流產盲區', file: 'handbook_data_course/handbook_data_1-2.js' }
@@ -569,7 +531,6 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
-        // 🎯 坐標清單大盤：精確配置各節點在畫布上的黃金分配坐標 (X, Y)
         const nodeLayoutCoordinates = {
             "START-NODE": { x: 120, y: 240, name: "事件爆發" },
             "DECISION-NODE-01": { x: 280, y: 240, name: "決策分流" },
@@ -706,14 +667,10 @@
             document.head.appendChild(script);
         }
 
-        // ========================================================================
-        // 👑 沙盒數據載入與開線迷霧解鎖 👑
-        // ========================================================================
         function initSandboxEngine() {
             document.getElementById('current-chapter-id').innerText = `HANDBOOK / UNIT ${activePackUnitId}`; 
             document.getElementById('current-chapter-name').innerText = globalSubUnitRegistry.find(u => u.subUnitId === activePackUnitId).title;
 
-            // 讀取該特定單元的地端解鎖快取
             const savedPassed = localStorage.getItem(`tpm-sandbox-passed-${activePackUnitId}`);
             const savedUnlocked = localStorage.getItem(`tpm-sandbox-unlocked-${activePackUnitId}`);
             
@@ -730,6 +687,9 @@
             localStorage.setItem(`tpm-sandbox-unlocked-${activePackUnitId}`, JSON.stringify(unlockedNodesList));
         }
 
+        // ========================================================================
+        // 👑 換裝優化核心：動態戰爭迷霧與歷史腳印清算大腦 👑
+        // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
             const svgCanvas = document.getElementById('map-svg-canvas');
@@ -740,7 +700,10 @@
 
             const tree = window.tpmSandboxScriptTree;
 
-            // 1. 繪製極細 SVG 虛實線網絡
+            // 🎯 判定當前單元是否已經大滿貫通關 (解鎖終極全知視角)
+            const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
+
+            // 1. 繪製 SVG 戰術線路層
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -750,6 +713,10 @@
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
 
+                    // 🎯 迷霧過濾線路：如果未通關，且連線兩端有任何一端完全沒解鎖，則不渲染此線條！
+                    if (!isUnitCleared && (!unlockedNodesList.includes(srcId) || !unlockedNodesList.includes(tarId))) return;
+
+                    const isLinePassed = passedNodesList.includes(srcId) && passedNodesList.includes(tarId);
                     const isLineActive = passedNodesList.includes(srcId) && unlockedNodesList.includes(tarId);
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -757,9 +724,20 @@
                     line.setAttribute("y1", srcPos.y);
                     line.setAttribute("x2", tarPos.x);
                     line.setAttribute("y2", tarPos.y);
-                    line.setAttribute("stroke", isLineActive ? "#EAB308" : "#E2E8F0");
-                    line.setAttribute("stroke-width", isLineActive ? "2.5" : "1.5");
-                    if (!isLineActive) line.setAttribute("stroke-dasharray", "4,4");
+
+                    if (isUnitCleared) {
+                        // 通關後的極簡灰色全知連線
+                        line.setAttribute("stroke", "#CBD5E1");
+                        line.setAttribute("stroke-width", "1.5");
+                    } else if (isLineActive) {
+                        // 當前正在推進的亮黃色軌跡
+                        line.setAttribute("stroke", "#EAB308");
+                        line.setAttribute("stroke-width", "2.5");
+                    } else {
+                        // 失敗歷史存留的實心冷灰色歷史連線
+                        line.setAttribute("stroke", "#E2E8F0");
+                        line.setAttribute("stroke-width", "1.5");
+                    }
                     svgCanvas.appendChild(line);
                 });
             });
@@ -769,26 +747,42 @@
                 const pos = nodeLayoutCoordinates[nodeId];
                 if (!pos) return;
 
-                const dot = document.createElement('div');
-                const isUnlocked = unlockedNodesList.includes(nodeId);
-                const isPassed = passedNodesList.includes(nodeId);
+                // 🎯 迷霧過濾圓點：如果不是全知通關狀態，且地端快取未解鎖該節點，則直接剛性阻斷（完全不渲染）！
+                if (!isUnitCleared && !unlockedNodesList.includes(nodeId)) return;
 
+                const dot = document.createElement('div');
                 dot.id = `dot-${nodeId}`;
                 dot.className = 'map-node-dot';
                 dot.style.left = `${pos.x}px`;
                 dot.style.top = `${pos.y}px`;
                 dot.innerHTML = `<div class="node-mini-label">${pos.name}</div>`;
 
-                if (isPassed) {
-                    dot.className += ' passed';
-                } else if (isUnlocked) {
+                const isPassed = passedNodesList.includes(nodeId);
+                const isUnlocked = unlockedNodesList.includes(nodeId);
+
+                if (isUnitCleared) {
+                    // 🌟 大滿貫通關視角樣式：全量洗出節點，並微縮突顯失敗結局
+                    if (nodeId === "WIN-NODE-CONQUER" || nodeId === "完美通關") {
+                        dot.className += ' passed';
+                    } else if (nodeId.includes("FAIL") || nodeId.includes("WARN")) {
+                        dot.style.backgroundColor = "#FCA5A5"; // 戰敗分流淡紅色
+                        dot.style.border = "1.5px solid #EF4444";
+                    } else {
+                        dot.className += ' passed';
+                    }
                     if (nodeId === currentlySelectedNodeId) dot.className += ' active-target';
                 } else {
-                    dot.className += ' locked';
+                    // 🎮 常規考核視角樣式
+                    if (isPassed) {
+                        dot.className += ' passed';
+                    } else if (isUnlocked) {
+                        // 失敗歷史腳印會以標準極簡灰色圓點存留在畫布上，當前挑戰節點發動黑環呼吸燈
+                        if (nodeId === currentlySelectedNodeId) dot.className += ' active-target';
+                    }
                 }
 
                 dot.onclick = () => {
-                    if (!unlockedNodesList.includes(nodeId)) {
+                    if (!isUnitCleared && !unlockedNodesList.includes(nodeId)) {
                         alert("🔒 該路徑尚未解鎖，請先前往上游節點完成決策大考。");
                         return;
                     }
@@ -900,12 +894,11 @@
             renderNordicSandboxMap();
         };
 
-        // 結算大考並回傳 GAS 通道
         window.executeSettleHandbookUnit = function(isWin) {
             if (!isWin) {
-                // 失敗重來
+                // 🎯 戰敗重來優化：清空當前的推進狀態，但「不刪除」已解鎖的未通關節點清單
+                // 這樣走失敗的路徑就會作為踩雷痕跡，永久留存顯影在地圖畫布上！
                 passedNodesList = [];
-                unlockedNodesList = ["START-NODE"];
                 currentlySelectedNodeId = "START-NODE";
                 saveSandboxProgress();
                 renderNordicSandboxMap();
@@ -913,7 +906,7 @@
                 return;
             }
 
-            // 成功通過，寫入總進度
+            // 成功通過，寫入總進度鋼印
             localStorage.setItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`, 'true');
             
             try {
