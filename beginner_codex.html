@@ -98,6 +98,7 @@
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
             white-space: nowrap;
+            transition: all 0.15s ease-out;
         }
 
         .back-btn {
@@ -496,7 +497,7 @@
             color: #FFF;
         }
 
-        @border-heavy {
+        @keyframes fadeInBox {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -509,7 +510,7 @@
             <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">初心者寶典</h1>
         </div>
         <div class="navbar-controls">
-            <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
+            <div id="global-user-profile-card" class="auth-panel">請登入</div>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
                 <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
@@ -559,10 +560,8 @@
     </div>
 
     <script>
-        // 👑 剛性綁定：您的 GAS Web App 實體基地台 URL 👑
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
-        // 🎯 👑 註冊名冊大盤：數據路徑全面重定向至新車間 beginner_codex_course/ 👑
         const globalSubUnitRegistry = [
             { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'beginner_codex_course/course_data_1-1.js' },
             { type: 'codex', levelNum: 1, subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'beginner_codex_course/course_data_1-2.js' },
@@ -571,7 +570,6 @@
             { type: 'codex', levelNum: 3, subUnitId: '3-1', title: '3-1: SYSTEM TPM 天職與 TechOps 核心', file: 'beginner_codex_course/course_data_3-1.js' }
         ];
 
-        // 🎯 門面變更點 3: 儀表板 Level 1~6 稱謂全面剛性同步更名
         const globalLevelMetadata = [
             { num: 1, name: 'LEVEL 1', label: '世界觀' },
             { num: 2, name: 'LEVEL 2', label: '進階工廠' },
@@ -593,6 +591,7 @@
 
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); 
+            if (!root) return;
             root.innerHTML = '';
             const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
             
@@ -619,8 +618,6 @@
         }
 
         function routeController(directType, directC) {
-            document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：Daniel Shih`;
-
             const urlParams = new URLSearchParams(window.location.search);
             const paramC = directC || urlParams.get('c');
             const paramType = directType || urlParams.get('type') || 'codex';
@@ -628,7 +625,6 @@
             if (!paramC) {
                 document.getElementById('cdx-page-header-zone').style.display = 'block'; 
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
-                // 🎯 門面變更點 5: 同步化修正中央儀表板預設主標題為「初心者戰術大廳」
                 document.getElementById('current-chapter-name').innerText = "初心者戰術大廳";
                 document.getElementById('dashboard-menu-hall').style.display = 'block'; 
                 document.getElementById('textbook-viewport').style.display = 'none'; 
@@ -856,6 +852,51 @@
 
             exitToDashboardMenu();
         }
+
+        // ========================================================================
+        // 👑 換裝定位點 2: 全域多階層頭銜連鎖同步大腦 👑
+        // ========================================================================
+        (function() {
+            const PILOT_EMAIL = "danielcwshih@fih-foxconn.com"; // 🎯 剛性對位，綁定核心憑證帳號
+
+            function computeLocalUserRankTitle() {
+                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "請登入", isLogged: false };
+
+                let nameStr = "Daniel Shih";
+                const emailLower = PILOT_EMAIL.toLowerCase().trim();
+                if (emailLower !== "danielcwshih@fih-foxconn.com") {
+                    nameStr = emailLower.split('@')[0].replace(/[\._\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                }
+
+                // 盤查地端通關戰印
+                const beginnerKeys = ['codex-L1-A1-clear', 'codex-L1-A2-clear', 'codex-L1-A3-clear', 'codex-L1-A4-clear', 'codex-L2-A1-clear', 'codex-L3-A1-clear'];
+                const isAllBeginnerCleared = beginnerKeys.every(k => localStorage.getItem(k) === 'true');
+
+                const adventureKeys = ['handbook-L1-A1-clear', 'handbook-L1-A2-clear'];
+                const isAllAdventureCleared = adventureKeys.every(k => localStorage.getItem(k) === 'true');
+
+                // 剛性判定頭銜位階
+                if (isAllBeginnerCleared && isAllAdventureCleared) return { text: `👤 統籌者 : ${nameStr}`, isLogged: true };
+                if (isAllBeginnerCleared) return { text: `👤 冒險者 : ${nameStr}`, isLogged: true };
+                return { text: `👤 初心者 : ${nameStr}`, isLogged: true };
+            }
+
+            // 智能焊接：將程序融入加載器，在 DOM 準備就緒時動態洗出頭銜
+            const originalOnload = window.onload;
+            window.onload = function() {
+                if (originalOnload) originalOnload();
+                const profileBox = document.getElementById('global-user-profile-card');
+                if (profileBox) {
+                    const rankInfo = computeLocalUserRankTitle();
+                    profileBox.innerHTML = rankInfo.text;
+                    if (!rankInfo.isLogged) {
+                        profileBox.style.color = "#DC2626";
+                        profileBox.style.borderColor = "#DC2626";
+                        profileBox.style.boxShadow = "3px 3px 0px #DC2626";
+                    }
+                }
+            };
+        })();
     </script>
 </body>
 </html>
