@@ -7,11 +7,11 @@
     <style>
         /* ========================================================================
         REVISION HISTORY / VERSION LOG
-        ========================================================================
-        2026-06-04 V9.10-CRITICAL-FIX: 👑 知識圖書館完全體（邊界切除與關鍵字流失雙重絕殺版）
-        1. 絕殺邊界切除：優化 .lexicon-index-column 側 Padding 緩衝防線，留出 3D 浮起與陰影空間，徹底解決最左側卡片被切掉邊界的大坑。
-        2. 絕殺關鍵字流失：重構 sequenceLoadScripts 批次加載大腦，改用雙軌全量合流引擎（combinedPayload），100% 導通真實文獻車間所有 CORE 關鍵字。
-        3. 側邊欄洗鏈化：徹底移除「辭典」贅詞，純淨剛性輸出 LEVEL X。
+        =======================================================================
+        2026-06-04 V9.20-HOTFIX: 👑 知識圖書館完全體（邊界剪裁與關鍵字失聯終極絕殺版）
+        1. 絕殺邊界切除：為 Dashboard 7欄網格與內文 6欄網格原位注入安全 Padding 緩衝防線，留足 3D 懸浮位移空間，100% 封死左側黑邊遭切斷缺陷。
+        2. 降維降落傘線路：內建 Auto-Fallback 載入引擎。若專屬 library_data 報錯或 404，秒速熱備援自動抓取 course_data 關鍵字，確保單詞絕不流失。
+        3. 剛性架構控管：移除小箭頭，純淨輸出 LEVEL X 7欄平鋪網格，嚴禁左右拖曳晃動。
         ========================================================================
         */
         :root {
@@ -264,7 +264,7 @@
             height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
-            padding-right: 4px;
+            padding: 10px 15px 40px 10px; /* 🎯 剛性修復 Bug 1: 注入大廳四周安全緩衝，徹底阻絕 LEVEL 1 邊界切除 */
         }
 
         .document-canvas {
@@ -275,16 +275,16 @@
             gap: 24px;
         }
 
-        /* ─── ⚖️ 左右雙軌戰術分流觀測大盤 (小卡片網格版) ─── */
+        /* ─── ⚖️ 左右雙軌戰術觀測大盤 (小卡片網格版) ─── */
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden; /* 🎯 剛性禁制：徹底不允許左右拖曳 */
+            overflow-x: hidden; /* 🎯 剛性禁制：徹底不允許左右拖曳晃動 */
             display: grid;
             grid-template-columns: repeat(6, 1fr); /* 🎯 剛性網格：固定 6 欄拓撲排版 */
             grid-auto-rows: min-content;
             gap: 12px;
-            padding: 6px 8px 6px 6px; /* 🎯 剛性修正 Bug 1: 增加左側與頂部安全 Padding 緩衝線，留足 3D 按壓位移空間，阻絕左邊被切 */
+            padding: 8px 12px 12px 8px; /* 🎯 剛性修復 Bug 1: 增加內頁網格四周安全 Padding 緩衝線，防禦卡牌左邊緣黑線遭切斷 */
             align-content: start; 
         }
 
@@ -349,6 +349,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Dashboard 全新 7 欄精緻硬核小卡片樣式 */
         .level-hero-card {
             border: 2px solid var(--border-heavy);
             border-radius: 8px;
@@ -426,7 +427,9 @@
                 levelName: '基礎通識大辭典',
                 files: [
                     'library_data/library_data_beginner_1-1.js',
-                    'library_data/library_data_beginner_1-2.js'
+                    'library_data/library_data_beginner_1-2.js',
+                    'library_data/library_data_beginner_1-3.js',
+                    'library_data/library_data_beginner_1-4.js'
                 ]
             },
             { 
@@ -434,14 +437,14 @@
                 catName: '初心者文獻', 
                 levelNum: 2, 
                 levelName: '進階工廠大辭典',
-                files: []
+                files: ['library_data/library_data_beginner_2-1.js']
             },
             { 
                 category: 'beginner', 
                 catName: '初心者文獻', 
                 levelNum: 3, 
                 levelName: 'TPM思考邏輯辭典',
-                files: []
+                files: ['library_data/library_data_beginner_3-1.js']
             },
             { 
                 category: 'handbook', 
@@ -525,6 +528,7 @@
                 grid.style.gridTemplateColumns = 'repeat(7, 1fr)'; 
                 grid.style.gap = '15px';
                 grid.style.width = '100%';
+                grid.style.padding = '6px'; /* 🎯 剛性修復 Bug 1: 注入大廳卡片四周防線，留足 3D 按壓與陰影位移空間 */
                 grid.style.marginBottom = '20px';
 
                 const subset = libraryLevelRegistry.filter(l => l.category === group.id);
@@ -562,7 +566,7 @@
         }
 
         // ========================================================================
-        // 👑 核心加載模組（🎯 修正點 Bug 2: 雙軌全量合流防線，全面抓取 CORE 關鍵字）
+        // 👑 核心加載模組（🎯 完美集成雙軌降落傘熱備援防線）
         // ========================================================================
         async function loadLevelLexicon(catId, lvlNum) {
             const target = libraryLevelRegistry.find(r => r.category === catId && r.levelNum === lvlNum);
@@ -581,8 +585,10 @@
             document.getElementById('current-level-name').innerText = `LEVEL ${lvlNum} 大辭典`;
             document.getElementById('lexicon-terms-list').innerHTML = `<div class="inspector-placeholder">正在動態清算 LEVEL ${lvlNum} 全量文獻...</div>`;
 
+            // 發動批次防線載入
             await sequenceLoadScripts(target.files, 0);
 
+            // 全球增補字典動態合流互鎖
             const suppKeyBase = (catId === 'beginner' ? 'codex' : 'handbook');
             target.files.forEach(filePath => {
                 const match = filePath.match(/(\d-\d)/);
@@ -602,6 +608,7 @@
             renderLexiconList();
         }
 
+        // 🧠 核心合流大腦：具備自動降維熱備援解包功能（絕不丟失任何 CORE 單詞）
         function sequenceLoadScripts(fileList, index) {
             return new Promise((resolve) => {
                 if (index >= fileList.length) {
@@ -611,8 +618,9 @@
 
                 const script = document.createElement('script');
                 script.src = `${fileList[index]}?v=${Date.now()}`;
-                script.onload = () => {
-                    // 🎯 雙軌解包大腦：將兩組全域變數融合成一個 Payload，確保 100% 抓乾淨
+                
+                // 成功抓取核心原料後的清算程序
+                const processLoadedPayload = () => {
                     let combinedPayload = [];
                     if (window.libraryCourseEngineData && window.libraryCourseEngineData.length > 0) {
                         combinedPayload = combinedPayload.concat(window.libraryCourseEngineData);
@@ -634,16 +642,35 @@
                             });
                         }
                     });
-
-                    // 清空變數，防止跨檔變更污染
+                    // 清空全局變數快取，預防跨軌污染
                     window.codexCourseEngineData = [];
                     window.libraryCourseEngineData = [];
-                    
+                };
+
+                script.onload = () => {
+                    processLoadedPayload();
                     sequenceLoadScripts(fileList, index + 1).then(resolve);
                 };
+
+                // 🎯 剛性修正 Bug 2: 降維自動備援降落傘線路。若 library 專用檔不存在，自動換裝讀取 course 常規包
                 script.onerror = () => {
-                    console.log("跳過未開發檔案:", fileList[index]);
-                    sequenceLoadScripts(fileList, index + 1).then(resolve);
+                    if (fileList[index].includes('library_data/library_data_beginner_')) {
+                        const fallbackPath = fileList[index].replace('library_data/library_data_beginner_', 'beginner_codex_course/course_data_');
+                        console.warn(`[Library Fallback Launcher] 專用文獻未就位，啟動熱換裝加載常規包: ${fallbackPath}`);
+                        
+                        const fallbackScript = document.createElement('script');
+                        fallbackScript.src = `${fallbackPath}?v=${Date.now()}`;
+                        fallbackScript.onload = () => {
+                            processLoadedPayload();
+                            sequenceLoadScripts(fileList, index + 1).then(resolve);
+                        };
+                        fallbackScript.onerror = () => {
+                            sequenceLoadScripts(fileList, index + 1).then(resolve);
+                        };
+                        document.head.appendChild(fallbackScript);
+                    } else {
+                        sequenceLoadScripts(fileList, index + 1).then(resolve);
+                    }
                 };
                 document.head.appendChild(script);
             });
@@ -665,7 +692,7 @@
                 const row = document.createElement('div');
                 row.className = `lexicon-term-row ${idx === activeTermIdx ? 'active-term' : ''}`;
                 const prefix = term.isSupp ? "🔥" : "📘";
-                const cleanName = term.name.replace(/🔑|關鍵詞：|增補：/g,'').trim();
+                const cleanName = (term.name || '').replace(/🔑|關鍵詞：|增補：/g,'').trim();
                 
                 row.innerHTML = `
                     <div style="font-size:0.7rem; opacity:0.6; margin-bottom:4px; font-weight:900;">${prefix} ${term.isSupp?'SUPP':'CORE'}</div>
