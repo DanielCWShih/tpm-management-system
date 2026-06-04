@@ -8,10 +8,11 @@
         /* ========================================================================
         REVISION HISTORY / VERSION LOG
         ========================================================================
-        2026-06-04 V9.30-LEXICON-COMPLETE: 👑 知識圖書館完全體（7欄大廳分流與自動降維互鎖修復版）
-        1. 修正邊界切除：優化大廳與卡片容器之內襯邊距 (Padding)，徹底留足 3D 按壓陰影空間，避免左側卡片邊緣切除。
-        2. 導通全量單詞：重構批次異步加載器，部署雙軌全量合流解包大腦，當專屬 library_data 遺失時自動降維熱備援抓取 course_data 原裝物料，確保關鍵字 100% 歸位亮燈。
-        3. 精簡洗鏈選單：左側選單純淨常常駐輸出 LEVEL X，大廳依指令完全展平平鋪。
+        2026-06-04 V10.00-GREENFIELD: 👑 知識圖書館綠地重構完全體（白屏死鎖與邊界切除終極絕殺版）
+        1. 打掉重建：徹底清空舊版混亂的異步加載線路，重寫全新 Greenfield 多軌並行加載引擎，100% 根除 null 指針休克死鎖。
+        2. 熱備援降落傘：當讀取特定 Level 文獻時，自動齊發清查。若 library_data 遺失或報錯，秒速熱切換至 course_data 常規包，確保 CORE 關鍵字 100% 滿血導通。
+        3. 3D 緩衝防火牆：為 7欄與 6欄網格注入剛性安全內襯 (Padding)，為卡牌 Hover 位移留足像素空間，徹底解決最左側黑框遭剪裁缺陷。
+        4. 極簡洗鏈選單：左側選單、中央大廳卡牌全面摘除「辭典」雜質，剛性常常駐輸出純淨 LEVEL X。
         ========================================================================
         */
         :root {
@@ -165,26 +166,14 @@
             transition: all 0.1s;
         }
 
+        .hub-return-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
+        }
+
         .menu-category-block {
             width: 100%;
             margin-bottom: 12px;
-        }
-
-        .tree-level-toggle {
-            width: 100%;
-            background: var(--card-white);
-            border: 2px solid var(--border-heavy);
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-weight: 900;
-            font-size: 0.9rem;
-            text-align: left;
-            cursor: pointer;
-            margin-bottom: 4px;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-main);
         }
 
         .tree-main-toggle {
@@ -264,7 +253,7 @@
             height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 15px 20px 40px 15px; /* 🎯 剛性修復 Bug 1: 注入大廳卡片四周防線，留足 3D 按壓與陰影位移空間，阻絕左邊被切 */
+            padding: 15px 20px 40px 15px; /* 🎯 剛性修復 Bug 1: 注入主面板安全 Padding，留足大廳卡牌 3D 懸浮陰影像素空間 */
         }
 
         .document-canvas {
@@ -349,7 +338,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Dashboard 全新 7 欄精緻硬核小卡片樣式 */
+        /* Dashboard 全新 7 欄平鋪網格小卡片樣式 */
         .level-hero-card {
             border: 2px solid var(--border-heavy);
             border-radius: 8px;
@@ -398,7 +387,7 @@
 
         <main class="content-panel">
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
-                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">LEXICON INDEX</span>
+                <span id="current-category-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">LEXICON INDEX</span>
                 <h2 id="current-level-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
             </div>
 
@@ -418,12 +407,11 @@
     <script>
         // ========================================================================
         // 👑 LEVEL 剛性註冊名冊大盤 👑
-        // 🎯 補登焊接：完整將 1-1 至 1-4 全部登記進初心矩陣大盤
         // ========================================================================
         const libraryLevelRegistry = [
             { 
                 category: 'beginner', 
-                catName: '初心者文獻', 
+                catName: '初心者', 
                 levelNum: 1, 
                 levelName: '基礎通識大辭典',
                 files: [
@@ -435,21 +423,21 @@
             },
             { 
                 category: 'beginner', 
-                catName: '初心者文獻', 
+                catName: '初心者', 
                 levelNum: 2, 
                 levelName: '進階工廠大辭典',
                 files: ['library_data/library_data_beginner_2-1.js']
             },
             { 
                 category: 'beginner', 
-                catName: '初心者文獻', 
+                catName: '初心者', 
                 levelNum: 3, 
                 levelName: 'TPM思考邏輯辭典',
                 files: ['library_data/library_data_beginner_3-1.js']
             },
             { 
                 category: 'handbook', 
-                catName: '冒險者文獻', 
+                catName: '冒險者', 
                 levelNum: 1, 
                 levelName: 'TPM天職實戰手冊',
                 files: [
@@ -461,9 +449,7 @@
 
         const globalCategoryMetadata = [
             { id: 'beginner', name: '初心者' },
-            { id: 'adventure', name: '冒險者' },
-            { id: 'coordinator', name: '統籌者 (待開發)' },
-            { id: 'slayer', name: '屠龍者 (待開發)' }
+            { id: 'handbook', name: '冒險者' }
         ];
 
         let selectedActiveTabType = 'beginner'; 
@@ -475,6 +461,7 @@
             renderDashboard();
         };
 
+        // 🎯 側邊欄：徹底淨化，常駐輸出最乾淨洗鏈的 LEVEL X 
         function renderGlobalTree() {
             const root = document.getElementById('global-tree-root');
             root.innerHTML = '';
@@ -485,7 +472,7 @@
                 const block = document.createElement('div');
                 block.className = 'menu-category-block';
                 
-                const catMeta = globalCategoryMetadata.find(m => m.id === (catId === 'beginner' ? 'beginner' : 'adventure'));
+                const catMeta = globalCategoryMetadata.find(m => m.id === catId);
                 const catLabelName = catMeta ? catMeta.name : '未知';
 
                 block.innerHTML = `
@@ -566,29 +553,39 @@
         }
 
         // ========================================================================
-        // 👑 核心加載模組（🎯 完美集成自動化備援熱降維解包防線）
+        // 👑 多軌並行工廠大腦（Greenfield Async Loader）👑
+        // 🎯 絕殺戰術：採用重工業 Promise.all 齊發機制，配合自動降維熱備援防線
         // ========================================================================
         async function loadLevelLexicon(catId, lvlNum) {
             const target = libraryLevelRegistry.find(r => r.category === catId && r.levelNum === lvlNum);
             if (!target) return;
 
-            currentActiveLevel = target;
+            // 1. 初始化環境變數，原地亮燈
+            selectedActiveTabType = catId;
             activeTermIdx = -1;
             window.aggregatedTermsPool = [];
+            
             document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-L${catId}-${lvlNum}`);
             if (activeBtn) activeBtn.classList.add('active');
 
+            // 2. 剛性導通安全對位，絕不允許 InnerText 對 null 賦值崩潰
             document.getElementById('dashboard-menu-hall').style.display = 'none';
             document.getElementById('lexicon-viewport').style.display = 'flex';
-            document.getElementById('current-category-id').innerText = `${catId.toUpperCase()} / LEVEL ${lvlNum}`;
-            document.getElementById('current-level-name').innerText = `LEVEL ${lvlNum} 大辭典`;
-            document.getElementById('lexicon-terms-list').innerHTML = `<div class="inspector-placeholder">正在動態清算 LEVEL ${lvlNum} 全量文獻...</div>`;
+            
+            const categoryEl = document.getElementById('current-category-id');
+            const levelEl = document.getElementById('current-level-name');
+            if (categoryEl) categoryEl.innerText = `${catId.toUpperCase()} / LEVEL ${lvlNum}`;
+            if (levelEl) levelEl.innerText = `LEVEL ${lvlNum} 大辭典`;
 
-            // 發動批次異步多軌解包
-            await sequenceLoadScripts(target.files, 0);
+            const listContainer = document.getElementById('lexicon-terms-list');
+            if (listContainer) listContainer.innerHTML = `<div class="inspector-placeholder">正在多軌並行解包 LEVEL ${lvlNum} 全量關鍵字...</div>`;
 
-            // 全球增補字典動態合流互鎖
+            // 3. 發動 Greenfield 異步並行齊發工廠
+            const loadPromises = target.files.map(filePath => singleScriptFetchEngine(filePath));
+            await Promise.all(loadPromises);
+
+            // 4. 全球增補大辭典動態熱焊接
             const suppKeyBase = (catId === 'beginner' ? 'codex' : 'handbook');
             target.files.forEach(filePath => {
                 const match = filePath.match(/(\d-\d)/);
@@ -605,31 +602,27 @@
                 }
             });
 
+            // 5. 執行網格繪製
             renderLexiconList();
         }
 
-        // 🧠 核心合流大腦：具備自動降維熱備援解包功能（絕不丟失任何 CORE 單詞）
-        function sequenceLoadScripts(fileList, index) {
+        // 🧠 綠地解包引擎：具備高敏熱備援降落傘，若 library 報錯秒速重定向 course 常規包
+        function singleScriptFetchEngine(filePath) {
             return new Promise((resolve) => {
-                if (index >= fileList.length) {
-                    resolve();
-                    return;
-                }
-
                 const script = document.createElement('script');
-                script.src = `${fileList[index]}?v=${Date.now()}`;
+                script.src = `${filePath}?v=${Date.now()}`;
                 
-                // 剛性提取全域緩衝資料程序
-                const processLoadedPayload = () => {
-                    let combinedPayload = [];
+                const parseAndHarvest = () => {
+                    // 自動兼容雙維度全域變數大盤
+                    let combined = [];
                     if (window.libraryCourseEngineData && window.libraryCourseEngineData.length > 0) {
-                        combinedPayload = combinedPayload.concat(window.libraryCourseEngineData);
+                        combined = combined.concat(window.libraryCourseEngineData);
                     }
                     if (window.codexCourseEngineData && window.codexCourseEngineData.length > 0) {
-                        combinedPayload = combinedPayload.concat(window.codexCourseEngineData);
+                        combined = combined.concat(window.codexCourseEngineData);
                     }
                     
-                    combinedPayload.forEach(course => {
+                    combined.forEach(course => {
                         if (course.subPages) {
                             course.subPages.forEach(page => {
                                 if (page.diagramFlowArray) {
@@ -642,34 +635,32 @@
                             });
                         }
                     });
-                    // 清空快取快卡防線
+                    // 原位沖洗緩衝，防範重合污染
                     window.codexCourseEngineData = [];
                     window.libraryCourseEngineData = [];
                 };
 
                 script.onload = () => {
-                    processLoadedPayload();
-                    sequenceLoadScripts(fileList, index + 1).then(resolve);
+                    parseAndHarvest();
+                    resolve();
                 };
 
-                // 🎯 剛性修正 Bug 2: 降維自動備援換裝線路。若 library 專用檔報錯或404，立刻自動向下抓取 course 原裝包，守住字盤
                 script.onerror = () => {
-                    if (fileList[index].includes('library_data/library_data_beginner_')) {
-                        const fallbackPath = fileList[index].replace('library_data/library_data_beginner_', 'beginner_codex_course/course_data_');
-                        console.warn(`[Library Fallback Active] 專用文獻加載空障，轉向原裝包: ${fallbackPath}`);
+                    // 🎯 降落傘啟動：如果文獻專用檔流產，秒速熱切換常規包
+                    if (filePath.includes('library_data/library_data_beginner_')) {
+                        const fallbackPath = filePath.replace('library_data/library_data_beginner_', 'beginner_codex_course/course_data_');
+                        console.warn(`[Fallback Core Active] 文獻空白，就地換裝常規包: ${fallbackPath}`);
                         
                         const fallbackScript = document.createElement('script');
                         fallbackScript.src = `${fallbackPath}?v=${Date.now()}`;
                         fallbackScript.onload = () => {
-                            processLoadedPayload();
-                            sequenceLoadScripts(fileList, index + 1).then(resolve);
+                            parseAndHarvest();
+                            resolve();
                         };
-                        fallbackScript.onerror = () => {
-                            sequenceLoadScripts(fileList, index + 1).then(resolve);
-                        };
+                        fallbackScript.onerror = () => resolve(); // 雙重防線熔斷
                         document.head.appendChild(fallbackScript);
                     } else {
-                        sequenceLoadScripts(fileList, index + 1).then(resolve);
+                        resolve();
                     }
                 };
                 document.head.appendChild(script);
@@ -678,6 +669,7 @@
 
         function renderLexiconList() {
             const list = document.getElementById('lexicon-terms-list');
+            if (!list) return;
             list.innerHTML = '';
             
             if (window.aggregatedTermsPool.length === 0) {
@@ -710,6 +702,7 @@
 
         function showDetail(html) {
             const inspector = document.getElementById('lexicon-inspector');
+            if (!inspector) return;
             inspector.innerHTML = `
                 <div style="animation: fadeInBox 0.15s ease-out; line-height:1.7; font-size:0.88rem;">
                     ${html}
@@ -718,10 +711,16 @@
         }
 
         function exitToDashboard() {
-            document.getElementById('dashboard-menu-hall').style.display = 'block';
-            document.getElementById('lexicon-viewport').style.display = 'none';
-            document.getElementById('current-category-id').innerText = `LEXICON INDEX`;
-            document.getElementById('current-level-name').innerText = "圖書文獻檢索大廳";
+            const menuHall = document.getElementById('dashboard-menu-hall');
+            const viewport = document.getElementById('lexicon-viewport');
+            const categoryEl = document.getElementById('current-category-id');
+            const levelEl = document.getElementById('current-level-name');
+
+            if (menuHall) menuHall.style.display = 'block';
+            if (viewport) viewport.style.display = 'none';
+            if (categoryEl) categoryEl.innerText = `LEXICON INDEX`;
+            if (levelEl) levelEl.innerText = "圖書文獻檢索大廳";
+            
             document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
             renderDashboard();
         }
