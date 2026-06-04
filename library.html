@@ -81,7 +81,6 @@
             align-items: center;
             justify-content: center;
             border-radius: 4px;
-            transition: all 0.1s;
         }
 
         .lang-btn-core.active {
@@ -157,31 +156,9 @@
             transition: all 0.1s;
         }
 
-        .hub-return-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0px var(--border-heavy);
-        }
-
         .menu-category-block {
             width: 100%;
-            margin-bottom: 6px;
-        }
-
-        /* 👑 側邊欄 Level 子分類次級折疊鈕 👑 */
-        .tree-level-toggle {
-            width: 100%;
-            background: var(--card-white);
-            border: 2px solid var(--border-heavy);
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-weight: 900;
-            font-size: 0.85rem;
-            text-align: left;
-            cursor: pointer;
-            margin-bottom: 4px;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            display: flex;
-            justify-content: space-between;
+            margin-bottom: 12px;
         }
 
         .tree-main-toggle {
@@ -199,44 +176,44 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
         }
 
         .tree-sub-group {
             padding-left: 10px;
             border-left: 3px solid var(--border-heavy);
             margin-left: 8px;
-            margin-top: 5px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
 
-        .leaf-btn {
+        /* 👑 Level 葉子切換鈕：改為書本目錄型態 👑 */
+        .level-btn {
             background: var(--card-white);
             border: 2px solid var(--border-heavy);
-            padding: 10px 14px;
+            padding: 12px 16px;
             border-radius: var(--radius-sm);
-            font-weight: 800;
-            font-size: 0.82rem;
+            font-weight: 900;
+            font-size: 0.9rem;
             text-align: left;
             cursor: pointer;
             width: 100%;
             color: var(--text-main);
-            box-shadow: 2px 2px 0px var(--border-heavy);
+            box-shadow: 3px 3px 0px var(--border-heavy);
             transition: all 0.1s;
-            line-height: 1.4;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .leaf-btn:hover {
-            transform: translate(2px, -2px);
-            box-shadow: 2px 4px 0px var(--border-heavy);
+        .level-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--border-heavy);
         }
 
-        .leaf-btn.active {
+        .level-btn.active {
             background: var(--color-active-gold) !important;
-            color: var(--text-main) !important;
-            transform: translate(1px, 1px);
+            transform: translate(2px, 2px);
             box-shadow: 1px 1px 0px var(--border-heavy) !important;
         }
 
@@ -254,164 +231,109 @@
         .document-canvas {
             display: none;
             width: 100%;
+            height: 100%;
         }
 
         .dashboard-view-hall {
+            display: block; /* 初始大廳 */
             height: 100%;
             overflow-y: auto;
-            padding: 5px 5px 30px 5px; 
         }
 
-        .level-cards-parallel-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            width: 100%;
-            margin-bottom: 20px;
-            padding: 5px 2px;
-        }
-
-        .progress-card-master {
-            background: var(--card-white);
-            border: 2px solid var(--border-heavy);
-            border-radius: 10px;
-            padding: 12px 16px;
-            box-shadow: var(--shadow-tactical);
-            cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .progress-card-master:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 6px 6px 0px var(--border-heavy);
-        }
-
-        .progress-card-master.active-level {
-            background: linear-gradient(135deg, #FFFDF4 0%, #FAFAFA 100%) !important;
-            border-width: 3px !important;
-            box-shadow: 5px 5px 0px var(--border-heavy) !important;
-        }
-
-        .progress-label {
-            font-family: monospace;
-            font-weight: 900;
-            font-size: 0.72rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
-        }
-
-        .progress-percentage {
-            font-size: 1.8rem;
-            font-weight: 900;
-            margin: 2px 0;
-            color: var(--text-main);
-            line-height: 1;
-        }
-
-        .progress-stats {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-
-        .cdx-dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            width: 100%;
-            padding: 5px 2px;
-        }
-
-        .cdx-dashboard-card {
-            border: 2px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            padding: 10px 14px;
-            cursor: pointer;
-            box-shadow: var(--shadow-tactical);
-            transition: all 0.15s;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 52px;
-        }
-
-        .cdx-dashboard-card:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 6px 6px 0px var(--text-main);
-        }
-
-        /* ─── ⚖️ 左右雙軌戰術分流觀測大盤 ─── */
+        /* ─── ⚖️ 左右雙軌戰術分流觀測大盤 (辭典版) ─── */
         .document-canvas {
             flex: 1;
             overflow: hidden;
             display: flex;
-            flex-direction: row; /* 剛性左右並行 */
+            flex-direction: row;
             gap: 24px;
-            width: 100%;
-            height: 100%;
         }
 
-        /* 左側：全局關鍵字大會總牌海 */
-        .library-deck-column {
+        /* 左側：單詞索引列表 */
+        .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 雙列剛性咬合 */
-            gap: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             padding-right: 6px;
-            height: 100%;
         }
 
-        .library-term-badge-card {
+        .lexicon-term-row {
             background: #FFFFFF;
             border: 2px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            padding: 16px;
+            border-radius: 6px;
+            padding: 14px 20px;
             font-weight: 900;
-            font-size: 0.88rem;
+            font-size: 0.95rem;
             color: var(--text-main);
             cursor: pointer;
-            box-shadow: 3px 3px 0px var(--border-heavy);
+            box-shadow: 2px 2px 0px var(--border-heavy);
             transition: all 0.1s ease;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
         }
 
-        .library-term-badge-card:hover {
+        .lexicon-term-row:hover {
             background: #FFFDF4;
-            transform: translate(-1px, -1px);
-            box-shadow: 4px 4px 0px var(--border-heavy);
+            transform: translateX(4px);
         }
 
-        .library-term-badge-card.active-term {
+        .lexicon-term-row.active-term {
             background: var(--color-active-gold) !important;
-            transform: translate(2px, 2px);
-            box-shadow: 1px 1px 0px var(--border-heavy) !important;
+            border-width: 3px;
+            transform: translateX(8px);
+            box-shadow: 4px 4px 0px var(--border-heavy) !important;
         }
 
-        /* 右側：固定式戰術解包觀測儀 */
+        /* 右側：固定細節觀測儀 */
         .fixed-inspector-panel {
-            width: 440px;
-            border: 3px solid var(--border-heavy);
+            width: 500px;
+            border: 4px solid var(--border-heavy);
             background: #FFFDF2;
-            border-radius: var(--radius-sm);
-            padding: 24px;
+            border-radius: 12px;
+            padding: 30px;
             box-shadow: var(--shadow-tactical);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
             height: 100%;
             flex-shrink: 0;
+            animation: fadeInBox 0.2s ease-out;
+        }
+
+        .inspector-placeholder {
+            margin: auto;
+            text-align: center;
+            color: #94A3B8;
+            font-weight: 800;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
         @keyframes fadeInBox {
-            from { opacity: 0; transform: translateY(4px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 大廳 Level 選擇卡 */
+        .level-hero-card {
+            border: 3px solid var(--border-heavy);
+            border-radius: 12px;
+            padding: 24px;
+            background: #FFF;
+            cursor: pointer;
+            box-shadow: var(--shadow-tactical);
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .level-hero-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0px var(--border-heavy);
         }
     </style>
     <script src="library_data/library_supplementary.js?v=20260604"></script>
@@ -420,7 +342,7 @@
 
     <div class="tactical-navbar">
         <div class="navbar-brand">
-            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">知識圖書館</h1>
+            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;">知識圖書館</h1>
         </div>
         <div class="navbar-controls">
             <div id="global-user-profile-card" class="auth-panel">👤 冒險者：Daniel Shih</div>
@@ -434,29 +356,29 @@
 
     <div class="workspace-container">
         <aside class="sidebar-panel">
-            <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回圖書大廳</button>
+            <button class="hub-return-btn" onclick="exitToDashboard()">↩ 返回圖書大廳</button>
             <div id="global-tree-root"></div>
         </aside>
 
         <main class="content-panel">
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
-                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
-                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
+                <span id="current-category-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">LEXICON INDEX</span>
+                <h2 id="current-level-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">圖書文獻檢索大廳</h2>
             </div>
 
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
-                <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
-                <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
-                <div style="font-weight: 900; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">文獻卷軸列表：</div>
-                <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
+                <div style="font-weight: 900; font-size: 1.1rem; margin-bottom: 15px;">📖 請選擇欲檢索之職能階層：</div>
+                <div class="level-cards-parallel-grid" id="category-selector-grid" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:15px;">
+                    </div>
             </div>
 
-            <div class="document-canvas" id="textbook-viewport">
-                <div class="library-deck-column" id="library-master-badge-deck"></div>
+            <div class="document-canvas" id="lexicon-viewport">
+                <div class="lexicon-index-column" id="lexicon-terms-list">
+                    </div>
                 
-                <div class="fixed-inspector-panel" id="library-fixed-inspector">
-                    <div style="color:var(--text-secondary); font-weight:800; text-align:center; margin-top:auto; margin-bottom:auto;">
-                        🎯 請點擊左側關鍵字卡牌<br>發動現地技術解包
+                <div class="fixed-inspector-panel" id="lexicon-inspector">
+                    <div class="inspector-placeholder">
+                        🎯 階層合流完成<br>請點擊左側單詞查看技術細節
                     </div>
                 </div>
             </div>
@@ -465,264 +387,224 @@
 
     <script>
         // ========================================================================
-        // 👑 靜態資料結構對位清單 👑
+        // 👑 LEVEL 合流註冊名冊大盤 👑
+        // 我們將單元 (Unit) 降級為屬性，改以 LEVEL 為加載主體
         // ========================================================================
-        const globalSubUnitRegistry = [
-            { category: 'beginner', levelNum: 1, subUnitId: '1-1', title: '1-1: 三方賽局戰術析論', file: 'beginner_codex_course/course_data_1-1.js' },
-            { category: 'beginner', levelNum: 1, subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'beginner_codex_course/course_data_1-2.js' },
-            { category: 'beginner', levelNum: 1, subUnitId: '1-3', title: '1-3: 工廠地理與 4M1E 線體通識', file: 'beginner_codex_course/course_data_1-3.js' },
-            { category: 'beginner', levelNum: 1, subUnitId: '1-4', title: '1-4: 終端市場調查與產品規格定義', file: 'beginner_codex_course/course_data_1-4.js' },
-            { category: 'beginner', levelNum: 2, subUnitId: '2-1', title: '2-1: 相機AA品質大氣大考', file: 'beginner_codex_course/course_data_2-1.js' },
-            { category: 'beginner', levelNum: 3, subUnitId: '3-1', title: '3-1: SYSTEM TPM 天職與 TechOps 核心', file: 'beginner_codex_course/course_data_3-1.js' },
-            { category: 'adventure', levelNum: 1, subUnitId: '1-1', title: '1-1: 系統 TPM 職能運作實戰手冊', file: 'handbook_data_course/handbook_data_1-1.js' },
-            { category: 'adventure', levelNum: 1, subUnitId: '1-2', title: '1-2: 系統 TPM 職能運作實戰手冊二', file: 'handbook_data_course/handbook_data_1-2.js' }
+        const libraryLevelRegistry = [
+            { 
+                category: 'beginner', 
+                catName: '初心者文獻', 
+                levelNum: 1, 
+                levelName: '基礎通識大辭典',
+                files: [
+                    'beginner_codex_course/course_data_1-1.js',
+                    'beginner_codex_course/course_data_1-2.js',
+                    'beginner_codex_course/course_data_1-3.js',
+                    'beginner_codex_course/course_data_1-4.js'
+                ]
+            },
+            { 
+                category: 'beginner', 
+                catName: '初心者文獻', 
+                levelNum: 2, 
+                levelName: '進階工廠大辭典',
+                files: ['beginner_codex_course/course_data_2-1.js']
+            },
+            { 
+                category: 'beginner', 
+                catName: '初心者文獻', 
+                levelNum: 3, 
+                levelName: 'TPM思考邏輯辭典',
+                files: ['beginner_codex_course/course_data_3-1.js']
+            },
+            { 
+                category: 'handbook', 
+                catName: '冒險者文獻', 
+                levelNum: 1, 
+                levelName: 'TPM天職實戰手冊',
+                files: [
+                    'handbook_data_course/handbook_data_1-1.js',
+                    'handbook_data_course/handbook_data_1-2.js'
+                ]
+            }
         ];
 
-        const globalCategoryMetadata = [
-            { id: 'beginner', name: '初心者' },
-            { id: 'adventure', name: '冒險者' },
-            { id: 'coordinator', name: '統籌者 (待開發)' },
-            { id: 'slayer', name: '屠龍者 (待開發)' }
-        ];
-
-        let selectedActiveTabType = 'beginner'; 
-        let activeTermIdx = 0;
+        let currentActiveCategory = 'beginner';
+        let currentActiveLevel = null;
+        let activeTermIdx = -1;
+        window.aggregatedTermsPool = []; // 全量詞條池
 
         window.onload = () => {
-            renderGlobalTreeStructure();
-            routeController();
+            renderGlobalTree();
+            renderDashboard();
         };
 
-        // 🎯 👑 樹狀大腦進化：完美對齊 「種類大分類 ➔ LEVEL 子標籤 ➔ 單元葉子」 三級剛性網格
-        function renderGlobalTreeStructure() {
-            const root = document.getElementById('global-tree-root'); 
+        // 🎯 👑 側邊欄：收攏至階層維度
+        function renderGlobalTree() {
+            const root = document.getElementById('global-tree-root');
             root.innerHTML = '';
             
-            globalCategoryMetadata.forEach(cat => {
-                const subset = globalSubUnitRegistry.filter(u => u.category === cat.id);
-                if (subset.length === 0) return;
-                
-                const block = document.createElement('div'); 
+            const cats = [...new Set(libraryLevelRegistry.map(r => r.category))];
+            cats.forEach(catId => {
+                const levels = libraryLevelRegistry.filter(r => r.category === catId);
+                const block = document.createElement('div');
                 block.className = 'menu-category-block';
-                
-                // 1. 抓出該文獻大類底下所有的不重複 LEVEL 階層
-                const presentLevels = [...new Set(subset.map(u => u.levelNum))].sort();
-                
-                // 2. 迭代組裝子選單 HTML 結構體
-                let subLevelsHtml = "";
-                presentLevels.forEach(lvlNum => {
-                    const levelUnits = subset.filter(u => u.levelNum === lvlNum);
-                    subLevelsHtml += `
-                        <div style="margin-bottom: 6px;">
-                            <div class="tree-level-toggle" onclick="toggleMenuSection('sub-accordion-${cat.id}-${lvlNum}')">
-                                <span>📁 LEVEL ${lvlNum}</span><span>▾</span>
-                            </div>
-                            <div id="sub-accordion-${cat.id}-${lvlNum}" style="display:flex; flex-direction:column; gap:6px; padding-left:8px; margin-top:4px;">
-                                ${levelUnits.map(u => `<button class="leaf-btn" id="lf-${u.category}-${u.subUnitId}" onclick="switchUnit('${u.category}','${u.subUnitId}')">${u.title}</button>`).join('')}
-                            </div>
-                        </div>
-                    `;
-                });
-
                 block.innerHTML = `
-                    <button class="tree-main-toggle" onclick="toggleMenuSection('main-accordion-${cat.id}')">📖 ${cat.name}文獻</button>
-                    <div id="main-accordion-${cat.id}" class="tree-sub-group" style="display: flex; flex-direction: column;">
-                        ${subLevelsHtml}
-                    </div>`;
+                    <div class="tree-main-toggle" onclick="toggleMenuSection('tree-${catId}')">
+                        <span>📖 ${levels[0].catName}</span>
+                    </div>
+                    <div id="tree-${catId}" class="tree-sub-group">
+                        ${levels.map(l => `<button class="level-btn" id="btn-L${catId}-${l.levelNum}" onclick="loadLevelLexicon('${catId}', ${l.levelNum})">LEVEL ${l.levelNum} 辭典 <span>➔</span></button>`).join('')}
+                    </div>
+                `;
                 root.appendChild(block);
             });
         }
 
-        function toggleMenuSection(id) { 
-            const el = document.getElementById(id); 
-            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
+        function toggleMenuSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = (el.style.display === 'none' ? 'flex' : 'none');
         }
 
-        function routeController(directType, directC) {
-            document.getElementById('global-user-profile-card').innerHTML = `👤 冒險者：Daniel Shih`;
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const paramC = directC || urlParams.get('c');
-            const paramType = directType || urlParams.get('type') || 'beginner';
-
-            if (!paramC) {
-                document.getElementById('cdx-page-header-zone').style.display = 'block'; 
-                document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
-                document.getElementById('current-chapter-name').innerText = "圖書文獻檢索大廳";
-                document.getElementById('dashboard-menu-hall').style.display = 'block'; 
-                document.getElementById('textbook-viewport').style.display = 'none'; 
-                renderMultiLevelHubDashboard();
-            } else {
-                document.getElementById('dashboard-menu-hall').style.display = 'none'; 
-                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
-                const leaf = document.getElementById(`lf-${paramType}-${paramC}`); 
-                if (leaf) leaf.classList.add('active'); 
-                injectContentPackScript(paramType, paramC);
-            }
-        }
-
-        function renderMultiLevelHubDashboard() {
-            const deckRow = document.getElementById('global-level-flex-deck');
-            const grid = document.getElementById('l1-cards-grid'); 
-            if (!deckRow || !grid) return;
-            
-            deckRow.innerHTML = ''; 
+        function renderDashboard() {
+            const grid = document.getElementById('category-selector-grid');
             grid.innerHTML = '';
-            
-            globalCategoryMetadata.forEach(cat => {
-                const subset = globalSubUnitRegistry.filter(u => u.category === cat.id);
-                let total = subset.length;
-                let collected = 0;
-                subset.forEach(u => { 
-                    if (localStorage.getItem(`library-${cat.id}-${u.subUnitId}-clear`) === 'true') collected++; 
-                });
-                
-                deckRow.innerHTML += `
-                    <div class="progress-card-master ${cat.id === selectedActiveTabType ? 'active-level' : ''}" onclick="selectedActiveTabType='${cat.id}';renderMultiLevelHubDashboard();" style="min-height:100px;">
-                        <div style="font-weight:900; font-size:1.05rem; color:var(--text-main); margin-bottom:8px;">${cat.name}文獻</div>
-                        <div class="progress-stats" style="font-size:0.8rem; font-weight:800; color:var(--text-secondary);">文獻總量: ${total} 篇 | 已收藏: ${collected} 篇</div>
-                    </div>`;
-            });
-
-            const filteredUnits = globalSubUnitRegistry.filter(u => u.category === selectedActiveTabType);
-            filteredUnits.forEach(unit => {
-                const isClear = localStorage.getItem(`library-${unit.category}-${unit.subUnitId}-clear`) === 'true';
+            libraryLevelRegistry.forEach(l => {
                 grid.innerHTML += `
-                    <div class="cdx-dashboard-card" style="background-color: ${isClear ? '#DCFCE7' : '#FFFFFF'}; border: 2px solid var(--border-heavy);" onclick="switchUnit('${unit.category}', '${unit.subUnitId}')">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:4px 8px; border-radius:4px; font-size:0.8rem;">${unit.subUnitId}</span>
-                            <h3 style="margin:0; font-size:0.88rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
-                        </div>
-                        <div style="font-size:0.8rem; font-weight:900; color:var(--text-secondary); white-space:nowrap; display:flex; align-items:center; gap:4px; padding-left:10px;">
-                            <span> 📖</span> ${isClear ? '已收藏' : '未收藏'}
-                        </div>
-                    </div>`;
+                    <div class="level-hero-card" onclick="loadLevelLexicon('${l.category}', ${l.levelNum})">
+                        <div style="font-family:monospace; font-weight:900; color:#94A3B8;">${l.category.toUpperCase()}</div>
+                        <div style="font-size:1.3rem; font-weight:900;">LEVEL ${l.levelNum}</div>
+                        <div style="font-size:0.85rem; font-weight:800; color:var(--text-secondary);">${l.levelName}</div>
+                    </div>
+                `;
             });
-
-            if (filteredUnits.length === 0) {
-                grid.innerHTML = `
-                    <div style="grid-column: span 4; border:3px dashed var(--border-heavy); background:#FFF; padding:50px; text-align:center; border-radius:8px; font-weight:900; color:var(--text-secondary); width:100%;">
-                        ⚡ 該領域職能文獻正處於排產封裝階段 (待開發) ⚡
-                    </div>`;
-            }
-        }
-
-        function switchUnit(type, subUnitId) { 
-            selectedActiveTabType = type; 
-            activeTermIdx = 0; 
-            window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); 
-            routeController(type, subUnitId); 
-        }
-
-        function exitToDashboardMenu() { 
-            window.history.pushState(null, '', window.location.pathname); 
-            routeController(null, null); 
-        }
-
-        function injectContentPackScript(type, packId) {
-            window.libraryCourseEngineData = []; 
-            window.codexCourseEngineData = [];
-            const old = document.getElementById('dynamic-course-pack'); 
-            if (old) old.remove();
-            
-            const script = document.createElement('script'); 
-            script.id = 'dynamic-course-pack'; 
-            
-            const currentUnit = globalSubUnitRegistry.find(u => u.category === type && u.subUnitId === packId);
-            if (!currentUnit) return;
-            
-            const targetFile = currentUnit.file;
-            script.src = `${targetFile}?v=${Date.now()}`;
-            script.onload = () => { initEngine(); }; 
-            script.onerror = () => { console.error("加載失敗:", targetFile); };
-            document.head.appendChild(script);
         }
 
         // ========================================================================
-        // 👑 核心大腦：關鍵字矩陣動態收攏合流渲染矩陣 (0 重工) 👑
+        // 👑 核心引擎：多軌並行加載器 (Sequential Batch Loader) 👑
         // ========================================================================
-        function initEngine() {
-            const rawPayload = (window.libraryCourseEngineData && window.libraryCourseEngineData.length > 0) 
-                                        ? window.libraryCourseEngineData 
-                                        : window.codexCourseEngineData;
+        async function loadLevelLexicon(catId, lvlNum) {
+            const target = libraryLevelRegistry.find(r => r.category === catId && r.levelNum === lvlNum);
+            if (!target) return;
 
-            if (!rawPayload || rawPayload.length === 0) return;
+            // 視覺狀態重置
+            currentActiveLevel = target;
+            activeTermIdx = -1;
+            window.aggregatedTermsPool = [];
+            document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-L${catId}-${lvlNum}`);
+            if (activeBtn) activeBtn.classList.add('active');
 
-            const course = rawPayload[0];
-            document.getElementById('current-chapter-id').innerText = `LIBRARY DIRECTORY`; 
-            document.getElementById('current-chapter-name').innerText = `技術圖書特輯：${course.menuTitle}`;
+            document.getElementById('dashboard-menu-hall').style.display = 'none';
+            document.getElementById('lexicon-viewport').style.display = 'flex';
+            document.getElementById('current-category-id').innerText = `${catId.toUpperCase()} / LEVEL ${lvlNum}`;
+            document.getElementById('current-level-name').innerText = target.levelName;
+            document.getElementById('lexicon-terms-list').innerHTML = `<div class="inspector-placeholder">正在檢索 Level ${lvlNum} 全量文獻...</div>`;
 
-            // 1. 全域合流緩衝區陣列初始化
-            window.libraryMergedTermsPool = [];
+            // 發動批次載入遞迴
+            await sequenceLoadScripts(target.files, 0);
 
-            // 2. 迴圈自動抓取：將該課程所有 subPages 內含的 diagramFlowArray 詞條通統原位抓取
-            course.subPages.forEach(page => {
-                if (page.diagramFlowArray && page.diagramFlowArray.length > 0) {
-                    page.diagramFlowArray.forEach(term => {
-                        // 防重複注入
-                        if (!window.libraryMergedTermsPool.some(t => t.name === term.name)) {
-                            window.libraryMergedTermsPool.push({
-                                name: term.name.replace(/🔑/g, "").trim(),
-                                text: term.text
-                            });
-                        }
-                    });
+            // 合流 Supplementary 全球增補字典
+            const suppKeyBase = (catId === 'beginner' ? 'codex' : 'handbook');
+            target.files.forEach(filePath => {
+                // 從路徑抓取 ID (例如 1-1)
+                const match = filePath.match(/(\d-\d)/);
+                if (match) {
+                    const unitId = match[0];
+                    const dictKey = `${suppKeyBase}-${unitId}`;
+                    if (window.globalSupplementaryDictionary && window.globalSupplementaryDictionary[dictKey]) {
+                        window.globalSupplementaryDictionary[dictKey].forEach(supp => {
+                            if (!window.aggregatedTermsPool.some(t => t.name === supp.name)) {
+                                window.aggregatedTermsPool.push({ ...supp, isSupp: true });
+                            }
+                        });
+                    }
                 }
             });
 
-            // 3. 全球字典互鎖合流：自動到全域 supplementary 檔案中提取額外增補詞條
-            const urlParams = new URLSearchParams(window.location.search);
-            const packId = urlParams.get('c');
-            const dictKey = `${selectedActiveTabType}-${packId}`;
-            
-            if (window.globalSupplementaryDictionary && window.globalSupplementaryDictionary[dictKey]) {
-                const suppTerms = window.globalSupplementaryDictionary[dictKey];
-                suppTerms.forEach(sterm => {
-                    if (!window.libraryMergedTermsPool.some(t => t.name === sterm.name)) {
-                        window.libraryMergedTermsPool.push(sterm);
-                    }
-                });
-            }
-
-            // 4. 擊發雙軌制渲染
-            executeRenderLibraryWorkspace();
+            renderLexiconList();
         }
 
-        // 👑 左右分流戰術觀測台實體渲染器
-        function executeRenderLibraryWorkspace() {
-            document.getElementById('dashboard-menu-hall').style.display = 'none'; 
-            document.getElementById('textbook-viewport').style.display = 'flex'; 
+        // 遞迴按順序載入 JS 檔案並現地解包
+        function sequenceLoadScripts(fileList, index) {
+            return new Promise((resolve) => {
+                if (index >= fileList.length) {
+                    resolve();
+                    return;
+                }
 
-            const deckColumn = document.getElementById('library-master-badge-deck');
-            if (!deckColumn) return;
-            deckColumn.innerHTML = '';
-
-            // 1. 渲染左側牌海
-            window.libraryMergedTermsPool.forEach((term, idx) => {
-                const card = document.createElement('div');
-                card.className = `library-term-badge-card ${idx === activeTermIdx ? 'active-term' : ''}`;
-                // 判定是否為增補詞條，賦予不同的前置小標籤
-                const iconPrefix = term.name.includes("增補") ? "🔥" : "🏷️";
-                card.innerHTML = `<span>${iconPrefix}</span> <span>${term.name}</span>`;
-                
-                card.onclick = () => {
-                    activeTermIdx = idx;
-                    window.executeRenderLibraryWorkspace();
+                const script = document.createElement('script');
+                script.src = `${fileList[index]}?v=${Date.now()}`;
+                script.onload = () => {
+                    // 解包目前變數
+                    const payload = (window.codexCourseEngineData && window.codexCourseEngineData.length > 0)
+                                    ? window.codexCourseEngineData
+                                    : window.libraryCourseEngineData;
+                    
+                    if (payload && payload[0]) {
+                        payload[0].subPages.forEach(page => {
+                            if (page.diagramFlowArray) {
+                                page.diagramFlowArray.forEach(term => {
+                                    if (!window.aggregatedTermsPool.some(t => t.name === term.name)) {
+                                        window.aggregatedTermsPool.push(term);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    // 清空變數防止下一個檔案污染
+                    window.codexCourseEngineData = [];
+                    window.libraryCourseEngineData = [];
+                    
+                    sequenceLoadScripts(fileList, index + 1).then(resolve);
                 };
-                deckColumn.appendChild(card);
+                script.onerror = () => {
+                    console.error("加載遺失:", fileList[index]);
+                    sequenceLoadScripts(fileList, index + 1).then(resolve);
+                };
+                document.head.appendChild(script);
             });
+        }
 
-            // 2. 渲染右側固定解包觀測面板
-            const inspector = document.getElementById('library-fixed-inspector');
-            if (window.libraryMergedTermsPool[activeTermIdx]) {
-                inspector.innerHTML = `
-                    <div style="animation: fadeInBox 0.15s ease-out; line-height: 1.6; font-size:0.88rem;">
-                        ${window.libraryMergedTermsPool[activeTermIdx].text}
-                    </div>
-                `;
-            } else {
-                inspector.innerHTML = `<div style='color:var(--text-secondary); text-align:center; margin:auto;'>鎖片解鎖失敗</div>`;
+        // 👑 渲染左側列表
+        function renderLexiconList() {
+            const list = document.getElementById('lexicon-terms-list');
+            list.innerHTML = '';
+            
+            if (window.aggregatedTermsPool.length === 0) {
+                list.innerHTML = `<div class="inspector-placeholder">該階層尚無術語存檔</div>`;
+                return;
             }
+
+            window.aggregatedTermsPool.forEach((term, idx) => {
+                const row = document.createElement('div');
+                row.className = `lexicon-term-row ${idx === activeTermIdx ? 'active-term' : ''}`;
+                const prefix = term.isSupp ? "🔥" : "📘";
+                row.innerHTML = `<span>${prefix} ${term.name.replace(/🔑/g,'').trim()}</span> <span>➔</span>`;
+                row.onclick = () => {
+                    activeTermIdx = idx;
+                    renderLexiconList();
+                    showDetail(term.text);
+                };
+                list.appendChild(row);
+            });
+        }
+
+        function showDetail(html) {
+            const inspector = document.getElementById('lexicon-inspector');
+            inspector.innerHTML = `
+                <div style="animation: fadeInBox 0.2s ease-out; line-height:1.7;">
+                    ${html}
+                </div>
+            `;
+        }
+
+        function exitToDashboard() {
+            document.getElementById('dashboard-menu-hall').style.display = 'block';
+            document.getElementById('lexicon-viewport').style.display = 'none';
+            document.getElementById('current-category-id').innerText = `LEXICON INDEX`;
+            document.getElementById('current-level-name').innerText = "圖書文獻檢索大廳";
+            document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
         }
     </script>
 </body>
