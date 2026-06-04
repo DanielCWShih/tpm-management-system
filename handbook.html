@@ -6,7 +6,7 @@
     <title>職能手冊大廳 | System TPM Handbook Hub</title>
     <style>
         :root {
-            /* 👑 外襯粗獷主義核心色盤 */
+            /* 👑 外襯粗獷主義核心色盤 (100% 對齊寶典大廳與總部) */
             --bg-color: #FEF9E7;
             --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
@@ -77,7 +77,6 @@
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
             white-space: nowrap;
-            transition: all 0.15s ease-out;
         }
 
         .lang-switcher-wrapper {
@@ -722,6 +721,9 @@
             localStorage.setItem(`tpm-sandbox-unlocked-${activePackUnitId}`, JSON.stringify(unlockedNodesList));
         }
 
+        // ========================================================================
+        // 👑 換裝優化核心：動態戰術分流虛線指引大腦 👑
+        // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
             const svgCanvas = document.getElementById('map-svg-canvas');
@@ -743,9 +745,8 @@
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
 
+                    // 🎯 迷霧過濾線路：兩端節點都必須在解鎖清單中，才渲染這條線（完全封死未解鎖的盲區）
                     if (!isUnitCleared && (!unlockedNodesList.includes(srcId) || !unlockedNodesList.includes(tarId))) return;
-
-                    const isLineActive = passedNodesList.includes(srcId) && unlockedNodesList.includes(tarId);
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     line.setAttribute("x1", srcPos.x);
@@ -754,12 +755,20 @@
                     line.setAttribute("y2", tarPos.y);
 
                     if (isUnitCleared) {
+                        // 通關後的全知灰色連線
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
-                    } else if (isLineActive) {
+                    } else if (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) {
+                        // 🌟 已經走過並開通的黃金主動線路
                         line.setAttribute("stroke", "#EAB308");
-                        line.setAttribute("stroke-width", "2.5");
+                        line.setAttribute("stroke-width", "3");
+                    } else if (srcId === currentlySelectedNodeId) {
+                        // 🌟 🎯 從「當前挑戰節點」延伸出去給學員選擇的分流導引線（解決浮空斷線痛點！）
+                        line.setAttribute("stroke", "#78716C"); 
+                        line.setAttribute("stroke-width", "2");
+                        line.setAttribute("stroke-dasharray", "4,4"); // 採用精緻虛線表達可選分支
                     } else {
+                        // 🌟 歷史踩雷留存的冷灰色連線痕跡
                         line.setAttribute("stroke", "#E2E8F0");
                         line.setAttribute("stroke-width", "1.5");
                     }
@@ -925,7 +934,6 @@
                 return;
             }
 
-            // 🎯 剛性防火牆攔截機制
             const checkLiveEmail = localStorage.getItem('tpm-user-current-email');
             if (!checkLiveEmail || checkLiveEmail.trim() === "") {
                 alert("❌ 偵測到未登入身分！請先返回首頁完成企業 Email 認證，否則公會將拒絕保存您的實戰進度與 GAS 戰績。");
