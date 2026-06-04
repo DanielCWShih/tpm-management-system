@@ -7,11 +7,11 @@
     <style>
         /* ========================================================================
         REVISION HISTORY / VERSION LOG
-        =======================================================================
-        2026-06-04 V9.20-HOTFIX: 👑 知識圖書館完全體（邊界剪裁與關鍵字失聯終極絕殺版）
-        1. 絕殺邊界切除：為 Dashboard 7欄網格與內文 6欄網格原位注入安全 Padding 緩衝防線，留足 3D 懸浮位移空間，100% 封死左側黑邊遭切斷缺陷。
-        2. 降維降落傘線路：內建 Auto-Fallback 載入引擎。若專屬 library_data 報錯或 404，秒速熱備援自動抓取 course_data 關鍵字，確保單詞絕不流失。
-        3. 剛性架構控管：移除小箭頭，純淨輸出 LEVEL X 7欄平鋪網格，嚴禁左右拖曳晃動。
+        ========================================================================
+        2026-06-04 V9.30-LEXICON-COMPLETE: 👑 知識圖書館完全體（7欄大廳分流與自動降維互鎖修復版）
+        1. 修正邊界切除：優化大廳與卡片容器之內襯邊距 (Padding)，徹底留足 3D 按壓陰影空間，避免左側卡片邊緣切除。
+        2. 導通全量單詞：重構批次異步加載器，部署雙軌全量合流解包大腦，當專屬 library_data 遺失時自動降維熱備援抓取 course_data 原裝物料，確保關鍵字 100% 歸位亮燈。
+        3. 精簡洗鏈選單：左側選單純淨常常駐輸出 LEVEL X，大廳依指令完全展平平鋪。
         ========================================================================
         */
         :root {
@@ -264,7 +264,7 @@
             height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 10px 15px 40px 10px; /* 🎯 剛性修復 Bug 1: 注入大廳四周安全緩衝，徹底阻絕 LEVEL 1 邊界切除 */
+            padding: 15px 20px 40px 15px; /* 🎯 剛性修復 Bug 1: 注入大廳卡片四周防線，留足 3D 按壓與陰影位移空間，阻絕左邊被切 */
         }
 
         .document-canvas {
@@ -275,16 +275,16 @@
             gap: 24px;
         }
 
-        /* ─── ⚖️ 左右雙軌戰術觀測大盤 (小卡片網格版) ─── */
+        /* ─── ⚖️ 左右雙軌戰術分流觀測大盤 (小卡片網格版) ─── */
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden; /* 🎯 剛性禁制：徹底不允許左右拖曳晃動 */
+            overflow-x: hidden; /* 剛性禁制：徹底不允許左右拖曳晃動 */
             display: grid;
-            grid-template-columns: repeat(6, 1fr); /* 🎯 剛性網格：固定 6 欄拓撲排版 */
+            grid-template-columns: repeat(6, 1fr); /* 剛性網格：固定 6 欄拓撲排版 */
             grid-auto-rows: min-content;
             gap: 12px;
-            padding: 8px 12px 12px 8px; /* 🎯 剛性修復 Bug 1: 增加內頁網格四周安全 Padding 緩衝線，防禦卡牌左邊緣黑線遭切斷 */
+            padding: 10px 14px 14px 10px; /* 🎯 剛性修復 Bug 1: 增加內頁網格四周安全 Padding 緩衝線，防禦卡牌左邊緣黑線遭切斷 */
             align-content: start; 
         }
 
@@ -418,6 +418,7 @@
     <script>
         // ========================================================================
         // 👑 LEVEL 剛性註冊名冊大盤 👑
+        // 🎯 補登焊接：完整將 1-1 至 1-4 全部登記進初心矩陣大盤
         // ========================================================================
         const libraryLevelRegistry = [
             { 
@@ -528,7 +529,6 @@
                 grid.style.gridTemplateColumns = 'repeat(7, 1fr)'; 
                 grid.style.gap = '15px';
                 grid.style.width = '100%';
-                grid.style.padding = '6px'; /* 🎯 剛性修復 Bug 1: 注入大廳卡片四周防線，留足 3D 按壓與陰影位移空間 */
                 grid.style.marginBottom = '20px';
 
                 const subset = libraryLevelRegistry.filter(l => l.category === group.id);
@@ -566,7 +566,7 @@
         }
 
         // ========================================================================
-        // 👑 核心加載模組（🎯 完美集成雙軌降落傘熱備援防線）
+        // 👑 核心加載模組（🎯 完美集成自動化備援熱降維解包防線）
         // ========================================================================
         async function loadLevelLexicon(catId, lvlNum) {
             const target = libraryLevelRegistry.find(r => r.category === catId && r.levelNum === lvlNum);
@@ -585,7 +585,7 @@
             document.getElementById('current-level-name').innerText = `LEVEL ${lvlNum} 大辭典`;
             document.getElementById('lexicon-terms-list').innerHTML = `<div class="inspector-placeholder">正在動態清算 LEVEL ${lvlNum} 全量文獻...</div>`;
 
-            // 發動批次防線載入
+            // 發動批次異步多軌解包
             await sequenceLoadScripts(target.files, 0);
 
             // 全球增補字典動態合流互鎖
@@ -619,7 +619,7 @@
                 const script = document.createElement('script');
                 script.src = `${fileList[index]}?v=${Date.now()}`;
                 
-                // 成功抓取核心原料後的清算程序
+                // 剛性提取全域緩衝資料程序
                 const processLoadedPayload = () => {
                     let combinedPayload = [];
                     if (window.libraryCourseEngineData && window.libraryCourseEngineData.length > 0) {
@@ -642,7 +642,7 @@
                             });
                         }
                     });
-                    // 清空全局變數快取，預防跨軌污染
+                    // 清空快取快卡防線
                     window.codexCourseEngineData = [];
                     window.libraryCourseEngineData = [];
                 };
@@ -652,11 +652,11 @@
                     sequenceLoadScripts(fileList, index + 1).then(resolve);
                 };
 
-                // 🎯 剛性修正 Bug 2: 降維自動備援降落傘線路。若 library 專用檔不存在，自動換裝讀取 course 常規包
+                // 🎯 剛性修正 Bug 2: 降維自動備援換裝線路。若 library 專用檔報錯或404，立刻自動向下抓取 course 原裝包，守住字盤
                 script.onerror = () => {
                     if (fileList[index].includes('library_data/library_data_beginner_')) {
                         const fallbackPath = fileList[index].replace('library_data/library_data_beginner_', 'beginner_codex_course/course_data_');
-                        console.warn(`[Library Fallback Launcher] 專用文獻未就位，啟動熱換裝加載常規包: ${fallbackPath}`);
+                        console.warn(`[Library Fallback Active] 專用文獻加載空障，轉向原裝包: ${fallbackPath}`);
                         
                         const fallbackScript = document.createElement('script');
                         fallbackScript.src = `${fallbackPath}?v=${Date.now()}`;
