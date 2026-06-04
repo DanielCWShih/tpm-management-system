@@ -8,10 +8,10 @@
         /* ========================================================================
         REVISION HISTORY / VERSION LOG
         ========================================================================
-        2026-06-04 V11.10-UX-REMASTER: 👑 知識圖書館 UI/UX 終極大師版
-        1. 絕殺最愛重疊：廢除面板絕對定位懸浮鈕，重構頂部「操作通聯列」，將最愛切換鈕與內文完全解耦，100% 根除與標題字樣撞車缺陷。
-        2. 淨化個人卡牌：移除大廳個人專區大卡片的「❤️」圖標，遵照指令純淨輸出「我的最愛」剛性洗鍊文字。
-        3. 3D 懸浮安全帶：維持外襯四邊 Padding 緩衝，留足卡牌 3D 浮起像素空間，左側邊緣絕不切邊。
+        2026-06-04 V11.20-LABEL-DYNAMIC: 👑 知識圖書館終極完全體（單元追溯動態標籤優化版）
+        1. 動態單元追溯：徹底廢除固定不變的 "DOCUMENT INSPECTOR"，改用單位追溯錨點。核心單詞顯示 Level X-X，增補詞條自動標註（擴展包）。
+        2. 我的最愛全域大腦：Dashboard 頂部個人專區大卡片僅輸出純文字「我的最愛」，內頁觀測儀操作列解耦並列，100% 根除撞車缺陷。
+        3. 3D 懸浮防火牆：精準配置 Grid 四周安全內襯 (Padding)，留足位移像素，最左側卡牌黑框絕對不再遭邊界切除。
         ========================================================================
         */
         :root {
@@ -284,12 +284,12 @@
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden; 
+            overflow-x: hidden; /* 剛性禁制：徹底不允許左右拖曳晃動 */
             display: grid;
-            grid-template-columns: repeat(6, 1fr); 
+            grid-template-columns: repeat(6, 1fr); /* 剛性網格：固定 6 欄拓撲排版 */
             grid-auto-rows: min-content;
             gap: 12px;
-            padding: 10px 14px 14px 10px; 
+            padding: 10px 14px 14px 10px; /* 增加內頁網格四周安全 Padding 緩衝線，防禦卡牌左邊緣黑線遭切斷 */
             align-content: start; 
         }
 
@@ -336,6 +336,7 @@
             overflow: hidden;
             height: 100%;
             flex-shrink: 0;
+            position: relative; 
         }
 
         .inspector-placeholder {
@@ -528,7 +529,6 @@
             const favCard = document.createElement('div');
             favCard.className = 'level-hero-card';
             favCard.onclick = () => loadFavoritesLexicon();
-            // 🎯 修正點 1: 完美移除「❤️」圖標，純文字極簡顯影
             favCard.innerHTML = `<div style="font-size:1.1rem; font-weight:900; letter-spacing:0.5px;">我的最愛</div>`;
             personalGrid.appendChild(favCard);
             container.appendChild(personalGrid);
@@ -626,7 +626,12 @@
                     if (window.globalSupplementaryDictionary && window.globalSupplementaryDictionary[dictKey]) {
                         window.globalSupplementaryDictionary[dictKey].forEach(supp => {
                             if (!window.aggregatedTermsPool.some(t => t.name === supp.name)) {
-                                window.aggregatedTermsPool.push({ ...supp, isSupp: true });
+                                window.aggregatedTermsPool.push({ 
+                                    ...supp, 
+                                    isSupp: true,
+                                    // 🎯 剛性焊接：在擴展包詞條被塞入時，原地烙下帶有「擴展包」字樣的動態對位印記
+                                    sourceLabel: `Level ${unitId} (擴展包)`
+                                });
                             }
                         });
                     }
@@ -690,12 +695,18 @@
                         combined = combined.concat(window.codexCourseEngineData);
                     }
                     
+                    // 🎯 剛性捕捉：精確抓取當前載入檔案的單元 ID（如 1-1、1-2 等）
+                    const match = filePath.match(/(\d-\d)/);
+                    const unitLabel = match ? `Level ${match[0]}` : `Level ${currentActiveLevel.levelNum}`;
+
                     combined.forEach(course => {
                         if (course.subPages) {
                             course.subPages.forEach(page => {
                                 if (page.diagramFlowArray && page.diagramFlowArray.length > 0) {
                                     page.diagramFlowArray.forEach(term => {
                                         if (!window.aggregatedTermsPool.some(t => t.name === term.name)) {
+                                            // 賦予常規 CORE 詞條動態來源印記
+                                            term.sourceLabel = unitLabel;
                                             window.aggregatedTermsPool.push(term);
                                         }
                                     });
@@ -703,16 +714,18 @@
                                 
                                 if (page.text) {
                                     const regex = /tpmSwitchSubKwd\s*\(\s*[^,]+\s*,\s*[^,]+\s*,\s*[^,]+\s*,\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]+)['"]/g;
-                                    let match;
-                                    while ((match = regex.exec(page.text)) !== null) {
-                                        const termName = match[1];
-                                        const termDesc = match[2];
+                                    let matchKwd;
+                                    while ((matchKwd = regex.exec(page.text)) !== null) {
+                                        const termName = matchKwd[1];
+                                        const termDesc = matchKwd[2];
                                         const syntheticText = `<h3>全稱：${termName}</h3><div style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin:12px 0; font-weight:700;">系統智能解包釋義</div><p style="line-height:1.7; font-weight:700; color:#475569;">${termDesc}</p>`;
                                         
                                         if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(termName))) {
                                             window.aggregatedTermsPool.push({
                                                 name: termName,
-                                                text: syntheticText
+                                                text: syntheticText,
+                                                // 賦予正則大深度雷達解包詞條來源印記
+                                                sourceLabel: unitLabel
                                             });
                                         }
                                     }
@@ -779,8 +792,8 @@
         }
 
         // ========================================================================
-        // 👑 修正點 2: 大師級 UI/UX 頂層融合控制列 👑
-        // 🎯 絕殺：完美融入排版，建立置頂控制線，按鈕伴隨「文件觀測標籤」精確並列
+        // 👑 修正點：大師級操作通聯列 UI/UX 全置頂微創換裝 👑
+        // 🎯 絕殺：完美融入排版，建立置頂控制線，動態印記伴隨收藏鈕精確並列，0撞車
         // ========================================================================
         function showDetail(term) {
             const inspector = document.getElementById('lexicon-inspector');
@@ -789,11 +802,14 @@
             const favoritesPool = JSON.parse(localStorage.getItem('library-favorites-pool') || '[]');
             const isFav = favoritesPool.some(f => f.name === term.name);
 
+            // 🎯 剛性動態識別分配：若讀取無標籤物件，降維以常規大廳資訊為基準安全閥
+            const finalSourceLabel = term.sourceLabel || `Level ${currentActiveLevel ? currentActiveLevel.levelNum : '1-1'}`;
+
             inspector.innerHTML = `
                 <div style="display: flex; flex-direction: column; height: 100%; width: 100%; animation: fadeInBox 0.15s ease-out;">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--border-heavy); padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0; width: 100%;">
-                        <div style="font-size: 0.75rem; font-weight: 900; background: var(--text-main); color: #FFF; padding: 4px 8px; border-radius: 4px; font-family: monospace; letter-spacing: 0.5px;">
-                            DOCUMENT INSPECTOR
+                        <div style="font-size: 0.72rem; font-weight: 900; background: var(--text-main); color: #FFF; padding: 5px 10px; border-radius: 4px; font-family: monospace; letter-spacing: 0.5px;">
+                            ${finalSourceLabel}
                         </div>
                         <button id="fav-toggle-btn" style="background:${isFav ? '#FFD2D2' : '#FFFFFF'}; border: 2px solid var(--border-heavy); border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: 900; cursor:pointer; box-shadow: 2px 2px 0px var(--border-heavy); display:flex; align-items:center; gap:6px; transition: all 0.1s;" onclick="window.toggleFavoriteCurrentTerm()">
                             <span>${isFav ? '❤️' : '🤍'}</span>
@@ -843,7 +859,7 @@
         function exitToDashboard() {
             const menuHall = document.getElementById('dashboard-menu-hall');
             const viewport = document.getElementById('lexicon-viewport');
-            const categoryEl = document.getElementById('current-chapter-id');
+            const categoryEl = document.getElementById('current-category-id');
             const levelEl = document.getElementById('current-chapter-name');
 
             if (menuHall) menuHall.style.display = 'block';
