@@ -857,7 +857,7 @@
         // 👑 換裝定位點 2: 全域多階層頭銜連鎖同步大腦 👑
         // ========================================================================
         (function() {
-            const PILOT_EMAIL = "danielcwshih@fih-foxconn.com"; // 🎯 剛性對位，綁定核心憑證帳號
+            const PILOT_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
 
             function computeLocalUserRankTitle() {
                 if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "請登入", isLogged: false };
