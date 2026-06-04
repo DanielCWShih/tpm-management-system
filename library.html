@@ -350,7 +350,6 @@
             box-shadow: 5px 5px 0px var(--border-heavy);
         }
     </style>
-    <script src="library_data/library_supplementary.js?v=20260604"></script>
 </head>
 <body>
 
@@ -394,6 +393,7 @@
     </div>
 
     <script>
+        // 🎯 核心載入名冊：依據您的架構升級，獨立擴展辭典名冊也在此處進行全自動聯鎖註冊！
         const libraryLevelRegistry = [
             { 
                 category: 'beginner', 
@@ -428,7 +428,9 @@
                 levelName: 'TPM天職實戰手冊',
                 files: [
                     'handbook_data_course/handbook_data_1-1.js',
-                    'handbook_data_course/handbook_data_1-2.js'
+                    'handbook_data_course/handbook_data_1-2.js',
+                    // 🎯 擴展解耦辭典線路熱加載
+                    'library_data/dict_ext_handbook_1-2.js'
                 ]
             }
         ];
@@ -560,8 +562,9 @@
             });
         }
 
+        // 👑 優化過濾器：剛性洗淨 ⚡、⚠️、🏆 等劇本亂碼符號
         function getCleanTermName(name) {
-            let clean = (name || '').replace(/🔑|關鍵詞：|關鍵詞:|增補：|增補:/g, '').trim();
+            let clean = (name || '').replace(/🔑|關鍵詞：|關鍵詞:|增補：|增補:|⚡|⚠️|🏆|💥|🎨|📝|👤/g, '').trim();
             let engMatch = clean.match(/^([A-Za-z0-9\s\-]+)/);
             if (engMatch && engMatch[1].trim().length > 1) {
                 return engMatch[1].trim();
@@ -660,6 +663,7 @@
             }
         };
 
+        // 👑 核心加載大腦：完美熔斷反洩題裝甲
         function singleScriptFetchEngine(filePath) {
             return new Promise((resolve) => {
                 const script = document.createElement('script');
@@ -675,9 +679,15 @@
                     }
                     
                     const match = filePath.match(/(\d-\d)/);
-                    const unitLabel = match ? `Level ${match[0]}` : `Level ${currentActiveLevel ? currentActiveLevel.levelNum : '1-1'}`;
+                    const unitId = match ? match[0] : "1-1";
+                    const isHandbook = filePath.includes('handbook') || filePath.includes('dict_ext_handbook');
+                    const unitLabel = `Level ${unitId}`;
 
-                    // 1. 常規線性課文解析
+                    // 🎯 👑 反洩題熔斷閥：盤查學員地端該單元通關鐵印 👑
+                    const storageKey = isHandbook ? `handbook-L1-A${unitId.split('-')[1]}-clear` : `codex-L1-A${unitId.split('-')[1]}-clear`;
+                    const isUnitCleared = localStorage.getItem(storageKey) === 'true';
+
+                    // 1. 常規線性課文解析良率
                     combined.forEach(course => {
                         if (course.subPages) {
                             course.subPages.forEach(page => {
@@ -711,36 +721,43 @@
                         }
                     });
 
-                    // 2. 🎯 雙軌導通升級：新版沙盒圖形拓撲地圖自動解包雷達！
+                    // 2. 🎯 沙盒圖形地圖自動解包雷達（只在通關後解密，絕不洩題！）
                     if (window.tpmSandboxScriptTree && Object.keys(window.tpmSandboxScriptTree).length > 0) {
-                        Object.keys(window.tpmSandboxScriptTree).forEach(nodeId => {
-                            const node = window.tpmSandboxScriptTree[nodeId];
-                            if (node.title && (node.text || node.question)) {
-                                const rawText = node.text || node.question;
-                                if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(node.title))) {
-                                    window.aggregatedTermsPool.push({
-                                        name: node.title,
-                                        text: `<h3>劇本節點：${node.title}</h3><div style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin:12px 0; font-weight:700;">沙盒模擬情境回放</div><div style="line-height:1.7; color:#475569;">${rawText}</div>`,
-                                        sourceLabel: `${unitLabel} (沙盒)`
-                                    });
+                        if (isUnitCleared) {
+                            // 🌟 只有通關才解鎖劇本詞條回放
+                            Object.keys(window.tpmSandboxScriptTree).forEach(nodeId => {
+                                const node = window.tpmSandboxScriptTree[nodeId];
+                                if (node.title && (node.text || node.question)) {
+                                    const rawText = node.text || node.question;
+                                    let cleanNodeName = getCleanTermName(node.title);
+                                    
+                                    if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(cleanNodeName))) {
+                                        window.aggregatedTermsPool.push({
+                                            name: `[實戰] ${cleanNodeName}`,
+                                            text: `<h3>劇本節點：${cleanNodeName}</h3><div style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin:12px 0; font-weight:700;">沙盒模擬情境回放</div><div style="line-height:1.7; color:#475569;">${rawText}</div>`,
+                                            sourceLabel: `${unitLabel} (沙盒)`
+                                        });
+                                    }
                                 }
-                            }
-                        });
-                        window.tpmSandboxScriptTree = null; // 釋放快取防跨頁面溢出
+                            });
+                        }
+                        window.tpmSandboxScriptTree = null; // 原位清除，封鎖漏氣
                     }
 
-                    // 3. 🎯 原生獨立辭典接口：允許會長直接在 js 尾端放 window.tpmStandaloneKeywords
+                    // 3. 🎯 獨立擴展辭典接口（只在通關後釋放，杜絕劇透）
                     if (window.tpmStandaloneKeywords && window.tpmStandaloneKeywords.length > 0) {
-                        window.tpmStandaloneKeywords.forEach(kw => {
-                            if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(kw.name))) {
-                                window.aggregatedTermsPool.push({
-                                    name: kw.name,
-                                    text: kw.text,
-                                    sourceLabel: unitLabel
-                                });
-                            }
-                        });
-                        window.tpmStandaloneKeywords = null; // 原位重置
+                        if (isUnitCleared) {
+                            window.tpmStandaloneKeywords.forEach(kw => {
+                                if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(kw.name))) {
+                                    window.aggregatedTermsPool.push({
+                                        name: kw.name,
+                                        text: kw.text,
+                                        sourceLabel: unitLabel
+                                    });
+                                }
+                            });
+                        }
+                        window.tpmStandaloneKeywords = null; 
                     }
 
                     window.codexCourseEngineData = [];
@@ -779,7 +796,7 @@
             if (window.aggregatedTermsPool.length === 0) {
                 list.innerHTML = `
                     <div style="grid-column: span 6; border:2px dashed var(--border-heavy); background:#FFF; padding:30px; text-align:center; border-radius:6px; font-weight:900; color:var(--text-secondary); width:100%; margin-top:20px;">
-                        ⚡ 該 LEVEL 階層文獻尚處於待開發排產階段 ⚡
+                        🔒 該單元文獻仍處於戰爭迷霧中，請完成首頁大考解鎖文獻 🔒
                     </div>`;
                 return;
             }
