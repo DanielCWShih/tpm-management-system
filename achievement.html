@@ -345,12 +345,12 @@
             <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;">成就</h1>
         </div>
         <div class="navbar-controls">
-            <div id="global-user-profile-card" class="auth-panel">請登入</div>
+            <div id="global-user-profile-card" class="auth-panel">首頁登入</div>
             <div class="lang-switcher-wrapper">
                 <button class="lang-btn-core active">TW</button>
                 <button class="lang-btn-core">EN</button>
             </div>
-            <a href="index.html" class="back-btn">返回總部</a>
+            <a href="index.html" class="back-btn">返回首頁</a>
         </div>
     </div>
 
@@ -599,7 +599,8 @@
             const PILOT_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
 
             function computeLocalUserRankTitle() {
-                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "請登入", isLogged: false };
+                // 🎯 變更點 3: 未登入提示文字剛性修改為「首頁登入」
+                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "首頁登入", isLogged: false };
 
                 let nameStr = "Daniel Shih";
                 const emailLower = PILOT_EMAIL.toLowerCase().trim();
