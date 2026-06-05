@@ -722,7 +722,7 @@
         }
 
         // ========================================================================
-        // 👑 拓撲連鎖大腦：完美導通「主幹黃金前進軌跡」與「分支可選虛線」 👑
+        // 👑 終極優化核心：動態折射線路與防圓點浮空引擎 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -735,7 +735,27 @@
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 1. 繪製 SVG 戰術線路層
+            // 🎯 建立全量「可視節點白名單」，用以動態同步連線與圓點，全面杜絕浮空
+            const activeVisibleNodesSet = new Set();
+            Object.keys(tree).forEach(nodeId => {
+                if (isUnitCleared) {
+                    activeVisibleNodesSet.add(nodeId);
+                } else {
+                    // 常規視野：歷史已解鎖的點
+                    if (unlockedNodesList.includes(nodeId)) {
+                        activeVisibleNodesSet.add(nodeId);
+                    }
+                    // 當前擴展視野：正在選中挑戰點的直接子節點，強制穿透迷霧顯影
+                    if (nodeId === currentlySelectedNodeId) {
+                        activeVisibleNodesSet.add(nodeId);
+                        if (tree[nodeId].nextNodes) {
+                            tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
+                        }
+                    }
+                }
+            });
+
+            // 1. 繪製 SVG 戰術線路層（修正多層級選擇不連線缺陷）
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -745,11 +765,8 @@
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
 
-                    // 🎯 👑 核心熱修復 1: 重新校準過濾。當 srcId 是當前挑戰點時，允許引導線穿透迷霧顯影！
-                    if (!isUnitCleared) {
-                        if (!unlockedNodesList.includes(srcId)) return;
-                        if (!unlockedNodesList.includes(tarId) && srcId !== currentlySelectedNodeId) return;
-                    }
+                    // 🎯 剛性攔截：只要出發端或接收端有任何一方不在可視白名單中，絕不渲染（維持真正的地圖探索感）
+                    if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     line.setAttribute("x1", srcPos.x);
@@ -764,17 +781,17 @@
                         (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
                         (passedNodesList.includes(srcId) && tarId === currentlySelectedNodeId)
                     ) {
-                        // 🌟 🎯 核心熱修復 2: 已通過的主幹軌跡，或「已通過點指向當前選中挑戰點」的主線路 ➔ 熱熔亮黃色！
+                        // 🌟 主航線：已通關的軌跡，或者「從已通過點指向當前挑戰點」的進行路線 ➔ 3px 剛性亮黃線
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
                     } else if (srcId === currentlySelectedNodeId) {
-                        // 🌟 🎯 核心熱修復 3: 從當前挑戰點向外輻射出的分支選項引導線 ➔ 顯影北歐深灰虛線！
-                        line.setAttribute("stroke", "#78716C"); 
+                        // 🌟 分流線：從「當前挑戰點」延伸出去給學員抉擇的所有分支引導線 ➔ 2px 深灰虛線（完璧修正！）
+                        line.setAttribute("stroke", "#475569"); 
                         line.setAttribute("stroke-width", "2");
                         line.setAttribute("stroke-dasharray", "4,4");
                     } else {
-                        // 歷史踩雷留下的冷灰色線
-                        line.setAttribute("stroke", "#E2E8F0");
+                        // 🌟 殘留線：過去走過、已探索的歷史錯誤支線 ➔ 1.5px 固化冷灰實線（防止圓點漂浮！）
+                        line.setAttribute("stroke", "#D1D5DB");
                         line.setAttribute("stroke-width", "1.5");
                     }
                     svgCanvas.appendChild(line);
@@ -786,7 +803,8 @@
                 const pos = nodeLayoutCoordinates[nodeId];
                 if (!pos) return;
 
-                if (!isUnitCleared && !unlockedNodesList.includes(nodeId)) return;
+                // 🎯 剛性攔截：不在可視白名單內的迷霧點完全不渲染進 DOM
+                if (!activeVisibleNodesSet.has(nodeId)) return;
 
                 const dot = document.createElement('div');
                 dot.id = `dot-${nodeId}`;
@@ -796,10 +814,9 @@
                 dot.innerHTML = `<div class="node-mini-label">${pos.name}</div>`;
 
                 const isPassed = passedNodesList.includes(nodeId);
-                const isUnlocked = unlockedNodesList.includes(nodeId);
 
                 if (isUnitCleared) {
-                    if (nodeId === "WIN-NODE-CONQUER" || nodeId === "完美通關") {
+                    if (nodeId === "WIN-NODE-CONQUER" || pos.name === "完美通關") {
                         dot.className += ' passed';
                     } else if (nodeId.includes("FAIL") || nodeId.includes("WARN")) {
                         dot.style.backgroundColor = "#FCA5A5"; 
@@ -811,16 +828,13 @@
                 } else {
                     if (isPassed) {
                         dot.className += ' passed';
-                    } else if (isUnlocked) {
+                    } else {
                         if (nodeId === currentlySelectedNodeId) dot.className += ' active-target';
                     }
                 }
 
                 dot.onclick = () => {
-                    if (!isUnitCleared && !unlockedNodesList.includes(nodeId)) {
-                        alert("🔒 該路徑尚未解鎖，請先前往上游節點完成決策大考。");
-                        return;
-                    }
+                    if (!activeVisibleNodesSet.has(nodeId)) return;
                     currentlySelectedNodeId = nodeId;
                     renderNordicSandboxMap();
                     inspectNodeDetail(nodeId);
