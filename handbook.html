@@ -355,7 +355,7 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 內襯北歐沙盒地圖主面板 ─── */
+        /* ─── 🎨 內襯北歐沙盒地圖主面板 (縱向天梯大改版) ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -370,16 +370,18 @@
             border: 3px solid var(--border-heavy);
             border-radius: 12px;
             position: relative;
-            overflow: auto;
+            overflow-y: auto;   /* 🚀 剛性激活縱向捲軸 */
+            overflow-x: hidden; /* 🚀 徹底鎖死橫向捲軸 */
             box-shadow: var(--shadow-tactical);
+            padding-bottom: 80px;
         }
 
         .map-svg-layer {
             position: absolute;
             top: 0;
             left: 0;
-            width: 2500px;
-            height: 1000px;
+            width: 100%;        /* 🚀 自動填滿畫布寬度 */
+            height: 2200px;     /* 🚀 容納 15 層縱向長度 */
             pointer-events: none;
             z-index: 1;
         }
@@ -565,38 +567,38 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
-        // 👑 完璧合流：雙向相容 1-1（15層）與 1-2（6關）的黃金坐標拓撲大盤
+        // 👑 完美重構：由上至下（Top-to-Bottom）縱向天梯黃金網格坐標盤 (中心固定 X: 360px，Y軸逐層遞增)
         const nodeLayoutCoordinates = {
-            // ─── 1-2 舊版六節點相容指印 ───
-            "START-NODE":        { x: 120, y: 240, name: "事件爆發" },
-            "DECISION-NODE-01":  { x: 280, y: 240, name: "決策分流" },
-            "FAIL-NODE-SKIP":    { x: 460, y: 120, name: "盲目放行" },
-            "WARN-NODE-FIGHT":   { x: 460, y: 240, name: "剛性抗爭" },
-            "QUIZ-NODE-STACKUP": { x: 460, y: 360, name: "技術排查" },
-            "WIN-NODE-CONQUER":  { x: 650, y: 360, name: "完美通關" },
+            // ─── 1-2 舊版六節點縱向兼容對位 ───
+            "START-NODE":        { x: 360, y: 80,  name: "事件爆發" },
+            "DECISION-NODE-01":  { x: 360, y: 220, name: "決策分流" },
+            "FAIL-NODE-SKIP":    { x: 160, y: 360, name: "盲目放行" },
+            "WARN-NODE-FIGHT":   { x: 560, y: 360, name: "剛性抗爭" },
+            "QUIZ-NODE-STACKUP": { x: 360, y: 360, name: "技術排查" },
+            "WIN-NODE-CONQUER":  { x: 360, y: 500, name: "完美通關" },
 
-            // ─── 1-1 新版 15 層線性戰役矩陣指印 ───
-            "T1-START":          { x: 100,  y: 240, name: "事件爆發" },
-            "T2-DECISION-1":     { x: 260,  y: 240, name: "抉擇:皮球戰" },
-            "T3-FAIL-1":         { x: 420,  y: 120, name: "盲目放行" },
-            "T3-WARN-1":         { x: 420,  y: 360, name: "剛性內耗" },
-            "T3-PASS-1":         { x: 420,  y: 240, name: "日誌抓取" },
-            "T4-STORY-1":        { x: 580,  y: 240, name: "趨勢顯影" },
-            "T5-TUTORIAL-1":     { x: 740,  y: 240, name: "📚 數據心法" },
-            "T6-DECISION-2":     { x: 900,  y: 240, name: "抉擇:公差鏈" },
-            "T7-FAIL-2":         { x: 1060, y: 120, name: "盲目加壓" },
-            "T7-WARN-2":         { x: 1060, y: 360, name: "會場死磕" },
-            "T7-PASS-2":         { x: 1060, y: 240, name: "矩陣模擬" },
-            "T8-STORY-2":        { x: 1220, y: 240, name: "盲區定位" },
-            "T9-TUTORIAL-2":     { x: 1380, y: 240, name: "📚 點檢剛性" },
-            "T10-DECISION-3":    { x: 1540, y: 240, name: "抉擇:刷產量" },
-            "T11-FAIL-3":        { x: 1700, y: 120, name: "減速妥協" },
-            "T11-WARN-3":        { x: 1700, y: 360, name: "強行停機" },
-            "T11-PASS-3":        { x: 1700, y: 240, name: "臨時優化" },
-            "T12-STORY-3":       { x: 1860, y: 240, name: "稽核攔截" },
-            "T13-DECISION-4":    { x: 2020, y: 240, name: "大考:簽核流" },
-            "T14-PASS-4":        { x: 2180, y: 240, name: "特採通航" },
-            "T15-WIN":           { x: 2340, y: 240, name: "完美通關" }
+            // ─── 1-1 新版 15 層縱向大天梯劇本矩陣對位 ───
+            "T1-START":          { x: 360, y: 80,   name: "事件爆發" },
+            "T2-DECISION-1":     { x: 360, y: 210,  name: "抉擇:皮球戰" },
+            "T3-FAIL-1":         { x: 160, y: 340,  name: "盲目放行" },
+            "T3-WARN-1":         { x: 560, y: 340,  name: "剛性內耗" },
+            "T3-PASS-1":         { x: 360, y: 340,  name: "日誌抓取" },
+            "T4-STORY-1":        { x: 360, y: 470,  name: "趨勢顯影" },
+            "T5-TUTORIAL-1":     { x: 360, y: 600,  name: "📚 數據心法" },
+            "T6-DECISION-2":     { x: 360, y: 730,  name: "抉擇:公差鏈" },
+            "T7-FAIL-2":         { x: 160, y: 860,  name: "盲目加壓" },
+            "T7-WARN-2":         { x: 560, y: 860,  name: "會場死磕" },
+            "T7-PASS-2":         { x: 360, y: 860,  name: "矩陣模擬" },
+            "T8-STORY-2":        { x: 360, y: 990,  name: "盲區定位" },
+            "T9-TUTORIAL-2":     { x: 360, y: 1120, name: "📚 點檢剛性" },
+            "T10-DECISION-3":    { x: 360, y: 1250, name: "抉擇:刷產量" },
+            "T11-FAIL-3":        { x: 160, y: 1380, name: "減速妥協" },
+            "T11-WARN-3":        { x: 560, y: 1380, name: "強行停機" },
+            "T11-PASS-3":        { x: 360, y: 1380, name: "臨時優化" },
+            "T12-STORY-3":       { x: 360, y: 1510, name: "稽核攔截" },
+            "T13-DECISION-4":    { x: 360, y: 1640, name: "大考:簽核流" },
+            "T14-PASS-4":        { x: 360, y: 1770, name: "特採通航" },
+            "T15-WIN":           { x: 360, y: 1900, name: "完美通關" }
         };
 
         let selectedActiveLevelNum = 1; 
@@ -737,7 +739,6 @@
             passedNodesList = savedPassed ? JSON.parse(savedPassed) : [];
             unlockedNodesList = savedUnlocked ? JSON.parse(savedUnlocked) : [];
             
-            // 🎯 智慧起點辨識器：動態兼容新舊兩版劇本的最初始 Checkpoint 起點
             if (window.tpmSandboxScriptTree) {
                 if (window.tpmSandboxScriptTree["T1-START"]) {
                     currentlySelectedNodeId = "T1-START";
@@ -762,7 +763,7 @@
         }
 
         // ========================================================================
-        // 👑 拓撲連鎖大腦：完美的歷史冷灰線條與主幹熱亮黃合流 👑
+        // 👑 終極進化拓撲大腦：縱向連鎖導通與平行視角顯影演算 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -775,25 +776,23 @@
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 建立可視化拓撲節點白名單（杜絕空中圓點漂浮，實現歷史線條固化錨定）
+            // 🎯 👑 遊戲大師級核心改裝：建立「親代發散可視化白名單」
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
                     activeVisibleNodesSet.add(nodeId);
                 } else {
-                    if (unlockedNodesList.includes(nodeId)) {
+                    if (unlockedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId) {
                         activeVisibleNodesSet.add(nodeId);
                     }
-                    if (nodeId === currentlySelectedNodeId) {
-                        activeVisibleNodesSet.add(nodeId);
-                        if (tree[nodeId].nextNodes) {
-                            tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
-                        }
+                    // 🚀 [核心導通]：只要該決策父節點已被通過（在passed陣列中），則其發散的下一層所有子選項全部強制同時解密顯影！
+                    if (passedNodesList.includes(nodeId) && tree[nodeId].nextNodes) {
+                        tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
                     }
                 }
             });
 
-            // 1. 繪製 SVG 戰術線路層
+            // 1. 繪製 SVG 戰術線路層 (縱向一體化連線)
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -803,7 +802,7 @@
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
 
-                    // 🛡️ 剛性攔截：雙端點有任何一端不在可視白名單內，則保持隱形迷霧
+                    // 🛡️ 剛性過濾：只要任一端點未進入擴展可視名單，則在畫布中保持隱形
                     if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -819,16 +818,16 @@
                         (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
                         (passedNodesList.includes(srcId) && tarId === currentlySelectedNodeId)
                     ) {
-                        // 🌟 主航線：目前前進的唯一主幹線 ➔ 3px 剛性亮黃線
+                        // 🌟 金屬主航線：目前推進的唯一正軌主動脈 ➔ 3px 實心剛性亮黃線
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
                     } else if (srcId === currentlySelectedNodeId) {
-                        // 🌟 分流線：從當前挑戰點向外延伸的可選分支 ➔ 2px 深灰虛線
+                        // 🌟 抉擇分流指引：當前挑戰點向下輻射出的潛在分支選項 ➔ 2px 剛性深灰虛線
                         line.setAttribute("stroke", "#475569"); 
                         line.setAttribute("stroke-width", "2");
                         line.setAttribute("stroke-dasharray", "4,4");
                     } else {
-                        // 🌟 殘留線：🎯 完美錨定！過去走過且失敗解鎖的歷史路徑連線 ➔ 1.5px 固化冷灰實線（#D1D5DB）
+                        // 🌟 歷史平行宇宙線：🎯 完璧歸位！已走過之歷史支線、以及未選擇之平行支線 ➔ 1.5px 固化冷灰實線（#D1D5DB），絕不留空斷開！
                         line.setAttribute("stroke", "#D1D5DB");
                         line.setAttribute("stroke-width", "1.5");
                     }
@@ -983,7 +982,6 @@
         window.executeSettleHandbookUnit = function(isWin) {
             if (!isWin) {
                 passedNodesList = [];
-                // 智慧適應性重置起點
                 if (window.tpmSandboxScriptTree && window.tpmSandboxScriptTree["T1-START"]) {
                     currentlySelectedNodeId = "T1-START";
                 } else {
