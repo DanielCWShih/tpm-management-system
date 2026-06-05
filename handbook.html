@@ -79,36 +79,6 @@
             white-space: nowrap;
         }
 
-        .lang-switcher-wrapper {
-            display: flex;
-            background: var(--card-white);
-            border: 3px solid var(--border-heavy);
-            border-radius: var(--radius-sm);
-            box-shadow: 3px 3px 0px var(--border-heavy);
-            padding: 2px;
-        }
-
-        .lang-btn-core {
-            width: 50px;
-            height: 35px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 900;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            transition: all 0.1s;
-        }
-
-        .lang-btn-core.active {
-            background: var(--text-main) !important;
-            color: white !important;
-        }
-
         .back-btn {
             background: var(--card-white);
             border: 3px solid var(--border-heavy);
@@ -355,7 +325,7 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 內襯北歐沙盒地圖主面板 (縱向天梯大改版) ─── */
+        /* ─── 🎨 內襯北歐沙盒地圖容器 (純粹縱向流控制艙) ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -370,18 +340,25 @@
             border: 3px solid var(--border-heavy);
             border-radius: 12px;
             position: relative;
-            overflow-y: auto;   /* 🚀 剛性激活縱向捲軸 */
-            overflow-x: hidden; /* 🚀 徹底鎖死橫向捲軸 */
+            overflow-y: auto;   /* 🚀 活化縱向滾輪機制 */
+            overflow-x: hidden; /* 🚀 徹底封印橫向溢出 */
             box-shadow: var(--shadow-tactical);
-            padding-bottom: 80px;
+        }
+
+        /* 👑 核心置中硬體場域：保證線條與圓點像素級精密咬合 */
+        .map-inner-flow-field {
+            width: 720px;
+            height: 2150px;
+            position: relative;
+            margin: 0 auto;    /* 🚀 完璧置中 */
         }
 
         .map-svg-layer {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;        /* 🚀 自動填滿畫布寬度 */
-            height: 2200px;     /* 🚀 容納 15 層縱向長度 */
+            width: 720px;
+            height: 2150px;
             pointer-events: none;
             z-index: 1;
         }
@@ -421,12 +398,13 @@
             100% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0); }
         }
 
+        /* 🚀 👑 視覺大調整：將文字完整搬移至圓點右側 32px，清除視線障礙 */
         .node-mini-label {
             position: absolute;
-            top: 28px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.72rem;
+            left: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
             font-weight: 800;
             color: var(--text-secondary);
             white-space: nowrap;
@@ -537,8 +515,10 @@
 
             <div class="sandbox-game-container" id="sandbox-viewport">
                 <div class="sandbox-map-canvas" id="map-scroll-stage">
-                    <svg class="map-svg-layer" id="map-svg-canvas"></svg>
-                    <div id="map-nodes-container"></div>
+                    <div class="map-inner-flow-field" id="map-lock-field">
+                        <svg class="map-svg-layer" id="map-svg-canvas"></svg>
+                        <div id="map-nodes-container" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10;"></div>
+                    </div>
                 </div>
                 <aside class="fixed-inspector-panel" id="sandbox-inspector">
                     <div class="inspector-placeholder">
@@ -567,7 +547,7 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
-        // 👑 完美重構：由上至下（Top-to-Bottom）縱向天梯黃金網格坐標盤 (中心固定 X: 360px，Y軸逐層遞增)
+        // 👑 完璧對位：由上至下（Top-to-Bottom）縱向天梯黃金置中網格座標盤
         const nodeLayoutCoordinates = {
             // ─── 1-2 舊版六節點縱向兼容對位 ───
             "START-NODE":        { x: 360, y: 80,  name: "事件爆發" },
@@ -763,7 +743,7 @@
         }
 
         // ========================================================================
-        // 👑 終極進化拓撲大腦：縱向連鎖導通與平行視角顯影演算 👑
+        // 👑 拓撲引擎核心：翻頁虛線繪製、歷史雷區固化與像素級對齊演算 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -776,7 +756,7 @@
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 👑 遊戲大師級核心改裝：建立「親代發散可視化白名單」
+            // 🎯 親代發散演算法白名單：只要決策父節點通過，其下所有子分支圓點一體解密顯影
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
@@ -785,14 +765,35 @@
                     if (unlockedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId) {
                         activeVisibleNodesSet.add(nodeId);
                     }
-                    // 🚀 [核心導通]：只要該決策父節點已被通過（在passed陣列中），則其發散的下一層所有子選項全部強制同時解密顯影！
                     if (passedNodesList.includes(nodeId) && tree[nodeId].nextNodes) {
                         tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
                     }
                 }
             });
 
-            // 1. 繪製 SVG 戰術線路層 (縱向一體化連線)
+            // 🚀 👑 新增戰術改造：全自動繪製 Tier 層級邊界「翻頁虛線」（模擬 Page 翻頁感）
+            const tierYMidpoints = [145, 275, 405, 535, 665, 795, 925, 1055, 1185, 1315, 1445, 1575, 1705, 1835];
+            tierYMidpoints.forEach((midY) => {
+                let hasVisibleNodeBelow = false;
+                activeVisibleNodesSet.forEach(nodeId => {
+                    if (nodeLayoutCoordinates[nodeId] && nodeLayoutCoordinates[nodeId].y > midY) {
+                        hasVisibleNodeBelow = true;
+                    }
+                });
+                if (!hasVisibleNodeBelow && !isUnitCleared) return;
+
+                const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                divider.setAttribute("x1", "0");
+                divider.setAttribute("y1", midY);
+                divider.setAttribute("x2", "720");
+                divider.setAttribute("y2", midY);
+                divider.setAttribute("stroke", "#CBD5E1");
+                divider.setAttribute("stroke-width", "1.5");
+                divider.setAttribute("stroke-dasharray", "6,6"); // 工業洗鍊感大虛線
+                svgCanvas.appendChild(divider);
+            });
+
+            // 1. 繪製 SVG 戰術線路層
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -802,7 +803,6 @@
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
 
-                    // 🛡️ 剛性過濾：只要任一端點未進入擴展可視名單，則在畫布中保持隱形
                     if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -818,16 +818,13 @@
                         (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
                         (passedNodesList.includes(srcId) && tarId === currentlySelectedNodeId)
                     ) {
-                        // 🌟 金屬主航線：目前推進的唯一正軌主動脈 ➔ 3px 實心剛性亮黃線
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
                     } else if (srcId === currentlySelectedNodeId) {
-                        // 🌟 抉擇分流指引：當前挑戰點向下輻射出的潛在分支選項 ➔ 2px 剛性深灰虛線
                         line.setAttribute("stroke", "#475569"); 
                         line.setAttribute("stroke-width", "2");
                         line.setAttribute("stroke-dasharray", "4,4");
                     } else {
-                        // 🌟 歷史平行宇宙線：🎯 完璧歸位！已走過之歷史支線、以及未選擇之平行支線 ➔ 1.5px 固化冷灰實線（#D1D5DB），絕不留空斷開！
                         line.setAttribute("stroke", "#D1D5DB");
                         line.setAttribute("stroke-width", "1.5");
                     }
@@ -847,6 +844,8 @@
                 dot.className = 'map-node-dot';
                 dot.style.left = `${pos.x}px`;
                 dot.style.top = `${pos.y}px`;
+                
+                // 🚀 文字已搬移至右側 32px，不遮擋任何縱向主航線
                 dot.innerHTML = `<div class="node-mini-label">${pos.name}</div>`;
 
                 const isPassed = passedNodesList.includes(nodeId);
