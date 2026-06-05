@@ -585,7 +585,7 @@
         let unlockedNodesList = []; 
         let passedNodesList = []; 
         
-        // 👑 鐵血變數剛性解耦
+        // 👑 鐵血解耦雙軌變數
         let activeFrontierNodeId = null;     // 🎯 真正的遊戲最高前進進度防線
         let currentlySelectedNodeId = null;  // 🎯 學員點擊選中的查閱焦點
         let activePackUnitId = null;
@@ -731,7 +731,7 @@
                 }
             }
             
-            // 🚀 👑 權重優先級演算大腦（V14.25-FRONTIER-PRIORITY）：優先沿著成功通關主航線追溯，絕不被失敗快取死鎖！
+            // 🚀 👑 權重優先級演算大腦（V14.25-FRONTIER-PRIORITY）
             let curr = initialStartNode;
             while (passedNodesList.includes(curr)) {
                 let nodeData = window.tpmSandboxScriptTree[curr];
@@ -742,14 +742,12 @@
                     let foundNext = false;
                     if (nodeData.options) {
                         let nextTarget = null;
-                        // 🌟 權重優先級 1：優先盤查是否有分支已成功通過前進
                         for (let opt of nodeData.options) {
                             if (passedNodesList.includes(opt.target)) {
                                 nextTarget = opt.target;
                                 break;
                             }
                         }
-                        // 🌟 權重優先級 2：若無通關分支，再盤查解鎖記錄（踩雷）
                         if (!nextTarget) {
                             for (let opt of nodeData.options) {
                                 if (unlockedNodesList.includes(opt.target)) {
@@ -803,7 +801,7 @@
         }
 
         // ========================================================================
-        // 👑 鐵血修正拓撲引擎：分支紅線狀態機、反劇透遮蔽、頁際大虛線動態渲染 👑
+        // 👑 鐵血修正拓撲引擎：親代發散、歷史反遮蔽、頁際大虛線動態渲染 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -816,7 +814,7 @@
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 建立擴展可視名單 (包含 options 與 nextNodes 所有分流出口)
+            // 🎯 建立全量可視拓撲白名單 (包含 options 與 nextNodes 所有分流出口)
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
@@ -866,7 +864,7 @@
                 svgCanvas.appendChild(divider);
             });
 
-            // 1. 繪製 SVG 戰術連線層 (修正默認紅線 Bug)
+            // 1. 繪製 SVG 戰術連線層
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -896,7 +894,7 @@
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
                     } else if (isTargetFail && isTargetUnlocked) {
-                        // 🌟 唯有當「目標是失敗點」且「學員真正踩雷解鎖過」，才渲染為固化淡紅實線！(完美修復！)
+                        // 🌟 唯有當「目標是失敗點」且「學員真正踩雷解鎖過」，才呈現固化淡紅實線！
                         line.setAttribute("stroke", "#F87171"); 
                         line.setAttribute("stroke-width", "2.5");
                     } else if (
@@ -907,7 +905,7 @@
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
                     } else if (srcId === activeFrontierNodeId) {
-                        // 🌟 當前前線挑戰點伸出去的預備分支：100% 一體呈現純淨北歐深灰引導虛線，拒絕提前劇透紅線！
+                        // 當前前線挑戰點伸出去的預備分支：100% 一體呈現純淨北歐深灰引導虛線
                         line.setAttribute("stroke", "#475569"); 
                         line.setAttribute("stroke-width", "2");
                         line.setAttribute("stroke-dasharray", "4,4");
@@ -920,7 +918,7 @@
                 });
             });
 
-            // 2. 部署北歐風極簡圓點 (結合解鎖真名與踩雷固化)
+            // 2. 部署北歐風極簡圓點
             Object.keys(tree).forEach(nodeId => {
                 const pos = nodeLayoutCoordinates[nodeId];
                 if (!pos) return; 
@@ -958,7 +956,7 @@
                     if (isPassed) {
                         dot.className += ' passed';
                     } else if (isFailNode && isUnlocked) {
-                        // 唯有真正踩雷被解鎖的歷史錯誤節點，才呈現紅邊淡紅底！
+                        // 唯有真正踩雷被解鎖的歷史錯誤節點，才呈現紅邊淡紅底
                         dot.style.backgroundColor = "#FCA5A5"; 
                         dot.style.border = "2px solid #EF4444";
                     } else {
@@ -966,8 +964,15 @@
                     }
                 }
 
+                // 🚀 👑 最終微調修正：當點擊未知錯誤分流時，自動對其開箱解密，使其轉變為踩雷已探索狀態並變紅
                 dot.onclick = () => {
                     if (!activeVisibleNodesSet.has(nodeId)) return;
+                    
+                    if (!isUnlocked && !isPassed && nodeId !== activeFrontierNodeId) {
+                        unlockedNodesList.push(nodeId);
+                        saveSandboxProgress();
+                    }
+                    
                     currentlySelectedNodeId = nodeId;
                     renderNordicSandboxMap();
                     inspectNodeDetail(nodeId);
@@ -976,7 +981,7 @@
                 nodesContainer.appendChild(dot);
             });
 
-            // 👑 鐵血視野跟隨：自動垂直置中當前最高進度
+            // 👑 鐵血視野跟隨
             const scrollStage = document.getElementById('map-scroll-stage');
             const activeDot = document.getElementById(`dot-${activeFrontierNodeId}`);
             if (scrollStage && activeDot) {
@@ -997,7 +1002,6 @@
             const node = window.tpmSandboxScriptTree[nodeId];
             if (!inspector || !node) return;
 
-            // 🎯 👑 歷史唯讀熔斷判定：只要查閱的節點不是真正的前線進度 activeFrontierNodeId，剛性熔斷按鈕！
             const isReviewMode = (nodeId !== activeFrontierNodeId);
 
             let contentHtml = `<div class="inspector-scroll-box" style="animation: fadeInNode 0.12s ease-out;">`;
@@ -1044,7 +1048,7 @@
                 let isWin = (node.type === "end_win");
                 
                 contentHtml += `
-                    <div style="font-size:0.72rem; color:${endColor}; font-weight:900; letter-spacing:1px; margin-bottom:6px;">SCENARIO ENDING</div>
+                    <div style="font-size:0.72rem; color:${endColor}; font-weight:900; letter-spacing:1px; margin-bottom:6px;">SCENARIO ENDING ${isReviewMode ? ' (歷程複盤)' : ''}</div>
                     <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900; color:${endColor};">${node.title}</h2>
                     <div style="background:#FAF8F5; padding:14px; border-radius:6px; border:1px solid var(--nordic-border); margin-bottom:15px;">${node.text}</div>
                 `;
@@ -1054,19 +1058,21 @@
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
                 } else {
-                    // 原地複盤技術去重
-                    const parentDecision = findParentDecisionNode(nodeId);
-                    if (parentDecision && parentDecision.options) {
-                        let remainingOptions = parentDecision.options.filter(opt => !unlockedNodesList.includes(opt.target));
-                        let randomizedRetry = shuffleArray(remainingOptions);
-                        
-                        if (!isReviewMode && randomizedRetry.length > 0) {
-                            contentHtml += `
-                                <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
-                                    <p style="font-weight:900; color:var(--color-fail); margin-bottom:10px;">🔄 戰術重估：請重新評估該階段的分流決策：</p>
-                                    ${randomizedRetry.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`).join('')}
-                                </div>
-                            `;
+                    // 原地複盤技術去重 (僅在前線挑戰失敗時出現，Review歷史失敗時不出現)
+                    if (!isReviewMode) {
+                        const parentDecision = findParentDecisionNode(nodeId);
+                        if (parentDecision && parentDecision.options) {
+                            let remainingOptions = parentDecision.options.filter(opt => !unlockedNodesList.includes(opt.target));
+                            let randomizedRetry = shuffleArray(remainingOptions);
+                            
+                            if (randomizedRetry.length > 0) {
+                                contentHtml += `
+                                    <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
+                                        <p style="font-weight:900; color:var(--color-fail); margin-bottom:10px;">🔄 戰術重估：請重新評估該階段的分流決策：</p>
+                                        ${randomizedRetry.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`).join('')}
+                                    </div>
+                                `;
+                            }
                         }
                     }
                 }
