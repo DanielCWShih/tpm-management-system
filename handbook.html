@@ -325,7 +325,7 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 內襯北歐沙盒地圖容器 (純粹縱向流控制艙) ─── */
+        /* ─── 🎨 內襯北歐沙盒地圖容器 ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -340,17 +340,17 @@
             border: 3px solid var(--border-heavy);
             border-radius: 12px;
             position: relative;
-            overflow-y: auto;   /* 🚀 活化縱向滾輪機制 */
-            overflow-x: hidden; /* 🚀 徹底封印橫向溢出 */
+            overflow-y: auto;   
+            overflow-x: hidden; 
             box-shadow: var(--shadow-tactical);
         }
 
-        /* 👑 核心置中硬體場域：保證線條與圓點像素級精密咬合 */
+        /* 👑 核心置中硬體場域 */
         .map-inner-flow-field {
             width: 720px;
             height: 2150px;
             position: relative;
-            margin: 0 auto;    /* 🚀 完璧置中 */
+            margin: 0 auto;    
         }
 
         .map-svg-layer {
@@ -398,7 +398,7 @@
             100% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0); }
         }
 
-        /* 🚀 👑 視覺大調整：將文字完整搬移至圓點右側 32px，清除視線障礙 */
+        /* 🚀 文字標籤右側化：32px 完美排開 */
         .node-mini-label {
             position: absolute;
             left: 32px;
@@ -547,9 +547,7 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
-        // 👑 完璧對位：由上至下（Top-to-Bottom）縱向天梯黃金置中網格座標盤
         const nodeLayoutCoordinates = {
-            // ─── 1-2 舊版六節點縱向兼容對位 ───
             "START-NODE":        { x: 360, y: 80,  name: "事件爆發" },
             "DECISION-NODE-01":  { x: 360, y: 220, name: "決策分流" },
             "FAIL-NODE-SKIP":    { x: 160, y: 360, name: "盲目放行" },
@@ -557,7 +555,6 @@
             "QUIZ-NODE-STACKUP": { x: 360, y: 360, name: "技術排查" },
             "WIN-NODE-CONQUER":  { x: 360, y: 500, name: "完美通關" },
 
-            // ─── 1-1 新版 15 層縱向大天梯劇本矩陣對位 ───
             "T1-START":          { x: 360, y: 80,   name: "事件爆發" },
             "T2-DECISION-1":     { x: 360, y: 210,  name: "抉擇:皮球戰" },
             "T3-FAIL-1":         { x: 160, y: 340,  name: "盲目放行" },
@@ -743,7 +740,7 @@
         }
 
         // ========================================================================
-        // 👑 拓撲引擎核心：翻頁虛線繪製、歷史雷區固化與像素級對齊演算 👑
+        // 👑 拓撲引導大腦：100% 導通抉擇分流（解鎖 options 與 nextNodes 雙線路） 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -756,7 +753,7 @@
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 親代發散演算法白名單：只要決策父節點通過，其下所有子分支圓點一體解密顯影
+            // 🎯 建立擴展可視名單：全量相容 nextNodes 與 options 子分流目標
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
@@ -765,23 +762,27 @@
                     if (unlockedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId) {
                         activeVisibleNodesSet.add(nodeId);
                     }
-                    if (passedNodesList.includes(nodeId) && tree[nodeId].nextNodes) {
-                        tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
+                    if (passedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId) {
+                        if (tree[nodeId].nextNodes) {
+                            tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
+                        }
+                        if (tree[nodeId].options) {
+                            tree[nodeId].options.forEach(opt => activeVisibleNodesSet.add(opt.target));
+                        }
                     }
                 }
             });
 
-            // 🚀 👑 新增戰術改造：全自動繪製 Tier 層級邊界「翻頁虛線」（模擬 Page 翻頁感）
-            const tierYMidpoints = [145, 275, 405, 535, 665, 795, 925, 1055, 1185, 1315, 1445, 1575, 1705, 1835];
-            tierYMidpoints.forEach((midY) => {
-                let hasVisibleNodeBelow = false;
-                activeVisibleNodesSet.forEach(nodeId => {
-                    if (nodeLayoutCoordinates[nodeId] && nodeLayoutCoordinates[nodeId].y > midY) {
-                        hasVisibleNodeBelow = true;
-                    }
-                });
-                if (!hasVisibleNodeBelow && !isUnitCleared) return;
-
+            // 🚀 👑 翻頁虛線優化：只有在「決策層+1 存在且可視」的相鄰層級間，動態繪製橫向大虛線分界線
+            const visibleYCoords = [];
+            activeVisibleNodesSet.forEach(nodeId => {
+                if (nodeLayoutCoordinates[nodeId]) {
+                    visibleYCoords.push(nodeLayoutCoordinates[nodeId].y);
+                }
+            });
+            const uniqueYCoords = [...new Set(visibleYCoords)].sort((a, b) => a - b);
+            for (let i = 0; i < uniqueYCoords.length - 1; i++) {
+                const midY = uniqueYCoords[i] + (uniqueYCoords[i+1] - uniqueYCoords[i]) / 2;
                 const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
                 divider.setAttribute("x1", "0");
                 divider.setAttribute("y1", midY);
@@ -789,20 +790,28 @@
                 divider.setAttribute("y2", midY);
                 divider.setAttribute("stroke", "#CBD5E1");
                 divider.setAttribute("stroke-width", "1.5");
-                divider.setAttribute("stroke-dasharray", "6,6"); // 工業洗鍊感大虛線
+                divider.setAttribute("stroke-dasharray", "6,6");
                 svgCanvas.appendChild(divider);
-            });
+            }
 
-            // 1. 繪製 SVG 戰術線路層
+            // 1. 繪製 SVG 戰術線路層（多向分流精密合流）
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
-                if (!srcPos || !srcNode.nextNodes) return;
+                if (!srcPos) return;
 
-                srcNode.nextNodes.forEach(tarId => {
+                // 🎯 剛性焊接：聚合 nextNodes 與 options 的所有分流出口
+                let branchTargets = [];
+                if (srcNode.nextNodes) branchTargets = branchTargets.concat(srcNode.nextNodes);
+                if (srcNode.options) {
+                    srcNode.options.forEach(opt => { if (opt.target) branchTargets.push(opt.target); });
+                }
+
+                branchTargets.forEach(tarId => {
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
 
+                    // 🛡️ 剛性過濾門閥
                     if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -818,13 +827,16 @@
                         (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
                         (passedNodesList.includes(srcId) && tarId === currentlySelectedNodeId)
                     ) {
+                        // 🌟 金屬航線：主幹線 ➔ 3px 剛性亮黃線
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
                     } else if (srcId === currentlySelectedNodeId) {
+                        // 🌟 分流指引線：當前抉擇點向外發散的潛在選項 ➔ 2px 剛性深灰虛線
                         line.setAttribute("stroke", "#475569"); 
                         line.setAttribute("stroke-width", "2");
                         line.setAttribute("stroke-dasharray", "4,4");
                     } else {
+                        // 🌟 平行宇宙歷史支線：🎯 完璧歸位！常駐呈現為 1.5px 固化冷灰實線，絕不流空拆橋！
                         line.setAttribute("stroke", "#D1D5DB");
                         line.setAttribute("stroke-width", "1.5");
                     }
@@ -844,8 +856,6 @@
                 dot.className = 'map-node-dot';
                 dot.style.left = `${pos.x}px`;
                 dot.style.top = `${pos.y}px`;
-                
-                // 🚀 文字已搬移至右側 32px，不遮擋任何縱向主航線
                 dot.innerHTML = `<div class="node-mini-label">${pos.name}</div>`;
 
                 const isPassed = passedNodesList.includes(nodeId);
