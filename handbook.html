@@ -1,14 +1,3 @@
-<!-- 
-========================================================================
-REVISION HISTORY / VERSION LOG
-========================================================================
-2026-06-05 V13.95-CHRONICLE-FIX: 👑 冒險者手冊終極完全體（歷史雷區淡紅固化暨頁際虛線熱修復版）
-1. 經歷解密常常駐：完美修正遮蔽盲區！凡是走過或解鎖過的歷史節點，100% 剛性常駐顯示真名，絕不退回未知狀態。
-2. 戰敗雷區淡紅化：走過且失敗的錯誤支線，連線全自動轉為淡紅色實線（#F87171），且圓點浮標固化為淡紅底（#FCA5A5）與剛性紅邊（#EF4444）。
-3. 頁際虛線回歸：精確重構分界演算法，僅在當前已展開的相鄰層級間動態顯影橫向大虛線，還原 Page 題際跨越感。
-4. 剛性置中與右側標籤：720px 核心戰術場域全量置中，文字位於圓點右側 32px 處，連線 100% 像素級絕對精密咬合。
-========================================================================
--->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -336,7 +325,7 @@ REVISION HISTORY / VERSION LOG
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 內襯北歐沙盒地圖容器 ─── */
+        /* ─── 🎨 內襯北歐沙盒地圖主面板 ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -356,7 +345,7 @@ REVISION HISTORY / VERSION LOG
             box-shadow: var(--shadow-tactical);
         }
 
-        /* 👑 固定寬體核心置中場域 */
+        /* 👑 置中固定硬體場域 */
         .map-inner-flow-field {
             width: 720px;
             height: 2150px;
@@ -403,13 +392,7 @@ REVISION HISTORY / VERSION LOG
             cursor: not-allowed;
         }
 
-        @keyframes pulseCircle {
-            0% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(26, 26, 26, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0); }
-        }
-
-        /* 🚀 標籤右側化 32px 整齊排開 */
+        /* 🚀 標籤右側化 32px 排開 */
         .node-mini-label {
             position: absolute;
             left: 32px;
@@ -506,20 +489,17 @@ REVISION HISTORY / VERSION LOG
     </div>
 
     <div class="workspace-container">
-        <!-- 左側選單工具欄清冊大盤 -->
         <aside class="sidebar-panel">
             <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
             <div id="global-tree-root"></div>
         </aside>
 
-        <!-- 中央主觀測工作區 -->
         <main class="content-panel">
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
                 <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
                 <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">冒險者戰術大廳</h2>
             </div>
 
-            <!-- VIEW 1: CENTRAL HUB DASHBOARD 選單清單 -->
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
                 <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
                 <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
@@ -527,7 +507,6 @@ REVISION HISTORY / VERSION LOG
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
 
-            <!-- VIEW 2: 👑 終極擴展北歐極簡沙盒地圖雙軌分流艙 -->
             <div class="sandbox-game-container" id="sandbox-viewport">
                 <div class="sandbox-map-canvas" id="map-scroll-stage">
                     <div class="map-inner-flow-field" id="map-lock-field">
@@ -562,7 +541,7 @@ REVISION HISTORY / VERSION LOG
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
-        // 👑 完璧對位座標盤
+        // 置中網格座標盤
         const nodeLayoutCoordinates = {
             "START-NODE":        { x: 360, y: 80,  name: "事件爆發" },
             "DECISION-NODE-01":  { x: 360, y: 220, name: "決策分流" },
@@ -755,8 +734,34 @@ REVISION HISTORY / VERSION LOG
             localStorage.setItem(`tpm-sandbox-unlocked-${activePackUnitId}`, JSON.stringify(unlockedNodesList));
         }
 
+        // 👑 陣列隨機洗牌演算工具
+        function shuffleArray(array) {
+            let shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // 👑 逆向追蹤演算法：精確捕捉戰敗結局點的直接親代決策點
+        function findParentDecisionNode(childId) {
+            const tree = window.tpmSandboxScriptTree;
+            if (!tree) return null;
+            for (let key in tree) {
+                const node = tree[key];
+                if (node.options && node.options.some(opt => opt.target === childId)) {
+                    return node;
+                }
+                if (node.nextNodes && node.nextNodes.includes(childId)) {
+                    return node;
+                }
+            }
+            return null;
+        }
+
         // ========================================================================
-        // 👑 鐵血修復大腦：親代發散、歷史反遮蔽、頁際虛線暨戰敗淡紅渲染 👑
+        // 👑 鐵血修復核心：親代發散、歷史反遮蔽、頁際虛線暨戰敗淡紅渲染 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -769,7 +774,7 @@ REVISION HISTORY / VERSION LOG
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 親代發散名單：包含解鎖點、當前點與已被點亮過（解鎖）的下游分支
+            // 🎯 親代發散名單
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
@@ -789,28 +794,33 @@ REVISION HISTORY / VERSION LOG
                 }
             });
 
-            // 🚀 👑 頁際虛線剛性重構：找出所有可視點獨特的 Y 軸座標並精密排序，僅在解密蔓延的相鄰層級間橫向拉出 dashed 防線
-            const visibleYCoords = [];
-            activeVisibleNodesSet.forEach(nodeId => {
-                if (nodeLayoutCoordinates[nodeId]) {
-                    visibleYCoords.push(nodeLayoutCoordinates[nodeId].y);
+            // 🚀 👑 頁際虛線精確控制：僅在當前挑戰點與上一層級之間，動態繪製橫向大虛線分界線
+            if (!isUnitCleared && currentlySelectedNodeId) {
+                const currentPos = nodeLayoutCoordinates[currentlySelectedNodeId];
+                if (currentPos) {
+                    let prevMaxY = 0;
+                    activeVisibleNodesSet.forEach(nodeId => {
+                        const p = nodeLayoutCoordinates[nodeId];
+                        if (p && p.y < currentPos.y && p.y > prevMaxY) {
+                            prevMaxY = p.y;
+                        }
+                    });
+                    if (prevMaxY > 0) {
+                        const midY = prevMaxY + (currentPos.y - prevMaxY) / 2;
+                        const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        divider.setAttribute("x1", "0");
+                        divider.setAttribute("y1", midY);
+                        divider.setAttribute("x2", "720");
+                        divider.setAttribute("y2", midY);
+                        divider.setAttribute("stroke", "#CBD5E1");
+                        divider.setAttribute("stroke-width", "1.5");
+                        divider.setAttribute("stroke-dasharray", "6,6");
+                        svgCanvas.appendChild(divider);
+                    }
                 }
-            });
-            const uniqueYCoords = [...new Set(visibleYCoords)].sort((a, b) => a - b);
-            for (let i = 0; i < uniqueYCoords.length - 1; i++) {
-                const midY = uniqueYCoords[i] + (uniqueYCoords[i+1] - uniqueYCoords[i]) / 2;
-                const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                divider.setAttribute("x1", "0");
-                divider.setAttribute("y1", midY);
-                divider.setAttribute("x2", "720");
-                divider.setAttribute("y2", midY);
-                divider.setAttribute("stroke", "#CBD5E1");
-                divider.setAttribute("stroke-width", "1.5");
-                divider.setAttribute("stroke-dasharray", "6,6");
-                svgCanvas.appendChild(divider);
             }
 
-            // 1. 繪製 SVG 戰術連線層 (融入戰敗淡紅線條狀態機)
+            // 1. 繪製 SVG 戰術連線層
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -833,14 +843,12 @@ REVISION HISTORY / VERSION LOG
                     line.setAttribute("x2", tarPos.x);
                     line.setAttribute("y2", tarPos.y);
 
-                    // 🎯 判定目標節點是否為已探索踩雷的失敗終點
                     const isTargetFailAndUnlocked = (tarId.includes("FAIL") || tarId.includes("WARN") || tarId.includes("end_fail") || tarId.includes("end_warn")) && unlockedNodesList.includes(tarId);
 
                     if (isUnitCleared) {
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
                     } else if (isTargetFailAndUnlocked) {
-                        // 🌟 戰敗錯誤路線：全自動改成淡紅色連線（#F87171）
                         line.setAttribute("stroke", "#F87171"); 
                         line.setAttribute("stroke-width", "2.5");
                     } else if (
@@ -861,7 +869,7 @@ REVISION HISTORY / VERSION LOG
                 });
             });
 
-            // 2. 部署北歐風極簡圓點 (解決反劇透覆蓋盲區與淡紅浮標)
+            // 2. 部署北歐風極簡圓點
             Object.keys(tree).forEach(nodeId => {
                 const pos = nodeLayoutCoordinates[nodeId];
                 if (!pos) return; 
@@ -873,7 +881,6 @@ REVISION HISTORY / VERSION LOG
                 dot.style.left = `${pos.x}px`;
                 dot.style.top = `${pos.y}px`;
                 
-                // 🚀 👑 剛性解鎖原則：只要學員曾解鎖或走過（存在於 unlockedNodesList 或 passedNodesList 內），絕對禁止變回未知！
                 let displayName = pos.name;
                 const isPassed = passedNodesList.includes(nodeId);
                 const isUnlocked = unlockedNodesList.includes(nodeId);
@@ -899,7 +906,6 @@ REVISION HISTORY / VERSION LOG
                     if (isPassed) {
                         dot.className += ' passed';
                     } else if (isFailNode && isUnlocked) {
-                        // 🌟 踩雷歷史雷區：全自動降級顯影為淡紅色底、剛性紅邊浮標
                         dot.style.backgroundColor = "#FCA5A5"; 
                         dot.style.border = "2px solid #EF4444";
                     } else {
@@ -918,6 +924,9 @@ REVISION HISTORY / VERSION LOG
             });
         }
 
+        // ========================================================================
+        // 👑 右側戰術儀控制中樞 (100% 隨機洗牌與原位複盤熱熔) 👑
+        // ========================================================================
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
             const node = window.tpmSandboxScriptTree[nodeId];
@@ -933,32 +942,51 @@ REVISION HISTORY / VERSION LOG
                     <button class="nordic-action-btn" onclick="executePassNode('${nodeId}')">➔ 前進至決策關卡</button>
                 `;
             } else if (node.type === "decision") {
+                // 🚀 👑 核心優化：常規抉擇時，按鈕佈局全量隨機亂序洗牌
+                let randomizedOptions = shuffleArray(node.options);
                 contentHtml += `
                     <div style="font-size:0.72rem; color:#B45309; font-weight:900; letter-spacing:1px; margin-bottom:6px;">DECISION HUB</div>
                     <h2 style="margin:0 0 14px 0; font-size:1.25rem; font-weight:900; color:#B45309;">${node.title}</h2>
                     <p style="font-weight:700; background:#FFFBEB; padding:12px; border-left:4px solid #F59E0B; border-radius:4px; line-height:1.5;">${node.question}</p>
                     <div style="margin-top:15px;">
-                        ${node.options.map((opt, idx) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${nodeId}', '${opt.target}')"><b>決策 ${idx + 1}：</b> ${opt.text}</button>`).join('')}
+                        ${randomizedOptions.map((opt, idx) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${nodeId}', '${opt.target}')"><b>決策分流：</b> ${opt.text}</button>`).join('')}
                     </div>
                 `;
             } else if (node.type === "quiz") {
+                let randomizedQuizOpts = shuffleArray(node.options);
                 contentHtml += `
                     <div style="font-size:0.72rem; color:#1D4ED8; font-weight:900; letter-spacing:1px; margin-bottom:6px;">TACTICAL QUIZ</div>
                     <h2 style="margin:0 0 14px 0; font-size:1.25rem; font-weight:900; color:#1D4ED8;">${node.title}</h2>
                     <p style="font-weight:700; margin-bottom:15px; line-height:1.5;">${node.question}</p>
                     <div id="quiz-options-zone">
-                        ${node.options.map((opt, idx) => `<button class="nordic-option-btn" onclick="executeSubmitQuiz('${nodeId}', ${idx})">${opt.text}</button>`).join('')}
+                        ${randomizedQuizOpts.map((opt) => `<button class="nordic-option-btn" onclick="executeSubmitQuiz('${nodeId}', '${opt.target || ''}')">${opt.text}</button>`).join('')}
                     </div>
                 `;
             } else if (node.type.startsWith("end_")) {
                 let endColor = (node.type === "end_win") ? "#15803D" : (node.type === "end_fail" ? "#B91C1C" : "#475569");
                 let isWin = (node.type === "end_win");
+                
                 contentHtml += `
                     <div style="font-size:0.72rem; color:${endColor}; font-weight:900; letter-spacing:1px; margin-bottom:6px;">SCENARIO ENDING</div>
                     <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900; color:${endColor};">${node.title}</h2>
                     <div style="background:#FAF8F5; padding:14px; border-radius:6px; border:1px solid var(--nordic-border); margin-bottom:15px;">${node.text}</div>
-                    <button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(${isWin})">${isWin ? '🏆 記錄戰績並上傳 GAS' : '🔄 命運重置：重新抉擇'}</button>
                 `;
+
+                if (isWin) {
+                    contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
+                } else {
+                    // 🚀 👑 終極改裝：打掉重置大鈕！改採原地複盤機制，自動抓取親代決策並打亂順序呈現
+                    const parentDecision = findParentDecisionNode(nodeId);
+                    if (parentDecision && parentDecision.options) {
+                        let retryOptions = shuffleArray(parentDecision.options);
+                        contentHtml += `
+                            <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
+                                <p style="font-weight:900; color:var(--color-fail); margin-bottom:10px;">🔄 戰術重估：請重新評估該階段的分流決策：</p>
+                                ${retryOptions.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`).join('')}
+                            </div>
+                        `;
+                    }
+                }
             }
 
             contentHtml += `</div>`;
@@ -988,48 +1016,53 @@ REVISION HISTORY / VERSION LOG
             renderNordicSandboxMap();
         };
 
-        window.executeSubmitQuiz = function(nodeId, selectedIdx) {
+        window.executeSubmitQuiz = function(nodeId, targetNodeId) {
             const zone = document.getElementById('quiz-options-zone');
             const node = window.tpmSandboxScriptTree[nodeId];
             if (!zone || !node) return;
 
-            const isCorrect = node.options[selectedIdx].isCorrect;
+            // 針對 1-1 大考特殊分流對位
+            let isCorrect = false;
+            let targetNode = targetNodeId;
+            
+            if (!targetNode && node.options) {
+                // 如果是舊版 1-1 點擊判定
+                const rawEvent = window.event?.target?.innerText || "";
+                const foundOpt = node.options.find(o => rawEvent.includes(o.text));
+                isCorrect = foundOpt ? foundOpt.isCorrect : false;
+                targetNode = node.nextNodes ? node.nextNodes[0] : "WIN-NODE-CONQUER";
+            } else {
+                isCorrect = (targetNode === "WIN-NODE-CONQUER" || targetNode === "T14-PASS-4");
+            }
+
             zone.innerHTML = `
                 <div style="margin-top:10px; padding:14px; background:${isCorrect ? '#F0FDF4':'#FEF2F2'}; border-radius:6px; border:1px solid ${isCorrect?'#BBF7D0':'#FCA5A5'}; font-size:0.85rem; line-height:1.5;">
                     <div style="font-weight:900; font-size:0.95rem; color:${isCorrect?'#16A34A':'#DC2626'}; margin-bottom:4px;">${isCorrect ? '🏆 回答正確！':'💥 判斷錯誤！'}</div>
                     <div>${node.explanation}</div>
                 </div>
-                <button class="nordic-action-btn" onclick="executePassQuizNode('${nodeId}')">查看劇本最終大結局 ➔</button>
+                <button class="nordic-action-btn" onclick="executePassQuizNode('${nodeId}', '${targetNode}')">查看劇本大結局 ➔</button>
             `;
         };
 
-        window.executePassQuizNode = function(nodeId) {
+        window.executePassQuizNode = function(nodeId, targetNodeId) {
             if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
-            const nodeData = window.tpmSandboxScriptTree[nodeId];
-            if (nodeData && nodeData.nextNodes) {
-                nodeData.nextNodes.forEach(nxt => { if (!unlockedNodesList.includes(nxt)) unlockedNodesList.push(nxt); });
+            let finalTarget = targetNodeId;
+            
+            if (!finalTarget || finalTarget === "undefined") {
+                const nodeData = window.tpmSandboxScriptTree[nodeId];
+                finalTarget = nodeData && nodeData.nextNodes ? nodeData.nextNodes[0] : "WIN-NODE-CONQUER";
             }
+
+            if (!unlockedNodesList.includes(finalTarget)) unlockedNodesList.push(finalTarget);
             saveSandboxProgress();
-            if (nodeData.nextNodes && nodeData.nextNodes.length > 0) {
-                currentlySelectedNodeId = nodeData.nextNodes[0];
-                inspectNodeDetail(currentlySelectedNodeId);
-            }
+            
+            currentlySelectedNodeId = finalTarget;
+            inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
         };
 
         window.executeSettleHandbookUnit = function(isWin) {
-            if (!isWin) {
-                passedNodesList = [];
-                if (window.tpmSandboxScriptTree && window.tpmSandboxScriptTree["T1-START"]) {
-                    currentlySelectedNodeId = "T1-START";
-                } else {
-                    currentlySelectedNodeId = "START-NODE";
-                }
-                saveSandboxProgress();
-                renderNordicSandboxMap();
-                inspectNodeDetail(currentlySelectedNodeId);
-                return;
-            }
+            if (!isWin) return;
 
             const checkLiveEmail = localStorage.getItem('tpm-user-current-email');
             if (!checkLiveEmail || checkLiveEmail.trim() === "") {
