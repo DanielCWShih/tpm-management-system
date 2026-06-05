@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職能手冊大廳 | System TPM Handbook Hub</title>
+    <style>
+        :root {
+            /* 👑 外襯粗獷主義核心色盤 (100% 對齊寶典大廳與總部) */
+            --bg-color: #FEF9E7;
+            --sidebar-cream: #FDF2D0;
+            --card-white: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-secondary: #475569;
+            --border-heavy: #1A1A1A;
+            --shadow-tactical: 5px 5px 0px #1A1A1A;
+            --radius-sm: 8px;
+            --color-completed: #22C55E;
+            --color-active-gold: #FDE047;
+            --color-fail: #DC2626;
+            --color-locked-gray: #E2E8F0;
+
+            /* 🎨 內襯北歐極簡沙盒地圖色盤 */
+            --nordic-bg: #FAFAFA;
+            --nordic-gray-dot: #D1D5DB;
+            --nordic-yellow-dot: #EAB308;
+            --nordic-border: #E7E5E4;
+
+            /* 🌌 測試流：科幻戰術星圖專用色盤 */
+            --cosmic-void: #0B0F19;
+            --cosmic-cyan: #06B6D4;
+            --cosmic-glow: #F59E0B;
+            --cosmic-grid: #1E293B;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            color: var(--text-main);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 👑 剛性頂部全域控制導航列 */
+        .tactical-navbar {
+            width: 100vw;
+            height: 85px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--border-heavy);
+            padding: 0 40px;
+            background-color: var(--bg-color);
+            flex-shrink: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .auth-panel {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 900;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            white-space: nowrap;
+        }
+
+        .back-btn {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 10px 15px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 900;
+            text-decoration: none;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            display: inline-block;
+            text-align: center;
+            min-width: 95px;
+            color: var(--text-main);
+            transition: all 0.1s;
+        }
+
+        .back-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
+        }
+
+        .workspace-container {
+            display: flex;
+            width: 100vw;
+            height: calc(100vh - 85px);
+            overflow: hidden;
+        }
+
+        /* 👑 左側戰術選單清單欄 */
+        .sidebar-panel {
+            display: flex;
+            width: 350px;
+            background-color: var(--sidebar-cream);
+            border-right: 4px solid var(--border-heavy);
+            padding: 25px 18px;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            height: 100%;
+        }
+
+        .hub-return-btn {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 12px 15px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 900;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            width: 100%;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-main);
+            transition: all 0.1s;
+        }
+
+        .hub-return-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--border-heavy);
+        }
+
+        .menu-category-block {
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        .tree-main-toggle {
+            background: var(--card-white);
+            border: 3px solid var(--border-heavy);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.95rem;
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            width: 100%;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .tree-sub-group {
+            padding-left: 10px;
+            border-left: 3px solid var(--border-heavy);
+            margin-left: 8px;
+            margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .leaf-btn {
+            background: var(--card-white);
+            border: 2px solid var(--border-heavy);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-weight: 800;
+            font-size: 0.82rem;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
+            color: var(--text-main);
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            transition: all 0.1s;
+            line-height: 1.4;
+        }
+
+        .leaf-btn:hover {
+            transform: translate(2px, -2px);
+            box-shadow: 2px 4px 0px var(--border-heavy);
+        }
+
+        .leaf-btn.active {
+            background: var(--color-active-gold) !important;
+            color: var(--text-main) !important;
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px var(--border-heavy) !important;
+        }
+
+        .content-panel {
+            flex: 1;
+            height: 100%;
+            padding: 35px 40px;
+            background-color: var(--card-white);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 🌌 戰術星圖終端機外殼 */
+        .dashboard-view-hall {
+            display: block; 
+            width: 100%;
+            height: 100%;
+            background-color: var(--cosmic-void);
+            border: 3px solid var(--border-heavy);
+            border-radius: 12px;
+            box-shadow: var(--shadow-tactical);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cosmic-svg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .cosmic-star-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+        }
+
+        /* 🌟 恆星動態脈衝呼吸環 */
+        .cosmic-star-node {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: var(--cosmic-cyan);
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            border: 2px solid var(--cosmic-void);
+        }
+
+        .cosmic-star-node.cleared {
+            background-color: var(--cosmic-glow) !important;
+            box-shadow: 0 0 16px var(--cosmic-glow);
+        }
+
+        .cosmic-star-node.cleared::after {
+            content: '';
+            position: absolute;
+            top: -6px; left: -6px; right: -6px; bottom: -6px;
+            border: 1.5px dashed var(--cosmic-glow);
+            border-radius: 50%;
+            animation: cosmicRotate 10s infinite linear;
+        }
+
+        @keyframes cosmicRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cosmic-star-label {
+            position: absolute;
+            left: 28px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #94A3B8;
+            white-space: nowrap;
+            pointer-events: none;
+            font-family: monospace;
+            text-shadow: 0 0 4px rgba(0,0,0,0.8);
+        }
+
+        .cosmic-star-node.cleared .cosmic-star-label {
+            color: #F8FAFC !important;
+        }
+
+        .cosmic-star-status {
+            font-size: 0.7rem;
+            color: var(--cosmic-cyan);
+            margin-left: 6px;
+            background: rgba(6, 182, 212, 0.15);
+            padding: 1px 4px;
+            border-radius: 3px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .cosmic-star-node.cleared .cosmic-star-status {
+            color: var(--cosmic-glow) !important;
+            background: rgba(245, 158, 11, 0.15) !important;
+            border: 1px solid rgba(245, 158, 11, 0.3) !important;
+        }
+
+        /* ─── 🎨 內襯北歐沙盒地圖視窗 ─── */
+        .sandbox-game-container {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: row;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        .sandbox-map-canvas {
+            flex: 1;
+            height: 100%;
+            background-color: var(--nordic-bg);
+            border: 3px solid var(--border-heavy);
+            border-radius: 12px;
+            position: relative;
+            overflow-y: auto;   
+            overflow-x: hidden; 
+            box-shadow: var(--shadow-tactical);
+        }
+
+        .map-inner-flow-field {
+            width: 720px;
+            height: 2200px;
+            position: relative;
+            margin: 0 auto;    
+        }
+
+        .map-svg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 720px;
+            height: 2200px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .map-node-dot {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            z-index: 10;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            transition: all 0.22s ease-out;
+            background-color: var(--nordic-gray-dot);
+            border: 2px solid transparent;
+        }
+
+        .map-node-dot.passed {
+            background-color: var(--nordic-yellow-dot) !important;
+            box-shadow: 0 0 12px rgba(234, 179, 8, 0.5);
+        }
+
+        .map-node-dot.active-target {
+            border-color: var(--text-main) !important;
+            animation: pulseCircle 1.6s infinite ease-in-out;
+        }
+
+        .node-mini-label {
+            position: absolute;
+            left: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        /* 右側戰術觀測儀 */
+        .fixed-inspector-panel {
+            width: 440px;
+            height: 100%;
+            background: #FFFFFF;
+            border: 3px solid var(--border-heavy);
+            border-radius: 12px;
+            padding: 26px;
+            box-shadow: var(--shadow-tactical);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .inspector-scroll-box {
+            flex: 1;
+            overflow-y: auto;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .inspector-placeholder {
+            margin: auto;
+            text-align: center;
+            color: var(--text-secondary);
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .nordic-option-btn {
+            width: 100%;
+            background: #FFFFFF;
+            border: 2px solid var(--border-heavy);
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-top: 10px;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            transition: all 0.1s;
+        }
+
+        .nordic-option-btn:hover {
+            background: var(--sidebar-cream);
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+        }
+
+        .nordic-action-btn {
+            background: var(--text-main);
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 0.85rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        @keyframes fadeInNode {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tactical-navbar">
+        <div class="navbar-brand">
+            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 900;" id="global-inject-title">冒險者手冊</h1>
+        </div>
+        <div class="navbar-controls">
+            <div id="global-user-profile-card" class="auth-panel">首頁登入</div>
+            <a href="index.html" class="back-btn">返回首頁</a>
+        </div>
+    </div>
+
+    <div class="workspace-container">
+        <aside class="sidebar-panel">
+            <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
+            <div id="global-tree-root"></div>
+        </aside>
+
+        <main class="content-panel">
+            <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
+                <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
+                <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">冒險者戰術大廳</h2>
+            </div>
+
+            <div class="dashboard-view-hall" id="dashboard-menu-hall">
+                <svg class="cosmic-svg-layer" id="cosmic-radar-svg"></svg>
+                <div class="cosmic-star-container" id="cosmic-star-deck"></div>
+            </div>
+
+            <div class="sandbox-game-container" id="sandbox-viewport">
+                <div class="sandbox-map-canvas" id="map-scroll-stage">
+                    <div class="map-inner-flow-field" id="map-lock-field">
+                        <svg class="map-svg-layer" id="map-svg-canvas"></svg>
+                        <div id="map-nodes-container" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10;"></div>
+                    </div>
+                </div>
+                <aside class="fixed-inspector-panel" id="sandbox-inspector">
+                    <div class="inspector-placeholder">
+                        🎯 請點擊左側地圖圓點<br>解包防水戰術劇本事件
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
+
+        const globalSubUnitRegistry = [
+            { type: 'handbook', levelNum: 1, subUnitId: '1-1', title: '1-1: 系統 TPM 職能運作實戰手冊', file: 'handbook_data_course/handbook_data_1-1.js' },
+            { type: 'handbook', levelNum: 1, subUnitId: '1-2', title: '1-2: 防水結構 Worst-Case 模擬與幾何流產盲區', file: 'handbook_data_course/handbook_data_1-2.js' }
+        ];
+
+        // 👑 完璧對位座標天梯大盤（130px 等距嚴格序列校準版）
+        const nodeLayoutCoordinates = {
+            "T0-INTRO":          { x: 360, y: 60,   name: "通識導讀" },
+            "T1-START":          { x: 360, y: 190,  name: "事件爆發" },
+            "T2-DECISION-1":     { x: 360, y: 320,  name: "抉擇:皮球戰" },
+            "T3-FAIL-1":         { x: 160, y: 450,  name: "盲目放行" },
+            "T3-WARN-1":         { x: 560, y: 450,  name: "剛性內耗" },
+            "T3-PASS-1":         { x: 360, y: 450,  name: "日誌抓取" },
+            "T4-STORY-1":        { x: 360, y: 580,  name: "趨勢顯影" },
+            "T5-TUTORIAL-1":     { x: 360, y: 710,  name: "📚 數據心法" },
+            "T6-DECISION-2":     { x: 360, y: 730,  name: "抉擇:公差鏈" },
+            "T7-FAIL-2":         { x: 160, y: 860,  name: "盲目加壓" },
+            "T7-WARN-2":         { x: 560, y: 860,  name: "會場死磕" },
+            "T7-PASS-2":         { x: 360, y: 860,  name: "矩陣模擬" },
+            "T8-STORY-2":        { x: 360, y: 990,  name: "盲區定位" },
+            "T9-TUTORIAL-2":     { x: 360, y: 1120, name: "📚 點檢剛性" },
+            "T10-DECISION-3":    { x: 360, y: 1250, name: "抉擇:刷產量" },
+            "T11-FAIL-3":        { x: 160, y: 1380, name: "減速妥協" },
+            "T11-WARN-3":        { x: 560, y: 1380, name: "強行停機" },
+            "T11-PASS-3":        { x: 360, y: 1380, name: "臨時優化" },
+            "T12-STORY-3":       { x: 360, y: 1510, name: "稽核攔截" },
+            "T13-QUIZ-4":        { x: 360, y: 1640, name: "大考:簽核流" },
+            "T14-PASS-4":        { x: 360, y: 1770, name: "特採通航" },
+            "T15-WIN":           { x: 360, y: 1900, name: "完美通關" },
+
+            "START-NODE":        { x: 360, y: 80,  name: "事件爆發" },
+            "DECISION-NODE-01":  { x: 360, y: 220, name: "決策分流" },
+            "FAIL-NODE-SKIP":    { x: 160, y: 360, name: "盲目放行" },
+            "WARN-NODE-FIGHT":   { x: 560, y: 360, name: "剛性抗爭" },
+            "QUIZ-NODE-STACKUP": { x: 360, y: 360, name: "技術排查" },
+            "WIN-NODE-CONQUER":  { x: 360, y: 500, name: "完美通關" }
+        };
+
+        let unlockedNodesList = []; 
+        let passedNodesList = []; 
+        let activeFrontierNodeId = null;     
+        let currentlySelectedNodeId = null;  
+        let activePackUnitId = null;
+
+        window.onload = () => {
+            renderGlobalTreeStructure();
+            routeController();
+        };
+
+        function renderGlobalTreeStructure() {
+            const root = document.getElementById('global-tree-root'); 
+            if (!root) return;
+            root.innerHTML = '';
+            const presentLevels = [1];
+            
+            presentLevels.forEach(lvlNum => {
+                const subset = globalSubUnitRegistry.filter(u => u.levelNum === lvlNum);
+                const block = document.createElement('div'); 
+                block.className = 'menu-category-block';
+                block.innerHTML = `
+                    <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} 戰術星系</button>
+                    <div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">
+                        ${subset.map(u => `<button class="leaf-btn" id="lf-${u.type}-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}
+                    </div>`;
+                root.appendChild(block);
+            });
+        }
+
+        function toggleMenuSection(id) { 
+            const el = document.getElementById(id); 
+            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
+        }
+
+        function routeController(directType, directC) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramC = directC || urlParams.get('c');
+            const paramType = directType || urlParams.get('type') || 'handbook';
+
+            if (!paramC) {
+                document.getElementById('cdx-page-header-zone').style.display = 'block'; 
+                document.getElementById('current-chapter-id').innerText = "COSMIC TERMINAL"; 
+                document.getElementById('current-chapter-name').innerText = "雷達戰術全景星圖";
+                document.getElementById('dashboard-menu-hall').style.display = 'block'; 
+                document.getElementById('sandbox-viewport').style.display = 'none'; 
+                renderCosmicTacticalStarMap();
+            } else {
+                document.getElementById('dashboard-menu-hall').style.display = 'none'; 
+                document.getElementById('sandbox-viewport').style.display = 'flex'; 
+                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
+                const leaf = document.getElementById(`lf-${paramType}-${paramC}`); 
+                if (leaf) leaf.classList.add('active'); 
+                activePackUnitId = paramC;
+                injectContentPackScript(paramType, paramC);
+            }
+        }
+
+        // ========================================================================
+        // 🌌 測試流核心：動態向量雷達星圖大廳渲染引擎
+        // ========================================================================
+        function renderCosmicTacticalStarMap() {
+            const svg = document.getElementById('cosmic-radar-svg');
+            const deck = document.getElementById('cosmic-star-deck');
+            if (!svg || !deck) return;
+
+            svg.innerHTML = '';
+            deck.innerHTML = '';
+
+            // 1. 焊裝底層科幻雷達同心圓與十字網格線
+            const cx = 160, cy = 240; 
+            for (let r = 60; r <= 240; r += 60) {
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", cx); circle.setAttribute("cy", cy); circle.setAttribute("r", r);
+                circle.setAttribute("stroke", "var(--cosmic-grid)"); circle.setAttribute("stroke-width", "1");
+                circle.setAttribute("fill", "none");
+                if (r === 180) circle.setAttribute("stroke-dasharray", "4,4");
+                svg.appendChild(circle);
+            }
+
+            const crossX = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            crossX.setAttribute("x1", "20"); crossX.setAttribute("y1", cy); crossX.setAttribute("x2", "800"); crossX.setAttribute("y2", cy);
+            crossX.setAttribute("stroke", "var(--cosmic-grid)"); crossX.setAttribute("stroke-width", "0.5");
+            svg.appendChild(crossX);
+
+            // 2. 佈署星群座標與星之連線
+            const starPositions = {
+                "HUB-CORE": { x: cx, y: cy, name: "星系中樞" },
+                "1-1": { x: 380, y: 140, name: "1-1: TPM運作實戰手冊" },
+                "1-2": { x: 580, y: 320, name: "1-2: 防水Worst-Case模擬" }
+            };
+
+            const links = [
+                { from: "HUB-CORE", to: "1-1", unit: "1-1" },
+                { from: "1-1", to: "1-2", unit: "1-2" }
+            ];
+
+            links.forEach(link => {
+                const p1 = starPositions[link.from];
+                const p2 = starPositions[link.to];
+                if (!p1 || !p2) return;
+
+                const isCleared = localStorage.getItem(`handbook-L1-A${link.unit.split('-')[1]}-clear`) === 'true';
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", p1.x); line.setAttribute("y1", p1.y);
+                line.setAttribute("x2", p2.x); line.setAttribute("y2", p2.y);
+
+                if (isCleared) {
+                    line.setAttribute("stroke", "var(--cosmic-glow)");
+                    line.setAttribute("stroke-width", "2");
+                } else {
+                    line.setAttribute("stroke", "var(--cosmic-grid)");
+                    line.setAttribute("stroke-width", "1");
+                    line.setAttribute("stroke-dasharray", "4,4");
+                }
+                svg.appendChild(line);
+            });
+
+            // 3. 部署實體恆星點位
+            Object.keys(starPositions).forEach(key => {
+                if (key === "HUB-CORE") {
+                    const coreDot = document.createElement('div');
+                    coreDot.className = 'cosmic-star-node';
+                    coreDot.style.left = `${starPositions[key].x}px`;
+                    coreDot.style.top = `${starPositions[key].y}px`;
+                    coreDot.style.backgroundColor = "var(--cosmic-grid)";
+                    coreDot.innerHTML = `<div class="cosmic-star-label" style="color:var(--cosmic-grid)">✦ 中樞</div>`;
+                    deck.appendChild(coreDot);
+                    return;
+                }
+
+                const pos = starPositions[key];
+                const isClear = localStorage.getItem(`handbook-L1-A${key.split('-')[1]}-clear`) === 'true';
+
+                const dot = document.createElement('div');
+                dot.className = `cosmic-star-node ${isClear ? 'cleared' : ''}`;
+                dot.style.left = `${pos.x}px`;
+                dot.style.top = `${pos.y}px`;
+
+                dot.innerHTML = `
+                    <div class="cosmic-star-label">
+                        ✦ ${pos.name}
+                        <span class="cosmic-star-status">${isClear ? '✅ 已點亮' : '⏳ 待探測'}</span>
+                    </div>`;
+
+                dot.onclick = () => { switchUnit('handbook', key, 1); };
+                deck.appendChild(dot);
+            });
+        }
+
+        function switchUnit(type, subUnitId, lvlNum) { 
+            window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); 
+            routeController(type, subUnitId); 
+        }
+
+        function exitToDashboardMenu() { 
+            window.history.pushState(null, '', window.location.pathname); 
+            routeController(null, null); 
+        }
+
+        function injectContentPackScript(type, packId) {
+            const old = document.getElementById('dynamic-course-pack'); 
+            if (old) old.remove();
+            
+            const script = document.createElement('script'); 
+            script.id = 'dynamic-course-pack'; 
+            script.src = `${globalSubUnitRegistry.find(u => u.subUnitId === packId).file}?v=${Date.now()}`;
+            script.onload = () => { initSandboxEngine(); }; 
+            document.head.appendChild(script);
+        }
+
+        function initSandboxEngine() {
+            if (!activePackUnitId) return; 
+            document.getElementById('current-chapter-id').innerText = `HANDBOOK / UNIT ${activePackUnitId}`; 
+            document.getElementById('current-chapter-name').innerText = globalSubUnitRegistry.find(u => u.subUnitId === activePackUnitId).title;
+
+            const savedPassed = localStorage.getItem(`tpm-sandbox-passed-${activePackUnitId}`);
+            const savedUnlocked = localStorage.getItem(`tpm-sandbox-unlocked-${activePackUnitId}`);
+            
+            passedNodesList = savedPassed ? JSON.parse(savedPassed) : [];
+            unlockedNodesList = savedUnlocked ? JSON.parse(savedUnlocked) : [];
+            
+            let initialStartNode = "START-NODE";
+            if (window.tpmSandboxScriptTree) {
+                if (window.tpmSandboxScriptTree["T0-INTRO"]) initialStartNode = "T0-INTRO";
+                else if (window.tpmSandboxScriptTree["T1-START"]) initialStartNode = "T1-START";
+            }
+            
+            let curr = initialStartNode;
+            while (passedNodesList.includes(curr)) {
+                let nodeData = window.tpmSandboxScriptTree[curr];
+                if (!nodeData) break;
+                if (nodeData.nextNodes && nodeData.nextNodes.length > 0) {
+                    curr = nodeData.nextNodes[0];
+                } else {
+                    let foundNext = false;
+                    if (nodeData.options) {
+                        let nextTarget = null;
+                        for (let opt of nodeData.options) {
+                            if (passedNodesList.includes(opt.target)) { nextTarget = opt.target; break; }
+                        }
+                        if (!nextTarget) {
+                            for (let opt of nodeData.options) {
+                                if (unlockedNodesList.includes(opt.target)) { nextTarget = opt.target; break; }
+                            }
+                        }
+                        if (nextTarget) { curr = nextTarget; foundNext = true; }
+                    }
+                    if (!foundNext) break;
+                }
+            }
+            
+            activeFrontierNodeId = curr;
+            currentlySelectedNodeId = activeFrontierNodeId;
+
+            if (!unlockedNodesList.includes(initialStartNode)) unlockedNodesList.push(initialStartNode);
+            if (!unlockedNodesList.includes(activeFrontierNodeId)) unlockedNodesList.push(activeFrontierNodeId);
+
+            renderNordicSandboxMap();
+            inspectNodeDetail(currentlySelectedNodeId);
+        }
+
+        function saveSandboxProgress() {
+            localStorage.setItem(`tpm-sandbox-passed-${activePackUnitId}`, JSON.stringify(passedNodesList));
+            localStorage.setItem(`tpm-sandbox-unlocked-${activePackUnitId}`, JSON.stringify(unlockedNodesList));
+        }
+
+        function renderNordicSandboxMap() {
+            const nodesContainer = document.getElementById('map-nodes-container');
+            const svgCanvas = document.getElementById('map-svg-canvas');
+            if (!nodesContainer || !svgCanvas || !window.tpmSandboxScriptTree) return;
+
+            nodesContainer.innerHTML = '';
+            svgCanvas.innerHTML = '';
+
+            const tree = window.tpmSandboxScriptTree;
+            const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
+
+            const activeVisibleNodesSet = new Set();
+            Object.keys(tree).forEach(nodeId => {
+                if (isUnitCleared) {
+                    activeVisibleNodesSet.add(nodeId);
+                } else {
+                    if (unlockedNodesList.includes(nodeId) || nodeId === activeFrontierNodeId || passedNodesList.includes(nodeId)) {
+                        activeVisibleNodesSet.add(nodeId);
+                    }
+                    if (passedNodesList.includes(nodeId) || nodeId === activeFrontierNodeId) {
+                        if (tree[nodeId].nextNodes) tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
+                        if (tree[nodeId].options) tree[nodeId].options.forEach(opt => activeVisibleNodesSet.add(opt.target));
+                    }
+                }
+            });
+
+            const decisionYSet = new Set();
+            Object.keys(tree).forEach(nodeId => {
+                if (activeVisibleNodesSet.has(nodeId) && passedNodesList.includes(nodeId)) {
+                    if (tree[nodeId].type === "decision" || tree[nodeId].type === "quiz") {
+                        let maxChildY = nodeLayoutCoordinates[nodeId].y;
+                        let targets = [];
+                        if (tree[nodeId].nextNodes) targets = targets.concat(tree[nodeId].nextNodes);
+                        if (tree[nodeId].options) tree[nodeId].options.forEach(o => targets.push(o.target));
+                        targets.forEach(t => {
+                            if (nodeLayoutCoordinates[t] && activeVisibleNodesSet.has(t)) {
+                                maxChildY = Math.max(maxChildY, nodeLayoutCoordinates[t].y);
+                            }
+                        });
+                        decisionYSet.add(maxChildY + 65);
+                    }
+                }
+            });
+            decisionYSet.forEach(midY => {
+                const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                divider.setAttribute("x1", "0"); divider.setAttribute("y1", midY); divider.setAttribute("x2", "720"); divider.setAttribute("y2", midY);
+                divider.setAttribute("stroke", "#CBD5E1"); divider.setAttribute("stroke-width", "2"); divider.setAttribute("stroke-dasharray", "8,6");
+                svgCanvas.appendChild(divider);
+            });
+
+            Object.keys(tree).forEach(srcId => {
+                const srcNode = tree[srcId];
+                const srcPos = nodeLayoutCoordinates[srcId];
+                if (!srcPos) return;
+
+                let branchTargets = [];
+                if (srcNode.nextNodes) branchTargets = branchTargets.concat(srcNode.nextNodes);
+                if (srcNode.options) srcNode.options.forEach(opt => { if (opt.target) branchTargets.push(opt.target); });
+
+                branchTargets.forEach(tarId => {
+                    const tarPos = nodeLayoutCoordinates[tarId];
+                    if (!tarPos || !activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
+
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", srcPos.x); line.setAttribute("y1", srcPos.y); line.setAttribute("x2", tarPos.x); line.setAttribute("y2", tarPos.y);
+
+                    const isTargetFail = tarId.includes("FAIL") || tarId.includes("WARN") || (tree[tarId] && (tree[tarId].type === "end_fail" || tree[tarId].type === "end_warn"));
+                    const isTargetUnlocked = unlockedNodesList.includes(tarId);
+
+                    if (isUnitCleared) {
+                        line.setAttribute("stroke", "#CBD5E1"); line.setAttribute("stroke-width", "1.5");
+                    } else if (isTargetFail && isTargetUnlocked) {
+                        line.setAttribute("stroke", "#F87171"); line.setAttribute("stroke-width", "2.5");
+                    } else if ((passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || (passedNodesList.includes(srcId) && tarId === activeFrontierNodeId)) {
+                        line.setAttribute("stroke", "#EAB308"); line.setAttribute("stroke-width", "3");
+                    } else if (srcId === activeFrontierNodeId) {
+                        line.setAttribute("stroke", "#475569"); line.setAttribute("stroke-width", "2"); line.setAttribute("stroke-dasharray", "4,4");
+                    } else {
+                        line.setAttribute("stroke", "#D1D5DB"); line.setAttribute("stroke-width", "1.5");
+                    }
+                    svgCanvas.appendChild(line);
+                });
+            });
+
+            Object.keys(tree).forEach(nodeId => {
+                const pos = nodeLayoutCoordinates[nodeId];
+                if (!pos || !activeVisibleNodesSet.has(nodeId)) return;
+
+                const dot = document.createElement('div');
+                dot.id = `dot-${nodeId}`; dot.className = 'map-node-dot';
+                dot.style.left = `${pos.x}px`; dot.style.top = `${pos.y}px`;
+                
+                let displayName = pos.name;
+                const isPassed = passedNodesList.includes(nodeId);
+                const isUnlocked = unlockedNodesList.includes(nodeId);
+
+                if (!isUnitCleared && nodeId !== activeFrontierNodeId && !isPassed && !isUnlocked) displayName = "🔒 未知分流";
+                dot.innerHTML = `<div class="node-mini-label">${displayName}</div>`;
+
+                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
+
+                if (isUnitCleared) {
+                    if (tree[nodeId] && tree[nodeId].type === "end_win") dot.className += ' passed';
+                    else if (isFailNode) { dot.style.backgroundColor = "#FCA5A5"; dot.style.border = "2px solid #EF4444"; }
+                    else dot.className += ' passed';
+                    if (nodeId === activeFrontierNodeId) dot.className += ' active-target';
+                } else {
+                    if (isPassed) dot.className += ' passed';
+                    else if (isFailNode && isUnlocked) { dot.style.backgroundColor = "#FCA5A5"; dot.style.border = "2px solid #EF4444"; }
+                    else if (nodeId === activeFrontierNodeId) dot.className += ' active-target';
+                }
+
+                dot.onclick = () => {
+                    const parentNode = findParentDecisionNode(nodeId);
+                    if (parentNode && parentNode.id === activeFrontierNodeId && !isUnitCleared) {
+                        alert("🔒 當前階段戰術賽局正在進行，請由右側控制台點選按鈕進行推進，禁止由地圖直接點擊分流窺視答案。");
+                        return;
+                    }
+                    if (!isUnlocked && !isPassed && nodeId !== activeFrontierNodeId) {
+                        unlockedNodesList.push(nodeId); saveSandboxProgress();
+                    }
+                    currentlySelectedNodeId = nodeId; renderNordicSandboxMap(); inspectNodeDetail(nodeId);
+                };
+                nodesContainer.appendChild(dot);
+            });
+
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeDot = document.getElementById(`dot-${activeFrontierNodeId}`);
+            if (scrollStage && activeDot) {
+                setTimeout(() => { scrollStage.scrollTo({ top: activeDot.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' }); }, 50);
+            }
+        }
+
+        function inspectNodeDetail(nodeId) {
+            const inspector = document.getElementById('sandbox-inspector');
+            const node = window.tpmSandboxScriptTree[nodeId];
+            if (!inspector || !node) return;
+
+            const isReviewMode = (nodeId !== activeFrontierNodeId);
+            let contentHtml = `<div class="inspector-scroll-box" style="animation: fadeInNode 0.12s ease-out;">`;
+
+            if (node.type === "story") {
+                contentHtml += `
+                    <div style="font-size:0.72rem; color:var(--text-secondary); font-weight:900; letter-spacing:1px; margin-bottom:6px;">STORY MODULE ${isReviewMode ? ' (歷程複盤)' : ''}</div>
+                    <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900;">${node.title}</h2>
+                    <div style="color:#2D3748;">${node.text}</div>`;
+                if (!isReviewMode) contentHtml += `<button class="nordic-action-btn" onclick="executePassNode('${nodeId}')">➔ 繼續前進</button>`;
+            } else if (node.type === "decision") {
+                contentHtml += `
+                    <div style="font-size:0.72rem; color:#B45309; font-weight:900; letter-spacing:1px; margin-bottom:6px;">DECISION HUB ${isReviewMode ? ' (歷程複盤)' : ''}</div>
+                    <h2 style="margin:0 0 14px 0; font-size:1.25rem; font-weight:900; color:#B45309;">${node.title}</h2>
+                    <p style="font-weight:700; background:#FFFBEB; padding:12px; border-left:4px solid #F59E0B; border-radius:4px; line-height:1.5;">${node.question}</p>`;
+                if (!isReviewMode) {
+                    let randomizedOptions = shuffleArray(node.options);
+                    contentHtml += `<div style="margin-top:15px;">${randomizedOptions.map(opt => `<button class="nordic-option-btn" onclick="executeSelectBranch('${nodeId}', '${opt.target}')"><b>決策分流：</b> ${opt.text}</button>`).join('')}</div>`;
+                }
+            } else if (node.type === "quiz") {
+                contentHtml += `
+                    <div style="font-size:0.72rem; color:#1D4ED8; font-weight:900; letter-spacing:1px; margin-bottom:6px;">TACTICAL QUIZ ${isReviewMode ? ' (歷程複盤)' : ''}</div>
+                    <h2 style="margin:0 0 14px 0; font-size:1.25rem; font-weight:900; color:#1D4ED8;">${node.title}</h2>
+                    <p style="font-weight:700; margin-bottom:15px; line-height:1.5;">${node.question}</p>`;
+                if (!isReviewMode) {
+                    let randomizedQuizOpts = shuffleArray(node.options);
+                    contentHtml += `<div id="quiz-options-zone">${randomizedQuizOpts.map(opt => `<button class="nordic-option-btn" onclick="executeSubmitQuiz('${nodeId}', '${opt.target || ''}')">${opt.text}</button>`).join('')}</div>`;
+                }
+            } else if (node.type.startsWith("end_")) {
+                let endColor = (node.type === "end_win") ? "#15803D" : "#B91C1C";
+                let isWin = (node.type === "end_win");
+                contentHtml += `
+                    <div style="font-size:0.72rem; color:${endColor}; font-weight:900; letter-spacing:1px; margin-bottom:6px;">SCENARIO ENDING ${isReviewMode ? ' (歷程複盤)' : ''}</div>
+                    <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900; color:${endColor};">${node.title}</h2>
+                    <div style="background:#FAF8F5; padding:14px; border-radius:6px; border:1px solid var(--nordic-border); margin-bottom:15px;">${node.text}</div>`;
+                if (isWin && !isReviewMode) {
+                    contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
+                } else if (!isWin && !isReviewMode) {
+                    const parentDecision = findParentDecisionNode(nodeId);
+                    if (parentDecision && parentDecision.options) {
+                        let remainingOptions = parentDecision.options.filter(opt => !unlockedNodesList.includes(opt.target));
+                        let randomizedRetry = shuffleArray(remainingOptions);
+                        if (randomizedRetry.length > 0) {
+                            contentHtml += `<div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);"><p style="font-weight:900; color:var(--color-fail); margin-bottom:10px;">🔄 戰術重估：請重新評估該階段的分流決策：</p>${randomizedRetry.map(opt => `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`).join('')}</div>`;
+                        }
+                    }
+                }
+            }
+            contentHtml += `</div>`; inspector.innerHTML = contentHtml;
+        }
+
+        window.executePassNode = function(nodeId) {
+            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
+            const nodeData = window.tpmSandboxScriptTree[nodeId];
+            if (nodeData && nodeData.nextNodes) {
+                nodeData.nextNodes.forEach(nxt => { if (!unlockedNodesList.includes(nxt)) unlockedNodesList.push(nxt); });
+            }
+            saveSandboxProgress();
+            if (nodeData.nextNodes && nodeData.nextNodes.length > 0) {
+                activeFrontierNodeId = currentlySelectedNodeId = nodeData.nextNodes[0]; inspectNodeDetail(currentlySelectedNodeId);
+            }
+            renderNordicSandboxMap();
+        };
+
+        window.executeSelectBranch = function(nodeId, targetNodeId) {
+            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
+            if (!unlockedNodesList.includes(targetNodeId)) unlockedNodesList.push(targetNodeId);
+            saveSandboxProgress(); activeFrontierNodeId = currentlySelectedNodeId = targetNodeId;
+            inspectNodeDetail(currentlySelectedNodeId); renderNordicSandboxMap();
+        };
+
+        window.executeSubmitQuiz = function(nodeId, targetNodeId) {
+            const zone = document.getElementById('quiz-options-zone');
+            const node = window.tpmSandboxScriptTree[nodeId];
+            if (!zone || !node) return;
+
+            let isCorrect = (targetNodeId === "WIN-NODE-CONQUER" || targetNodeId === "T14-PASS-4");
+            zone.innerHTML = `
+                <div style="margin-top:10px; padding:14px; background:${isCorrect ? '#F0FDF4':'#FEF2F2'}; border-radius:6px; border:1px solid ${isCorrect?'#BBF7D0':'#FCA5A5'}; font-size:0.85rem; line-height:1.5;">
+                    <div style="font-weight:900; font-size:0.95rem; color:${isCorrect?'#16A34A':'#DC2626'}; margin-bottom:4px;">${isCorrect ? '🏆 回答正確！':'💥 判斷錯誤！'}</div>
+                    <div>${node.explanation}</div>
+                </div>
+                <button class="nordic-action-btn" onclick="executePassQuizNode('${nodeId}', '${targetNodeId}')">➔ 繼續前進</button>`;
+        };
+
+        window.executePassQuizNode = function(nodeId, targetNodeId) {
+            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
+            let finalTarget = targetNodeId;
+            if (!finalTarget || finalTarget === "undefined") {
+                finalTarget = window.tpmSandboxScriptTree[nodeId].nextNodes[0];
+            }
+            if (!unlockedNodesList.includes(finalTarget)) unlockedNodesList.push(finalTarget);
+            saveSandboxProgress(); activeFrontierNodeId = currentlySelectedNodeId = finalTarget;
+            inspectNodeDetail(currentlySelectedNodeId); renderNordicSandboxMap();
+        };
+
+        window.executeSettleHandbookUnit = function(isWin) {
+            if (!isWin) return;
+            localStorage.setItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`, 'true');
+            try {
+                const finalPushUrl = GLOBAL_GAS_URL + "?action=push&courseId=" + encodeURIComponent("HB-" + activePackUnitId) + "&status=" + encodeURIComponent("通過");
+                window.open(finalPushUrl, '_blank', 'width=500,height=400');
+            } catch(e) { console.error(e); }
+            exitToDashboardMenu();
+        };
+    </script>
+</body>
+</html>
