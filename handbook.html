@@ -355,7 +355,7 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 雙軌分流：內頁北歐沙盒地圖結構 ─── */
+        /* ─── 🎨 內襯北歐沙盒地圖主面板 ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -431,7 +431,7 @@
             pointer-events: none;
         }
 
-        /* 右側冷色調戰術觀測儀大牌 */
+        /* 右側戰術觀測儀 */
         .fixed-inspector-panel {
             width: 440px;
             height: 100%;
@@ -722,7 +722,7 @@
         }
 
         // ========================================================================
-        // 👑 換裝優化核心：動態戰術分流虛線指引大腦 👑
+        // 👑 拓撲連鎖大腦：完美導通「主幹黃金前進軌跡」與「分支可選虛線」 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -745,8 +745,11 @@
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
 
-                    // 🎯 迷霧過濾線路：兩端節點都必須在解鎖清單中，才渲染這條線（完全封死未解鎖的盲區）
-                    if (!isUnitCleared && (!unlockedNodesList.includes(srcId) || !unlockedNodesList.includes(tarId))) return;
+                    // 🎯 👑 核心熱修復 1: 重新校準過濾。當 srcId 是當前挑戰點時，允許引導線穿透迷霧顯影！
+                    if (!isUnitCleared) {
+                        if (!unlockedNodesList.includes(srcId)) return;
+                        if (!unlockedNodesList.includes(tarId) && srcId !== currentlySelectedNodeId) return;
+                    }
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     line.setAttribute("x1", srcPos.x);
@@ -755,20 +758,22 @@
                     line.setAttribute("y2", tarPos.y);
 
                     if (isUnitCleared) {
-                        // 通關後的全知灰色連線
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
-                    } else if (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) {
-                        // 🌟 已經走過並開通的黃金主動線路
+                    } else if (
+                        (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
+                        (passedNodesList.includes(srcId) && tarId === currentlySelectedNodeId)
+                    ) {
+                        // 🌟 🎯 核心熱修復 2: 已通過的主幹軌跡，或「已通過點指向當前選中挑戰點」的主線路 ➔ 熱熔亮黃色！
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
                     } else if (srcId === currentlySelectedNodeId) {
-                        // 🌟 🎯 從「當前挑戰節點」延伸出去給學員選擇的分流導引線（解決浮空斷線痛點！）
+                        // 🌟 🎯 核心熱修復 3: 從當前挑戰點向外輻射出的分支選項引導線 ➔ 顯影北歐深灰虛線！
                         line.setAttribute("stroke", "#78716C"); 
                         line.setAttribute("stroke-width", "2");
-                        line.setAttribute("stroke-dasharray", "4,4"); // 採用精緻虛線表達可選分支
+                        line.setAttribute("stroke-dasharray", "4,4");
                     } else {
-                        // 🌟 歷史踩雷留存的冷灰色連線痕跡
+                        // 歷史踩雷留下的冷灰色線
                         line.setAttribute("stroke", "#E2E8F0");
                         line.setAttribute("stroke-width", "1.5");
                     }
