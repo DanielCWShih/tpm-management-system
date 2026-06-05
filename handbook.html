@@ -325,7 +325,7 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 內襯北歐沙盒地圖主面板 ─── */
+        /* ─── 🎨 內襯北歐沙盒地圖容器 ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -345,7 +345,7 @@
             box-shadow: var(--shadow-tactical);
         }
 
-        /* 👑 置中固定硬體場域：保證線條與圓點 100% 絕對精密對齊 */
+        /* 👑 固定置中場域 */
         .map-inner-flow-field {
             width: 720px;
             height: 2200px;
@@ -392,13 +392,7 @@
             cursor: not-allowed;
         }
 
-        @keyframes pulseCircle {
-            0% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(26, 26, 26, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0); }
-        }
-
-        /* 🚀 標籤文字右側化 32px 排開 */
+        /* 🚀 標籤文字右側化 32px */
         .node-mini-label {
             position: absolute;
             left: 32px;
@@ -411,7 +405,7 @@
             pointer-events: none;
         }
 
-        /* 右側戰術觀測儀大牌 */
+        /* 右側戰術觀測儀 */
         .fixed-inspector-panel {
             width: 440px;
             height: 100%;
@@ -547,7 +541,6 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
-        // 👑 完璧對位座標矩陣
         const nodeLayoutCoordinates = {
             "T0-INTRO":          { x: 360, y: 60,   name: "通識導讀" },
             "T1-START":          { x: 360, y: 190,  name: "事件爆發" },
@@ -777,16 +770,18 @@
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 建立全量可視拓撲白名單
+            // 🎯 👑 遊戲大師級核心改裝：真・時間軸動態剪枝演算法
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
                     activeVisibleNodesSet.add(nodeId);
                 } else {
+                    // 1. 本次生存路徑點：當前挑戰點、歷史已通關主幹點、歷史已解鎖踩雷點
                     if (unlockedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId || passedNodesList.includes(nodeId)) {
                         activeVisibleNodesSet.add(nodeId);
                     }
-                    if (passedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId) {
+                    // 2. 僅對「當前挑戰點」與「踩雷原地複盤親代點」進行向下的分支發散導引
+                    if (nodeId === currentlySelectedNodeId) {
                         if (tree[nodeId].nextNodes) {
                             tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
                         }
@@ -794,10 +789,17 @@
                             tree[nodeId].options.forEach(opt => activeVisibleNodesSet.add(opt.target));
                         }
                     }
+                    // 3. 如果當前是失敗結局，強制把該結局對應的親代決策點其餘分支拉出來顯影，支援原地複盤
+                    if (currentlySelectedNodeId === nodeId && tree[nodeId].type && tree[nodeId].type.startsWith("end_")) {
+                        const parentNode = findParentDecisionNode(nodeId);
+                        if (parentNode && parentNode.options) {
+                            parentNode.options.forEach(opt => activeVisibleNodesSet.add(opt.target));
+                        }
+                    }
                 }
             });
 
-            // 🚀 👑 鄰層 Page 大虛線精密控制：僅在已被通過的「抉擇點 / 大考點」下方動態拉出題際邊界
+            // 🚀 👑 頁際分界線精密修正：僅在「已被學員成功通過的決策層 / 大考層」下方動態拉出分界線
             const decisionYSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (activeVisibleNodesSet.has(nodeId) && passedNodesList.includes(nodeId)) {
@@ -807,7 +809,9 @@
                         if (tree[nodeId].nextNodes) targets = targets.concat(tree[nodeId].nextNodes);
                         if (tree[nodeId].options) tree[nodeId].options.forEach(o => targets.push(o.target));
                         targets.forEach(t => {
-                            if (nodeLayoutCoordinates[t]) maxChildY = Math.max(maxChildY, nodeLayoutCoordinates[t].y);
+                            if (nodeLayoutCoordinates[t] && activeVisibleNodesSet.has(t)) {
+                                maxChildY = Math.max(maxChildY, nodeLayoutCoordinates[t].y);
+                            }
                         });
                         decisionYSet.add(maxChildY + 65);
                     }
@@ -862,7 +866,7 @@
                     ) {
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
-                    } else if (srcId === currentlySelectedNodeId) {
+                    } else if (srcId === currentlySelectedNodeId || (findParentDecisionNode(currentlySelectedNodeId)?.id === srcId)) {
                         line.setAttribute("stroke", "#475569"); 
                         line.setAttribute("stroke-width", "2");
                         line.setAttribute("stroke-dasharray", "4,4");
@@ -890,6 +894,7 @@
                 const isPassed = passedNodesList.includes(nodeId);
                 const isUnlocked = unlockedNodesList.includes(nodeId);
 
+                // 🚀 完美的盲測防線：未選、未採線的平行宇宙支線圓點一律強制盲測化
                 if (!isUnitCleared && nodeId !== currentlySelectedNodeId && !isPassed && !isUnlocked) {
                     displayName = "🔒 未知分流";
                 }
@@ -928,7 +933,7 @@
                 nodesContainer.appendChild(dot);
             });
 
-            // 🚀 👑 終極防錯追隨：100% 精密動態跟隨自動垂直捲動置中，解決圖三盲區
+            // 👑 鐵血對位追隨：自動追蹤焦點圓點垂直置中
             const scrollStage = document.getElementById('map-scroll-stage');
             const activeDot = document.getElementById(`dot-${currentlySelectedNodeId}`);
             if (scrollStage && activeDot) {
@@ -941,40 +946,56 @@
             }
         }
 
+        // ========================================================================
+        // 👑 右側戰術儀控制中樞（歷程唯讀保護與重估去重技術） 👑
+        // ========================================================================
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
             const node = window.tpmSandboxScriptTree[nodeId];
             if (!inspector || !node) return;
 
+            // 🎯 👑 核心唯讀判定：如果學員點擊的不是當前最新戰線節點，剛性激活 Review 模式
+            const isReviewMode = (nodeId !== currentlySelectedNodeId);
+
             let contentHtml = `<div class="inspector-scroll-box" style="animation: fadeInNode 0.12s ease-out;">`;
 
             if (node.type === "story") {
                 contentHtml += `
-                    <div style="font-size:0.72rem; color:var(--text-secondary); font-weight:900; letter-spacing:1px; margin-bottom:6px;">STORY MODULE</div>
+                    <div style="font-size:0.72rem; color:var(--text-secondary); font-weight:900; letter-spacing:1px; margin-bottom:6px;">STORY MODULE ${isReviewMode ? ' (歷程複盤)' : ''}</div>
                     <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900;">${node.title}</h2>
                     <div style="color:#2D3748;">${node.text}</div>
-                    <button class="nordic-action-btn" onclick="executePassNode('${nodeId}')">➔ 繼續前進</button>
                 `;
+                if (!isReviewMode) {
+                    contentHtml += `<button class="nordic-action-btn" onclick="executePassNode('${nodeId}')">➔ 繼續前進</button>`;
+                }
             } else if (node.type === "decision") {
-                let randomizedOptions = shuffleArray(node.options);
                 contentHtml += `
-                    <div style="font-size:0.72rem; color:#B45309; font-weight:900; letter-spacing:1px; margin-bottom:6px;">DECISION HUB</div>
+                    <div style="font-size:0.72rem; color:#B45309; font-weight:900; letter-spacing:1px; margin-bottom:6px;">DECISION HUB ${isReviewMode ? ' (歷程複盤)' : ''}</div>
                     <h2 style="margin:0 0 14px 0; font-size:1.25rem; font-weight:900; color:#B45309;">${node.title}</h2>
                     <p style="font-weight:700; background:#FFFBEB; padding:12px; border-left:4px solid #F59E0B; border-radius:4px; line-height:1.5;">${node.question}</p>
-                    <div style="margin-top:15px;">
-                        ${randomizedOptions.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${nodeId}', '${opt.target}')"><b>決策分流：</b> ${opt.text}</button>`).join('')}
-                    </div>
                 `;
+                if (!isReviewMode) {
+                    let randomizedOptions = shuffleArray(node.options);
+                    contentHtml += `
+                        <div style="margin-top:15px;">
+                            ${randomizedOptions.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${nodeId}', '${opt.target}')"><b>決策分流：</b> ${opt.text}</button>`).join('')}
+                        </div>
+                    `;
+                }
             } else if (node.type === "quiz") {
-                let randomizedQuizOpts = shuffleArray(node.options);
                 contentHtml += `
-                    <div style="font-size:0.72rem; color:#1D4ED8; font-weight:900; letter-spacing:1px; margin-bottom:6px;">TACTICAL QUIZ</div>
+                    <div style="font-size:0.72rem; color:#1D4ED8; font-weight:900; letter-spacing:1px; margin-bottom:6px;">TACTICAL QUIZ ${isReviewMode ? ' (歷程複盤)' : ''}</div>
                     <h2 style="margin:0 0 14px 0; font-size:1.25rem; font-weight:900; color:#1D4ED8;">${node.title}</h2>
                     <p style="font-weight:700; margin-bottom:15px; line-height:1.5;">${node.question}</p>
-                    <div id="quiz-options-zone">
-                        ${randomizedQuizOpts.map((opt) => `<button class="nordic-option-btn" onclick="executeSubmitQuiz('${nodeId}', '${opt.target || ''}')">${opt.text}</button>`).join('')}
-                    </div>
                 `;
+                if (!isReviewMode) {
+                    let randomizedQuizOpts = shuffleArray(node.options);
+                    contentHtml += `
+                        <div id="quiz-options-zone">
+                            ${randomizedQuizOpts.map((opt) => `<button class="nordic-option-btn" onclick="executeSubmitQuiz('${nodeId}', '${opt.target || ''}')">${opt.text}</button>`).join('')}
+                        </div>
+                    `;
+                }
             } else if (node.type.startsWith("end_")) {
                 let endColor = (node.type === "end_win") ? "#15803D" : (node.type === "end_fail" ? "#B91C1C" : "#475569");
                 let isWin = (node.type === "end_win");
@@ -986,20 +1007,24 @@
                 `;
 
                 if (isWin) {
-                    contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
+                    if (!isReviewMode) {
+                        contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
+                    }
                 } else {
-                    // 🚀 👑 戰術重估過濾裝甲：過濾掉 unlockedNodesList 中已經探索踩雷過的錯誤選項，只顯示剩餘答案！
+                    // 🚀 👑 核心去重過濾：戰術重估時，自動把解鎖過（踩雷過）的錯誤選項剔除！
                     const parentDecision = findParentDecisionNode(nodeId);
                     if (parentDecision && parentDecision.options) {
-                        let retryOptions = parentDecision.options.filter(opt => !unlockedNodesList.includes(opt.target));
-                        let randomizedRetry = shuffleArray(retryOptions);
+                        let remainingOptions = parentDecision.options.filter(opt => !unlockedNodesList.includes(opt.target));
+                        let randomizedRetry = shuffleArray(remainingOptions);
                         
-                        contentHtml += `
-                            <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
-                                <p style="font-weight:900; color:var(--color-fail); margin-bottom:10px;">🔄 戰術重估：請重新評估該階段的分流決策：</p>
-                                ${randomizedRetry.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`).join('')}
-                            </div>
-                        `;
+                        if (!isReviewMode && randomizedRetry.length > 0) {
+                            contentHtml += `
+                                <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
+                                    <p style="font-weight:900; color:var(--color-fail); margin-bottom:10px;">🔄 戰術重估：請重新評估該階段的分流決策：</p>
+                                    ${randomizedRetry.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`).join('')}
+                                </div>
+                            `;
+                        }
                     }
                 }
             }
@@ -1050,7 +1075,7 @@
 
             zone.innerHTML = `
                 <div style="margin-top:10px; padding:14px; background:${isCorrect ? '#F0FDF4':'#FEF2F2'}; border-radius:6px; border:1px solid ${isCorrect?'#BBF7D0':'#FCA5A5'}; font-size:0.85rem; line-height:1.5;">
-                    <div style="font-weight:900; font-size:0.95rem; color:${isCorrect?'#16A34A':'#DC2626划分'}; margin-bottom:4px;">${isCorrect ? '🏆 回答正確！':'💥 判斷錯誤！'}</div>
+                    <div style="font-weight:900; font-size:0.95rem; color:${isCorrect?'#16A34A':'#DC2626'}; margin-bottom:4px;">${isCorrect ? '🏆 回答正確！':'💥 判斷錯誤！'}</div>
                     <div>${node.explanation}</div>
                 </div>
                 <button class="nordic-action-btn" onclick="executePassQuizNode('${nodeId}', '${targetNode}')">➔ 繼續前進</button>
