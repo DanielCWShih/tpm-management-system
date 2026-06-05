@@ -565,14 +565,31 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
+// 👑 15層線性戰役黃金佈局坐標大盤 (X軸每層遞增 160px，Y軸分流)
         const nodeLayoutCoordinates = {
-            "START-NODE": { x: 120, y: 240, name: "事件爆發" },
-            "DECISION-NODE-01": { x: 280, y: 240, name: "決策分流" },
-            "FAIL-NODE-SKIP": { x: 460, y: 120, name: "盲目放行" },
-            "WARN-NODE-FIGHT": { x: 460, y: 240, name: "剛性抗爭" },
-            "QUIZ-NODE-STACKUP": { x: 460, y: 360, name: "技術排查" },
-            "WIN-NODE-CONQUER": { x: 650, y: 360, name: "完美通關" }
-        };
+            "T1-START":          { x: 100,  y: 240, name: "事件爆發" },
+            "T2-DECISION-1":     { x: 260,  y: 240, name: "抉擇:皮球戰" },
+            "T3-FAIL-1":         { x: 420,  y: 120, name: "盲目放行" },
+            "T3-WARN-1":         { x: 420,  y: 360, name: "剛性內耗" },
+            "T3-PASS-1":         { x: 420,  y: 240, name: "日誌抓取" },
+            "T4-STORY-1":        { x: 580,  y: 240, name: "趨勢顯影" },
+            "T5-TUTORIAL-1":     { x: 740,  y: 240, name: "📚 數據心法" },
+            "T6-DECISION-2":     { x: 900,  y: 240, name: "抉擇:公差鏈" },
+            "T7-FAIL-2":         { x: 1060, y: 120, name: "盲目加壓" },
+            "T7-WARN-2":         { x: 1060, y: 360, name: "會場死磕" },
+            "T7-PASS-2":         { x: 1060, y: 240, name: "矩陣模擬" },
+            "T8-STORY-2":        { x: 1220, y: 240, name: "盲區定位" },
+            "T9-TUTORIAL-2":     { x: 1380, y: 240, name: "📚 點檢剛性" },
+            "T10-DECISION-3":    { x: 1540, y: 240, name: "抉擇:刷產量" },
+            "T11-FAIL-3":        { x: 1700, y: 120, name: "減速妥協" },
+            "T11-WARN-3":        { x: 1700, y: 360, name: "強行停機" },
+            "T11-PASS-3":        { x: 1700, y: 240, name: "臨時優化" },
+            "T12-STORY-3":       { x: 1860, y: 240, name: "稽核攔截" },
+            "T13-DECISION-4":    { x: 2020, y: 240, name: "大考:簽核流" },
+            "T14-PASS-4":        { x: 2180, y: 240, name: "特採通航" },
+            "T15-WIN":           { x: 2340, y: 240, name: "完美通關" }
+
+        
 
         let selectedActiveLevelNum = 1; 
         let unlockedNodesList = ["START-NODE"]; 
