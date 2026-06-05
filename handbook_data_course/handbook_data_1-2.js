@@ -1,7 +1,7 @@
 /**
  ========================================================================
  FILE: handbook_data_course/handbook_data_1-2.js
- VERSION: 2026-06-04 V1.10-CORE-ALIGN
+ VERSION: 2026-06-05 V1.10-CORE-ALIGN
  DESCRIPTION: 👑 系統 TPM 冒險者手冊 1-2 獨立沙盒劇本物料（精準文字對位版）
  TITLE: 1-2: 防水結構 Worst-Case 模擬與幾何流產盲區
  ========================================================================
@@ -24,7 +24,7 @@ window.tpmSandboxScriptTree = {
         title: "⚡ 抉擇點：生管的剛性出貨施壓",
         question: "此時身為線體最高 System TPM 負責人，你的下一個戰術動作是？",
         options: [
-            { text: "同意生管PC，為了 Daniel 部長的出貨指標，在 SFC 後台按下 Skip 放行", target: "FAIL-NODE-SKIP" },
+            { text: "同意生管PC，為了 Daniel 部長的出貨指標，在 SFC 後台按下 Skip放行", target: "FAIL-NODE-SKIP" },
             { text: "剛性回絕 PC，現場怒拍桌子大吵，堅決不放行，讓線體停工死磕", target: "WARN-NODE-FIGHT" },
             { text: "嫌疑幾何流產，開啟 4M1E 點檢，並下線抓取「實體壓縮特徵」數據進行對位", target: "QUIZ-NODE-STACKUP" }
         ]
@@ -42,11 +42,11 @@ window.tpmSandboxScriptTree = {
 
     "WARN-NODE-FIGHT": {
         id: "WARN-NODE-FIGHT",
-        type: "end_warn",
+        type: "end_fail",
         title: "⚠️ 結局：跨部門溝通僵局",
-        text: `<h3>🩹 普通通關：缺乏科學溝通的對立</h3>
+        text: `<h3>❌ 通關失敗：缺乏科學溝通的對立</h3>
                <p>你選擇跟 PC 怒拍桌子互吼：『 我是 TPM，不符合規格就是不准放行！』現場 PC 直接擺爛，宣布產線全體下班停工，造成今日出貨指標直接掛零。</p>
-               <p>PC 聯合廠長聯名發信檢討你『 缺乏客觀數據佐證，工作態度粗暴，缺乏跨部門協調力 』。你雖然守住了品質紅線，但也陷入了合作僵局，仍需重新修煉跨部門溝通法規。</p>`,
+               <p>PC 聯合廠長聯名發信檢討你『 缺乏客觀數據佐證，工作態度粗暴，缺乏跨部門協調力 』。你雖然守住了品質紅線，但也陷入了合作僵局，職能試煉失敗。</p>`,
         nextNodes: []
     },
 
