@@ -345,7 +345,7 @@
             box-shadow: var(--shadow-tactical);
         }
 
-        /* 👑 固定置中場域 */
+        /* 👑 固定寬體置中場域 */
         .map-inner-flow-field {
             width: 720px;
             height: 2200px;
@@ -390,6 +390,12 @@
             background-color: var(--nordic-gray-dot);
             opacity: 0.35;
             cursor: not-allowed;
+        }
+
+        @keyframes pulseCircle {
+            0% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(26, 26, 26, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0); }
         }
 
         /* 🚀 標籤文字右側化 32px */
@@ -576,7 +582,10 @@
         let selectedActiveLevelNum = 1; 
         let unlockedNodesList = []; 
         let passedNodesList = []; 
-        let currentlySelectedNodeId = null;
+        
+        // 👑 鐵血雙軌變數解耦
+        let activeFrontierNodeId = null;     // 🎯 真正的遊戲前進防線 (唯一能觸發操作的 frontier)
+        let currentlySelectedNodeId = null;  // 🎯 學員當前點擊查閱的焦點圓點
         let activePackUnitId = null;
 
         window.onload = () => {
@@ -711,21 +720,42 @@
             passedNodesList = savedPassed ? JSON.parse(savedPassed) : [];
             unlockedNodesList = savedUnlocked ? JSON.parse(savedUnlocked) : [];
             
+            let initialStartNode = "START-NODE";
             if (window.tpmSandboxScriptTree) {
                 if (window.tpmSandboxScriptTree["T0-INTRO"]) {
-                    currentlySelectedNodeId = "T0-INTRO";
+                    initialStartNode = "T0-INTRO";
                 } else if (window.tpmSandboxScriptTree["T1-START"]) {
-                    currentlySelectedNodeId = "T1-START";
-                } else {
-                    currentlySelectedNodeId = "START-NODE";
+                    initialStartNode = "T1-START";
                 }
-            } else {
-                currentlySelectedNodeId = "START-NODE";
             }
             
-            if (!unlockedNodesList.includes(currentlySelectedNodeId)) {
-                unlockedNodesList.push(currentlySelectedNodeId);
+            // 🚀 逆向遞迴演算：自動追溯地端快取，精密咬合最高進度 Frontier
+            let curr = initialStartNode;
+            while (passedNodesList.includes(curr)) {
+                let nodeData = window.tpmSandboxScriptTree[curr];
+                if (!nodeData) break;
+                if (nodeData.nextNodes && nodeData.nextNodes.length > 0) {
+                    curr = nodeData.nextNodes[0];
+                } else {
+                    let foundNext = false;
+                    if (nodeData.options) {
+                        for (let opt of nodeData.options) {
+                            if (passedNodesList.includes(opt.target) || unlockedNodesList.includes(opt.target)) {
+                                curr = opt.target;
+                                foundNext = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!foundNext) break;
+                }
             }
+            
+            activeFrontierNodeId = curr;
+            currentlySelectedNodeId = activeFrontierNodeId;
+
+            if (!unlockedNodesList.includes(initialStartNode)) unlockedNodesList.push(initialStartNode);
+            if (!unlockedNodesList.includes(activeFrontierNodeId)) unlockedNodesList.push(activeFrontierNodeId);
 
             renderNordicSandboxMap();
             inspectNodeDetail(currentlySelectedNodeId);
@@ -757,7 +787,7 @@
         }
 
         // ========================================================================
-        // 👑 鐵血進化拓撲引擎：親代發散、歷史反遮蔽、頁際虛線暨戰敗淡紅渲染 👑
+        // 👑 鐵血重構拓撲引擎：親代發散、歷史真名全導通、動態頁際大虛線 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -770,18 +800,16 @@
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 👑 遊戲大師級核心改裝：真・時間軸動態剪枝演算法
+            // 🎯 👑 核心優化 1：親代分支發散名單，直接把所有解鎖層的分流全部常駐導通顯影，100% 絕殺漂浮空洞
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
                     activeVisibleNodesSet.add(nodeId);
                 } else {
-                    // 1. 本次生存路徑點：當前挑戰點、歷史已通關主幹點、歷史已解鎖踩雷點
-                    if (unlockedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId || passedNodesList.includes(nodeId)) {
+                    if (unlockedNodesList.includes(nodeId) || nodeId === activeFrontierNodeId || passedNodesList.includes(nodeId)) {
                         activeVisibleNodesSet.add(nodeId);
                     }
-                    // 2. 僅對「當前挑戰點」與「踩雷原地複盤親代點」進行向下的分支發散導引
-                    if (nodeId === currentlySelectedNodeId) {
+                    if (passedNodesList.includes(nodeId) || nodeId === activeFrontierNodeId) {
                         if (tree[nodeId].nextNodes) {
                             tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
                         }
@@ -789,17 +817,10 @@
                             tree[nodeId].options.forEach(opt => activeVisibleNodesSet.add(opt.target));
                         }
                     }
-                    // 3. 如果當前是失敗結局，強制把該結局對應的親代決策點其餘分支拉出來顯影，支援原地複盤
-                    if (currentlySelectedNodeId === nodeId && tree[nodeId].type && tree[nodeId].type.startsWith("end_")) {
-                        const parentNode = findParentDecisionNode(nodeId);
-                        if (parentNode && parentNode.options) {
-                            parentNode.options.forEach(opt => activeVisibleNodesSet.add(opt.target));
-                        }
-                    }
                 }
             });
 
-            // 🚀 👑 頁際分界線精密修正：僅在「已被學員成功通過的決策層 / 大考層」下方動態拉出分界線
+            // 🚀 👑 核心優化 2：頁際分界線精密對位，僅在已被成功通過的決策點 / 大考點下游拉出大虛線
             const decisionYSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (activeVisibleNodesSet.has(nodeId) && passedNodesList.includes(nodeId)) {
@@ -813,7 +834,7 @@
                                 maxChildY = Math.max(maxChildY, nodeLayoutCoordinates[t].y);
                             }
                         });
-                        decisionYSet.add(maxChildY + 65);
+                        decisionYSet.add(maxChildY + 65); // Tier 的正中央物理截線
                     }
                 }
             });
@@ -829,7 +850,7 @@
                 svgCanvas.appendChild(divider);
             });
 
-            // 1. 繪製 SVG 戰術連線層
+            // 1. 繪製 SVG 戰術連線層 (融入戰敗淡紅連線狀態機)
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -852,21 +873,27 @@
                     line.setAttribute("x2", tarPos.x);
                     line.setAttribute("y2", tarPos.y);
 
-                    const isTargetFailAndUnlocked = (tarId.includes("FAIL") || tarId.includes("WARN") || tarId.includes("end_fail") || tarId.includes("end_warn")) && unlockedNodesList.includes(tarId);
+                    const isTarFail = tarId.includes("FAIL") || tarId.includes("WARN") || (tree[tarId] && (tree[tarId].type === "end_fail" || tree[tarId].type === "end_warn"));
 
                     if (isUnitCleared) {
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
-                    } else if (isTargetFailAndUnlocked) {
+                    } else if (isTarFail) {
+                        // 🌟 戰敗錯誤支線：100% 剛性顯影淡紅實線
                         line.setAttribute("stroke", "#F87171"); 
                         line.setAttribute("stroke-width", "2.5");
+                        if (srcId === activeFrontierNodeId) {
+                            line.setAttribute("stroke-dasharray", "4,4"); // 當前挑戰點伸出去的錯路為紅虛線
+                        }
                     } else if (
                         (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
-                        (passedNodesList.includes(srcId) && tarId === currentlySelectedNodeId)
+                        (passedNodesList.includes(srcId) && tarId === activeFrontierNodeId)
                     ) {
+                        // 黃金主動脈
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
-                    } else if (srcId === currentlySelectedNodeId || (findParentDecisionNode(currentlySelectedNodeId)?.id === srcId)) {
+                    } else if (srcId === activeFrontierNodeId) {
+                        // 常規前進導引虛線
                         line.setAttribute("stroke", "#475569"); 
                         line.setAttribute("stroke-width", "2");
                         line.setAttribute("stroke-dasharray", "4,4");
@@ -878,7 +905,7 @@
                 });
             });
 
-            // 2. 部署北歐風極簡圓點
+            // 2. 部署北歐風極簡圓點 (絕殺未知分流，全部解密真名)
             Object.keys(tree).forEach(nodeId => {
                 const pos = nodeLayoutCoordinates[nodeId];
                 if (!pos) return; 
@@ -890,36 +917,31 @@
                 dot.style.left = `${pos.x}px`;
                 dot.style.top = `${pos.y}px`;
                 
-                let displayName = pos.name;
+                // 🚀 👑 核心優化 3：直接呈現所有分流真實名稱，拒絕不必要的未知屏蔽！
+                dot.innerHTML = `<div class="node-mini-label">${pos.name}</div>`;
+
                 const isPassed = passedNodesList.includes(nodeId);
-                const isUnlocked = unlockedNodesList.includes(nodeId);
-
-                // 🚀 完美的盲測防線：未選、未採線的平行宇宙支線圓點一律強制盲測化
-                if (!isUnitCleared && nodeId !== currentlySelectedNodeId && !isPassed && !isUnlocked) {
-                    displayName = "🔒 未知分流";
-                }
-                dot.innerHTML = `<div class="node-mini-label">${displayName}</div>`;
-
                 const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
 
                 if (isUnitCleared) {
                     if (tree[nodeId] && tree[nodeId].type === "end_win") {
                         dot.className += ' passed';
-                    } else if (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn")) {
+                    } else if (isFailNode) {
                         dot.style.backgroundColor = "#FCA5A5"; 
                         dot.style.border = "2px solid #EF4444";
                     } else {
                         dot.className += ' passed';
                     }
-                    if (nodeId === currentlySelectedNodeId) dot.className += ' active-target';
+                    if (nodeId === activeFrontierNodeId) dot.className += ' active-target';
                 } else {
                     if (isPassed) {
                         dot.className += ' passed';
-                    } else if (isFailNode && isUnlocked) {
+                    } else if (isFailNode) {
+                        // 🌟 所有錯誤分流圓點：一體以紅邊、淡紅底固化顯影！
                         dot.style.backgroundColor = "#FCA5A5"; 
                         dot.style.border = "2px solid #EF4444";
                     } else {
-                        if (nodeId === currentlySelectedNodeId) dot.className += ' active-target';
+                        if (nodeId === activeFrontierNodeId) dot.className += ' active-target';
                     }
                 }
 
@@ -933,9 +955,9 @@
                 nodesContainer.appendChild(dot);
             });
 
-            // 👑 鐵血對位追隨：自動追蹤焦點圓點垂直置中
+            // 👑 鐵血視野跟隨：畫布全自動滾動追隨 activeFrontierNodeId 居中
             const scrollStage = document.getElementById('map-scroll-stage');
-            const activeDot = document.getElementById(`dot-${currentlySelectedNodeId}`);
+            const activeDot = document.getElementById(`dot-${activeFrontierNodeId}`);
             if (scrollStage && activeDot) {
                 setTimeout(() => {
                     scrollStage.scrollTo({
@@ -954,8 +976,8 @@
             const node = window.tpmSandboxScriptTree[nodeId];
             if (!inspector || !node) return;
 
-            // 🎯 👑 核心唯讀判定：如果學員點擊的不是當前最新戰線節點，剛性激活 Review 模式
-            const isReviewMode = (nodeId !== currentlySelectedNodeId);
+            // 🎯 👑 核心優化 4：唯讀保護鎖！只要學員點擊的不是最新的前線進度，當場判定為 ReviewMode
+            const isReviewMode = (nodeId !== activeFrontierNodeId);
 
             let contentHtml = `<div class="inspector-scroll-box" style="animation: fadeInNode 0.12s ease-out;">`;
 
@@ -965,6 +987,7 @@
                     <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900;">${node.title}</h2>
                     <div style="color:#2D3748;">${node.text}</div>
                 `;
+                // 🚀 👑 核心優化 5：唯讀狀態下，徹底扣押隱置所有推進按鈕！
                 if (!isReviewMode) {
                     contentHtml += `<button class="nordic-action-btn" onclick="executePassNode('${nodeId}')">➔ 繼續前進</button>`;
                 }
@@ -1011,7 +1034,7 @@
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
                 } else {
-                    // 🚀 👑 核心去重過濾：戰術重估時，自動把解鎖過（踩雷過）的錯誤選項剔除！
+                    // 🚀 👑 核心優化 6：原地複盤動態去重！100% 剛性剔除已踩雷的錯誤路徑，兩錯皆踩則僅剩唯一正解！
                     const parentDecision = findParentDecisionNode(nodeId);
                     if (parentDecision && parentDecision.options) {
                         let remainingOptions = parentDecision.options.filter(opt => !unlockedNodesList.includes(opt.target));
@@ -1041,7 +1064,7 @@
             }
             saveSandboxProgress();
             if (nodeData.nextNodes && nodeData.nextNodes.length > 0) {
-                currentlySelectedNodeId = nodeData.nextNodes[0];
+                activeFrontierNodeId = currentlySelectedNodeId = nodeData.nextNodes[0];
                 inspectNodeDetail(currentlySelectedNodeId);
             }
             renderNordicSandboxMap();
@@ -1051,8 +1074,8 @@
             if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
             if (!unlockedNodesList.includes(targetNodeId)) unlockedNodesList.push(targetNodeId);
             saveSandboxProgress();
-            currentlySelectedNodeId = targetNodeId;
-            inspectNodeDetail(targetNodeId);
+            activeFrontierNodeId = currentlySelectedNodeId = targetNodeId;
+            inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
         };
 
@@ -1094,7 +1117,7 @@
             if (!unlockedNodesList.includes(finalTarget)) unlockedNodesList.push(finalTarget);
             saveSandboxProgress();
             
-            currentlySelectedNodeId = finalTarget;
+            activeFrontierNodeId = currentlySelectedNodeId = finalTarget;
             inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
         };
