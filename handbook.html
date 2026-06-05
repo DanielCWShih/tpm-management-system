@@ -547,7 +547,7 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
-        // 👑 完璧對位座標天梯大盤（130px 等距嚴格序列校準版，徹底絕殺 T9 ~ T12 重疊 Bug）
+        // 👑 完璧置中等距網格座標大盤
         const nodeLayoutCoordinates = {
             "T0-INTRO":          { x: 360, y: 60,   name: "通識導讀" },
             "T1-START":          { x: 360, y: 190,  name: "事件爆發" },
@@ -572,7 +572,6 @@
             "T14-PASS-4":        { x: 360, y: 1880, name: "特採通航" },
             "T15-WIN":           { x: 360, y: 2010, name: "完美通關" },
 
-            // ─── 1-2 舊版六節點縱向相容對位 ───
             "START-NODE":        { x: 360, y: 80,  name: "事件爆發" },
             "DECISION-NODE-01":  { x: 360, y: 220, name: "決策分流" },
             "FAIL-NODE-SKIP":    { x: 160, y: 360, name: "盲目放行" },
@@ -585,9 +584,9 @@
         let unlockedNodesList = []; 
         let passedNodesList = []; 
         
-        // 👑 鐵血解耦雙軌變數
-        let activeFrontierNodeId = null;     // 🎯 真正的遊戲最高前進進度防線
-        let currentlySelectedNodeId = null;  // 🎯 學員點擊選中的查閱焦點
+        // 👑 解耦變數
+        let activeFrontierNodeId = null;     
+        let currentlySelectedNodeId = null;  
         let activePackUnitId = null;
 
         window.onload = () => {
@@ -731,7 +730,7 @@
                 }
             }
             
-            // 🚀 👑 權重優先級演算大腦（V14.25-FRONTIER-PRIORITY）
+            // 🚀 👑 權重優先級演算大腦：自動追溯地端快取，精密咬合最高前線進度
             let curr = initialStartNode;
             while (passedNodesList.includes(curr)) {
                 let nodeData = window.tpmSandboxScriptTree[curr];
@@ -834,7 +833,7 @@
                 }
             });
 
-            // 🚀 鄰層 Page 大虛線精密控制：僅在已被通過的「抉擇點 / 大考點」下方動態拉出題際分界
+            // 🚀 鄰層 Page 大虛線精密控制：僅在已被通過的「抉難點 / 大考點」下方動態拉出題際分界
             const decisionYSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (activeVisibleNodesSet.has(nodeId) && passedNodesList.includes(nodeId)) {
@@ -894,23 +893,19 @@
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
                     } else if (isTargetFail && isTargetUnlocked) {
-                        // 🌟 唯有當「目標是失敗點」且「學員真正踩雷解鎖過」，才呈現固化淡紅實線！
                         line.setAttribute("stroke", "#F87171"); 
                         line.setAttribute("stroke-width", "2.5");
                     } else if (
                         (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
                         (passedNodesList.includes(srcId) && tarId === activeFrontierNodeId)
                     ) {
-                        // 黃金主動脈
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
                     } else if (srcId === activeFrontierNodeId) {
-                        // 當前前線挑戰點伸出去的預備分支：100% 一體呈現純淨北歐深灰引導虛線
                         line.setAttribute("stroke", "#475569"); 
                         line.setAttribute("stroke-width", "2");
                         line.setAttribute("stroke-dasharray", "4,4");
                     } else {
-                        // 歷史其餘未選擇的平行宇宙支線
                         line.setAttribute("stroke", "#D1D5DB");
                         line.setAttribute("stroke-width", "1.5");
                     }
@@ -930,7 +925,6 @@
                 dot.style.left = `${pos.x}px`;
                 dot.style.top = `${pos.y}px`;
                 
-                // 反劇透屏蔽機制：走過、解鎖過常駐顯影真名，其餘未來選項強置顯示為未知分流
                 let displayName = pos.name;
                 const isPassed = passedNodesList.includes(nodeId);
                 const isUnlocked = unlockedNodesList.includes(nodeId);
@@ -956,7 +950,6 @@
                     if (isPassed) {
                         dot.className += ' passed';
                     } else if (isFailNode && isUnlocked) {
-                        // 唯有真正踩雷被解鎖的歷史錯誤節點，才呈現紅邊淡紅底
                         dot.style.backgroundColor = "#FCA5A5"; 
                         dot.style.border = "2px solid #EF4444";
                     } else {
@@ -964,10 +957,17 @@
                     }
                 }
 
-                // 🚀 👑 最終微調修正：當點擊未知錯誤分流時，自動對其開箱解密，使其轉變為踩雷已探索狀態並變紅
+                // 🚀 👑 V14.30 精密過濾防護：限制學員禁止點擊最新挑戰點的下游分流，防止看答案作弊！
                 dot.onclick = () => {
                     if (!activeVisibleNodesSet.has(nodeId)) return;
                     
+                    const parentNode = findParentDecisionNode(nodeId);
+                    if (parentNode && parentNode.id === activeFrontierNodeId && !isUnitCleared) {
+                        alert("🔒 當前階段戰術賽局正在進行，請由右側控制台點選按鈕進行推進，禁止由地圖直接點擊分流窺視答案。");
+                        return;
+                    }
+
+                    // 往上層歷史舊 Tier 點選時，允許主動探索解鎖、將未知分流解密真名並點亮變紅
                     if (!isUnlocked && !isPassed && nodeId !== activeFrontierNodeId) {
                         unlockedNodesList.push(nodeId);
                         saveSandboxProgress();
@@ -1058,7 +1058,6 @@
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
                 } else {
-                    // 原地複盤技術去重 (僅在前線挑戰失敗時出現，Review歷史失敗時不出現)
                     if (!isReviewMode) {
                         const parentDecision = findParentDecisionNode(nodeId);
                         if (parentDecision && parentDecision.options) {
