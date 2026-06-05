@@ -1,3 +1,14 @@
+<!-- 
+========================================================================
+REVISION HISTORY / VERSION LOG
+========================================================================
+2026-06-05 V13.95-CHRONICLE-FIX: 👑 冒險者手冊終極完全體（歷史雷區淡紅固化暨頁際虛線熱修復版）
+1. 經歷解密常常駐：完美修正遮蔽盲區！凡是走過或解鎖過的歷史節點，100% 剛性常駐顯示真名，絕不退回未知狀態。
+2. 戰敗雷區淡紅化：走過且失敗的錯誤支線，連線全自動轉為淡紅色實線（#F87171），且圓點浮標固化為淡紅底（#FCA5A5）與剛性紅邊（#EF4444）。
+3. 頁際虛線回歸：精確重構分界演算法，僅在當前已展開的相鄰層級間動態顯影橫向大虛線，還原 Page 題際跨越感。
+4. 剛性置中與右側標籤：720px 核心戰術場域全量置中，文字位於圓點右側 32px 處，連線 100% 像素級絕對精密咬合。
+========================================================================
+-->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -325,7 +336,7 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 內襯北歐沙盒地圖主面板 ─── */
+        /* ─── 🎨 內襯北歐沙盒地圖容器 ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -345,7 +356,7 @@
             box-shadow: var(--shadow-tactical);
         }
 
-        /* 👑 固定寬體核心場域（確保絕對對齊置中） */
+        /* 👑 固定寬體核心置中場域 */
         .map-inner-flow-field {
             width: 720px;
             height: 2150px;
@@ -398,7 +409,7 @@
             100% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0); }
         }
 
-        /* 🚀 標籤右側化排開 */
+        /* 🚀 標籤右側化 32px 整齊排開 */
         .node-mini-label {
             position: absolute;
             left: 32px;
@@ -411,7 +422,7 @@
             pointer-events: none;
         }
 
-        /* 包裝右側戰術儀 */
+        /* 右側戰術觀測儀 */
         .fixed-inspector-panel {
             width: 440px;
             height: 100%;
@@ -495,17 +506,20 @@
     </div>
 
     <div class="workspace-container">
+        <!-- 左側選單工具欄清冊大盤 -->
         <aside class="sidebar-panel">
             <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
             <div id="global-tree-root"></div>
         </aside>
 
+        <!-- 中央主觀測工作區 -->
         <main class="content-panel">
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
                 <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
                 <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">冒險者戰術大廳</h2>
             </div>
 
+            <!-- VIEW 1: CENTRAL HUB DASHBOARD 選單清單 -->
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
                 <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
                 <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
@@ -513,6 +527,7 @@
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
 
+            <!-- VIEW 2: 👑 終極擴展北歐極簡沙盒地圖雙軌分流艙 -->
             <div class="sandbox-game-container" id="sandbox-viewport">
                 <div class="sandbox-map-canvas" id="map-scroll-stage">
                     <div class="map-inner-flow-field" id="map-lock-field">
@@ -547,6 +562,7 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
+        // 👑 完璧對位座標盤
         const nodeLayoutCoordinates = {
             "START-NODE":        { x: 360, y: 80,  name: "事件爆發" },
             "DECISION-NODE-01":  { x: 360, y: 220, name: "決策分流" },
@@ -740,7 +756,7 @@
         }
 
         // ========================================================================
-        // 👑 終極優化核心：解決漂浮橋與盲測反劇透顯影演算 👑
+        // 👑 鐵血修復大腦：親代發散、歷史反遮蔽、頁際虛線暨戰敗淡紅渲染 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -753,13 +769,13 @@
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 建立擴展可視名單：包含所有歷史點與當前發散分支的所有子選項
+            // 🎯 親代發散名單：包含解鎖點、當前點與已被點亮過（解鎖）的下游分支
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
                     activeVisibleNodesSet.add(nodeId);
                 } else {
-                    if (unlockedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId) {
+                    if (unlockedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId || passedNodesList.includes(nodeId)) {
                         activeVisibleNodesSet.add(nodeId);
                     }
                     if (passedNodesList.includes(nodeId) || nodeId === currentlySelectedNodeId) {
@@ -773,33 +789,28 @@
                 }
             });
 
-            // 🚀 👑 翻頁虛線精確控制：僅在當前挑戰點（currentlySelectedNodeId）與上一層级之間，動態繪製橫向大虛線分界線
-            if (!isUnitCleared && currentlySelectedNodeId) {
-                const currentPos = nodeLayoutCoordinates[currentlySelectedNodeId];
-                if (currentPos) {
-                    let prevMaxY = 0;
-                    activeVisibleNodesSet.forEach(nodeId => {
-                        const p = nodeLayoutCoordinates[nodeId];
-                        if (p && p.y < currentPos.y && p.y > prevMaxY) {
-                            prevMaxY = p.y;
-                        }
-                    });
-                    if (prevMaxY > 0) {
-                        const midY = prevMaxY + (currentPos.y - prevMaxY) / 2;
-                        const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                        divider.setAttribute("x1", "0");
-                        divider.setAttribute("y1", midY);
-                        divider.setAttribute("x2", "720");
-                        divider.setAttribute("y2", midY);
-                        divider.setAttribute("stroke", "#CBD5E1");
-                        divider.setAttribute("stroke-width", "1.5");
-                        divider.setAttribute("stroke-dasharray", "6,6");
-                        svgCanvas.appendChild(divider);
-                    }
+            // 🚀 👑 頁際虛線剛性重構：找出所有可視點獨特的 Y 軸座標並精密排序，僅在解密蔓延的相鄰層級間橫向拉出 dashed 防線
+            const visibleYCoords = [];
+            activeVisibleNodesSet.forEach(nodeId => {
+                if (nodeLayoutCoordinates[nodeId]) {
+                    visibleYCoords.push(nodeLayoutCoordinates[nodeId].y);
                 }
+            });
+            const uniqueYCoords = [...new Set(visibleYCoords)].sort((a, b) => a - b);
+            for (let i = 0; i < uniqueYCoords.length - 1; i++) {
+                const midY = uniqueYCoords[i] + (uniqueYCoords[i+1] - uniqueYCoords[i]) / 2;
+                const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                divider.setAttribute("x1", "0");
+                divider.setAttribute("y1", midY);
+                divider.setAttribute("x2", "720");
+                divider.setAttribute("y2", midY);
+                divider.setAttribute("stroke", "#CBD5E1");
+                divider.setAttribute("stroke-width", "1.5");
+                divider.setAttribute("stroke-dasharray", "6,6");
+                svgCanvas.appendChild(divider);
             }
 
-            // 1. 繪製 SVG 戰術線路層（全量清算 nextNodes 與 options 所有出口，破除拆橋盲區）
+            // 1. 繪製 SVG 戰術連線層 (融入戰敗淡紅線條狀態機)
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -814,7 +825,6 @@
                 branchTargets.forEach(tarId => {
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
-
                     if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -823,9 +833,16 @@
                     line.setAttribute("x2", tarPos.x);
                     line.setAttribute("y2", tarPos.y);
 
+                    // 🎯 判定目標節點是否為已探索踩雷的失敗終點
+                    const isTargetFailAndUnlocked = (tarId.includes("FAIL") || tarId.includes("WARN") || tarId.includes("end_fail") || tarId.includes("end_warn")) && unlockedNodesList.includes(tarId);
+
                     if (isUnitCleared) {
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
+                    } else if (isTargetFailAndUnlocked) {
+                        // 🌟 戰敗錯誤路線：全自動改成淡紅色連線（#F87171）
+                        line.setAttribute("stroke", "#F87171"); 
+                        line.setAttribute("stroke-width", "2.5");
                     } else if (
                         (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
                         (passedNodesList.includes(srcId) && tarId === currentlySelectedNodeId)
@@ -844,11 +861,10 @@
                 });
             });
 
-            // 2. 部署北歐風極簡圓點
+            // 2. 部署北歐風極簡圓點 (解決反劇透覆蓋盲區與淡紅浮標)
             Object.keys(tree).forEach(nodeId => {
                 const pos = nodeLayoutCoordinates[nodeId];
                 if (!pos) return; 
-
                 if (!activeVisibleNodesSet.has(nodeId)) return;
 
                 const dot = document.createElement('div');
@@ -857,25 +873,24 @@
                 dot.style.left = `${pos.x}px`;
                 dot.style.top = `${pos.y}px`;
                 
-                // 🚀 👑 核心反劇透機機制：未被通過或挑戰的未来選項，標籤一律強制顯示為「未知分流」，防止作弊
+                // 🚀 👑 剛性解鎖原則：只要學員曾解鎖或走過（存在於 unlockedNodesList 或 passedNodesList 內），絕對禁止變回未知！
                 let displayName = pos.name;
-                if (!isUnitCleared && nodeId !== currentlySelectedNodeId && !passedNodesList.includes(nodeId)) {
-                    if (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn")) {
-                        displayName = unlockedNodesList.includes(nodeId) ? pos.name : "🔒 未知分流";
-                    } else {
-                        displayName = "🔒 未知分流";
-                    }
+                const isPassed = passedNodesList.includes(nodeId);
+                const isUnlocked = unlockedNodesList.includes(nodeId);
+
+                if (!isUnitCleared && nodeId !== currentlySelectedNodeId && !isPassed && !isUnlocked) {
+                    displayName = "🔒 未知分流";
                 }
                 dot.innerHTML = `<div class="node-mini-label">${displayName}</div>`;
 
-                const isPassed = passedNodesList.includes(nodeId);
+                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
 
                 if (isUnitCleared) {
                     if (tree[nodeId] && tree[nodeId].type === "end_win") {
                         dot.className += ' passed';
                     } else if (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn")) {
                         dot.style.backgroundColor = "#FCA5A5"; 
-                        dot.style.border = "1.5px solid #EF4444";
+                        dot.style.border = "2px solid #EF4444";
                     } else {
                         dot.className += ' passed';
                     }
@@ -883,6 +898,10 @@
                 } else {
                     if (isPassed) {
                         dot.className += ' passed';
+                    } else if (isFailNode && isUnlocked) {
+                        // 🌟 踩雷歷史雷區：全自動降級顯影為淡紅色底、剛性紅邊浮標
+                        dot.style.backgroundColor = "#FCA5A5"; 
+                        dot.style.border = "2px solid #EF4444";
                     } else {
                         if (nodeId === currentlySelectedNodeId) dot.className += ' active-target';
                     }
