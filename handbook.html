@@ -1,15 +1,3 @@
-<!-- 
-========================================================================
-REVISION HISTORY / VERSION LOG
-========================================================================
-2026-06-05 V14.10-SHUFFLE-FLOW: 👑 冒險者手冊終極完全體（T0導讀階層暨原地複盤洗牌天梯版）
-1. T0 導讀層增設：新增最上游 T0 通識導讀點，焊裝基礎教學防線，點擊後導通主航線方可切入 T1 開線事件。
-2. 語意洗鍊更換：右側觀測儀所有故事及中繼智慧點按鈕文字剛性更換為「➔ 繼續前進」，符合規格。
-3. 決策 Page 分界：重構分界線演算法，僅在「已被通過的決策層/大考層下游」動態橫向拉出 dashed 分界防線，清晰標註題際邊界。
-4. 絕殺拆橋漂浮：全量重構可視化矩陣，同時解析 nextNodes 與 options 出口，父節點導通則下游所有平行支線一體常駐顯影，拒絕圓點懸空。
-5. 隨機洗牌複盤：右側面板選項全面隨機洗牌，踩雷失敗時原位抓取親代抉擇並亂序呈現，實現現地滿血復活。
-========================================================================
--->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -337,7 +325,7 @@ REVISION HISTORY / VERSION LOG
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 內襯北歐沙盒地圖主面板 (縱向滾輪控制艙) ─── */
+        /* ─── 🎨 內襯北歐沙盒地圖主面板 ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -357,7 +345,7 @@ REVISION HISTORY / VERSION LOG
             box-shadow: var(--shadow-tactical);
         }
 
-        /* 👑 核心置中硬體場域：保證線條與圓點 100% 絕對精密對齊 */
+        /* 👑 置中固定硬體場域：保證線條與圓點 100% 絕對精密對齊 */
         .map-inner-flow-field {
             width: 720px;
             height: 2200px;
@@ -410,7 +398,7 @@ REVISION HISTORY / VERSION LOG
             100% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0); }
         }
 
-        /* 🚀 標籤文字右側化：32px 排開，主線中央暢通 */
+        /* 🚀 標籤文字右側化 32px 排開 */
         .node-mini-label {
             position: absolute;
             left: 32px;
@@ -507,28 +495,24 @@ REVISION HISTORY / VERSION LOG
     </div>
 
     <div class="workspace-container">
-        <!-- 左側選單工具欄清冊大盤 -->
         <aside class="sidebar-panel">
             <button class="hub-return-btn" onclick="exitToDashboardMenu()">↩ 返回戰術大廳</button>
             <div id="global-tree-root"></div>
         </aside>
 
-        <!-- 中央主觀測工作區 -->
         <main class="content-panel">
             <div id="cdx-page-header-zone" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px dashed var(--border-heavy); flex-shrink:0;">
                 <span id="current-chapter-id" style="font-family: monospace; font-weight: 900; color: var(--text-secondary); font-size: 0.9rem;">DASHBOARD</span>
                 <h2 id="current-chapter-name" style="margin: 5px 0 0 0; font-size: 1.6rem; font-weight: 900;">冒險者戰術大廳</h2>
             </div>
 
-            <!-- VIEW 1: CENTRAL HUB DASHBOARD 選單清單 -->
             <div class="dashboard-view-hall" id="dashboard-menu-hall">
                 <div class="level-cards-parallel-grid" id="global-level-flex-deck"></div>
-                <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0(">.</div>
+                <div style="border-bottom: 3px dashed var(--border-heavy); width: 100%; margin: 5px 0 25px 0;"></div>
                 <div style="font-weight: 900; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">子單元列表：</div>
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
 
-            <!-- VIEW 2: 👑 終極擴展北歐極簡沙盒地圖雙軌分流艙 -->
             <div class="sandbox-game-container" id="sandbox-viewport">
                 <div class="sandbox-map-canvas" id="map-scroll-stage">
                     <div class="map-inner-flow-field" id="map-lock-field">
@@ -563,9 +547,8 @@ REVISION HISTORY / VERSION LOG
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
-        // 👑 完璧對位：由上至下（Top-to-Bottom）縱向天梯黃金置中座標矩陣（全量對齊 T0 ~ T15 檔案）
+        // 👑 完璧對位座標矩陣
         const nodeLayoutCoordinates = {
-            // ─── 1-1 新版 15 層縱向大天梯劇本矩陣（含 T0 導讀與中繼智慧站） ───
             "T0-INTRO":          { x: 360, y: 60,   name: "通識導讀" },
             "T1-START":          { x: 360, y: 190,  name: "事件爆發" },
             "T2-DECISION-1":     { x: 360, y: 320,  name: "抉擇:皮球戰" },
@@ -589,7 +572,6 @@ REVISION HISTORY / VERSION LOG
             "T14-PASS-4":        { x: 360, y: 1880, name: "特採通航" },
             "T15-WIN":           { x: 360, y: 2010, name: "完美通關" },
 
-            // ─── 1-2 舊版六節點縱向相容 ───
             "START-NODE":        { x: 360, y: 80,  name: "事件爆發" },
             "DECISION-NODE-01":  { x: 360, y: 220, name: "決策分流" },
             "FAIL-NODE-SKIP":    { x: 160, y: 360, name: "盲目放行" },
@@ -736,7 +718,6 @@ REVISION HISTORY / VERSION LOG
             passedNodesList = savedPassed ? JSON.parse(savedPassed) : [];
             unlockedNodesList = savedUnlocked ? JSON.parse(savedUnlocked) : [];
             
-            // 🎯 智慧起點辨識器：動態識別新版 T0-INTRO 教學起點
             if (window.tpmSandboxScriptTree) {
                 if (window.tpmSandboxScriptTree["T0-INTRO"]) {
                     currentlySelectedNodeId = "T0-INTRO";
@@ -783,7 +764,7 @@ REVISION HISTORY / VERSION LOG
         }
 
         // ========================================================================
-        // 👑 鐵血進化拓撲引擎：親代發散、反劇透遮蔽、戰役 Page 虛線動態渲染 👑
+        // 👑 鐵血進化拓撲引擎：親代發散、歷史反遮蔽、頁際虛線暨戰敗淡紅渲染 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -796,7 +777,7 @@ REVISION HISTORY / VERSION LOG
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 建立全量可視拓撲白名單 (包含 options 與 nextNodes 所有分流出口)
+            // 🎯 建立全量可視拓撲白名單
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
@@ -816,7 +797,7 @@ REVISION HISTORY / VERSION LOG
                 }
             });
 
-            // 🚀 👑 鄰層 Page 大虛線精密控制：僅在已通過的「抉擇點 / 大考點」下方動態拉出題際邊界
+            // 🚀 👑 鄰層 Page 大虛線精密控制：僅在已被通過的「抉擇點 / 大考點」下方動態拉出題際邊界
             const decisionYSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (activeVisibleNodesSet.has(nodeId) && passedNodesList.includes(nodeId)) {
@@ -828,7 +809,7 @@ REVISION HISTORY / VERSION LOG
                         targets.forEach(t => {
                             if (nodeLayoutCoordinates[t]) maxChildY = Math.max(maxChildY, nodeLayoutCoordinates[t].y);
                         });
-                        decisionYSet.add(maxChildY + 65); // 位處兩 Tier 正中央 (130 / 2 = 65px)
+                        decisionYSet.add(maxChildY + 65);
                     }
                 }
             });
@@ -844,7 +825,7 @@ REVISION HISTORY / VERSION LOG
                 svgCanvas.appendChild(divider);
             });
 
-            // 1. 繪製 SVG 戰術連線層 (100% 導通支線，破除拆橋漂浮)
+            // 1. 繪製 SVG 戰術連線層
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -873,7 +854,6 @@ REVISION HISTORY / VERSION LOG
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
                     } else if (isTargetFailAndUnlocked) {
-                        // 戰敗錯誤支線：100% 顯影淡紅實線
                         line.setAttribute("stroke", "#F87171"); 
                         line.setAttribute("stroke-width", "2.5");
                     } else if (
@@ -894,7 +874,7 @@ REVISION HISTORY / VERSION LOG
                 });
             });
 
-            // 2. 部署北歐風極簡圓點 (解決反劇透覆蓋盲區與淡紅浮標)
+            // 2. 部署北歐風極簡圓點
             Object.keys(tree).forEach(nodeId => {
                 const pos = nodeLayoutCoordinates[nodeId];
                 if (!pos) return; 
@@ -906,7 +886,6 @@ REVISION HISTORY / VERSION LOG
                 dot.style.left = `${pos.x}px`;
                 dot.style.top = `${pos.y}px`;
                 
-                // 反劇透屏蔽機制：走過、解鎖過常駐顯影真名，其餘未來選項強置顯示為未知分流
                 let displayName = pos.name;
                 const isPassed = passedNodesList.includes(nodeId);
                 const isUnlocked = unlockedNodesList.includes(nodeId);
@@ -932,7 +911,6 @@ REVISION HISTORY / VERSION LOG
                     if (isPassed) {
                         dot.className += ' passed';
                     } else if (isFailNode && isUnlocked) {
-                        // 戰敗錯誤節點：淡紅色底、剛性紅邊浮標常駐固化
                         dot.style.backgroundColor = "#FCA5A5"; 
                         dot.style.border = "2px solid #EF4444";
                     } else {
@@ -949,6 +927,18 @@ REVISION HISTORY / VERSION LOG
 
                 nodesContainer.appendChild(dot);
             });
+
+            // 🚀 👑 終極防錯追隨：100% 精密動態跟隨自動垂直捲動置中，解決圖三盲區
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeDot = document.getElementById(`dot-${currentlySelectedNodeId}`);
+            if (scrollStage && activeDot) {
+                setTimeout(() => {
+                    scrollStage.scrollTo({
+                        top: activeDot.offsetTop - (scrollStage.clientHeight / 2),
+                        behavior: 'smooth'
+                    });
+                }, 50);
+            }
         }
 
         function inspectNodeDetail(nodeId) {
@@ -963,7 +953,6 @@ REVISION HISTORY / VERSION LOG
                     <div style="font-size:0.72rem; color:var(--text-secondary); font-weight:900; letter-spacing:1px; margin-bottom:6px;">STORY MODULE</div>
                     <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900;">${node.title}</h2>
                     <div style="color:#2D3748;">${node.text}</div>
-                    <!-- 🚀 👑 語意修正：「前進至決策關卡」全量變更為「➔ 繼續前前進」 -->
                     <button class="nordic-action-btn" onclick="executePassNode('${nodeId}')">➔ 繼續前進</button>
                 `;
             } else if (node.type === "decision") {
@@ -999,14 +988,16 @@ REVISION HISTORY / VERSION LOG
                 if (isWin) {
                     contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                 } else {
-                    // 原地複盤技術合流，打亂選項順序呈出
+                    // 🚀 👑 戰術重估過濾裝甲：過濾掉 unlockedNodesList 中已經探索踩雷過的錯誤選項，只顯示剩餘答案！
                     const parentDecision = findParentDecisionNode(nodeId);
                     if (parentDecision && parentDecision.options) {
-                        let retryOptions = shuffleArray(parentDecision.options);
+                        let retryOptions = parentDecision.options.filter(opt => !unlockedNodesList.includes(opt.target));
+                        let randomizedRetry = shuffleArray(retryOptions);
+                        
                         contentHtml += `
                             <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
                                 <p style="font-weight:900; color:var(--color-fail); margin-bottom:10px;">🔄 戰術重估：請重新評估該階段的分流決策：</p>
-                                ${retryOptions.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`).join('')}
+                                ${randomizedRetry.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`).join('')}
                             </div>
                         `;
                     }
@@ -1059,10 +1050,9 @@ REVISION HISTORY / VERSION LOG
 
             zone.innerHTML = `
                 <div style="margin-top:10px; padding:14px; background:${isCorrect ? '#F0FDF4':'#FEF2F2'}; border-radius:6px; border:1px solid ${isCorrect?'#BBF7D0':'#FCA5A5'}; font-size:0.85rem; line-height:1.5;">
-                    <div style="font-weight:900; font-size:0.95rem; color:${isCorrect?'#16A34A':'#DC2626'}; margin-bottom:4px;">${isCorrect ? '🏆 回答正確！':'💥 判斷錯誤！'}</div>
+                    <div style="font-weight:900; font-size:0.95rem; color:${isCorrect?'#16A34A':'#DC2626划分'}; margin-bottom:4px;">${isCorrect ? '🏆 回答正確！':'💥 判斷錯誤！'}</div>
                     <div>${node.explanation}</div>
                 </div>
-                <!-- 🚀 👑 語意修正：「查看劇本最終大結局」修正為「➔ 繼續前進」 -->
                 <button class="nordic-action-btn" onclick="executePassQuizNode('${nodeId}', '${targetNode}')">➔ 繼續前進</button>
             `;
         };
