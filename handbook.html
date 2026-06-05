@@ -378,7 +378,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 1500px;
+            width: 2500px;
             height: 1000px;
             pointer-events: none;
             z-index: 1;
@@ -565,8 +565,17 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
-// 👑 15層線性戰役黃金佈局坐標大盤 (X軸每層遞增 160px，Y軸分流)
+        // 👑 完璧合流：雙向相容 1-1（15層）與 1-2（6關）的黃金坐標拓撲大盤
         const nodeLayoutCoordinates = {
+            // ─── 1-2 舊版六節點相容指印 ───
+            "START-NODE":        { x: 120, y: 240, name: "事件爆發" },
+            "DECISION-NODE-01":  { x: 280, y: 240, name: "決策分流" },
+            "FAIL-NODE-SKIP":    { x: 460, y: 120, name: "盲目放行" },
+            "WARN-NODE-FIGHT":   { x: 460, y: 240, name: "剛性抗爭" },
+            "QUIZ-NODE-STACKUP": { x: 460, y: 360, name: "技術排查" },
+            "WIN-NODE-CONQUER":  { x: 650, y: 360, name: "完美通關" },
+
+            // ─── 1-1 新版 15 層線性戰役矩陣指印 ───
             "T1-START":          { x: 100,  y: 240, name: "事件爆發" },
             "T2-DECISION-1":     { x: 260,  y: 240, name: "抉擇:皮球戰" },
             "T3-FAIL-1":         { x: 420,  y: 120, name: "盲目放行" },
@@ -588,8 +597,7 @@
             "T13-DECISION-4":    { x: 2020, y: 240, name: "大考:簽核流" },
             "T14-PASS-4":        { x: 2180, y: 240, name: "特採通航" },
             "T15-WIN":           { x: 2340, y: 240, name: "完美通關" }
-
-        
+        };
 
         let selectedActiveLevelNum = 1; 
         let unlockedNodesList = ["START-NODE"]; 
@@ -719,6 +727,7 @@
         }
 
         function initSandboxEngine() {
+            if (!activePackUnitId) return; 
             document.getElementById('current-chapter-id').innerText = `HANDBOOK / UNIT ${activePackUnitId}`; 
             document.getElementById('current-chapter-name').innerText = globalSubUnitRegistry.find(u => u.subUnitId === activePackUnitId).title;
 
@@ -726,11 +735,25 @@
             const savedUnlocked = localStorage.getItem(`tpm-sandbox-unlocked-${activePackUnitId}`);
             
             passedNodesList = savedPassed ? JSON.parse(savedPassed) : [];
-            unlockedNodesList = savedUnlocked ? JSON.parse(savedUnlocked) : ["START-NODE"];
-            currentlySelectedNodeId = "START-NODE";
+            unlockedNodesList = savedUnlocked ? JSON.parse(savedUnlocked) : [];
+            
+            // 🎯 智慧起點辨識器：動態兼容新舊兩版劇本的最初始 Checkpoint 起點
+            if (window.tpmSandboxScriptTree) {
+                if (window.tpmSandboxScriptTree["T1-START"]) {
+                    currentlySelectedNodeId = "T1-START";
+                } else {
+                    currentlySelectedNodeId = "START-NODE";
+                }
+            } else {
+                currentlySelectedNodeId = "START-NODE";
+            }
+            
+            if (!unlockedNodesList.includes(currentlySelectedNodeId)) {
+                unlockedNodesList.push(currentlySelectedNodeId);
+            }
 
             renderNordicSandboxMap();
-            inspectNodeDetail("START-NODE");
+            inspectNodeDetail(currentlySelectedNodeId);
         }
 
         function saveSandboxProgress() {
@@ -739,7 +762,7 @@
         }
 
         // ========================================================================
-        // 👑 換裝優化核心：動態戰術分流虛線指引大腦 👑
+        // 👑 拓撲連鎖大腦：完美的歷史冷灰線條與主幹熱亮黃合流 👑
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -752,7 +775,7 @@
             const tree = window.tpmSandboxScriptTree;
             const isUnitCleared = localStorage.getItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
 
-            // 🎯 建立全量「可視節點白名單」，用以動態同步連線與圓點，全面杜絕浮空
+            // 🎯 建立可視化拓撲節點白名單（杜絕空中圓點漂浮，實現歷史線條固化錨定）
             const activeVisibleNodesSet = new Set();
             Object.keys(tree).forEach(nodeId => {
                 if (isUnitCleared) {
@@ -780,7 +803,7 @@
                     const tarPos = nodeLayoutCoordinates[tarId];
                     if (!tarPos) return;
 
-                    // 🎯 剛性攔截：只要出發端或接收端有任何一方不在可視白名單中，絕不渲染（維持真正的地圖探索感）
+                    // 🛡️ 剛性攔截：雙端點有任何一端不在可視白名單內，則保持隱形迷霧
                     if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -796,16 +819,16 @@
                         (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
                         (passedNodesList.includes(srcId) && tarId === currentlySelectedNodeId)
                     ) {
-                        // 🌟 主航線：已通關的軌跡，或者「從已通過點指向當前挑戰點」的進行路線 ➔ 3px 剛性亮黃線
+                        // 🌟 主航線：目前前進的唯一主幹線 ➔ 3px 剛性亮黃線
                         line.setAttribute("stroke", "#EAB308");
                         line.setAttribute("stroke-width", "3");
                     } else if (srcId === currentlySelectedNodeId) {
-                        // 🌟 分流線：從「當前挑戰點」延伸出去給學員抉擇的所有分支引導線 ➔ 2px 深灰虛線
+                        // 🌟 分流線：從當前挑戰點向外延伸的可選分支 ➔ 2px 深灰虛線
                         line.setAttribute("stroke", "#475569"); 
                         line.setAttribute("stroke-width", "2");
                         line.setAttribute("stroke-dasharray", "4,4");
                     } else {
-                        // 🌟 殘留線：過去走過、已探索的歷史錯誤支線 ➔ 1.5px 固化冷灰實線（#D1D5DB）
+                        // 🌟 殘留線：🎯 完美錨定！過去走過且失敗解鎖的歷史路徑連線 ➔ 1.5px 固化冷灰實線（#D1D5DB）
                         line.setAttribute("stroke", "#D1D5DB");
                         line.setAttribute("stroke-width", "1.5");
                     }
@@ -816,7 +839,7 @@
             // 2. 部署北歐風極簡圓點
             Object.keys(tree).forEach(nodeId => {
                 const pos = nodeLayoutCoordinates[nodeId];
-                if (!pos) return;
+                if (!pos) return; 
 
                 if (!activeVisibleNodesSet.has(nodeId)) return;
 
@@ -830,9 +853,9 @@
                 const isPassed = passedNodesList.includes(nodeId);
 
                 if (isUnitCleared) {
-                    if (nodeId === "WIN-NODE-CONQUER" || pos.name === "完美通關") {
+                    if (tree[nodeId] && tree[nodeId].type === "end_win") {
                         dot.className += ' passed';
-                    } else if (nodeId.includes("FAIL") || nodeId.includes("WARN")) {
+                    } else if (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn")) {
                         dot.style.backgroundColor = "#FCA5A5"; 
                         dot.style.border = "1.5px solid #EF4444";
                     } else {
@@ -960,10 +983,15 @@
         window.executeSettleHandbookUnit = function(isWin) {
             if (!isWin) {
                 passedNodesList = [];
-                currentlySelectedNodeId = "START-NODE";
+                // 智慧適應性重置起點
+                if (window.tpmSandboxScriptTree && window.tpmSandboxScriptTree["T1-START"]) {
+                    currentlySelectedNodeId = "T1-START";
+                } else {
+                    currentlySelectedNodeId = "START-NODE";
+                }
                 saveSandboxProgress();
                 renderNordicSandboxMap();
-                inspectNodeDetail("START-NODE");
+                inspectNodeDetail(currentlySelectedNodeId);
                 return;
             }
 
