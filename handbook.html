@@ -442,6 +442,7 @@
             overflow-y: auto;
             font-size: 0.88rem;
             line-height: 1.6;
+            padding-right: 5px;
         }
 
         .inspector-placeholder {
@@ -863,6 +864,15 @@
             renderNordicSandboxMap();
             inspectNodeDetail(currentlySelectedNodeId);
 
+            // 初始載入時捲動到最底
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => {
+                    scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' });
+                }, 50);
+            }
+
             window.onresize = () => {
                 calculateDynamicCosmicTopology();
                 renderNordicSandboxMap();
@@ -886,7 +896,7 @@
         }
 
         // ========================================================================
-        // 👑 拓撲地圖繪製艙 (全量移除斜線切割，保留純淨畫布)
+        // 👑 拓撲地圖繪製艙 (移除內部強制捲動，保持畫面穩定)
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -958,7 +968,6 @@
                     line.setAttribute("x2", tarPos.x);
                     line.setAttribute("y2", tarPos.y);
 
-                    // 🚀 👑 剛性修正 1：只有名字帶有 FAIL/WARN 的才是真雷區
                     const isTargetFail = tarId.includes("FAIL") || tarId.includes("WARN");
                     const isTargetUnlocked = unlockedNodesList.includes(tarId);
 
@@ -1007,7 +1016,7 @@
                 }
                 card.innerText = displayName;
 
-                // 🚀 👑 剛性修正 2：只有 FAIL/WARN 才是紅卡，其餘 END 全量黃金化！
+                // 🚀 👑 剛性修正：END 節點保持預設通航黃底，僅 FAIL/WARN 染紅
                 const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN");
 
                 if (isUnitCleared) {
@@ -1059,10 +1068,11 @@
 
                 nodesContainer.appendChild(card);
             });
+            // ⚠️ 已經拔除此處的 scrollStage.scrollTo，讓畫面定格在原位！
         }
 
         // ========================================================================
-        // 👑 右側戰術儀控制中樞 (全域跨宇宙躍遷)
+        // 👑 右側戰術儀控制中樞 (解決唯讀死鎖與 END 全域分支跳轉)
         // ========================================================================
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
@@ -1071,7 +1081,7 @@
                 return;
             }
 
-            // 🚀 👑 剛性修正 3：解除唯讀死鎖！只要節點已解鎖，且下一步沒被走過，即具備「前進主權」！
+            // 🚀 👑 剛性修正：解除 ReviewMode 唯讀鎖死。只要節點解鎖且下一步沒走過，就具備前進主權！
             let isReviewMode = true;
             if (nodeId === activeFrontierNodeId) {
                 isReviewMode = false;
@@ -1136,11 +1146,12 @@
                     contentHtml += `</div>`;
                 }
             } else if (node.type.startsWith("end_") || (!node.nextNodes || node.nextNodes.length === 0)) {
-                let endColor = "#475569"; 
+                // 🚀 👑 剛性修正：END 結局右側介面黃金化
+                let endColor = "#D97706"; // 黃金底色
                 if (node.type === "end_win") {
                     endColor = "#15803D"; 
-                } else if (node.id.includes("FAIL") || node.id.includes("WARN") || node.type === "end_fail" || node.type === "end_warn") {
-                    endColor = "#B91C1C"; 
+                } else if (node.id.includes("FAIL") || node.id.includes("WARN")) {
+                    endColor = "#B91C1C"; // 只有雷區才會紅
                 }
                 
                 contentHtml += `
@@ -1154,21 +1165,24 @@
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
                 } else {
-                    // 🚀 👑 剛性修正 4：全域跨宇宙躍遷！到達任何 END 結局時，全域掃描所有尚未走過的分支，供學員一鍵躍遷！
+                    // 🚀 👑 剛性修正：全域跨宇宙躍遷！只針對「已走過」的決策點進行清算，絕不劇透未來！
                     if (!isReviewMode) {
                         let globalRemainingOptions = [];
                         const tree = window.tpmSandboxScriptTree;
-                        Object.keys(tree).forEach(key => {
-                            let iterNode = tree[key];
-                            if (iterNode.type === "decision" && iterNode.options) {
+                        
+                        passedNodesList.forEach(passedId => {
+                            let iterNode = tree[passedId];
+                            if (iterNode && iterNode.type === "decision" && iterNode.options) {
                                 iterNode.options.forEach(opt => {
                                     if (!passedNodesList.includes(opt.target)) {
-                                        globalRemainingOptions.push({
-                                            parentId: iterNode.id,
-                                            parentTitle: iterNode.title,
-                                            target: opt.target,
-                                            text: opt.text
-                                        });
+                                        if (!globalRemainingOptions.some(item => item.target === opt.target)) {
+                                            globalRemainingOptions.push({
+                                                parentId: iterNode.id,
+                                                parentTitle: iterNode.title,
+                                                target: opt.target,
+                                                text: opt.text
+                                            });
+                                        }
                                     }
                                 });
                             }
@@ -1178,7 +1192,7 @@
                             let randomizedGlobalRetry = shuffleArray(globalRemainingOptions);
                             contentHtml += `
                                 <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
-                                    <p style="font-weight:900; color:#1E3A8A; margin-bottom:10px;">🔄 探索其他平行宇宙：</p>
+                                    <p style="font-weight:900; color:#D97706; margin-bottom:10px;">🔄 探索其他平行宇宙：請選擇尚未通關的分支開線：</p>
                             `;
                             randomizedGlobalRetry.forEach(opt => {
                                 contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${opt.parentId}', '${opt.target}')"><b>開闢新宇宙：</b> ${opt.text}</button>`;
@@ -1211,7 +1225,7 @@
                 inspectNodeDetail(currentlySelectedNodeId);
             }
             renderNordicSandboxMap();
-            // 當前線推進時才捲動
+            // 推進新進度時，自動往下捲動
             const scrollStage = document.getElementById('map-scroll-stage');
             const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
             if (scrollStage && activeCard) {
@@ -1232,6 +1246,7 @@
             activeFrontierNodeId = currentlySelectedNodeId = targetNodeId;
             inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
+            // 推進新進度時，自動往下捲動
             const scrollStage = document.getElementById('map-scroll-stage');
             const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
             if (scrollStage && activeCard) {
@@ -1287,6 +1302,7 @@
             activeFrontierNodeId = currentlySelectedNodeId = finalTarget;
             inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
+            // 推進新進度時，自動往下捲動
             const scrollStage = document.getElementById('map-scroll-stage');
             const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
             if (scrollStage && activeCard) {
