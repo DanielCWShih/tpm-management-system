@@ -533,7 +533,7 @@
                 </div>
                 <aside class="fixed-inspector-panel" id="sandbox-inspector">
                     <div class="inspector-placeholder">
-                        🎯 請點擊左側地圖圓點<br>解包防水戰術劇本事件
+                        🎯 請點擊左側地圖卡片<br>解包防水戰術劇本事件
                     </div>
                 </aside>
             </div>
@@ -562,7 +562,7 @@
         let nodeLayoutCoordinates = {};
 
         // ========================================================================
-        // 👑 萬能幾何分流分層編譯大腦：實時清算畫布實體寬度，完美橫向等距拉開！
+        // 👑 萬能幾何分流分層編譯大腦
         // ========================================================================
         function calculateDynamicCosmicTopology() {
             const tree = window.tpmSandboxScriptTree;
@@ -885,25 +885,8 @@
             return shuffled;
         }
 
-        function findParentDecisionNode(childId) {
-            const tree = window.tpmSandboxScriptTree;
-            if (!tree) {
-                return null;
-            }
-            for (let key in tree) {
-                const node = tree[key];
-                if (node.options && node.options.some(opt => opt.target === childId)) {
-                    return node;
-                }
-                if (node.nextNodes && node.nextNodes.includes(childId)) {
-                    return node;
-                }
-            }
-            return null;
-        }
-
         // ========================================================================
-        // 👑 拓撲地圖繪製艙 (全自動卡片流與動態分流渲染)
+        // 👑 拓撲地圖繪製艙 (全量移除斜線切割，保留純淨畫布)
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -941,8 +924,6 @@
                 }
             });
 
-            // 🚀 👑 剛性修正 1：刪除不必要的分界線邏輯 decisionYSet，還原極簡畫布。
-
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
@@ -977,7 +958,8 @@
                     line.setAttribute("x2", tarPos.x);
                     line.setAttribute("y2", tarPos.y);
 
-                    const isTargetFail = tarId.includes("FAIL") || tarId.includes("WARN") || (tree[tarId] && (tree[tarId].type === "end_fail" || tree[tarId].type === "end_warn"));
+                    // 🚀 👑 剛性修正 1：只有名字帶有 FAIL/WARN 的才是真雷區
+                    const isTargetFail = tarId.includes("FAIL") || tarId.includes("WARN");
                     const isTargetUnlocked = unlockedNodesList.includes(tarId);
 
                     if (isUnitCleared) {
@@ -1025,7 +1007,8 @@
                 }
                 card.innerText = displayName;
 
-                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
+                // 🚀 👑 剛性修正 2：只有 FAIL/WARN 才是紅卡，其餘 END 全量黃金化！
+                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN");
 
                 if (isUnitCleared) {
                     if (tree[nodeId] && tree[nodeId].type === "end_win") {
@@ -1076,21 +1059,10 @@
 
                 nodesContainer.appendChild(card);
             });
-
-            const scrollStage = document.getElementById('map-scroll-stage');
-            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
-            if (scrollStage && activeCard) {
-                setTimeout(() => {
-                    scrollStage.scrollTo({
-                        top: activeCard.offsetTop - (scrollStage.clientHeight / 2),
-                        behavior: 'smooth'
-                    });
-                }, 50);
-            }
         }
 
         // ========================================================================
-        // 👑 右側戰術儀控制中樞 (解決唯讀死鎖與 END 原位分流跳轉)
+        // 👑 右側戰術儀控制中樞 (全域跨宇宙躍遷)
         // ========================================================================
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
@@ -1099,7 +1071,7 @@
                 return;
             }
 
-            // 🚀 👑 剛性修正 2：如果節點已被解鎖，且它的下一步「沒有被走過」，它就具備前進主權！解除 ReviewMode 唯讀鎖死。
+            // 🚀 👑 剛性修正 3：解除唯讀死鎖！只要節點已解鎖，且下一步沒被走過，即具備「前進主權」！
             let isReviewMode = true;
             if (nodeId === activeFrontierNodeId) {
                 isReviewMode = false;
@@ -1111,14 +1083,14 @@
                     }
                 }
                 if (node.options && node.options.length > 0) {
-                    for (let opt of node.options) {
+                    for (let i = 0; i < node.options.length; i++) {
+                        let opt = node.options[i];
                         if (passedNodesList.includes(opt.target)) {
                             hasMovedForward = true;
                             break;
                         }
                     }
                 }
-                // 節點是終點沒有退路，或下一步完全沒走過，就解除唯讀
                 if (!hasMovedForward) {
                     isReviewMode = false;
                 }
@@ -1163,12 +1135,12 @@
                     });
                     contentHtml += `</div>`;
                 }
-            } else if (node.type.startsWith("end_")) {
-                let endColor = "#475569"; // 默認深灰 (非錯誤結局)
+            } else if (node.type.startsWith("end_") || (!node.nextNodes || node.nextNodes.length === 0)) {
+                let endColor = "#475569"; 
                 if (node.type === "end_win") {
-                    endColor = "#15803D"; // 勝利綠
+                    endColor = "#15803D"; 
                 } else if (node.id.includes("FAIL") || node.id.includes("WARN") || node.type === "end_fail" || node.type === "end_warn") {
-                    endColor = "#B91C1C"; // 失敗紅
+                    endColor = "#B91C1C"; 
                 }
                 
                 contentHtml += `
@@ -1182,25 +1154,36 @@
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
                 } else {
-                    // 🚀 👑 剛性修正 3：無論是哪種結局 (包含正確的分支結局)，只要它沒有下一步，就可以原地觸發親代選項，供學員躍遷開線！
+                    // 🚀 👑 剛性修正 4：全域跨宇宙躍遷！到達任何 END 結局時，全域掃描所有尚未走過的分支，供學員一鍵躍遷！
                     if (!isReviewMode) {
-                        const parentDecision = findParentDecisionNode(nodeId);
-                        if (parentDecision && parentDecision.options) {
-                            let remainingOptions = parentDecision.options.filter(opt => {
-                                return !passedNodesList.includes(opt.target);
-                            });
-                            let randomizedRetry = shuffleArray(remainingOptions);
-                            
-                            if (randomizedRetry.length > 0) {
-                                contentHtml += `
-                                    <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
-                                        <p style="font-weight:900; color:#1E3A8A; margin-bottom:10px;">🔄 探索其他實戰領域：請選擇其餘分支開線：</p>
-                                `;
-                                randomizedRetry.forEach(opt => {
-                                    contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>開闢新宇宙：</b> ${opt.text}</button>`;
+                        let globalRemainingOptions = [];
+                        const tree = window.tpmSandboxScriptTree;
+                        Object.keys(tree).forEach(key => {
+                            let iterNode = tree[key];
+                            if (iterNode.type === "decision" && iterNode.options) {
+                                iterNode.options.forEach(opt => {
+                                    if (!passedNodesList.includes(opt.target)) {
+                                        globalRemainingOptions.push({
+                                            parentId: iterNode.id,
+                                            parentTitle: iterNode.title,
+                                            target: opt.target,
+                                            text: opt.text
+                                        });
+                                    }
                                 });
-                                contentHtml += `</div>`;
                             }
+                        });
+
+                        if (globalRemainingOptions.length > 0) {
+                            let randomizedGlobalRetry = shuffleArray(globalRemainingOptions);
+                            contentHtml += `
+                                <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
+                                    <p style="font-weight:900; color:#1E3A8A; margin-bottom:10px;">🔄 探索其他平行宇宙：</p>
+                            `;
+                            randomizedGlobalRetry.forEach(opt => {
+                                contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${opt.parentId}', '${opt.target}')"><b>開闢新宇宙：</b> ${opt.text}</button>`;
+                            });
+                            contentHtml += `</div>`;
                         }
                     }
                 }
@@ -1228,6 +1211,14 @@
                 inspectNodeDetail(currentlySelectedNodeId);
             }
             renderNordicSandboxMap();
+            // 當前線推進時才捲動
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => {
+                    scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' });
+                }, 50);
+            }
         };
 
         window.executeSelectBranch = function(nodeId, targetNodeId) {
@@ -1241,6 +1232,13 @@
             activeFrontierNodeId = currentlySelectedNodeId = targetNodeId;
             inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => {
+                    scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' });
+                }, 50);
+            }
         };
 
         window.executeSubmitQuiz = function(nodeId, targetNodeId) {
@@ -1289,6 +1287,13 @@
             activeFrontierNodeId = currentlySelectedNodeId = finalTarget;
             inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => {
+                    scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' });
+                }, 50);
+            }
         };
 
         window.executeSettleHandbookUnit = function(isWin) {
