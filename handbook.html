@@ -413,7 +413,7 @@
 
         /* 👑 右側戰術觀測儀 */
         .fixed-inspector-panel {
-            width: 330px; /* ⚖️ 75% 剛性縮減塑形 */
+            width: 380px; /* ⚖️ ⚖️ 剛性增寬 15% (由 330px 完美升級至 380px) */
             height: 100%;
             background: #FFFFFF;
             border: 3px solid var(--border-heavy);
@@ -701,9 +701,6 @@
             }
         }
 
-        // ========================================================================
-        // 👑 完璧補回：戰術大廳 Dashboard 核心渲染模組 (100% 展開展開格式)
-        // ========================================================================
         function renderMultiLevelHubDashboard() {
             const deckRow = document.getElementById('global-level-flex-deck');
             const grid = document.getElementById('l1-cards-grid'); 
@@ -871,6 +868,7 @@
             return shuffled;
         }
 
+        // 👑 萬能親代探索器
         function findParentDecisionNode(childId) {
             const tree = window.tpmSandboxScriptTree;
             if (!tree) {
@@ -889,7 +887,7 @@
         }
 
         // ========================================================================
-        // 👑 拓撲地圖繪製艙 (100% 長格式平鋪展開)
+        // 👑 拓撲地圖繪製艙 (100% 長格式平鋪展開，修正良性 END 紅線 Bug)
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -999,14 +997,15 @@
                     line.setAttribute("x2", tarPos.x);
                     line.setAttribute("y2", tarPos.y);
 
-                    const isTargetFail = tarId.includes("FAIL") || tarId.includes("WARN") || tarId.includes("END") || (tree[tarId] && (tree[tarId].type === "end_fail" || tree[tarId].type === "end_warn"));
+                    // 🚀 👑 剛性修正 1：通往 END/SUCCESS 這種分支保持黃色或常規色路徑，只有真正包含 FAIL 或 WARN 的雷區才轉紅！
+                    const isTargetRealFail = tarId.includes("FAIL") || tarId.includes("WARN");
                     const isTargetUnlocked = unlockedNodesList.includes(tarId);
 
                     if (isUnitCleared) {
                         line.setAttribute("stroke", "#CBD5E1");
                         line.setAttribute("stroke-width", "1.5");
-                    } else if (isTargetFail && isTargetUnlocked) {
-                        line.setAttribute("stroke", "#F87171");
+                    } else if (isTargetRealFail && isTargetUnlocked) {
+                        line.setAttribute("stroke", "#F87171"); 
                         line.setAttribute("stroke-width", "2.5");
                     } else if ((passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || (passedNodesList.includes(srcId) && tarId === activeFrontierNodeId)) {
                         line.setAttribute("stroke", "#EAB308");
@@ -1047,12 +1046,13 @@
                 }
                 dot.innerHTML = `<div class="node-mini-label">${displayName}</div>`;
 
-                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || nodeId.includes("END") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
+                // 🚀 👑 剛性修正 2：正常分流完航點不染紅
+                const isRealFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN");
 
                 if (isUnitCleared) {
                     if (tree[nodeId] && tree[nodeId].type === "end_win") {
                         dot.className += ' passed';
-                    } else if (isFailNode) {
+                    } else if (isRealFailNode) {
                         dot.style.backgroundColor = "#FCA5A5";
                         dot.style.border = "2px solid #EF4444";
                     } else {
@@ -1064,7 +1064,7 @@
                 } else {
                     if (isPassed) {
                         dot.className += ' passed';
-                    } else if (isFailNode && isUnlocked) {
+                    } else if (isRealFailNode && isUnlocked) {
                         dot.style.backgroundColor = "#FCA5A5";
                         dot.style.border = "2px solid #EF4444";
                     } else {
@@ -1074,7 +1074,6 @@
                     }
                 }
 
-                // 🚀 👑 V14.35 剛性高程鎖定防線：限制學員禁止點擊未來新層級的節點！
                 dot.onclick = () => {
                     if (!activeVisibleNodesSet.has(nodeId)) {
                         return;
@@ -1112,6 +1111,9 @@
             }
         }
 
+        // ========================================================================
+        // 👑 右側戰術儀控制中樞（融入終點結局原位直接分流技術） 👑
+        // ========================================================================
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
             const node = window.tpmSandboxScriptTree[nodeId];
@@ -1163,7 +1165,7 @@
                 let endColor = "#475569";
                 if (node.type === "end_win") {
                     endColor = "#15803D";
-                } else if (node.type === "end_fail" || node.type === "end_warn") {
+                } else if (node.id.includes("FAIL") || node.id.includes("WARN")) {
                     endColor = "#B91C1C";
                 }
                 
@@ -1178,21 +1180,23 @@
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
                 } else {
+                    // 🚀 👑 剛性修正 3：無論是踩雷失敗還是正常 END 結局，只要在前線，右側一律動態吐出其餘未通關的平行分支選項！免除手動返回！
                     if (!isReviewMode) {
                         const parentDecision = findParentDecisionNode(nodeId);
                         if (parentDecision && parentDecision.options) {
+                            // 過濾掉已經成功走通拿過學分的 branch 出口 (存在於 passedNodesList)
                             let remainingOptions = parentDecision.options.filter(opt => {
-                                return !unlockedNodesList.includes(opt.target);
+                                return !passedNodesList.includes(opt.target);
                             });
                             let randomizedRetry = shuffleArray(remainingOptions);
                             
                             if (randomizedRetry.length > 0) {
                                 contentHtml += `
                                     <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
-                                        <p style="font-weight:900; color:var(--color-fail); margin-bottom:10px;">🔄 戰術重估：請重新評估該階段的分流決策：</p>
+                                        <p style="font-weight:900; color:#1E3A8A; margin-bottom:10px;">🔄 探索其他實戰領域：請選擇其餘分支開線：</p>
                                 `;
                                 randomizedRetry.forEach(opt => {
-                                    contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`;
+                                    contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>開闢新宇宙：</b> ${opt.text}</button>`;
                                 });
                                 contentHtml += `</div>`;
                             }
