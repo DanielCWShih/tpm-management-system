@@ -110,7 +110,7 @@
         /* 👑 左側戰術選單清單欄 */
         .sidebar-panel {
             display: flex;
-            width: 262px; /* ⚖️ 75% 剛性縮減瘦身 (原 350px) */
+            width: 262px; /* ⚖️ 75% 剛性縮減瘦身 */
             background-color: var(--sidebar-cream);
             border-right: 4px solid var(--border-heavy);
             padding: 25px 18px;
@@ -413,7 +413,7 @@
 
         /* 👑 右側戰術觀測儀 */
         .fixed-inspector-panel {
-            width: 330px; /* ⚖️ 75% 剛性縮減塑形 (原 440px) */
+            width: 330px; /* ⚖️ 75% 剛性縮減塑形 */
             height: 100%;
             background: #FFFFFF;
             border: 3px solid var(--border-heavy);
@@ -550,6 +550,119 @@
         // 👑 全域虛擬動態佈局大盤
         let nodeLayoutCoordinates = {};
 
+        let selectedActiveLevelNum = 1; 
+        let unlockedNodesList = []; 
+        let passedNodesList = []; 
+        
+        // 👑 鐵血解耦雙軌變數
+        let activeFrontierNodeId = null;     // 🎯 真正的遊戲最高前進進度防線
+        let currentlySelectedNodeId = null;  // 🎯 學員點擊選中的查閱焦點
+        let activePackUnitId = null;
+
+        window.onload = () => {
+            renderGlobalTreeStructure();
+            routeController();
+        };
+
+        function renderGlobalTreeStructure() {
+            const root = document.getElementById('global-tree-root'); 
+            if (!root) return;
+            root.innerHTML = '';
+            const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
+            
+            presentLevels.forEach(lvlNum => {
+                const subset = globalSubUnitRegistry.filter(u => u.levelNum === lvlNum);
+                const block = document.createElement('div'); 
+                block.className = 'menu-category-block';
+                
+                const currentLvlMeta = globalLevelMetadata.find(l => l.num === lvlNum);
+                const lvlLabelName = currentLvlMeta ? currentLvlMeta.label : '展開';
+
+                block.innerHTML = `
+                    <button class="tree-main-toggle" onclick="toggleMenuSection('lvl-accordion-${lvlNum}')">🗺️ Level ${lvlNum} ${lvlLabelName}</button>
+                    <div id="lvl-accordion-${lvlNum}" class="tree-sub-group" style="display: flex; flex-direction: column;">
+                        ${subset.map(u => `<button class="leaf-btn" id="lf-${u.type}-${u.subUnitId}" onclick="switchUnit('${u.type}','${u.subUnitId}', ${u.levelNum})">${u.title}</button>`).join('')}
+                    </div>`;
+                root.appendChild(block);
+            });
+        }
+
+        function toggleMenuSection(id) { 
+            const el = document.getElementById(id); 
+            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
+        }
+
+        function routeController(directType, directC) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramC = directC || urlParams.get('c');
+            const paramType = directType || urlParams.get('type') || 'handbook';
+
+            if (!paramC) {
+                document.getElementById('cdx-page-header-zone').style.display = 'block'; 
+                document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
+                document.getElementById('current-chapter-name').innerText = "冒險者戰術大廳";
+                document.getElementById('dashboard-menu-hall').style.display = 'block'; 
+                document.getElementById('sandbox-viewport').style.display = 'none'; 
+                renderMultiLevelHubDashboard();
+            } else {
+                document.getElementById('dashboard-menu-hall').style.display = 'none'; 
+                document.getElementById('sandbox-viewport').style.display = 'flex'; 
+                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
+                const leaf = document.getElementById(`lf-${paramType}-${paramC}`); 
+                if (leaf) leaf.classList.add('active'); 
+                activePackUnitId = paramC;
+                injectContentPackScript(paramType, paramC);
+            }
+        }
+
+        // ========================================================================
+        // 👑 完璧補回：戰術大廳 Dashboard 核心渲染模組 (絕不優化刪減)
+        // ========================================================================
+        function renderMultiLevelHubDashboard() {
+            const deckRow = document.getElementById('global-level-flex-deck');
+            const grid = document.getElementById('l1-cards-grid'); 
+            if (!deckRow || !grid) return;
+            
+            deckRow.innerHTML = ''; 
+            grid.innerHTML = '';
+            
+            globalLevelMetadata.forEach(lvl => {
+                const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num); 
+                let total = subUnitsInLvl.length, done = 0;
+                subUnitsInLvl.forEach(u => { 
+                    if (localStorage.getItem(`handbook-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') done++; 
+                });
+                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                deckRow.innerHTML += `
+                    <div class="progress-card-master ${lvl.num===selectedActiveLevelNum?'active-level':''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();">
+                        <div class="progress-label">${lvl.name} : ${lvl.label}</div>
+                        <div class="progress-percentage">${pct}%</div>
+                        <div class="progress-stats">完成指標: ${done} / ${total}</div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%;"></div></div>
+                    </div>`;
+            });
+
+            const filteredUnits = globalSubUnitRegistry.filter(u => u.levelNum === selectedActiveLevelNum);
+            filteredUnits.forEach(unit => {
+                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
+                const isClear = localStorage.getItem(`handbook-${storageKey}-clear`) === 'true';
+                grid.innerHTML += `
+                    <div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span>
+                            <h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
+                        </div>
+                        <div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isClear ? `✅ [通過]` : '⏳ 待考核'}</div>
+                    </div>`;
+            });
+        }
+
+        function switchUnit(type, subUnitId, lvlNum) { 
+            selectedActiveLevelNum = lvlNum; 
+            window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); 
+            routeController(type, subUnitId); 
+        }
+
         // ========================================================================
         // 👑 萬能幾何分流分層編譯引擎：動態清算橫向主支線，100% 絕殺重疊穿透！
         // ========================================================================
@@ -610,80 +723,6 @@
             });
         }
 
-        let selectedActiveLevelNum = 1; 
-        let unlockedNodesList = []; 
-        let passedNodesList = []; 
-        let activeFrontierNodeId = null;     
-        let currentlySelectedNodeId = null;  
-        let activePackUnitId = null;
-
-        window.onload = () => {
-            renderGlobalTreeStructure();
-            routeController();
-        };
-
-        function routeController(directType, directC) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const paramC = directC || urlParams.get('c');
-            const paramType = directType || urlParams.get('type') || 'handbook';
-
-            if (!paramC) {
-                document.getElementById('cdx-page-header-zone').style.display = 'block'; 
-                document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
-                document.getElementById('current-chapter-name').innerText = "冒險者戰術大廳";
-                document.getElementById('dashboard-menu-hall').style.display = 'block'; 
-                document.getElementById('sandbox-viewport').style.display = 'none'; 
-                renderMultiLevelHubDashboard();
-            } else {
-                document.getElementById('dashboard-menu-hall').style.display = 'none'; 
-                document.getElementById('sandbox-viewport').style.display = 'flex'; 
-                document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
-                const leaf = document.getElementById(`lf-${paramType}-${paramC}`); 
-                if (leaf) leaf.classList.add('active'); 
-                activePackUnitId = paramC;
-                injectContentPackScript(paramType, paramC);
-            }
-        }
-
-        function renderMultiLevelHubDashboard() {
-            const deckRow = document.getElementById('global-level-flex-deck');
-            const grid = document.getElementById('l1-cards-grid'); 
-            if (!deckRow || !grid) return;
-            
-            deckRow.innerHTML = ''; 
-            grid.innerHTML = '';
-            
-            globalLevelMetadata.forEach(lvl => {
-                const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num); 
-                let total = subUnitsInLvl.length, done = 0;
-                subUnitsInLvl.forEach(u => { 
-                    if (localStorage.getItem(`handbook-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') done++; 
-                });
-                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-                deckRow.innerHTML += `
-                    <div class="progress-card-master ${lvl.num===selectedActiveLevelNum?'active-level':''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();">
-                        <div class="progress-label">${lvl.name} : ${lvl.label}</div>
-                        <div class="progress-percentage">${pct}%</div>
-                        <div class="progress-stats">完成指標: ${done} / ${total}</div>
-                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%;"></div></div>
-                    </div>`;
-            });
-
-            const filteredUnits = globalSubUnitRegistry.filter(u => u.levelNum === selectedActiveLevelNum);
-            filteredUnits.forEach(unit => {
-                const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
-                const isClear = localStorage.getItem(`handbook-${storageKey}-clear`) === 'true';
-                grid.innerHTML += `
-                    <div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span>
-                            <h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
-                        </div>
-                        <div style="font-size:0.75rem; font-weight:900; color:var(--text-main); white-space:nowrap; padding-left:6px;">${isClear ? `✅ [通過]` : '⏳ 待考核'}</div>
-                    </div>`;
-            });
-        }
-
         function injectContentPackScript(type, packId) {
             const old = document.getElementById('dynamic-course-pack'); 
             if (old) old.remove();
@@ -719,6 +758,7 @@
                 }
             }
             
+            // 🚀 👑 權重優先級演算大腦
             let curr = initialStartNode;
             while (passedNodesList.includes(curr)) {
                 let nodeData = window.tpmSandboxScriptTree[curr];
@@ -768,8 +808,28 @@
             localStorage.setItem(`tpm-sandbox-unlocked-${activePackUnitId}`, JSON.stringify(unlockedNodesList));
         }
 
+        function shuffleArray(array) {
+            let shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function findParentDecisionNode(childId) {
+            const tree = window.tpmSandboxScriptTree;
+            if (!tree) return null;
+            for (let key in tree) {
+                const node = tree[key];
+                if (node.options && node.options.some(opt => opt.target === childId)) return node;
+                if (node.nextNodes && node.nextNodes.includes(childId)) return node;
+            }
+            return null;
+        }
+
         // ========================================================================
-        // 👑 拓撲地圖繪製艙
+        // 👑 拓撲地圖繪製艙 (相容全量多分流與錯線紅化狀態機)
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -820,13 +880,8 @@
             });
             decisionYSet.forEach(midY => {
                 const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                divider.setAttribute("x1", "0");
-                divider.setAttribute("y1", midY);
-                divider.setAttribute("x2", "720");
-                divider.setAttribute("y2", midY);
-                divider.setAttribute("stroke", "#CBD5E1");
-                divider.setAttribute("stroke-width", "2");
-                divider.setAttribute("stroke-dasharray", "8,6");
+                divider.setAttribute("x1", "0"); divider.setAttribute("y1", midY); divider.setAttribute("x2", "720"); divider.setAttribute("y2", midY);
+                divider.setAttribute("stroke", "#CBD5E1"); divider.setAttribute("stroke-width", "2"); divider.setAttribute("stroke-dasharray", "8,6");
                 svgCanvas.appendChild(divider);
             });
 
@@ -856,24 +911,18 @@
                     const isTargetUnlocked = unlockedNodesList.includes(tarId);
 
                     if (isUnitCleared) {
-                        line.setAttribute("stroke", "#CBD5E1");
-                        line.setAttribute("stroke-width", "1.5");
+                        line.setAttribute("stroke", "#CBD5E1"); line.setAttribute("stroke-width", "1.5");
                     } else if (isTargetFail && isTargetUnlocked) {
-                        line.setAttribute("stroke", "#F87171"); 
-                        line.setAttribute("stroke-width", "2.5");
+                        line.setAttribute("stroke", "#F87171"); line.setAttribute("stroke-width", "2.5");
                     } else if (
                         (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
                         (passedNodesList.includes(srcId) && tarId === activeFrontierNodeId)
                     ) {
-                        line.setAttribute("stroke", "#EAB308");
-                        line.setAttribute("stroke-width", "3");
+                        line.setAttribute("stroke", "#EAB308"); line.setAttribute("stroke-width", "3");
                     } else if (srcId === activeFrontierNodeId) {
-                        line.setAttribute("stroke", "#475569"); 
-                        line.setAttribute("stroke-width", "2");
-                        line.setAttribute("stroke-dasharray", "4,4");
+                        line.setAttribute("stroke", "#475569"); line.setAttribute("stroke-width", "2"); line.setAttribute("stroke-dasharray", "4,4");
                     } else {
-                        line.setAttribute("stroke", "#D1D5DB");
-                        line.setAttribute("stroke-width", "1.5");
+                        line.setAttribute("stroke", "#D1D5DB"); line.setAttribute("stroke-width", "1.5");
                     }
                     svgCanvas.appendChild(line);
                 });
@@ -885,10 +934,8 @@
                 if (!activeVisibleNodesSet.has(nodeId)) return;
 
                 const dot = document.createElement('div');
-                dot.id = `dot-${nodeId}`;
-                dot.className = 'map-node-dot';
-                dot.style.left = `${pos.x}px`;
-                dot.style.top = `${pos.y}px`;
+                dot.id = `dot-${nodeId}`; dot.className = 'map-node-dot';
+                dot.style.left = `${pos.x}px`; dot.style.top = `${pos.y}px`;
                 
                 let displayName = pos.name;
                 const isPassed = passedNodesList.includes(nodeId);
@@ -902,21 +949,15 @@
                 const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || nodeId.includes("END") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
 
                 if (isUnitCleared) {
-                    if (tree[nodeId] && tree[nodeId].type === "end_win") {
-                        dot.className += ' passed';
-                    } else if (isFailNode) {
-                        dot.style.backgroundColor = "#FCA5A5"; 
-                        dot.style.border = "2px solid #EF4444";
-                    } else {
-                        dot.className += ' passed';
-                    }
+                    if (tree[nodeId] && tree[nodeId].type === "end_win") dot.className += ' passed';
+                    else if (isFailNode) { dot.style.backgroundColor = "#FCA5A5"; dot.style.border = "2px solid #EF4444"; }
+                    else dot.className += ' passed';
                     if (nodeId === activeFrontierNodeId) dot.className += ' active-target';
                 } else {
                     if (isPassed) {
                         dot.className += ' passed';
                     } else if (isFailNode && isUnlocked) {
-                        dot.style.backgroundColor = "#FCA5A5"; 
-                        dot.style.border = "2px solid #EF4444";
+                        dot.style.backgroundColor = "#FCA5A5"; dot.style.border = "2px solid #EF4444";
                     } else {
                         if (nodeId === activeFrontierNodeId) dot.className += ' active-target';
                     }
@@ -963,7 +1004,6 @@
             if (!inspector || !node) return;
 
             const isReviewMode = (nodeId !== activeFrontierNodeId);
-
             let contentHtml = `<div class="inspector-scroll-box" style="animation: fadeInNode 0.12s ease-out;">`;
 
             if (node.type === "story") {
@@ -1097,62 +1137,43 @@
 
         window.executeSettleHandbookUnit = function(isWin) {
             if (!isWin) return;
-
             const checkLiveEmail = localStorage.getItem('tpm-user-current-email');
             if (!checkLiveEmail || checkLiveEmail.trim() === "") {
                 alert("❌ 偵測到未登入身分！請先返回首頁完成企業 Email 認證，否則公會將拒絕保存您的實戰進度與 GAS 戰績。");
-                exitToDashboardMenu();
-                return;
+                exitToDashboardMenu(); return;
             }
-
             localStorage.setItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`, 'true');
-            
             try {
-                const finalPushUrl = GLOBAL_GAS_URL + 
-                    "?action=push" +
-                    "&courseId=" + encodeURIComponent("HB-" + activePackUnitId) + 
-                    "&status=" + encodeURIComponent("通過");
+                const finalPushUrl = GLOBAL_GAS_URL + "?action=push&courseId=" + encodeURIComponent("HB-" + activePackUnitId) + "&status=" + encodeURIComponent("通過");
                 window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
-            } catch(e) {
-                console.error("GAS 擊發流產:", e);
-            }
+            } catch(e) { console.error("GAS 擊發流產:", e); }
             exitToDashboardMenu();
         };
 
         (function() {
             const PILOT_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
-
             function computeLocalUserRankTitle() {
                 if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "首頁登入", isLogged: false };
-
-                let nameStr = "Daniel Shih";
-                const emailLower = PILOT_EMAIL.toLowerCase().trim();
+                let nameStr = "Daniel Shih"; const emailLower = PILOT_EMAIL.toLowerCase().trim();
                 if (emailLower !== "danielcwshih@fih-foxconn.com") {
                     nameStr = emailLower.split('@')[0].replace(/[\._\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
                 }
-
                 const beginnerKeys = ['codex-L1-A1-clear', 'codex-L1-A2-clear', 'codex-L1-A3-clear', 'codex-L1-A4-clear', 'codex-L2-A1-clear', 'codex-L3-A1-clear'];
                 const isAllBeginnerCleared = beginnerKeys.every(k => localStorage.getItem(k) === 'true');
-
                 const adventureKeys = ['handbook-L1-A1-clear', 'handbook-L1-A2-clear'];
                 const isAllAdventureCleared = adventureKeys.every(k => localStorage.getItem(k) === 'true');
-
                 if (isAllBeginnerCleared && isAllAdventureCleared) return { text: `👤 統籌者 : ${nameStr}`, isLogged: true };
                 if (isAllBeginnerCleared) return { text: `👤 冒險者 : ${nameStr}`, isLogged: true };
                 return { text: `👤 初心者 : ${nameStr}`, isLogged: true };
             }
-
             const originalOnload = window.onload;
             window.onload = function() {
                 if (originalOnload) originalOnload();
                 const profileBox = document.getElementById('global-user-profile-card');
                 if (profileBox) {
-                    const rankInfo = computeLocalUserRankTitle();
-                    profileBox.innerHTML = rankInfo.text;
+                    const rankInfo = computeLocalUserRankTitle(); profileBox.innerHTML = rankInfo.text;
                     if (!rankInfo.isLogged) {
-                        profileBox.style.color = "#DC2626";
-                        profileBox.style.borderColor = "#DC2626";
-                        profileBox.style.boxShadow = "3px 3px 0px #DC2626";
+                        profileBox.style.color = "#DC2626"; profileBox.style.borderColor = "#DC2626"; profileBox.style.boxShadow = "3px 3px 0px #DC2626";
                     }
                 }
             };
