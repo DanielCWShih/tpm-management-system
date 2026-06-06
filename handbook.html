@@ -107,7 +107,7 @@
             overflow: hidden;
         }
 
-        /* 👑 左側戰術選單清單欄 - 寬度 75% 剛性縮減 */
+        /* 👑 左側戰術選單清單欄 */
         .sidebar-panel {
             display: flex;
             width: 262px; 
@@ -325,7 +325,7 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        /* ─── 🎨 內襯北歐沙盒地圖主艙 ─── */
+        /* ─── 🎨 內襯北歐沙盒地圖容器 ─── */
         .sandbox-game-container {
             display: flex;
             flex-direction: row;
@@ -345,12 +345,12 @@
             box-shadow: var(--shadow-tactical);
         }
 
-        /* 👑 🚀 終極優化：畫布升級為 100% 響應式蔓延，拒絕兩側死板留白 */
+        /* 👑 固定寬體置中場域 */
         .map-inner-flow-field {
             width: 100%; 
             height: 2200px;
             position: relative;
-            margin: 0;    
+            margin: 0 auto;    
         }
 
         .map-svg-layer {
@@ -363,14 +363,13 @@
             z-index: 1;
         }
 
-        /* 🚀 👑 驚艷改裝：全新硬核「實體戰術卡片」型態（取代落伍圓點標籤） */
         .map-node-card {
             position: absolute;
             width: 145px;
             height: 52px;
             border-radius: 6px;
             border: 2px solid var(--border-heavy);
-            background-color: #E2E8F0; /* 默認鎖定灰底 */
+            background-color: #E2E8F0; 
             color: #64748B;
             display: flex;
             align-items: center;
@@ -386,7 +385,7 @@
             box-shadow: 2px 2px 0px var(--border-heavy);
             transition: all 0.18s ease;
             user-select: none;
-            white-space: normal; /* 剛性解鎖文字自動換行 */
+            white-space: normal; 
         }
 
         .map-node-card.locked {
@@ -423,7 +422,7 @@
             100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0), 4px 4px 0px var(--border-heavy); }
         }
 
-        /* 👑 右側戰術觀測儀 - 寬度優化增寬 15% */
+        /* 👑 右側戰術觀測儀 */
         .fixed-inspector-panel {
             width: 380px; 
             height: 100%;
@@ -574,7 +573,7 @@
             nodeLayoutCoordinates = {};
             let tierBuckets = {};
 
-            // 1. 縱向天梯層級分水嶺 (Tier Stratification)
+            // 1. 縱向天梯層級分水嶺
             Object.keys(tree).forEach(nodeId => {
                 let tierNum = 0;
                 const match = nodeId.match(/^T(\d+)/);
@@ -598,14 +597,13 @@
                 tierBuckets[tierNum].push({ id: nodeId, rawNode: tree[nodeId] });
             });
 
-            // 🚀 👑 核心升級：實時抓取當前中央擴展開線畫布的物理像素寬度
             const lockField = document.getElementById('map-lock-field');
             let containerWidth = 720;
             if (lockField) {
                 containerWidth = lockField.clientWidth;
             }
 
-            // 2. 橫向等距發散分配矩陣 (X-Axis Geometric Allocation)
+            // 2. 橫向等距發散分配矩陣
             Object.keys(tierBuckets).forEach(tierStr => {
                 const tierNum = parseInt(tierStr, 10);
                 let nodes = tierBuckets[tierNum];
@@ -615,18 +613,16 @@
                 });
 
                 const count = nodes.length;
-                const yCoord = tierNum * 130 + 60; // 剛性縱向等距天梯步進
+                const yCoord = tierNum * 130 + 60; 
 
                 nodes.forEach((node, idx) => {
                     let xCoord = containerWidth / 2; 
                     if (count > 1) {
-                        // 🚀 核心調校：配合實體卡片寬度，將發散邊界動態設定在 90px ~ 寬度-90px
                         const startX = 90;
                         const endX = containerWidth - 90;
                         xCoord = startX + (idx * ((endX - startX) / (count - 1)));
                     }
                     
-                    // 🚀 換裝為實體卡片流，文字可自然折行包覆，全面「取消字數截斷」，原汁原味展現劇本標題！
                     let cleanName = node.rawNode.title || node.id;
                     if (cleanName.includes("：")) {
                         cleanName = cleanName.split("：")[1];
@@ -648,7 +644,6 @@
         let unlockedNodesList = []; 
         let passedNodesList = []; 
         
-        // 👑 解耦核心 Frontier 進度鎖
         let activeFrontierNodeId = null;     
         let currentlySelectedNodeId = null;  
         let activePackUnitId = null;
@@ -864,12 +859,10 @@
                 unlockedNodesList.push(activeFrontierNodeId);
             }
 
-            // 🚀 實時重算寬度網格
             calculateDynamicCosmicTopology();
             renderNordicSandboxMap();
             inspectNodeDetail(currentlySelectedNodeId);
 
-            // 👑 當視窗大小發生改變時，連鎖熱熔觸發重算，保證 100% 幾何自適應
             window.onresize = () => {
                 calculateDynamicCosmicTopology();
                 renderNordicSandboxMap();
@@ -910,7 +903,7 @@
         }
 
         // ========================================================================
-        // 👑 拓撲地圖繪製艙 (全量換裝為實體卡片流，線條完美咬合卡片幾何中心)
+        // 👑 拓撲地圖繪製艙 (全自動卡片流與動態分流渲染)
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -948,49 +941,7 @@
                 }
             });
 
-            // 🚀 頁際大虛線動態清算寬度
-            const lockField = document.getElementById('map-lock-field');
-            let containerWidth = 720;
-            if (lockField) {
-                containerWidth = lockField.clientWidth;
-            }
-
-            const decisionYSet = new Set();
-            Object.keys(tree).forEach(nodeId => {
-                if (activeVisibleNodesSet.has(nodeId) && passedNodesList.includes(nodeId)) {
-                    if (tree[nodeId].type === "decision" || tree[nodeId].type === "quiz") {
-                        let maxChildY = nodeLayoutCoordinates[nodeId].y;
-                        let targets = [];
-                        if (tree[nodeId].nextNodes) {
-                            targets = targets.concat(tree[nodeId].nextNodes);
-                        }
-                        if (tree[nodeId].options) {
-                            tree[nodeId].options.forEach(o => {
-                                targets.push(o.target);
-                            });
-                        }
-                        targets.forEach(t => {
-                            if (nodeLayoutCoordinates[t] && activeVisibleNodesSet.has(t)) {
-                                if (nodeLayoutCoordinates[t].y > maxChildY) {
-                                    maxChildY = nodeLayoutCoordinates[t].y;
-                                }
-                            }
-                        });
-                        decisionYSet.add(maxChildY + 65);
-                    }
-                }
-            });
-            
-            decisionYSet.forEach(midY => {
-                const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                divider.setAttribute("x1", "0");
-                divider.setAttribute("y1", midY);
-                divider.setAttribute("x2", containerWidth); // 剛性橫扣全寬
-                divider.setAttribute("stroke", "#CBD5E1");
-                divider.setAttribute("stroke-width", "2");
-                divider.setAttribute("stroke-dasharray", "8,6");
-                svgCanvas.appendChild(divider);
-            });
+            // 🚀 👑 剛性修正 1：刪除不必要的分界線邏輯 decisionYSet，還原極簡畫布。
 
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
@@ -1026,7 +977,7 @@
                     line.setAttribute("x2", tarPos.x);
                     line.setAttribute("y2", tarPos.y);
 
-                    const isTargetFail = tarId.includes("FAIL") || tarId.includes("WARN");
+                    const isTargetFail = tarId.includes("FAIL") || tarId.includes("WARN") || (tree[tarId] && (tree[tarId].type === "end_fail" || tree[tarId].type === "end_warn"));
                     const isTargetUnlocked = unlockedNodesList.includes(tarId);
 
                     if (isUnitCleared) {
@@ -1050,7 +1001,6 @@
                 });
             });
 
-            // 🚀 👑 核心重構：生成實體戰術卡片
             Object.keys(tree).forEach(nodeId => {
                 const pos = nodeLayoutCoordinates[nodeId];
                 if (!pos) {
@@ -1070,13 +1020,12 @@
                 const isPassed = passedNodesList.includes(nodeId);
                 const isUnlocked = unlockedNodesList.includes(nodeId);
 
-                // 🔒 未探測開線之平行宇宙，卡片強置顯示為未知分流，防偷看
                 if (!isUnitCleared && nodeId !== activeFrontierNodeId && !isPassed && !isUnlocked) {
                     displayName = "🔒 未知分流";
                 }
                 card.innerText = displayName;
 
-                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN");
+                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
 
                 if (isUnitCleared) {
                     if (tree[nodeId] && tree[nodeId].type === "end_win") {
@@ -1103,7 +1052,6 @@
                     }
                 }
 
-                // 🚀 👑 剛性高程大解鎖加鎖：高度大於前線點則全面禁止點擊作弊！
                 card.onclick = () => {
                     if (!activeVisibleNodesSet.has(nodeId)) {
                         return;
@@ -1111,7 +1059,7 @@
                     
                     if (!isUnitCleared && nodeLayoutCoordinates[nodeId] && nodeLayoutCoordinates[activeFrontierNodeId]) {
                         if (nodeLayoutCoordinates[nodeId].y > nodeLayoutCoordinates[activeFrontierNodeId].y) {
-                            alert("🔒 當前階段戰術賽局正在進行，請由右側控制台點選按鈕進行推進，禁止由地圖直接點擊分流窺視答案。");
+                            alert("🔒 當前階段戰術賽局正在進行，請由右側控制台點選按鈕進行推進，禁止由地圖直接點擊未來分流窺視答案。");
                             return;
                         }
                     }
@@ -1141,6 +1089,9 @@
             }
         }
 
+        // ========================================================================
+        // 👑 右側戰術儀控制中樞 (解決唯讀死鎖與 END 原位分流跳轉)
+        // ========================================================================
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
             const node = window.tpmSandboxScriptTree[nodeId];
@@ -1148,7 +1099,31 @@
                 return;
             }
 
-            const isReviewMode = (nodeId !== activeFrontierNodeId);
+            // 🚀 👑 剛性修正 2：如果節點已被解鎖，且它的下一步「沒有被走過」，它就具備前進主權！解除 ReviewMode 唯讀鎖死。
+            let isReviewMode = true;
+            if (nodeId === activeFrontierNodeId) {
+                isReviewMode = false;
+            } else if (unlockedNodesList.includes(nodeId)) {
+                let hasMovedForward = false;
+                if (node.nextNodes && node.nextNodes.length > 0) {
+                    if (passedNodesList.includes(node.nextNodes[0])) {
+                        hasMovedForward = true;
+                    }
+                }
+                if (node.options && node.options.length > 0) {
+                    for (let opt of node.options) {
+                        if (passedNodesList.includes(opt.target)) {
+                            hasMovedForward = true;
+                            break;
+                        }
+                    }
+                }
+                // 節點是終點沒有退路，或下一步完全沒走過，就解除唯讀
+                if (!hasMovedForward) {
+                    isReviewMode = false;
+                }
+            }
+
             let contentHtml = `<div class="inspector-scroll-box" style="animation: fadeInNode 0.12s ease-out;">`;
 
             if (node.type === "story") {
@@ -1189,11 +1164,11 @@
                     contentHtml += `</div>`;
                 }
             } else if (node.type.startsWith("end_")) {
-                let endColor = "#475569";
+                let endColor = "#475569"; // 默認深灰 (非錯誤結局)
                 if (node.type === "end_win") {
-                    endColor = "#15803D";
-                } else if (node.id.includes("FAIL") || node.id.includes("WARN")) {
-                    endColor = "#B91C1C";
+                    endColor = "#15803D"; // 勝利綠
+                } else if (node.id.includes("FAIL") || node.id.includes("WARN") || node.type === "end_fail" || node.type === "end_warn") {
+                    endColor = "#B91C1C"; // 失敗紅
                 }
                 
                 contentHtml += `
@@ -1207,6 +1182,7 @@
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
                 } else {
+                    // 🚀 👑 剛性修正 3：無論是哪種結局 (包含正確的分支結局)，只要它沒有下一步，就可以原地觸發親代選項，供學員躍遷開線！
                     if (!isReviewMode) {
                         const parentDecision = findParentDecisionNode(nodeId);
                         if (parentDecision && parentDecision.options) {
@@ -1274,13 +1250,24 @@
                 return;
             }
 
-            let isCorrect = (targetNodeId === "WIN-NODE-CONQUER" || targetNodeId === "T14-PASS-4" || targetNodeId === "T7-A-WIN-FINAL");
+            let isCorrect = false;
+            let targetNode = targetNodeId;
+            
+            if (!targetNode && node.options) {
+                const rawEvent = window.event?.target?.innerText || "";
+                const foundOpt = node.options.find(o => rawEvent.includes(o.text));
+                isCorrect = foundOpt ? foundOpt.isCorrect : false;
+                targetNode = node.nextNodes ? node.nextNodes[0] : "WIN-NODE-CONQUER";
+            } else {
+                isCorrect = (targetNode === "WIN-NODE-CONQUER" || targetNode === "T14-PASS-4" || targetNode === "T7-A-WIN-FINAL");
+            }
+
             zone.innerHTML = `
                 <div style="margin-top:10px; padding:14px; background:${isCorrect ? '#F0FDF4':'#FEF2F2'}; border-radius:6px; border:1px solid ${isCorrect?'#BBF7D0':'#FCA5A5'}; font-size:0.85rem; line-height:1.5;">
                     <div style="font-weight:900; font-size:0.95rem; color:${isCorrect?'#16A34A':'#DC2626'}; margin-bottom:4px;">${isCorrect ? '🏆 回答正確！':'💥 判斷錯誤！'}</div>
                     <div>${node.explanation}</div>
                 </div>
-                <button class="nordic-action-btn" onclick="executePassQuizNode('${nodeId}', '${targetNodeId}')">➔ 繼續前進</button>
+                <button class="nordic-action-btn" onclick="executePassQuizNode('${nodeId}', '${targetNode}')">➔ 繼續前進</button>
             `;
         };
 
