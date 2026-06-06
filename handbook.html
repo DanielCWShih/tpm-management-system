@@ -550,6 +550,82 @@
         // 👑 全域虛擬動態佈局大盤
         let nodeLayoutCoordinates = {};
 
+        // ========================================================================
+        // 👑 萬能幾何分流分層編譯引擎：動態清算橫向主支線，100% 絕殺重疊穿透！
+        // ========================================================================
+        function calculateDynamicCosmicTopology() {
+            const tree = window.tpmSandboxScriptTree;
+            if (!tree) {
+                return;
+            }
+
+            nodeLayoutCoordinates = {};
+            let tierBuckets = {};
+
+            // 1. 縱向天梯層級分水嶺 (Tier Stratification)
+            Object.keys(tree).forEach(nodeId => {
+                let tierNum = 0;
+                const match = nodeId.match(/^T(\d+)/);
+                if (match) {
+                    tierNum = parseInt(match[1], 10);
+                } else {
+                    if (nodeId.includes("START")) {
+                        tierNum = 1;
+                    } else if (nodeId.includes("DECISION")) {
+                        tierNum = 2;
+                    } else if (nodeId.includes("FAIL") || nodeId.includes("WARN") || nodeId.includes("STACKUP")) {
+                        tierNum = 3;
+                    } else if (nodeId.includes("CONQUER") || nodeId.includes("WIN")) {
+                        tierNum = 4;
+                    }
+                }
+
+                if (!tierBuckets[tierNum]) {
+                    tierBuckets[tierNum] = [];
+                }
+                tierBuckets[tierNum].push({ id: nodeId, rawNode: tree[nodeId] });
+            });
+
+            // 2. 橫向等距發散分配矩陣 (X-Axis Geometric Allocation)
+            Object.keys(tierBuckets).forEach(tierStr => {
+                const tierNum = parseInt(tierStr, 10);
+                let nodes = tierBuckets[tierNum];
+                
+                nodes.sort((a, b) => {
+                    return a.id.localeCompare(b.id);
+                });
+
+                const count = nodes.length;
+                const yCoord = tierNum * 130 + 60; // 剛性縱向等距天梯步進
+
+                nodes.forEach((node, idx) => {
+                    let xCoord = 360; 
+                    if (count > 1) {
+                        const startX = 100;
+                        const endX = 620;
+                        xCoord = startX + (idx * ((endX - startX) / (count - 1)));
+                    }
+                    
+                    let cleanName = node.rawNode.title || node.id;
+                    if (cleanName.includes("：")) {
+                        cleanName = cleanName.split("：")[1];
+                    } else if (cleanName.includes(":")) {
+                        cleanName = cleanName.split(":")[1];
+                    }
+                    cleanName = cleanName.replace(/[📚🛑🏆⚡⚠️💥📍🎯]/g, "").trim();
+                    if (cleanName.length > 8) {
+                        cleanName = cleanName.substring(0, 8) + "..";
+                    }
+
+                    nodeLayoutCoordinates[node.id] = {
+                        x: Math.round(xCoord),
+                        y: yCoord,
+                        name: cleanName
+                    };
+                });
+            });
+        }
+
         let selectedActiveLevelNum = 1; 
         let unlockedNodesList = []; 
         let passedNodesList = []; 
@@ -566,7 +642,9 @@
 
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); 
-            if (!root) return;
+            if (!root) {
+                return;
+            }
             root.innerHTML = '';
             const presentLevels = [...new Set(globalSubUnitRegistry.map(u => u.levelNum))].sort();
             
@@ -589,7 +667,13 @@
 
         function toggleMenuSection(id) { 
             const el = document.getElementById(id); 
-            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
+            if (el) {
+                if (el.style.display === 'none') {
+                    el.style.display = 'flex';
+                } else {
+                    el.style.display = 'none';
+                }
+            }
         }
 
         function routeController(directType, directC) {
@@ -609,32 +693,39 @@
                 document.getElementById('sandbox-viewport').style.display = 'flex'; 
                 document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
                 const leaf = document.getElementById(`lf-${paramType}-${paramC}`); 
-                if (leaf) leaf.classList.add('active'); 
+                if (leaf) {
+                    leaf.classList.add('active'); 
+                }
                 activePackUnitId = paramC;
                 injectContentPackScript(paramType, paramC);
             }
         }
 
         // ========================================================================
-        // 👑 完璧補回：戰術大廳 Dashboard 核心渲染模組 (絕不優化刪減)
+        // 👑 完璧補回：戰術大廳 Dashboard 核心渲染模組 (100% 展開展開格式)
         // ========================================================================
         function renderMultiLevelHubDashboard() {
             const deckRow = document.getElementById('global-level-flex-deck');
             const grid = document.getElementById('l1-cards-grid'); 
-            if (!deckRow || !grid) return;
+            if (!deckRow || !grid) {
+                return;
+            }
             
             deckRow.innerHTML = ''; 
             grid.innerHTML = '';
             
             globalLevelMetadata.forEach(lvl => {
                 const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num); 
-                let total = subUnitsInLvl.length, done = 0;
+                let total = subUnitsInLvl.length;
+                let done = 0;
                 subUnitsInLvl.forEach(u => { 
-                    if (localStorage.getItem(`handbook-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') done++; 
+                    if (localStorage.getItem(`handbook-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') {
+                        done++; 
+                    }
                 });
                 const pct = total > 0 ? Math.round((done / total) * 100) : 0;
                 deckRow.innerHTML += `
-                    <div class="progress-card-master ${lvl.num===selectedActiveLevelNum?'active-level':''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();">
+                    <div class="progress-card-master ${lvl.num === selectedActiveLevelNum ? 'active-level' : ''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();">
                         <div class="progress-label">${lvl.name} : ${lvl.label}</div>
                         <div class="progress-percentage">${pct}%</div>
                         <div class="progress-stats">完成指標: ${done} / ${total}</div>
@@ -647,7 +738,7 @@
                 const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
                 const isClear = localStorage.getItem(`handbook-${storageKey}-clear`) === 'true';
                 grid.innerHTML += `
-                    <div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
+                    <div class="cdx-dashboard-card" style="background-color: ${isClear ? '#DCFCE7' : '#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
                         <div style="display:flex; align-items:center; gap:8px;">
                             <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span>
                             <h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
@@ -663,83 +754,36 @@
             routeController(type, subUnitId); 
         }
 
-        // ========================================================================
-        // 👑 萬能幾何分流分層編譯引擎：動態清算橫向主支線，100% 絕殺重疊穿透！
-        // ========================================================================
-        function calculateDynamicCosmicTopology() {
-            const tree = window.tpmSandboxScriptTree;
-            if (!tree) return;
-
-            nodeLayoutCoordinates = {};
-            let tierBuckets = {};
-
-            // 1. 縱向天梯層級分水嶺 (Tier Stratification)
-            Object.keys(tree).forEach(nodeId => {
-                let tierNum = 0;
-                const match = nodeId.match(/^T(\d+)/);
-                if (match) {
-                    tierNum = parseInt(match[1], 10);
-                } else {
-                    if (nodeId.includes("START")) tierNum = 1;
-                    else if (nodeId.includes("DECISION")) tierNum = 2;
-                    else if (nodeId.includes("FAIL") || nodeId.includes("WARN") || nodeId.includes("STACKUP")) tierNum = 3;
-                    else if (nodeId.includes("CONQUER") || nodeId.includes("WIN")) tierNum = 4;
-                }
-
-                if (!tierBuckets[tierNum]) tierBuckets[tierNum] = [];
-                tierBuckets[tierNum].push({ id: nodeId, rawNode: tree[nodeId] });
-            });
-
-            // 2. 橫向等距發散分配矩陣 (X-Axis Geometric Allocation)
-            Object.keys(tierBuckets).forEach(tierStr => {
-                const tierNum = parseInt(tierStr, 10);
-                let nodes = tierBuckets[tierNum];
-                
-                nodes.sort((a, b) => a.id.localeCompare(b.id));
-
-                const count = nodes.length;
-                const yCoord = tierNum * 130 + 60; // 剛性縱向等距天梯步進
-
-                nodes.forEach((node, idx) => {
-                    let xCoord = 360; 
-                    if (count > 1) {
-                        const startX = 100;
-                        const endX = 620;
-                        xCoord = startX + (idx * ((endX - startX) / (count - 1)));
-                    }
-                    
-                    let cleanName = node.rawNode.title || node.id;
-                    if (cleanName.includes("：")) cleanName = cleanName.split("：")[1];
-                    else if (cleanName.includes(":")) cleanName = cleanName.split(":")[1];
-                    cleanName = cleanName.replace(/[📚🛑🏆⚡⚠️💥📍🎯]/g, "").trim();
-                    if (cleanName.length > 8) cleanName = cleanName.substring(0, 8) + "..";
-
-                    nodeLayoutCoordinates[node.id] = {
-                        x: Math.round(xCoord),
-                        y: yCoord,
-                        name: cleanName
-                    };
-                });
-            });
+        function exitToDashboardMenu() { 
+            window.history.pushState(null, '', window.location.pathname); 
+            routeController(null, null); 
         }
 
         function injectContentPackScript(type, packId) {
             const old = document.getElementById('dynamic-course-pack'); 
-            if (old) old.remove();
+            if (old) {
+                old.remove();
+            }
             
             const script = document.createElement('script'); 
             script.id = 'dynamic-course-pack'; 
             
             const currentUnit = globalSubUnitRegistry.find(u => u.type === type && u.subUnitId === packId);
-            if (!currentUnit) return;
+            if (!currentUnit) {
+                return;
+            }
             
             script.src = `${currentUnit.file}?v=${Date.now()}`;
-            script.onload = () => { initSandboxEngine(); }; 
+            script.onload = () => { 
+                initSandboxEngine(); 
+            }; 
             document.head.appendChild(script);
         }
 
         function initSandboxEngine() {
-            if (!activePackUnitId) return; 
+            if (!activePackUnitId) {
+                return; 
+            }
             document.getElementById('current-chapter-id').innerText = `HANDBOOK / UNIT ${activePackUnitId}`; 
             document.getElementById('current-chapter-name').innerText = globalSubUnitRegistry.find(u => u.subUnitId === activePackUnitId).title;
 
@@ -762,7 +806,9 @@
             let curr = initialStartNode;
             while (passedNodesList.includes(curr)) {
                 let nodeData = window.tpmSandboxScriptTree[curr];
-                if (!nodeData) break;
+                if (!nodeData) {
+                    break;
+                }
                 if (nodeData.nextNodes && nodeData.nextNodes.length > 0) {
                     curr = nodeData.nextNodes[0];
                 } else {
@@ -788,15 +834,21 @@
                             foundNext = true;
                         }
                     }
-                    if (!foundNext) break;
+                    if (!foundNext) {
+                        break;
+                    }
                 }
             }
             
             activeFrontierNodeId = curr;
             currentlySelectedNodeId = activeFrontierNodeId;
 
-            if (!unlockedNodesList.includes(initialStartNode)) unlockedNodesList.push(initialStartNode);
-            if (!unlockedNodesList.includes(activeFrontierNodeId)) unlockedNodesList.push(activeFrontierNodeId);
+            if (!unlockedNodesList.includes(initialStartNode)) {
+                unlockedNodesList.push(initialStartNode);
+            }
+            if (!unlockedNodesList.includes(activeFrontierNodeId)) {
+                unlockedNodesList.push(activeFrontierNodeId);
+            }
 
             calculateDynamicCosmicTopology();
             renderNordicSandboxMap();
@@ -812,29 +864,39 @@
             let shuffled = [...array];
             for (let i = shuffled.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                let temp = shuffled[i];
+                shuffled[i] = shuffled[j];
+                shuffled[j] = temp;
             }
             return shuffled;
         }
 
         function findParentDecisionNode(childId) {
             const tree = window.tpmSandboxScriptTree;
-            if (!tree) return null;
+            if (!tree) {
+                return null;
+            }
             for (let key in tree) {
                 const node = tree[key];
-                if (node.options && node.options.some(opt => opt.target === childId)) return node;
-                if (node.nextNodes && node.nextNodes.includes(childId)) return node;
+                if (node.options && node.options.some(opt => opt.target === childId)) {
+                    return node;
+                }
+                if (node.nextNodes && node.nextNodes.includes(childId)) {
+                    return node;
+                }
             }
             return null;
         }
 
         // ========================================================================
-        // 👑 拓撲地圖繪製艙 (相容全量多分流與錯線紅化狀態機)
+        // 👑 拓撲地圖繪製艙 (100% 長格式平鋪展開)
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
             const svgCanvas = document.getElementById('map-svg-canvas');
-            if (!nodesContainer || !svgCanvas || !window.tpmSandboxScriptTree) return;
+            if (!nodesContainer || !svgCanvas || !window.tpmSandboxScriptTree) {
+                return;
+            }
 
             nodesContainer.innerHTML = '';
             svgCanvas.innerHTML = '';
@@ -852,10 +914,14 @@
                     }
                     if (passedNodesList.includes(nodeId) || nodeId === activeFrontierNodeId) {
                         if (tree[nodeId].nextNodes) {
-                            tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
+                            tree[nodeId].nextNodes.forEach(nxt => {
+                                activeVisibleNodesSet.add(nxt);
+                            });
                         }
                         if (tree[nodeId].options) {
-                            tree[nodeId].options.forEach(opt => activeVisibleNodesSet.add(opt.target));
+                            tree[nodeId].options.forEach(opt => {
+                                activeVisibleNodesSet.add(opt.target);
+                            });
                         }
                     }
                 }
@@ -867,39 +933,65 @@
                     if (tree[nodeId].type === "decision" || tree[nodeId].type === "quiz") {
                         let maxChildY = nodeLayoutCoordinates[nodeId].y;
                         let targets = [];
-                        if (tree[nodeId].nextNodes) targets = targets.concat(tree[nodeId].nextNodes);
-                        if (tree[nodeId].options) tree[nodeId].options.forEach(o => targets.push(o.target));
+                        if (tree[nodeId].nextNodes) {
+                            targets = targets.concat(tree[nodeId].nextNodes);
+                        }
+                        if (tree[nodeId].options) {
+                            tree[nodeId].options.forEach(o => {
+                                targets.push(o.target);
+                            });
+                        }
                         targets.forEach(t => {
                             if (nodeLayoutCoordinates[t] && activeVisibleNodesSet.has(t)) {
-                                maxChildY = Math.max(maxChildY, nodeLayoutCoordinates[t].y);
+                                if (nodeLayoutCoordinates[t].y > maxChildY) {
+                                    maxChildY = nodeLayoutCoordinates[t].y;
+                                }
                             }
                         });
                         decisionYSet.add(maxChildY + 65);
                     }
                 }
             });
+            
             decisionYSet.forEach(midY => {
                 const divider = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                divider.setAttribute("x1", "0"); divider.setAttribute("y1", midY); divider.setAttribute("x2", "720"); divider.setAttribute("y2", midY);
-                divider.setAttribute("stroke", "#CBD5E1"); divider.setAttribute("stroke-width", "2"); divider.setAttribute("stroke-dasharray", "8,6");
+                divider.setAttribute("x1", "0");
+                divider.setAttribute("y1", midY);
+                divider.setAttribute("x2", "720");
+                divider.setAttribute("y2", midY);
+                divider.setAttribute("stroke", "#CBD5E1");
+                divider.setAttribute("stroke-width", "2");
+                divider.setAttribute("stroke-dasharray", "8,6");
                 svgCanvas.appendChild(divider);
             });
 
             Object.keys(tree).forEach(srcId => {
                 const srcNode = tree[srcId];
                 const srcPos = nodeLayoutCoordinates[srcId];
-                if (!srcPos) return;
+                if (!srcPos) {
+                    return;
+                }
 
                 let branchTargets = [];
-                if (srcNode.nextNodes) branchTargets = branchTargets.concat(srcNode.nextNodes);
+                if (srcNode.nextNodes) {
+                    branchTargets = branchTargets.concat(srcNode.nextNodes);
+                }
                 if (srcNode.options) {
-                    srcNode.options.forEach(opt => { if (opt.target) branchTargets.push(opt.target); });
+                    srcNode.options.forEach(opt => {
+                        if (opt.target) {
+                            branchTargets.push(opt.target);
+                        }
+                    });
                 }
 
                 branchTargets.forEach(tarId => {
                     const tarPos = nodeLayoutCoordinates[tarId];
-                    if (!tarPos) return;
-                    if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
+                    if (!tarPos) {
+                        return;
+                    }
+                    if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) {
+                        return;
+                    }
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     line.setAttribute("x1", srcPos.x);
@@ -911,18 +1003,21 @@
                     const isTargetUnlocked = unlockedNodesList.includes(tarId);
 
                     if (isUnitCleared) {
-                        line.setAttribute("stroke", "#CBD5E1"); line.setAttribute("stroke-width", "1.5");
+                        line.setAttribute("stroke", "#CBD5E1");
+                        line.setAttribute("stroke-width", "1.5");
                     } else if (isTargetFail && isTargetUnlocked) {
-                        line.setAttribute("stroke", "#F87171"); line.setAttribute("stroke-width", "2.5");
-                    } else if (
-                        (passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || 
-                        (passedNodesList.includes(srcId) && tarId === activeFrontierNodeId)
-                    ) {
-                        line.setAttribute("stroke", "#EAB308"); line.setAttribute("stroke-width", "3");
+                        line.setAttribute("stroke", "#F87171");
+                        line.setAttribute("stroke-width", "2.5");
+                    } else if ((passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || (passedNodesList.includes(srcId) && tarId === activeFrontierNodeId)) {
+                        line.setAttribute("stroke", "#EAB308");
+                        line.setAttribute("stroke-width", "3");
                     } else if (srcId === activeFrontierNodeId) {
-                        line.setAttribute("stroke", "#475569"); line.setAttribute("stroke-width", "2"); line.setAttribute("stroke-dasharray", "4,4");
+                        line.setAttribute("stroke", "#475569");
+                        line.setAttribute("stroke-width", "2");
+                        line.setAttribute("stroke-dasharray", "4,4");
                     } else {
-                        line.setAttribute("stroke", "#D1D5DB"); line.setAttribute("stroke-width", "1.5");
+                        line.setAttribute("stroke", "#D1D5DB");
+                        line.setAttribute("stroke-width", "1.5");
                     }
                     svgCanvas.appendChild(line);
                 });
@@ -930,12 +1025,18 @@
 
             Object.keys(tree).forEach(nodeId => {
                 const pos = nodeLayoutCoordinates[nodeId];
-                if (!pos) return; 
-                if (!activeVisibleNodesSet.has(nodeId)) return;
+                if (!pos) {
+                    return;
+                }
+                if (!activeVisibleNodesSet.has(nodeId)) {
+                    return;
+                }
 
                 const dot = document.createElement('div');
-                dot.id = `dot-${nodeId}`; dot.className = 'map-node-dot';
-                dot.style.left = `${pos.x}px`; dot.style.top = `${pos.y}px`;
+                dot.id = `dot-${nodeId}`;
+                dot.className = 'map-node-dot';
+                dot.style.left = `${pos.x}px`;
+                dot.style.top = `${pos.y}px`;
                 
                 let displayName = pos.name;
                 const isPassed = passedNodesList.includes(nodeId);
@@ -949,22 +1050,35 @@
                 const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || nodeId.includes("END") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
 
                 if (isUnitCleared) {
-                    if (tree[nodeId] && tree[nodeId].type === "end_win") dot.className += ' passed';
-                    else if (isFailNode) { dot.style.backgroundColor = "#FCA5A5"; dot.style.border = "2px solid #EF4444"; }
-                    else dot.className += ' passed';
-                    if (nodeId === activeFrontierNodeId) dot.className += ' active-target';
+                    if (tree[nodeId] && tree[nodeId].type === "end_win") {
+                        dot.className += ' passed';
+                    } else if (isFailNode) {
+                        dot.style.backgroundColor = "#FCA5A5";
+                        dot.style.border = "2px solid #EF4444";
+                    } else {
+                        dot.className += ' passed';
+                    }
+                    if (nodeId === activeFrontierNodeId) {
+                        dot.className += ' active-target';
+                    }
                 } else {
                     if (isPassed) {
                         dot.className += ' passed';
                     } else if (isFailNode && isUnlocked) {
-                        dot.style.backgroundColor = "#FCA5A5"; dot.style.border = "2px solid #EF4444";
+                        dot.style.backgroundColor = "#FCA5A5";
+                        dot.style.border = "2px solid #EF4444";
                     } else {
-                        if (nodeId === activeFrontierNodeId) dot.className += ' active-target';
+                        if (nodeId === activeFrontierNodeId) {
+                            dot.className += ' active-target';
+                        }
                     }
                 }
 
+                // 🚀 👑 V14.35 剛性高程鎖定防線：限制學員禁止點擊未來新層級的節點！
                 dot.onclick = () => {
-                    if (!activeVisibleNodesSet.has(nodeId)) return;
+                    if (!activeVisibleNodesSet.has(nodeId)) {
+                        return;
+                    }
                     
                     if (!isUnitCleared && nodeLayoutCoordinates[nodeId] && nodeLayoutCoordinates[activeFrontierNodeId]) {
                         if (nodeLayoutCoordinates[nodeId].y > nodeLayoutCoordinates[activeFrontierNodeId].y) {
@@ -1001,7 +1115,9 @@
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
             const node = window.tpmSandboxScriptTree[nodeId];
-            if (!inspector || !node) return;
+            if (!inspector || !node) {
+                return;
+            }
 
             const isReviewMode = (nodeId !== activeFrontierNodeId);
             let contentHtml = `<div class="inspector-scroll-box" style="animation: fadeInNode 0.12s ease-out;">`;
@@ -1023,11 +1139,11 @@
                 `;
                 if (!isReviewMode) {
                     let randomizedOptions = shuffleArray(node.options);
-                    contentHtml += `
-                        <div style="margin-top:15px;">
-                            ${randomizedOptions.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${nodeId}', '${opt.target}')"><b>決策分流：</b> ${opt.text}</button>`).join('')}
-                        </div>
-                    `;
+                    contentHtml += `<div style="margin-top:15px;">`;
+                    randomizedOptions.forEach(opt => {
+                        contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${nodeId}', '${opt.target}')"><b>決策分流：</b> ${opt.text}</button>`;
+                    });
+                    contentHtml += `</div>`;
                 }
             } else if (node.type === "quiz") {
                 contentHtml += `
@@ -1037,15 +1153,19 @@
                 `;
                 if (!isReviewMode) {
                     let randomizedQuizOpts = shuffleArray(node.options);
-                    contentHtml += `
-                        <div id="quiz-options-zone">
-                            ${randomizedQuizOpts.map((opt) => `<button class="nordic-option-btn" onclick="executeSubmitQuiz('${nodeId}', '${opt.target || ''}')">${opt.text}</button>`).join('')}
-                        </div>
-                    `;
+                    contentHtml += `<div id="quiz-options-zone">`;
+                    randomizedQuizOpts.forEach(opt => {
+                        contentHtml += `<button class="nordic-option-btn" onclick="executeSubmitQuiz('${nodeId}', '${opt.target || ''}')">${opt.text}</button>`;
+                    });
+                    contentHtml += `</div>`;
                 }
             } else if (node.type.startsWith("end_")) {
-                let endColor = (node.type === "end_win") ? "#15803D" : (node.type === "end_fail" ? "#B91C1C" : "#475569");
-                let isWin = (node.type === "end_win");
+                let endColor = "#475569";
+                if (node.type === "end_win") {
+                    endColor = "#15803D";
+                } else if (node.type === "end_fail" || node.type === "end_warn") {
+                    endColor = "#B91C1C";
+                }
                 
                 contentHtml += `
                     <div style="font-size:0.72rem; color:${endColor}; font-weight:900; letter-spacing:1px; margin-bottom:6px;">SCENARIO ENDING ${isReviewMode ? ' (歷程複盤)' : ''}</div>
@@ -1053,7 +1173,7 @@
                     <div style="background:#FAF8F5; padding:14px; border-radius:6px; border:1px solid var(--nordic-border); margin-bottom:15px;">${node.text}</div>
                 `;
 
-                if (isWin) {
+                if (node.type === "end_win") {
                     if (!isReviewMode) {
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
@@ -1061,16 +1181,20 @@
                     if (!isReviewMode) {
                         const parentDecision = findParentDecisionNode(nodeId);
                         if (parentDecision && parentDecision.options) {
-                            let remainingOptions = parentDecision.options.filter(opt => !unlockedNodesList.includes(opt.target));
+                            let remainingOptions = parentDecision.options.filter(opt => {
+                                return !unlockedNodesList.includes(opt.target);
+                            });
                             let randomizedRetry = shuffleArray(remainingOptions);
                             
                             if (randomizedRetry.length > 0) {
                                 contentHtml += `
                                     <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
                                         <p style="font-weight:900; color:var(--color-fail); margin-bottom:10px;">🔄 戰術重估：請重新評估該階段的分流決策：</p>
-                                        ${randomizedRetry.map((opt) => `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`).join('')}
-                                    </div>
                                 `;
+                                randomizedRetry.forEach(opt => {
+                                    contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>重新決策：</b> ${opt.text}</button>`;
+                                });
+                                contentHtml += `</div>`;
                             }
                         }
                     }
@@ -1082,10 +1206,16 @@
         }
 
         window.executePassNode = function(nodeId) {
-            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
+            if (!passedNodesList.includes(nodeId)) {
+                passedNodesList.push(nodeId);
+            }
             const nodeData = window.tpmSandboxScriptTree[nodeId];
             if (nodeData && nodeData.nextNodes) {
-                nodeData.nextNodes.forEach(nxt => { if (!unlockedNodesList.includes(nxt)) unlockedNodesList.push(nxt); });
+                nodeData.nextNodes.forEach(nxt => { 
+                    if (!unlockedNodesList.includes(nxt)) {
+                        unlockedNodesList.push(nxt); 
+                    }
+                });
             }
             saveSandboxProgress();
             if (nodeData.nextNodes && nodeData.nextNodes.length > 0) {
@@ -1096,8 +1226,12 @@
         };
 
         window.executeSelectBranch = function(nodeId, targetNodeId) {
-            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
-            if (!unlockedNodesList.includes(targetNodeId)) unlockedNodesList.push(targetNodeId);
+            if (!passedNodesList.includes(nodeId)) {
+                passedNodesList.push(nodeId);
+            }
+            if (!unlockedNodesList.includes(targetNodeId)) {
+                unlockedNodesList.push(targetNodeId);
+            }
             saveSandboxProgress();
             activeFrontierNodeId = currentlySelectedNodeId = targetNodeId;
             inspectNodeDetail(currentlySelectedNodeId);
@@ -1107,7 +1241,9 @@
         window.executeSubmitQuiz = function(nodeId, targetNodeId) {
             const zone = document.getElementById('quiz-options-zone');
             const node = window.tpmSandboxScriptTree[nodeId];
-            if (!zone || !node) return;
+            if (!zone || !node) {
+                return;
+            }
 
             let isCorrect = (targetNodeId === "WIN-NODE-CONQUER" || targetNodeId === "T14-PASS-4" || targetNodeId === "T7-A-WIN-FINAL");
             zone.innerHTML = `
@@ -1120,14 +1256,18 @@
         };
 
         window.executePassQuizNode = function(nodeId, targetNodeId) {
-            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
+            if (!passedNodesList.includes(nodeId)) {
+                passedNodesList.push(nodeId);
+            }
             let finalTarget = targetNodeId;
             
             if (!finalTarget || finalTarget === "undefined") {
                 finalTarget = window.tpmSandboxScriptTree[nodeId].nextNodes[0];
             }
 
-            if (!unlockedNodesList.includes(finalTarget)) unlockedNodesList.push(finalTarget);
+            if (!unlockedNodesList.includes(finalTarget)) {
+                unlockedNodesList.push(finalTarget);
+            }
             saveSandboxProgress();
             
             activeFrontierNodeId = currentlySelectedNodeId = finalTarget;
@@ -1136,44 +1276,74 @@
         };
 
         window.executeSettleHandbookUnit = function(isWin) {
-            if (!isWin) return;
+            if (!isWin) {
+                return;
+            }
             const checkLiveEmail = localStorage.getItem('tpm-user-current-email');
             if (!checkLiveEmail || checkLiveEmail.trim() === "") {
                 alert("❌ 偵測到未登入身分！請先返回首頁完成企業 Email 認證，否則公會將拒絕保存您的實戰進度與 GAS 戰績。");
-                exitToDashboardMenu(); return;
+                exitToDashboardMenu();
+                return;
             }
+
             localStorage.setItem(`handbook-L1-A${activePackUnitId.split('-')[1]}-clear`, 'true');
+            
             try {
-                const finalPushUrl = GLOBAL_GAS_URL + "?action=push&courseId=" + encodeURIComponent("HB-" + activePackUnitId) + "&status=" + encodeURIComponent("通過");
+                const finalPushUrl = GLOBAL_GAS_URL + 
+                    "?action=push" +
+                    "&courseId=" + encodeURIComponent("HB-" + activePackUnitId) + 
+                    "&status=" + encodeURIComponent("通過");
                 window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
-            } catch(e) { console.error("GAS 擊發流產:", e); }
+            } catch(e) {
+                console.error("GAS 擊發流產:", e);
+            }
             exitToDashboardMenu();
         };
 
         (function() {
             const PILOT_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
+            
             function computeLocalUserRankTitle() {
-                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "首頁登入", isLogged: false };
-                let nameStr = "Daniel Shih"; const emailLower = PILOT_EMAIL.toLowerCase().trim();
+                if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") {
+                    return { text: "首頁登入", isLogged: false };
+                }
+                let nameStr = "Daniel Shih";
+                const emailLower = PILOT_EMAIL.toLowerCase().trim();
                 if (emailLower !== "danielcwshih@fih-foxconn.com") {
-                    nameStr = emailLower.split('@')[0].replace(/[\._\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    nameStr = emailLower.split('@')[0].replace(/[\._\-]/g, ' ').replace(/\b\w/g, function(c) {
+                        return c.toUpperCase();
+                    });
                 }
                 const beginnerKeys = ['codex-L1-A1-clear', 'codex-L1-A2-clear', 'codex-L1-A3-clear', 'codex-L1-A4-clear', 'codex-L2-A1-clear', 'codex-L3-A1-clear'];
-                const isAllBeginnerCleared = beginnerKeys.every(k => localStorage.getItem(k) === 'true');
+                const isAllBeginnerCleared = beginnerKeys.every(function(k) {
+                    return localStorage.getItem(k) === 'true';
+                });
                 const adventureKeys = ['handbook-L1-A1-clear', 'handbook-L1-A2-clear'];
-                const isAllAdventureCleared = adventureKeys.every(k => localStorage.getItem(k) === 'true');
-                if (isAllBeginnerCleared && isAllAdventureCleared) return { text: `👤 統籌者 : ${nameStr}`, isLogged: true };
-                if (isAllBeginnerCleared) return { text: `👤 冒險者 : ${nameStr}`, isLogged: true };
-                return { text: `👤 初心者 : ${nameStr}`, isLogged: true };
+                const isAllAdventureCleared = adventureKeys.every(function(k) {
+                    return localStorage.getItem(k) === 'true';
+                });
+                if (isAllBeginnerCleared && isAllAdventureCleared) {
+                    return { text: "👤 統籌者 : " + nameStr, isLogged: true };
+                }
+                if (isAllBeginnerCleared) {
+                    return { text: "👤 冒險者 : " + nameStr, isLogged: true };
+                }
+                return { text: "👤 初心者 : " + nameStr, isLogged: true };
             }
+            
             const originalOnload = window.onload;
             window.onload = function() {
-                if (originalOnload) originalOnload();
+                if (originalOnload) {
+                    originalOnload();
+                }
                 const profileBox = document.getElementById('global-user-profile-card');
                 if (profileBox) {
-                    const rankInfo = computeLocalUserRankTitle(); profileBox.innerHTML = rankInfo.text;
+                    const rankInfo = computeLocalUserRankTitle();
+                    profileBox.innerHTML = rankInfo.text;
                     if (!rankInfo.isLogged) {
-                        profileBox.style.color = "#DC2626"; profileBox.style.borderColor = "#DC2626"; profileBox.style.boxShadow = "3px 3px 0px #DC2626";
+                        profileBox.style.color = "#DC2626";
+                        profileBox.style.borderColor = "#DC2626";
+                        profileBox.style.boxShadow = "3px 3px 0px #DC2626";
                     }
                 }
             };
