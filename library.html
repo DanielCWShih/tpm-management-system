@@ -6,7 +6,7 @@
     <title>知識圖書館 | System TPM Library Hub</title>
     <style>
         :root {
-            /* 👑 外襯粗獷主義核心色盤 (100% 對齊手冊與總部大廳) */
+            /* 👑 外襯粗獷主義核心色盤 */
             --bg-color: #FEF9E7;
             --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
@@ -19,10 +19,6 @@
             --color-active-gold: #FDE047;
             --color-fail: #DC2626;
             --color-locked-gray: #E2E8F0;
-            
-            /* 🎨 內襯北歐極簡沙盒地圖色盤 */
-            --nordic-bg: #FAFAFA;
-            --nordic-border: #E7E5E4;
         }
 
         html, body {
@@ -40,7 +36,7 @@
             box-sizing: border-box;
         }
 
-        /* 👑 剛性頂部全域控制導航列 */
+        /* 👑 剛性頂部控制導航列 */
         .tactical-navbar {
             width: 100vw;
             height: 85px;
@@ -269,42 +265,61 @@
             overflow-y: auto;
             overflow-x: hidden; 
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); 
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
             grid-auto-rows: min-content;
-            gap: 12px;
+            gap: 16px;
             padding: 10px 14px 14px 10px; 
             align-content: start; 
         }
 
+        /* 🚀 宇宙支線卡片風格 */
         .lexicon-term-row {
             background: #FFFFFF;
-            border: 2px solid var(--border-heavy);
-            border-radius: 6px;
-            padding: 12px 10px;
+            border: 3px solid var(--border-heavy);
+            border-radius: 8px;
+            padding: 16px 12px;
             color: var(--text-main);
             cursor: pointer;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            transition: all 0.1s ease;
+            box-shadow: 4px 4px 0px var(--border-heavy);
+            transition: all 0.15s ease;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            min-height: 75px; 
+            justify-content: flex-start;
+            align-items: flex-start;
+            text-align: left;
+            min-height: 100px; 
             word-break: break-word; 
         }
 
         .lexicon-term-row:hover {
             background: #FFFDF4;
             transform: translate(-2px, -2px);
-            box-shadow: 4px 4px 0px var(--border-heavy);
+            box-shadow: 6px 6px 0px var(--border-heavy);
         }
 
         .lexicon-term-row.active-term {
-            background: var(--color-active-gold) !important;
-            border-width: 2.5px;
-            transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0px var(--border-heavy) !important;
+            background: #FFFBEB !important;
+            border-color: #EAB308 !important;
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #EAB308 !important;
+        }
+
+        .card-cosmic-tag {
+            font-family: monospace;
+            font-weight: 900;
+            font-size: 0.75rem;
+            background: var(--text-main);
+            color: #FFF;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .card-cosmic-title {
+            font-size: 0.95rem;
+            font-weight: 900;
+            line-height: 1.4;
         }
 
         /* ⚖️ 剛性對齊：右側觀測儀固定寬度 380px */
@@ -336,15 +351,19 @@
             background: var(--text-main);
             color: #FFFFFF;
             border: none;
-            padding: 12px 16px;
+            padding: 14px 16px;
             border-radius: 6px;
             font-weight: 900;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             cursor: pointer;
             width: 100%;
             margin-top: 15px;
             box-shadow: 3px 3px 0px #475569;
             transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .nordic-action-btn:hover {
@@ -358,24 +377,24 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vw;
-            background-color: rgba(26, 26, 26, 0.4);
-            backdrop-filter: blur(4px);
+            height: 100vh;
+            background-color: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(5px);
             z-index: 5000;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 40px;
+            padding: 20px;
         }
 
         .modal-brutalist-box {
             width: 100%;
-            max-width: 1100px;
-            height: 85vh;
+            max-width: 1200px;
+            height: 90vh; /* 近乎滿版 */
             background-color: var(--bg-color);
             border: 4px solid var(--border-heavy);
             border-radius: 12px;
-            box-shadow: 10px 10px 0px var(--border-heavy);
+            box-shadow: 12px 12px 0px var(--border-heavy);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -418,18 +437,26 @@
             padding: 15px 24px;
             display: flex;
             flex-direction: row;
-            gap: 10px;
+            gap: 12px;
             overflow-x: auto;
             flex-shrink: 0;
             align-items: center;
+        }
+
+        .horizontal-stepper-roof::-webkit-scrollbar {
+            height: 8px;
+        }
+        .horizontal-stepper-roof::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
         }
 
         .step-node-badge {
             background: #F1F5F9;
             border: 2px solid var(--border-heavy);
             border-radius: 6px;
-            padding: 8px 14px;
-            font-size: 0.78rem;
+            padding: 10px 16px;
+            font-size: 0.85rem;
             font-weight: 800;
             cursor: pointer;
             white-space: nowrap;
@@ -458,11 +485,12 @@
 
         .modal-reading-chamber {
             flex: 1;
-            padding: 30px 40px;
+            padding: 40px 60px;
             overflow-y: auto;
             background: #FFFFFF;
             line-height: 1.7;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            color: var(--text-main);
         }
 
         @keyframes fadeInBox {
@@ -527,7 +555,7 @@
                 <div class="lexicon-index-column" id="lexicon-terms-list"></div>
                 <div class="fixed-inspector-panel" id="lexicon-inspector">
                     <div class="inspector-placeholder">
-                        🎯 階層合流完成<br>請點擊左側單詞查看技術細節
+                        🎯 階層合流完成<br>請點擊左側卡片查看平行宇宙細節
                     </div>
                 </div>
             </div>
@@ -538,8 +566,8 @@
         <div class="modal-brutalist-box">
             <div class="modal-header-bar">
                 <div>
-                    <span id="modal-branch-tag" style="font-family: monospace; font-weight: 900; background: #1A1A1A; color:#FFF; padding:2px 6px; border-radius:4px; font-size:0.75rem; margin-right:8px;">1-1</span>
-                    <strong id="modal-branch-title" style="font-size: 1.1rem; font-weight: 900;">支線全景通讀艙</strong>
+                    <span id="modal-branch-tag" style="font-family: monospace; font-weight: 900; background: #1A1A1A; color:#FFF; padding:4px 8px; border-radius:4px; font-size:0.85rem; margin-right:12px;">1-1</span>
+                    <strong id="modal-branch-title" style="font-size: 1.25rem; font-weight: 900;">支線全景通讀艙</strong>
                 </div>
                 <button class="modal-close-x" onclick="closeTheaterTheater()">✕</button>
             </div>
@@ -744,12 +772,12 @@
             const categoryEl = document.getElementById('current-chapter-id');
             const levelEl = document.getElementById('current-chapter-name');
             if (categoryEl) categoryEl.innerText = `${catId.toUpperCase()} / LEVEL ${lvlNum}`;
-            if (levelEl) levelEl.innerText = `LEVEL ${lvlNum} 大辭典`;
+            if (levelEl) levelEl.innerText = `LEVEL ${lvlNum} ${catId === 'handbook' ? '實戰宇宙圖鑑' : '大辭典'}`;
 
             const listContainer = document.getElementById('lexicon-terms-list');
-            if (listContainer) listContainer.innerHTML = `<div class="inspector-placeholder">正在多軌並行解包 LEVEL ${lvlNum} 全量關鍵字...</div>`;
+            if (listContainer) listContainer.innerHTML = `<div class="inspector-placeholder">正在多軌並行解包 LEVEL ${lvlNum} 全量矩陣...</div>`;
 
-            const loadPromises = target.files.map(filePath => singleScriptFetchEngine(filePath));
+            const loadPromises = target.files.map(filePath => singleScriptFetchEngine(filePath, catId));
             await Promise.all(loadPromises);
 
             const suppKeyBase = (catId === 'beginner' ? 'codex' : 'handbook');
@@ -772,11 +800,14 @@
                 }
             });
 
-            window.aggregatedTermsPool.sort((a, b) => {
-                let nameA = getCleanTermName(a.name);
-                let nameB = getCleanTermName(b.name);
-                return nameA.localeCompare(nameB, 'en', { sensitivity: 'base', numeric: true });
-            });
+            // 如果是 Beginner 辭典，依照字母排序；如果是 Handbook 宇宙，保持原本解析打包的陣列順序
+            if (catId === 'beginner') {
+                window.aggregatedTermsPool.sort((a, b) => {
+                    let nameA = getCleanTermName(a.name);
+                    let nameB = getCleanTermName(b.name);
+                    return nameA.localeCompare(nameB, 'en', { sensitivity: 'base', numeric: true });
+                });
+            }
 
             renderLexiconList();
         }
@@ -816,7 +847,8 @@
             }
         };
 
-        function singleScriptFetchEngine(filePath) {
+        // 👑 核心加載大腦：雙軌解析 (Beginner 拆詞條, Handbook 拆支線)
+        function singleScriptFetchEngine(filePath, catId) {
             return new Promise((resolve) => {
                 const script = document.createElement('script');
                 script.src = `${filePath}?v=${Date.now()}`;
@@ -838,60 +870,124 @@
                     const storageKey = isHandbook ? `handbook-L1-A${unitId.split('-')[1]}-clear` : `codex-L1-A${unitId.split('-')[1]}-clear`;
                     const isUnitCleared = localStorage.getItem(storageKey) === 'true';
 
-                    combined.forEach(course => {
-                        if (course.subPages) {
-                            course.subPages.forEach(page => {
-                                if (page.diagramFlowArray && page.diagramFlowArray.length > 0) {
-                                    page.diagramFlowArray.forEach(term => {
-                                        if (!window.aggregatedTermsPool.some(t => t.name === term.name)) {
-                                            term.sourceLabel = unitLabel;
-                                            window.aggregatedTermsPool.push(term);
-                                        }
-                                    });
-                                }
-                                
-                                if (page.text) {
-                                    const regex = /tpmSwitchSubKwd\s*\(\s*[^,]+\s*,\s*[^,]+\s*,\s*[^,]+\s*,\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]+)['"]/g;
-                                    let matchKwd;
-                                    while ((matchKwd = regex.exec(page.text)) !== null) {
-                                        const termName = matchKwd[1];
-                                        const termDesc = matchKwd[2];
-                                        const syntheticText = `<h3>全稱：${termName}</h3><div style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin:12px 0; font-weight:700;">系統智能解包釋義</div><p style="line-height:1.7; font-weight:700; color:#475569;">${termDesc}</p>`;
-                                        
-                                        if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(termName))) {
-                                            window.aggregatedTermsPool.push({
-                                                name: termName,
-                                                text: syntheticText,
-                                                sourceLabel: unitLabel
-                                            });
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    });
-
-                    if (window.tpmSandboxScriptTree && Object.keys(window.tpmSandboxScriptTree).length > 0) {
-                        if (isUnitCleared) {
-                            Object.keys(window.tpmSandboxScriptTree).forEach(nodeId => {
-                                const node = window.tpmSandboxScriptTree[nodeId];
-                                if (node.title && (node.text || node.question)) {
-                                    const rawText = node.text || node.question;
-                                    let cleanNodeName = getCleanTermName(node.title);
-                                    
-                                    if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(cleanNodeName))) {
-                                        window.aggregatedTermsPool.push({
-                                            name: `[實戰] ${cleanNodeName}`,
-                                            text: `<h3>劇本節點：${cleanNodeName}</h3><div style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin:12px 0; font-weight:700;">沙盒模擬情境回放</div><div style="line-height:1.7; color:#475569;">${rawText}</div>`,
-                                            sourceLabel: `${unitLabel} (沙盒)`
+                    // 1. Beginner 模式：常規線性詞條解析
+                    if (catId === 'beginner') {
+                        combined.forEach(course => {
+                            if (course.subPages) {
+                                course.subPages.forEach(page => {
+                                    if (page.diagramFlowArray && page.diagramFlowArray.length > 0) {
+                                        page.diagramFlowArray.forEach(term => {
+                                            if (!window.aggregatedTermsPool.some(t => t.name === term.name)) {
+                                                term.sourceLabel = unitLabel;
+                                                window.aggregatedTermsPool.push(term);
+                                            }
                                         });
                                     }
+                                    
+                                    if (page.text) {
+                                        const regex = /tpmSwitchSubKwd\s*\(\s*[^,]+\s*,\s*[^,]+\s*,\s*[^,]+\s*,\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]+)['"]/g;
+                                        let matchKwd;
+                                        while ((matchKwd = regex.exec(page.text)) !== null) {
+                                            const termName = matchKwd[1];
+                                            const termDesc = matchKwd[2];
+                                            const syntheticText = `<h3>全稱：${termName}</h3><div style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:12px; margin:12px 0; font-weight:700;">系統智能解包釋義</div><p style="line-height:1.7; font-weight:700; color:#475569;">${termDesc}</p>`;
+                                            
+                                            if (!window.aggregatedTermsPool.some(t => getCleanTermName(t.name) === getCleanTermName(termName))) {
+                                                window.aggregatedTermsPool.push({
+                                                    name: termName,
+                                                    text: syntheticText,
+                                                    sourceLabel: unitLabel
+                                                });
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    // 2. 🎯 Handbook 模式：沙盒地圖「支線打包」解析器
+                    if (window.tpmSandboxScriptTree && Object.keys(window.tpmSandboxScriptTree).length > 0 && catId === 'handbook') {
+                        if (isUnitCleared) {
+                            const tree = window.tpmSandboxScriptTree;
+                            let branchClusters = {};
+
+                            // 透過遞迴探尋每一條支線的路徑
+                            function traceBranch(currentNodeId, currentBranchLabel, currentPath) {
+                                const node = tree[currentNodeId];
+                                if (!node) return;
+
+                                // 複製當前路徑
+                                let newPath = [...currentPath];
+                                if (!newPath.some(n => n.id === currentNodeId)) {
+                                    newPath.push({
+                                        id: currentNodeId,
+                                        name: getCleanTermName(node.title || nodeId),
+                                        title: node.title,
+                                        text: node.text || node.question || "無說明文本"
+                                    });
                                 }
+
+                                // 找到分流點，定義新的支線宇宙
+                                if (node.type === "decision" && node.options && node.id.includes("DECISION")) {
+                                    node.options.forEach(opt => {
+                                        let branchKey = opt.target;
+                                        let branchName = opt.text.match(/【(.*?)】/);
+                                        branchName = branchName ? branchName[1] : opt.text;
+                                        
+                                        if (!branchClusters[branchKey]) {
+                                            branchClusters[branchKey] = {
+                                                id: `${unitId}-${branchKey.split('-')[1] || branchKey}`,
+                                                tag: branchName,
+                                                title: `${branchName} 完整宇宙劇情線`,
+                                                nodes: [...newPath],
+                                                sourceLabel: `${unitLabel} 沙盒`
+                                            };
+                                        }
+                                        traceBranch(opt.target, branchKey, branchClusters[branchKey].nodes);
+                                    });
+                                    return;
+                                }
+
+                                // 推進子節點
+                                let targets = [];
+                                if (node.nextNodes) targets = targets.concat(node.nextNodes);
+                                if (node.options && node.type !== "decision") node.options.forEach(o => targets.push(o.target));
+
+                                targets.forEach(targetId => {
+                                    if (currentBranchLabel && branchClusters[currentBranchLabel]) {
+                                        traceBranch(targetId, currentBranchLabel, branchClusters[currentBranchLabel].nodes);
+                                    } else {
+                                        traceBranch(targetId, null, newPath);
+                                    }
+                                });
+                            }
+
+                            // 啟動探測
+                            traceBranch("T0-INTRO", null, []);
+                            traceBranch("T1-START", null, []); // 兼容無 INTRO 的劇本
+
+                            // 將梳理好的宇宙支線推進 Pool
+                            Object.keys(branchClusters).forEach(key => {
+                                let cluster = branchClusters[key];
+                                // 去除重複節點
+                                let uniqueNodes = [];
+                                let seenIds = new Set();
+                                cluster.nodes.forEach(n => {
+                                    if (!seenIds.has(n.id)) {
+                                        seenIds.add(n.id);
+                                        uniqueNodes.push(n);
+                                    }
+                                });
+                                cluster.nodes = uniqueNodes;
+                                cluster.isCosmicBranch = true; // 標記為整條支線
+                                window.aggregatedTermsPool.push(cluster);
                             });
                         }
                         window.tpmSandboxScriptTree = null; 
                     }
 
+                    // 3. 獨立擴展辭典接口
                     if (window.tpmStandaloneKeywords && window.tpmStandaloneKeywords.length > 0) {
                         if (isUnitCleared) {
                             window.tpmStandaloneKeywords.forEach(kw => {
@@ -935,6 +1031,9 @@
             });
         }
 
+        // ========================================================================
+        // 👑 圖鑑渲染器：動態識別詞條(Beginner) vs 宇宙卡片(Handbook)
+        // ========================================================================
         function renderLexiconList() {
             const list = document.getElementById('lexicon-terms-list');
             if (!list) return;
@@ -950,10 +1049,21 @@
 
             window.aggregatedTermsPool.forEach((term, idx) => {
                 const row = document.createElement('div');
-                row.className = `lexicon-term-row ${idx === activeTermIdx ? 'active-term' : ''}`;
-                let cleanName = getCleanTermName(term.name);
                 
-                row.innerHTML = `<div style="line-height:1.2; font-size:0.88rem; font-weight:900;">${cleanName}</div>`;
+                // 🚀 如果是 Handbook 的打包支線卡片，賦予粗獷樣式
+                if (term.isCosmicBranch) {
+                    row.className = `lexicon-term-row ${idx === activeTermIdx ? 'active-term' : ''}`;
+                    row.innerHTML = `
+                        <div class="card-cosmic-tag">${term.tag}</div>
+                        <div class="card-cosmic-title">${term.title}</div>
+                    `;
+                } else {
+                    // 常規 Beginner 詞條樣式
+                    row.className = `lexicon-term-row ${idx === activeTermIdx ? 'active-term' : ''}`;
+                    row.style.minHeight = '75px';
+                    let cleanName = getCleanTermName(term.name);
+                    row.innerHTML = `<div style="line-height:1.2; font-size:0.88rem; font-weight:900;">${cleanName}</div>`;
+                }
                 
                 row.onclick = () => {
                     activeTermIdx = idx;
@@ -971,28 +1081,55 @@
 
             const favKey = GLOBAL_USER_EMAIL ? `library-favorites-pool_${GLOBAL_USER_EMAIL}` : 'library-favorites-pool';
             const favoritesPool = JSON.parse(localStorage.getItem(favKey) || '[]');
-            const isFav = favoritesPool.some(f => f.name === term.name);
+            const isFav = favoritesPool.some(f => f.id === term.id || f.name === term.name);
             const finalSourceLabel = term.sourceLabel || `Level ${currentActiveLevel ? currentActiveLevel.levelNum : '1-1'}`;
 
-            inspector.innerHTML = `
-                <div style="display: flex; flex-direction: column; height: 100%; width: 100%; animation: fadeInBox 0.15s ease-out;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--border-heavy); padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0; width: 100%;">
-                        <div style="font-size: 0.72rem; font-weight: 900; background: var(--text-main); color: #FFF; padding: 5px 10px; border-radius: 4px; font-family: monospace; letter-spacing: 0.5px;">
-                            ${finalSourceLabel}
+            // 🚀 若是宇宙支線，提供專屬的右側簡報版面
+            if (term.isCosmicBranch) {
+                inspector.innerHTML = `
+                    <div style="display: flex; flex-direction: column; height: 100%; width: 100%; animation: fadeInBox 0.15s ease-out;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--border-heavy); padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0; width: 100%;">
+                            <div style="font-size: 0.72rem; font-weight: 900; background: var(--text-main); color: #FFF; padding: 5px 10px; border-radius: 4px; font-family: monospace; letter-spacing: 0.5px;">
+                                ${finalSourceLabel}
+                            </div>
                         </div>
-                        <button id="fav-toggle-btn" style="background:${isFav ? '#FFD2D2' : '#FFFFFF'}; border: 2px solid var(--border-heavy); border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: 900; cursor:pointer; box-shadow: 2px 2px 0px var(--border-heavy); display:flex; align-items:center; gap:6px; transition: all 0.1s;" onclick="window.toggleFavoriteCurrentTerm()">
-                            <span>${isFav ? '❤️' : '🤍'}</span>
-                            <span style="font-size:0.75rem; font-weight:900;">${isFav ? '已收藏' : '加入最愛'}</span>
-                        </button>
-                    </div>
-                    
-                    <div style="line-height: 1.7; font-size: 0.88rem; overflow-y: auto; flex: 1; padding-right: 4px; color: var(--text-main);">
-                        ${term.text}
-                    </div>
+                        
+                        <div style="flex: 1; overflow-y: auto; padding-right: 4px; color: var(--text-main);">
+                            <span style="font-family:monospace; font-weight:900; background:#FEF08A; padding:2px 6px; border:1px solid var(--border-heavy); border-radius:4px; font-size:0.75rem;">${term.tag}</span>
+                            <h4 style="font-size:1.25rem; font-weight:900; margin:12px 0 16px 0; line-height:1.4;">${term.title}</h4>
+                            <div style="margin-top:15px; border-top:2px dashed #CBD5E1; padding-top:16px;">
+                                <span style="font-weight:900; color:var(--text-secondary); font-size: 0.85rem;">📊 劇情時空節點清算：</span>
+                                <ul style="margin:8px 0 0 0; padding-left:20px; font-weight:700; font-size:0.9rem; color:var(--text-main); line-height:1.6;">
+                                    <li>全景串聯關卡數：<b>${term.nodes.length}</b> 關</li>
+                                    <li>歷史因果鏈路：完整導通</li>
+                                    <li>沙盒複盤權限：已解除隔離</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                    <button class="nordic-action-btn" onclick="openTheaterTheater()">🔍 展開全景時空步進通讀</button>
-                </div>
-            `;
+                        <button class="nordic-action-btn" onclick="openTheaterTheater()">🔍 展開全景時空步進通讀</button>
+                    </div>
+                `;
+            } else {
+                // 常規詞條版面
+                inspector.innerHTML = `
+                    <div style="display: flex; flex-direction: column; height: 100%; width: 100%; animation: fadeInBox 0.15s ease-out;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--border-heavy); padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0; width: 100%;">
+                            <div style="font-size: 0.72rem; font-weight: 900; background: var(--text-main); color: #FFF; padding: 5px 10px; border-radius: 4px; font-family: monospace; letter-spacing: 0.5px;">
+                                ${finalSourceLabel}
+                            </div>
+                            <button id="fav-toggle-btn" style="background:${isFav ? '#FFD2D2' : '#FFFFFF'}; border: 2px solid var(--border-heavy); border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: 900; cursor:pointer; box-shadow: 2px 2px 0px var(--border-heavy); display:flex; align-items:center; gap:6px; transition: all 0.1s;" onclick="window.toggleFavoriteCurrentTerm()">
+                                <span>${isFav ? '❤️' : '🤍'}</span>
+                                <span style="font-size:0.75rem; font-weight:900;">${isFav ? '已收藏' : '加入最愛'}</span>
+                            </button>
+                        </div>
+                        
+                        <div style="line-height: 1.7; font-size: 0.88rem; overflow-y: auto; flex: 1; padding-right: 4px; color: var(--text-main);">
+                            ${term.text}
+                        </div>
+                    </div>
+                `;
+            }
         }
 
         window.toggleFavoriteCurrentTerm = function() {
@@ -1001,7 +1138,7 @@
 
             const favKey = GLOBAL_USER_EMAIL ? `library-favorites-pool_${GLOBAL_USER_EMAIL}` : 'library-favorites-pool';
             let favoritesPool = JSON.parse(localStorage.getItem(favKey) || '[]');
-            const index = favoritesPool.findIndex(f => f.name === term.name);
+            const index = favoritesPool.findIndex(f => (f.id === term.id && term.id) || f.name === term.name);
 
             if (index > -1) {
                 favoritesPool.splice(index, 1); 
@@ -1012,7 +1149,7 @@
 
             const btn = document.getElementById('fav-toggle-btn');
             if (btn) {
-                const isFav = favoritesPool.some(f => f.name === term.name);
+                const isFav = favoritesPool.some(f => (f.id === term.id && term.id) || f.name === term.name);
                 btn.style.background = isFav ? '#FFD2D2' : '#FFFFFF';
                 btn.innerHTML = `<span>${isFav ? '❤️' : '🤍'}</span><span style="font-size:0.75rem; font-weight:900;">${isFav ? '已收藏' : '加入最愛'}</span>`;
             }
@@ -1029,29 +1166,31 @@
         };
 
         // ========================================================================
-        // 👑 🚀 橫向時空天梯步進大浮窗控制中心 (100% 展開不閹割)
+        // 👑 🚀 橫向時空天梯步進大浮窗控制中心 (滿版置中)
         // ========================================================================
         function openTheaterTheater() {
-            if (window.aggregatedTermsPool.length === 0) return;
+            const term = window.currentlyViewedTerm;
+            if (!term || !term.isCosmicBranch) return;
 
-            const currentUnitLabel = window.currentlyViewedTerm?.sourceLabel || "Level 1-1";
-            document.getElementById('modal-branch-tag').innerText = currentUnitLabel;
-            document.getElementById('modal-branch-title').innerText = "平行宇宙時空步進文獻艙";
+            document.getElementById('modal-branch-tag').innerText = term.tag;
+            document.getElementById('modal-branch-title').innerText = term.title;
 
             const track = document.getElementById('modal-stepper-track');
             track.innerHTML = '';
 
-            // 抓取當前載入單元內的所有詞條作為步進節點
-            window.aggregatedTermsPool.forEach((node, idx) => {
+            currentChamberNodesList = term.nodes;
+
+            // 部署橫向時空天梯 Stepper
+            currentChamberNodesList.forEach((node, idx) => {
                 const badge = document.createElement('div');
                 badge.className = 'step-node-badge';
                 badge.id = `step-badge-${idx}`;
-                badge.innerText = getCleanTermName(node.name);
+                badge.innerText = `${node.id.split('-')[0]}: ${node.name}`; // 顯示 T0: 通識導讀
                 badge.onclick = () => { triggerChamberReadingNode(idx); };
 
                 track.appendChild(badge);
 
-                if (idx < window.aggregatedTermsPool.length - 1) {
+                if (idx < currentChamberNodesList.length - 1) {
                     const arrow = document.createElement('span');
                     arrow.className = 'step-arrow-divider';
                     arrow.innerText = '➔';
@@ -1059,10 +1198,7 @@
                 }
             });
 
-            // 預設將視窗定位至學員當前點選的詞條
-            if (activeTermIdx > -1) {
-                triggerChamberReadingNode(activeTermIdx);
-            } else if (window.aggregatedTermsPool.length > 0) {
+            if (currentChamberNodesList.length > 0) {
                 triggerChamberReadingNode(0);
             }
 
@@ -1076,15 +1212,15 @@
                 activeBadge.classList.add('active-step');
             }
 
-            const nodeData = window.aggregatedTermsPool[poolIdx];
+            const nodeData = currentChamberNodesList[poolIdx];
             const viewer = document.getElementById('modal-reader-viewport');
             
             if (nodeData && viewer) {
                 viewer.innerHTML = `
                     <div style="animation: fadeInBox 0.15s ease-out;">
-                        <span style="font-family:monospace; font-weight:900; color:var(--text-secondary); font-size:0.8rem;">[時空節點: ${nodeData.sourceLabel || '大辭典'}]</span>
-                        <h2 style="margin:6px 0 20px 0; font-weight:900; font-size:1.5rem; color:var(--text-main);">${nodeData.name}</h2>
-                        <div style="border-top:1px solid #E2E8F0; padding-top:15px; color: var(--text-main);">
+                        <span style="font-family:monospace; font-weight:900; color:var(--text-secondary); font-size:0.85rem;">[時空錨點: ${nodeData.id}]</span>
+                        <h2 style="margin:10px 0 24px 0; font-weight:900; font-size:1.8rem; color:var(--text-main);">${nodeData.title}</h2>
+                        <div style="border-top:2px solid #E2E8F0; padding-top:20px; color: var(--text-main); font-size: 1.05rem;">
                             ${nodeData.text}
                         </div>
                     </div>
@@ -1100,7 +1236,7 @@
         function exitToDashboard() {
             const menuHall = document.getElementById('dashboard-menu-hall');
             const viewport = document.getElementById('lexicon-viewport');
-            const categoryEl = document.getElementById('current-category-id');
+            const categoryEl = document.getElementById('current-chapter-id');
             const levelEl = document.getElementById('current-chapter-name');
 
             if (menuHall) menuHall.style.display = 'block';
