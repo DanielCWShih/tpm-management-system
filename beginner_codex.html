@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初心者寶典大廳 | System TPM Tactical Hub</title>
+    <title>初心者寶典大廳 | System TPM Codex Hub</title>
     <style>
         :root {
+            /* 👑 外襯粗獷主義核心色盤 (100% 對齊寶典大廳與總部) */
             --bg-color: #FEF9E7;
             --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
@@ -18,6 +19,12 @@
             --color-active-gold: #FDE047;
             --color-fail: #DC2626;
             --color-locked-gray: #E2E8F0;
+
+            /* 🎨 內襯北歐極簡沙盒地圖色盤 */
+            --nordic-bg: #FAFAFA;
+            --nordic-gray-dot: #D1D5DB;
+            --nordic-yellow-dot: #EAB308;
+            --nordic-border: #E7E5E4;
         }
 
         html, body {
@@ -29,12 +36,14 @@
             background-color: var(--bg-color);
             font-family: "Segoe UI", "Inter", "Noto Sans TC", sans-serif;
             -webkit-font-smoothing: antialiased;
+            color: var(--text-main);
         }
 
         * {
             box-sizing: border-box;
         }
 
+        /* 👑 剛性頂部全域控制導航列 */
         .tactical-navbar {
             width: 100vw;
             height: 85px;
@@ -98,7 +107,6 @@
             font-weight: 900;
             box-shadow: 3px 3px 0px var(--border-heavy);
             white-space: nowrap;
-            transition: all 0.15s ease-out;
         }
 
         .back-btn {
@@ -129,9 +137,10 @@
             overflow: hidden;
         }
 
+        /* ⚖️ 剛性對齊：左側選單欄寬度固定 262px (與手冊一致) */
         .sidebar-panel {
             display: flex;
-            width: 350px;
+            width: 262px; 
             background-color: var(--sidebar-cream);
             border-right: 4px solid var(--border-heavy);
             padding: 25px 18px;
@@ -235,15 +244,14 @@
         }
 
         .dashboard-view-hall,
-        .document-canvas,
-        .exam-session-box,
-        .sub-pagination-dots-zone {
+        .sandbox-game-container {
             display: none;
             width: 100%;
+            height: 100%;
         }
 
         .dashboard-view-hall {
-            height: 100%;
+            display: block; 
             overflow-y: auto;
             padding: 5px 5px 30px 5px; 
         }
@@ -347,157 +355,193 @@
             box-shadow: 6px 6px 0px var(--text-main);
         }
 
-        .document-canvas {
-            flex: 1;
-            overflow: hidden;
+        /* ─── 🎨 內襯北歐沙盒地圖容器 ─── */
+        .sandbox-game-container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            gap: 20px;
+            overflow: hidden;
         }
 
-        .textbook-scroll-box {
+        .sandbox-map-canvas {
             flex: 1;
-            overflow-y: auto;
-            padding-right: 8px;
-            width: 100%;
-            font-size: 0.85rem;
+            height: 100%;
+            background-color: var(--nordic-bg);
+            border: 3px solid var(--border-heavy);
+            border-radius: 12px;
+            position: relative;
+            overflow-y: auto;   
+            overflow-x: hidden; 
+            box-shadow: var(--shadow-tactical);
         }
 
-        .textbook-section-block {
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            width: 100%;
-            animation: fadeInBox 0.12s ease-out;
+        /* 👑 固定寬體置中場域 */
+        .map-inner-flow-field {
+            width: 100%; 
+            height: 2500px; 
+            position: relative;
+            margin: 0 auto;    
         }
 
-        .dynamic-flow-canvas {
+        .map-svg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; 
+            height: 2500px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .map-node-card {
+            position: absolute;
+            width: 145px;
+            height: 52px;
+            border-radius: 6px;
+            border: 2px solid var(--border-heavy);
+            background-color: #E2E8F0; 
+            color: #64748B;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            gap: 12px;
-            background: #FEF9E7;
-            border: 2px solid var(--border-heavy);
-            padding: 12px 20px;
-            border-radius: var(--radius-sm);
-            margin: 0 0 20px 0;
-            overflow-x: auto;
+            justify-content: center;
+            padding: 4px 10px;
+            text-align: center;
+            font-size: 0.76rem;
+            font-weight: 800;
+            line-height: 1.3;
+            cursor: pointer;
+            z-index: 10;
+            transform: translate(-50%, -50%);
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            transition: all 0.18s ease;
+            user-select: none;
+            white-space: normal; 
+        }
+
+        .map-node-card.locked {
+            background-color: #E5E7EB !important;
+            color: #9CA3AF !important;
+            border-color: #CBD5E1 !important;
+            box-shadow: none !important;
+        }
+
+        .map-node-card.passed {
+            background-color: var(--nordic-yellow-dot) !important;
+            color: var(--text-main) !important;
+            box-shadow: 3px 3px 0px var(--border-heavy) !important;
+        }
+
+        .map-node-card.active-target {
+            background-color: #FFFDF0 !important;
+            border-color: #EAB308 !important;
+            color: #1A1A1A !important;
+            box-shadow: 0 0 0 3px #FDE047, 4px 4px 0px var(--border-heavy) !important;
+            animation: pulseCard 2s infinite ease-in-out;
+        }
+
+        .map-node-card.fail-node {
+            background-color: #FCA5A5 !important;
+            border-color: #DC2626 !important;
+            color: #991B1B !important;
+            box-shadow: 2px 2px 0px #991B1B !important;
+        }
+
+        /* 🚀 👑 視覺大一統：正常完航的 END 卡片呈現清爽淺綠色 */
+        .map-node-card.end-node-clear {
+            background-color: #DCFCE7 !important;
+            border-color: #22C55E !important;
+            color: #14532D !important;
+            box-shadow: 2px 2px 0px #16A34A !important;
+        }
+
+        @keyframes pulseCard {
+            0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4), 4px 4px 0px var(--border-heavy); }
+            70% { box-shadow: 0 0 0 6px rgba(234, 179, 8, 0), 4px 4px 0px var(--border-heavy); }
+            100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0), 4px 4px 0px var(--border-heavy); }
+        }
+
+        /* ⚖️ 剛性對齊：右側觀測儀固定寬度 380px (與手冊一致) */
+        .fixed-inspector-panel {
+            width: 380px; 
+            height: 100%;
+            background: #FFFFFF;
+            border: 3px solid var(--border-heavy);
+            border-radius: 12px;
+            padding: 26px;
+            box-shadow: var(--shadow-tactical);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
             flex-shrink: 0;
+        }
+
+        .inspector-scroll-box {
+            flex: 1;
+            overflow-y: auto;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            padding-right: 5px;
+        }
+
+        .inspector-placeholder {
+            margin: auto;
+            text-align: center;
+            color: var(--text-secondary);
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .nordic-option-btn {
+            width: 100%;
+            background: #FFFFFF;
+            border: 2px solid var(--border-heavy);
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-top: 10px;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            transition: all 0.1s;
+        }
+
+        .nordic-option-btn:hover {
+            background: var(--sidebar-cream);
+            transform: translate(-1px, -1px);
             box-shadow: 3px 3px 0px var(--border-heavy);
         }
 
-        .flow-node-block {
-            background: #FFF;
-            border: 2px solid var(--border-heavy);
-            padding: 12px 18px;
-            border-radius: var(--radius-sm);
+        .nordic-action-btn {
+            background: var(--text-main);
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
             font-weight: 900;
-            font-size: 0.88rem;
-            box-shadow: 2px 2px 0px var(--border-heavy);
-            white-space: nowrap;
-            text-align: center;
-            transition: all 0.1s;
-            color: var(--text-main);
+            font-size: 0.85rem;
             cursor: pointer;
-            user-select: none;
-        }
-
-        .flow-node-block.active-node {
-            background: var(--color-active-gold) !important;
-            color: var(--text-main) !important;
-            transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0px var(--border-heavy) !important;
-        }
-
-        .flow-arrow-split {
-            font-weight: 900;
-            font-size: 1.1rem;
-            color: var(--border-heavy);
-            user-select: none;
-        }
-
-        .exam-session-box {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .exam-progress-bar {
             width: 100%;
-            background: #E2E8F0;
+            margin-top: 15px;
+        }
+
+        /* 動態盤查進度條 */
+        .gate-progress-container {
+            width: 100%;
             height: 12px;
+            background: #DBEAFE;
             border-radius: 6px;
             overflow: hidden;
-            margin-bottom: 25px;
-            border: 2px solid #1A1A1A;
+            margin-bottom: 8px;
+            border: 1px solid #93C5FD;
         }
 
-        .exam-progress-fill {
+        .gate-progress-fill {
             height: 100%;
-            background: var(--text-main);
-            width: 0%;
-            transition: width 0.2s;
+            transition: width 0.6s ease-out, background-color 0.6s ease;
         }
 
-        .option-card {
-            background: #FFF;
-            border: 2px solid var(--border-heavy);
-            padding: 18px;
-            border-radius: var(--radius-sm);
-            margin-top: 14px;
-            cursor: pointer;
-            font-weight: 700;
-            box-shadow: 3px 3px 0px #1A1A1A;
-            transition: all 0.1s;
-        }
-
-        .option-card:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0px #1A1A1A;
-            background: var(--sidebar-cream);
-        }
-
-        .sub-pagination-dots-zone {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 14px;
-            padding: 15px 0;
-            border-top: 2px dashed #E2E8F0;
-            margin-top: auto;
-            flex-shrink: 0;
-        }
-
-        .slider-dot {
-            width: 14px;
-            height: 14px;
-            border: 3px solid var(--border-heavy);
-            border-radius: 50%;
-            background: #FFF;
-            cursor: pointer;
-            transition: all 0.1s;
-        }
-
-        .slider-dot.active {
-            background: var(--text-main);
-            transform: scale(1.2);
-        }
-
-        .slider-dot.exam-dot {
-            border-color: var(--color-fail);
-            background: #FEF2F2;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: #B91C1C;
-        }
-
-        .slider-dot.exam-dot.active {
-            background: var(--color-fail);
-            color: #FFF;
-        }
-
-        @keyframes fadeInBox {
+        @keyframes fadeInNode {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -511,10 +555,7 @@
         </div>
         <div class="navbar-controls">
             <div id="global-user-profile-card" class="auth-panel">首頁登入</div>
-            <div class="lang-switcher-wrapper">
-                <button class="lang-btn-core active" onclick="executeLangSwitch('tw')">TW</button>
-                <button class="lang-btn-core" onclick="executeLangSwitch('en')">EN</button>
-            </div>
+            <div class="lang-switcher-wrapper" style="display:none;"></div>
             <a href="index.html" class="back-btn">返回首頁</a>
         </div>
     </div>
@@ -538,24 +579,19 @@
                 <div class="cdx-dashboard-grid" id="l1-cards-grid"></div>
             </div>
 
-            <div class="document-canvas" id="textbook-viewport">
-                <div class="dynamic-flow-canvas" id="dynamic-flow-renderer-box"></div>
-                <div class="textbook-scroll-box">
-                    <div id="lesson-content"></div>
+            <div class="sandbox-game-container" id="sandbox-viewport">
+                <div class="sandbox-map-canvas" id="map-scroll-stage">
+                    <div class="map-inner-flow-field" id="map-lock-field">
+                        <svg class="map-svg-layer" id="map-svg-canvas"></svg>
+                        <div id="map-nodes-container" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10;"></div>
+                    </div>
                 </div>
+                <aside class="fixed-inspector-panel" id="sandbox-inspector">
+                    <div class="inspector-placeholder">
+                        🎯 請點擊左側地圖卡片<br>解包初心者戰術劇本事件
+                    </div>
+                </aside>
             </div>
-
-            <div class="exam-session-box" id="exam-viewport">
-                <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:10px;">
-                    <span style="color:var(--color-fail);" id="exam-title-text">🔥 隨機能力考核大考</span>
-                    <span id="exam-counter">1 / 3</span>
-                </div>
-                <div class="exam-progress-bar"><div class="exam-progress-fill" id="exam-progress"></div></div>
-                <h3 id="exam-question-text" style="font-size:1.2rem; line-height:1.5; margin-bottom:25px; font-weight: 800;">載入中...</h3>
-                <div id="exam-options-container"></div>
-            </div>
-
-            <div class="sub-pagination-dots-zone" id="universal-dots-bar"></div>
         </main>
     </div>
 
@@ -580,14 +616,106 @@
             { num: 7, name: 'LEVEL 7', label: '終局修煉' }
         ];
 
+        let nodeLayoutCoordinates = {};
         let selectedActiveLevelNum = 1; 
-        let activeCourseIdx = 0, activePageIdx = 0, activeFlowNodeIdx = 0;
-        let examActive = false, examCurrentQ = 0, examScoreCount = 0;
+        let unlockedNodesList = []; 
+        let passedNodesList = []; 
+        let activeFrontierNodeId = null;     
+        let currentlySelectedNodeId = null;  
+        let activePackUnitId = null;
 
         window.onload = () => {
             renderGlobalTreeStructure();
             routeController();
         };
+
+        // ========================================================================
+        // 👑 萬能幾何分流分層編譯大腦 (常規與結案置底漏斗編排)
+        // ========================================================================
+        function calculateDynamicCosmicTopology() {
+            const tree = window.tpmSandboxScriptTree;
+            if (!tree) return;
+
+            nodeLayoutCoordinates = {};
+            let normalTierBuckets = {};
+            let finalNodes = []; 
+
+            Object.keys(tree).forEach(nodeId => {
+                let isFinalGate = nodeId.includes("WIN-GATE") || nodeId.includes("WIN-FINAL") || tree[nodeId].type === "win_gate" || tree[nodeId].type === "end_win";
+                
+                if (isFinalGate) {
+                    finalNodes.push({ id: nodeId, rawNode: tree[nodeId] });
+                } else {
+                    let tierNum = 0;
+                    const match = nodeId.match(/^T(\d+)/);
+                    if (match) {
+                        tierNum = parseInt(match[1], 10);
+                    } else {
+                        if (nodeId.includes("START")) tierNum = 1;
+                        else if (nodeId.includes("DECISION")) tierNum = 2;
+                        else if (nodeId.includes("FAIL") || nodeId.includes("WARN") || nodeId.includes("STACKUP")) tierNum = 3;
+                        else if (nodeId.includes("CONQUER") || nodeId.includes("WIN")) tierNum = 4;
+                    }
+                    if (!normalTierBuckets[tierNum]) normalTierBuckets[tierNum] = [];
+                    normalTierBuckets[tierNum].push({ id: nodeId, rawNode: tree[nodeId] });
+                }
+            });
+
+            const lockField = document.getElementById('map-lock-field');
+            let containerWidth = 720;
+            if (lockField) containerWidth = lockField.clientWidth;
+
+            let maxNormalTier = 0;
+
+            Object.keys(normalTierBuckets).forEach(tierStr => {
+                const tierNum = parseInt(tierStr, 10);
+                if (tierNum > maxNormalTier) maxNormalTier = tierNum;
+
+                let nodes = normalTierBuckets[tierNum];
+                nodes.sort((a, b) => a.id.localeCompare(b.id));
+
+                const count = nodes.length;
+                const yCoord = tierNum * 130 + 60; 
+
+                nodes.forEach((node, idx) => {
+                    let xCoord = containerWidth / 2; 
+                    if (count > 1) {
+                        const startX = 90;
+                        const endX = containerWidth - 90;
+                        xCoord = startX + (idx * ((endX - startX) / (count - 1)));
+                    }
+                    
+                    let cleanName = node.rawNode.title || node.id;
+                    if (cleanName.includes("：")) cleanName = cleanName.split("：")[1];
+                    else if (cleanName.includes(":")) cleanName = cleanName.split(":")[1];
+                    cleanName = cleanName.replace(/[📚🛑🏆⚡⚠️💥📍🎯]/g, "").trim();
+
+                    nodeLayoutCoordinates[node.id] = {
+                        x: Math.round(xCoord),
+                        y: yCoord,
+                        name: cleanName
+                    };
+                });
+            });
+
+            finalNodes.sort((a, b) => a.id.localeCompare(b.id));
+            finalNodes.forEach((node, idx) => {
+                let tierNum = maxNormalTier + 1 + idx; 
+                let yCoord = tierNum * 130 + 60;
+                let xCoord = containerWidth / 2; 
+                
+                let cleanName = node.rawNode.title || node.id;
+                if (cleanName.includes("：")) cleanName = cleanName.split("：")[1];
+                else if (cleanName.includes(":")) cleanName = cleanName.split(":")[1];
+                cleanName = cleanName.replace(/[📚🛑🏆⚡⚠️💥📍🎯]/g, "").trim();
+
+                nodeLayoutCoordinates[node.id] = {
+                    x: Math.round(xCoord),
+                    y: yCoord,
+                    name: cleanName
+                };
+            });
+        }
 
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); 
@@ -627,15 +755,15 @@
                 document.getElementById('current-chapter-id').innerText = "DASHBOARD"; 
                 document.getElementById('current-chapter-name').innerText = "初心者戰術大廳";
                 document.getElementById('dashboard-menu-hall').style.display = 'block'; 
-                document.getElementById('textbook-viewport').style.display = 'none'; 
-                document.getElementById('exam-viewport').style.display = 'none'; 
-                document.getElementById('universal-dots-bar').style.display = 'none';
+                document.getElementById('sandbox-viewport').style.display = 'none'; 
                 renderMultiLevelHubDashboard();
             } else {
                 document.getElementById('dashboard-menu-hall').style.display = 'none'; 
+                document.getElementById('sandbox-viewport').style.display = 'flex'; 
                 document.querySelectorAll('.leaf-btn').forEach(b => b.classList.remove('active')); 
                 const leaf = document.getElementById(`lf-${paramType}-${paramC}`); 
                 if (leaf) leaf.classList.add('active'); 
+                activePackUnitId = paramC;
                 injectContentPackScript(paramType, paramC);
             }
         }
@@ -650,13 +778,14 @@
             
             globalLevelMetadata.forEach(lvl => {
                 const subUnitsInLvl = globalSubUnitRegistry.filter(u => u.levelNum === lvl.num); 
-                let total = subUnitsInLvl.length, done = 0;
+                let total = subUnitsInLvl.length;
+                let done = 0;
                 subUnitsInLvl.forEach(u => { 
                     if (localStorage.getItem(`codex-L1-A${u.subUnitId.split('-')[1]}-clear`) === 'true') done++; 
                 });
                 const pct = total > 0 ? Math.round((done / total) * 100) : 0;
                 deckRow.innerHTML += `
-                    <div class="progress-card-master ${lvl.num===selectedActiveLevelNum?'active-level':''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();">
+                    <div class="progress-card-master ${lvl.num === selectedActiveLevelNum ? 'active-level' : ''}" onclick="selectedActiveLevelNum=${lvl.num};renderMultiLevelHubDashboard();">
                         <div class="progress-label">${lvl.name} : ${lvl.label}</div>
                         <div class="progress-percentage">${pct}%</div>
                         <div class="progress-stats">完成指標: ${done} / ${total}</div>
@@ -669,7 +798,7 @@
                 const storageKey = `L1-A${unit.subUnitId.split('-')[1]}`;
                 const isClear = localStorage.getItem(`codex-${storageKey}-clear`) === 'true';
                 grid.innerHTML += `
-                    <div class="cdx-dashboard-card" style="background-color: ${isClear?'#DCFCE7':'#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
+                    <div class="cdx-dashboard-card" style="background-color: ${isClear ? '#DCFCE7' : '#FEF08A'};" onclick="switchUnit('${unit.type}', '${unit.subUnitId}', ${unit.levelNum})">
                         <div style="display:flex; align-items:center; gap:8px;">
                             <span style="font-family:monospace; font-weight:900; background:rgba(0,0,0,0.06); padding:2px 4px; border-radius:4px; font-size:0.75rem;">${unit.subUnitId}</span>
                             <h3 style="margin:0; font-size:0.82rem; font-weight:900; color:var(--text-main);">${unit.title.split(': ')[1] || unit.title}</h3>
@@ -680,145 +809,573 @@
         }
 
         function switchUnit(type, subUnitId, lvlNum) { 
-            examActive = false; 
             selectedActiveLevelNum = lvlNum; 
-            activeCourseIdx = 0; 
-            activePageIdx = 0; 
-            activeFlowNodeIdx = 0; 
             window.history.pushState(null, '', `${window.location.pathname}?type=${type}&c=${subUnitId}`); 
             routeController(type, subUnitId); 
         }
 
         function exitToDashboardMenu() { 
-            examActive = false; 
             window.history.pushState(null, '', window.location.pathname); 
             routeController(null, null); 
         }
 
         function injectContentPackScript(type, packId) {
-            window.codexCourseEngineData = []; 
             const old = document.getElementById('dynamic-course-pack'); 
             if (old) old.remove();
             
             const script = document.createElement('script'); 
             script.id = 'dynamic-course-pack'; 
-            script.src = `${globalSubUnitRegistry.find(u=>u.subUnitId===packId).file}?v=${Date.now()}`;
-            script.onload = () => { initEngine(); }; 
+            
+            const currentUnit = globalSubUnitRegistry.find(u => u.type === type && u.subUnitId === packId);
+            if (!currentUnit) return;
+            
+            script.src = `${currentUnit.file}?v=${Date.now()}`;
+            script.onload = () => { initSandboxEngine(); }; 
             document.head.appendChild(script);
         }
 
-        function initEngine() {
-            if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) { 
-                document.getElementById('current-chapter-name').innerText = "數據解讀失敗"; 
-                return; 
-            }
-            loadCourseState(activeCourseIdx, activePageIdx);
-        }
+        function initSandboxEngine() {
+            if (!activePackUnitId) return; 
+            document.getElementById('current-chapter-id').innerText = `CODEX / UNIT ${activePackUnitId}`; 
+            document.getElementById('current-chapter-name').innerText = globalSubUnitRegistry.find(u => u.subUnitId === activePackUnitId).title;
 
-        function exitExamToPage(pIdx) { 
-            examActive = false; 
-            examCurrentQ = 0; 
-            examScoreCount = 0; 
-            activeFlowNodeIdx = 0; 
-            loadCourseState(activeCourseIdx, pIdx); 
-        }
-
-        function loadCourseState(cIdx, pIdx) {
-            activeCourseIdx = cIdx; 
-            const course = window.codexCourseEngineData[cIdx]; 
-            const dotsBar = document.getElementById('universal-dots-bar'); 
-            dotsBar.innerHTML = '';
+            // 👑 初心者專屬快取快照記憶體區隔
+            const savedPassed = localStorage.getItem(`tpm-codex-sandbox-passed-${activePackUnitId}`);
+            const savedUnlocked = localStorage.getItem(`tpm-codex-sandbox-unlocked-${activePackUnitId}`);
             
-            if (examActive) {
-                document.getElementById('textbook-viewport').style.display = 'none'; 
-                document.getElementById('exam-viewport').style.display = 'block'; 
-                document.getElementById('universal-dots-bar').style.display = 'flex';
-                course.subPages.forEach((_, sIdx) => { 
-                    dotsBar.innerHTML += `<div class="slider-dot" onclick="exitExamToPage(${sIdx})"></div>`; 
-                }); 
-                dotsBar.innerHTML += `<div class="slider-dot exam-dot active">⚔️</div>`; 
-                runExamEngine();
-            } else {
-                document.getElementById('textbook-viewport').style.display = 'flex'; 
-                document.getElementById('exam-viewport').style.display = 'none'; 
-                document.getElementById('universal-dots-bar').style.display = 'flex';
-                
-                activePageIdx = pIdx; 
-                const page = course.subPages[pIdx]; 
-                document.getElementById('current-chapter-id').innerText = `PAGE ${pIdx + 1} / ${course.subPages.length}`; 
-                document.getElementById('current-chapter-name').innerText = page.title;
-                
-                let targetedText = page.text;
-                let targetedFlow = page.diagramFlowArray;
-                
-                const flowRenderer = document.getElementById('dynamic-flow-renderer-box');
-                if (flowRenderer && targetedFlow && targetedFlow.length > 0) {
-                    flowRenderer.style.display = 'flex'; 
-                    flowRenderer.innerHTML = '';
-                    targetedFlow.forEach((node, nIdx) => {
-                        flowRenderer.innerHTML += `<div class="flow-node-block ${nIdx===activeFlowNodeIdx?'active-node':''}" onclick="activeFlowNodeIdx=${nIdx};loadCourseState(${cIdx},${pIdx})">${node.name}</div>`;
-                        if (nIdx < targetedFlow.length - 1) flowRenderer.innerHTML += `<div class="flow-arrow-split">➔</div>`;
-                    });
-                } else if (flowRenderer) { 
-                    flowRenderer.style.display = 'none'; 
+            passedNodesList = savedPassed ? JSON.parse(savedPassed) : [];
+            unlockedNodesList = savedUnlocked ? JSON.parse(savedUnlocked) : [];
+            
+            let initialStartNode = "START-NODE";
+            if (window.tpmSandboxScriptTree) {
+                if (window.tpmSandboxScriptTree["T0-INTRO"]) initialStartNode = "T0-INTRO";
+                else if (window.tpmSandboxScriptTree["T1-START"]) initialStartNode = "T1-START";
+                else if (window.tpmSandboxScriptTree["T0-START"]) initialStartNode = "T0-START";
+            }
+            
+            let curr = initialStartNode;
+            while (passedNodesList.includes(curr)) {
+                let nodeData = window.tpmSandboxScriptTree[curr];
+                if (!nodeData) break;
+                if (nodeData.nextNodes && nodeData.nextNodes.length > 0) {
+                    curr = nodeData.nextNodes[0];
+                } else {
+                    let foundNext = false;
+                    if (nodeData.options) {
+                        let nextTarget = null;
+                        for (let opt of nodeData.options) {
+                            if (passedNodesList.includes(opt.target)) {
+                                nextTarget = opt.target;
+                                break;
+                            }
+                        }
+                        if (!nextTarget) {
+                            for (let opt of nodeData.options) {
+                                if (unlockedNodesList.includes(opt.target)) {
+                                    nextTarget = opt.target;
+                                    break;
+                                }
+                            }
+                        }
+                        if (nextTarget) {
+                            curr = nextTarget;
+                            foundNext = true;
+                        }
+                    }
+                    if (!foundNext) break;
+                }
+            }
+            
+            activeFrontierNodeId = curr;
+            currentlySelectedNodeId = activeFrontierNodeId;
+
+            if (!unlockedNodesList.includes(initialStartNode)) unlockedNodesList.push(initialStartNode);
+            if (!unlockedNodesList.includes(activeFrontierNodeId)) unlockedNodesList.push(activeFrontierNodeId);
+
+            calculateDynamicCosmicTopology();
+            renderNordicSandboxMap();
+            inspectNodeDetail(currentlySelectedNodeId);
+
+            // 初始載入滾動定位
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => {
+                    scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' });
+                }, 50);
+            }
+
+            window.onresize = () => {
+                calculateDynamicCosmicTopology();
+                renderNordicSandboxMap();
+            };
+        }
+
+        function saveSandboxProgress() {
+            localStorage.setItem(`tpm-codex-sandbox-passed-${activePackUnitId}`, JSON.stringify(passedNodesList));
+            localStorage.setItem(`tpm-codex-sandbox-unlocked-${activePackUnitId}`, JSON.stringify(unlockedNodesList));
+        }
+
+        function shuffleArray(array) {
+            let shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                let temp = shuffled[i];
+                shuffled[i] = shuffled[j];
+                shuffled[j] = temp;
+            }
+            return shuffled;
+        }
+
+        function findParentDecisionNode(childId) {
+            const tree = window.tpmSandboxScriptTree;
+            if (!tree) return null;
+            for (let key in tree) {
+                const node = tree[key];
+                if (node.options && node.options.some(opt => opt.target === childId)) return node;
+                if (node.nextNodes && node.nextNodes.includes(childId)) return node;
+            }
+            return null;
+        }
+
+        // ========================================================================
+        // 👑 拓撲地圖繪製艙 (逆向過濾與終端漏斗防線)
+        // ========================================================================
+        function renderNordicSandboxMap() {
+            const nodesContainer = document.getElementById('map-nodes-container');
+            const svgCanvas = document.getElementById('map-svg-canvas');
+            if (!nodesContainer || !svgCanvas || !window.tpmSandboxScriptTree) return;
+
+            nodesContainer.innerHTML = '';
+            svgCanvas.innerHTML = '';
+
+            const tree = window.tpmSandboxScriptTree;
+            const isUnitCleared = localStorage.getItem(`codex-L1-A${activePackUnitId.split('-')[1]}-clear`) === 'true';
+
+            const activeVisibleNodesSet = new Set();
+            Object.keys(tree).forEach(nodeId => {
+                if (isUnitCleared) {
+                    activeVisibleNodesSet.add(nodeId);
+                } else {
+                    if (unlockedNodesList.includes(nodeId) || nodeId === activeFrontierNodeId || passedNodesList.includes(nodeId)) {
+                        activeVisibleNodesSet.add(nodeId);
+                    }
+                    if (passedNodesList.includes(nodeId) || nodeId === activeFrontierNodeId) {
+                        if (tree[nodeId].nextNodes) tree[nodeId].nextNodes.forEach(nxt => activeVisibleNodesSet.add(nxt));
+                        if (tree[nodeId].options) tree[nodeId].options.forEach(opt => activeVisibleNodesSet.add(opt.target));
+                    }
+                }
+            });
+
+            let mainWinGateId = Object.keys(tree).find(k => k.includes("WIN-GATE") || tree[k].type === "win_gate");
+
+            // 連線層繪製
+            Object.keys(tree).forEach(srcId => {
+                const srcNode = tree[srcId];
+                const srcPos = nodeLayoutCoordinates[srcId];
+                if (!srcPos) return;
+
+                let branchTargets = [];
+                if (srcNode.nextNodes) branchTargets = branchTargets.concat(srcNode.nextNodes);
+                if (srcNode.options) srcNode.options.forEach(opt => { if (opt.target) branchTargets.push(opt.target); });
+
+                // 👑 終端漏斗自動收斂
+                let isTerminalNode = (!srcNode.nextNodes || srcNode.nextNodes.length === 0) && (!srcNode.options || srcNode.options.length === 0) && !srcId.includes("WIN");
+                if (isTerminalNode && mainWinGateId && !branchTargets.includes(mainWinGateId)) {
+                    branchTargets.push(mainWinGateId);
                 }
 
-                let compiledHtml = "";
-                if (targetedFlow && targetedFlow.length > 0) {
-                    if (targetedFlow[activeFlowNodeIdx]) {
-                        compiledHtml = `
-                            <div class="textbook-section-block">
-                                <div style="line-height:1.6;">${targetedFlow[activeFlowNodeIdx].text}</div>
-                            </div>`;
+                branchTargets.forEach(tarId => {
+                    const tarPos = nodeLayoutCoordinates[tarId];
+                    if (!tarPos) return;
+                    if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
+
+                    // 剛性高程過濾：切斷所有逆向因果幽靈線
+                    if (tarPos.y < srcPos.y) return;
+
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", srcPos.x);
+                    line.setAttribute("y1", srcPos.y);
+                    line.setAttribute("x2", tarPos.x);
+                    line.setAttribute("y2", tarPos.y);
+
+                    const isTargetFail = tarId.includes("FAIL") || tarId.includes("WARN");
+                    const isTargetUnlocked = unlockedNodesList.includes(tarId);
+
+                    if (isUnitCleared) {
+                        line.setAttribute("stroke", "#CBD5E1");
+                        line.setAttribute("stroke-width", "1.5");
+                    } else if (isTargetFail && isTargetUnlocked) {
+                        line.setAttribute("stroke", "#F87171"); 
+                        line.setAttribute("stroke-width", "2.5");
+                    } else if ((passedNodesList.includes(srcId) && passedNodesList.includes(tarId)) || (passedNodesList.includes(srcId) && tarId === activeFrontierNodeId)) {
+                        line.setAttribute("stroke", "#EAB308");
+                        line.setAttribute("stroke-width", "3");
+                    } else if (srcId === activeFrontierNodeId) {
+                        line.setAttribute("stroke", "#475569");
+                        line.setAttribute("stroke-width", "2");
+                        line.setAttribute("stroke-dasharray", "4,4");
+                    } else {
+                        line.setAttribute("stroke", "#D1D5DB");
+                        line.setAttribute("stroke-width", "1.5");
+                    }
+                    svgCanvas.appendChild(line);
+                });
+            });
+
+            // 卡片部署
+            Object.keys(tree).forEach(nodeId => {
+                const pos = nodeLayoutCoordinates[nodeId];
+                if (!pos) return;
+                if (!activeVisibleNodesSet.has(nodeId)) return;
+
+                const card = document.createElement('div');
+                card.id = `card-${nodeId}`;
+                card.className = 'map-node-card';
+                card.style.left = `${pos.x}px`;
+                card.style.top = `${pos.y}px`;
+                
+                let displayName = pos.name;
+                const isPassed = passedNodesList.includes(nodeId);
+                const isUnlocked = unlockedNodesList.includes(nodeId);
+
+                if (!isUnitCleared && nodeId !== activeFrontierNodeId && !isPassed && !isUnlocked) {
+                    displayName = "🔒 未知分流";
+                }
+                card.innerText = displayName;
+
+                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
+                const isEndNode = nodeId.includes("END") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
+
+                if (isUnitCleared) {
+                    if (tree[nodeId] && tree[nodeId].type === "end_win") card.classList.add('passed');
+                    else if (isFailNode) card.classList.add('fail-node');
+                    else if (isEndNode) card.classList.add('end-node-clear');
+                    else card.classList.add('passed');
+                    if (nodeId === activeFrontierNodeId) card.classList.add('active-target');
+                } else {
+                    if (isPassed) {
+                        if (isFailNode) card.classList.add('fail-node');
+                        else if (isEndNode) card.classList.add('end-node-clear');
+                        else card.classList.add('passed');
+                    } else if (isFailNode && isUnlocked) {
+                        card.classList.add('fail-node');
+                    } else if (isEndNode && isUnlocked) {
+                        card.classList.add('end-node-clear');
+                    } else {
+                        if (nodeId === activeFrontierNodeId) card.classList.add('active-target');
+                        else if (!isUnlocked && !isPassed) card.classList.add('locked');
+                    }
+                }
+
+                card.onclick = () => {
+                    if (!activeVisibleNodesSet.has(nodeId)) return;
+                    
+                    if (!isUnitCleared && nodeLayoutCoordinates[nodeId] && nodeLayoutCoordinates[activeFrontierNodeId]) {
+                        if (nodeLayoutCoordinates[nodeId].y > nodeLayoutCoordinates[activeFrontierNodeId].y) {
+                            alert("🔒 當前階段戰術賽局正在進行，請由右側控制台點選按鈕進行推進，禁止由地圖直接點擊未來分流窺視答案。");
+                            return;
+                        }
+                    }
+
+                    if (!isUnlocked && !isPassed && nodeId !== activeFrontierNodeId) {
+                        unlockedNodesList.push(nodeId);
+                        saveSandboxProgress();
+                    }
+                    
+                    currentlySelectedNodeId = nodeId;
+                    renderNordicSandboxMap();
+                    inspectNodeDetail(nodeId);
+                };
+
+                nodesContainer.appendChild(card);
+            });
+        }
+
+        // ========================================================================
+        // 👑 右側戰術觀測儀控制中樞 (去重過濾、三段式導航、全域進度門閥盤查)
+        // ========================================================================
+        function inspectNodeDetail(nodeId) {
+            const inspector = document.getElementById('sandbox-inspector');
+            const node = window.tpmSandboxScriptTree[nodeId];
+            const tree = window.tpmSandboxScriptTree;
+            if (!inspector || !node) return;
+
+            let isReviewMode = true;
+            if (nodeId === activeFrontierNodeId) {
+                isReviewMode = false;
+            } else if (unlockedNodesList.includes(nodeId)) {
+                let hasMovedForward = false;
+                if (node.nextNodes && node.nextNodes.length > 0) {
+                    if (passedNodesList.includes(node.nextNodes[0])) hasMovedForward = true;
+                }
+                if (node.options && node.options.length > 0) {
+                    for (let i = 0; i < node.options.length; i++) {
+                        if (passedNodesList.includes(node.options[i].target)) {
+                            hasMovedForward = true;
+                            break;
+                        }
+                    }
+                }
+                if (!hasMovedForward) isReviewMode = false;
+            }
+
+            let isWinGate = nodeId.includes("WIN-GATE") || node.type === "win_gate";
+            let contentHtml = `<div class="inspector-scroll-box" style="animation: fadeInNode 0.12s ease-out;">`;
+
+            if (isWinGate) {
+                // 全域掃描所有結局
+                let endNodeIds = Object.keys(tree).filter(k => tree[k].type === "end_fail" || tree[k].type === "end_warn" || (k.includes("END") && k !== nodeId));
+                let requiredEndIds = endNodeIds.filter(id => id !== nodeId);
+                
+                let unlockedCount = requiredEndIds.filter(id => unlockedNodesList.includes(id)).length;
+                let totalCount = requiredEndIds.length;
+                let isAllUnlocked = (unlockedCount >= totalCount);
+
+                let winTargetId = "T15-WIN"; 
+                if (node.nextNodes && node.nextNodes.length > 0) winTargetId = node.nextNodes[0];
+
+                contentHtml += `
+                    <div style="font-size:0.72rem; color:#1D4ED8; font-weight:900; letter-spacing:1px; margin-bottom:6px;">FINAL GATE ${isReviewMode ? ' (歷程複盤)' : ''}</div>
+                    <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900; color:#1D4ED8;">${node.title}</h2>
+                    <div style="background:#EFF6FF; padding:15px; border-radius:8px; border:2px solid #BFDBFE; margin-bottom:15px;">
+                        <p style="font-weight:900; margin:0 0 10px 0; color:#1E3A8A;">🛡️ 系統自動盤查：全域宇宙結局解鎖狀態</p>
+                        <div class="gate-progress-container">
+                            <div class="gate-progress-fill" style="width:${totalCount > 0 ? (unlockedCount / totalCount) * 100 : 100}%; background-color:${isAllUnlocked ? '#10B981' : '#3B82F6'};"></div>
+                        </div>
+                        <div style="font-size:0.85rem; font-weight:800; color:#1E3A8A; text-align:right;">解鎖進度: ${unlockedCount} / ${totalCount} 個情境結局</div>
+                    </div>
+                `;
+
+                if (!isReviewMode) {
+                    if (isAllUnlocked || totalCount === 0) {
+                        contentHtml += `
+                            <div style="margin-top:10px; padding:14px; background:#F0FDF4; border-radius:6px; border:1px solid #BBF7D0; font-size:0.85rem; line-height:1.5; margin-bottom:15px;">
+                                <div style="font-weight:900; font-size:0.95rem; color:#16A34A; margin-bottom:4px;">✅ 盤查驗證通過！</div>
+                                <div>初心者所有支線因果盲區均已探索完畢。最高結案大門已為您開啟！</div>
+                            </div>
+                            <button class="nordic-action-btn" style="background:#15803D;" onclick="executePassQuizNode('${nodeId}', '${winTargetId}')">🏆 啟動終極通關大門</button>
+                        `;
+                    } else {
+                        contentHtml += `
+                            <div style="margin-top:10px; padding:14px; background:#FEF2F2; border-radius:6px; border:1px solid #FCA5A5; font-size:0.85rem; line-height:1.5; margin-bottom:15px;">
+                                <div style="font-weight:900; font-size:0.95rem; color:#DC2626; margin-bottom:4px;">🔒 權限鎖定：尚有未探索領域</div>
+                                <div>你還有 <b>${totalCount - unlockedCount}</b> 個平行結局尚未解鎖。請回溯歷史決策點，補齊必修的實戰學分！</div>
+                            </div>
+                        `;
+                        let mainDecisionNodeId = Object.keys(tree).find(k => k.includes("DECISION"));
+                        if (mainDecisionNodeId) {
+                            contentHtml += `<button class="nordic-option-btn" style="border-color:#D97706; color:#D97706;" onclick="executeSelectBranch('${nodeId}', '${mainDecisionNodeId}')"><b>時空回溯：</b> 回到主線分流大廳</button>`;
+                        }
+                    }
+                }
+            } 
+            else if (node.type === "story") {
+                contentHtml += `
+                    <div style="font-size:0.72rem; color:var(--text-secondary); font-weight:900; letter-spacing:1px; margin-bottom:6px;">STORY MODULE ${isReviewMode ? ' (歷程複盤)' : ''}</div>
+                    <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900;">${node.title}</h2>
+                    <div style="color:#2D3748;">${node.text}</div>
+                `;
+                if (!isReviewMode) {
+                    contentHtml += `<button class="nordic-action-btn" onclick="executePassNode('${nodeId}')">➔ 繼續前進</button>`;
+                }
+            } else if (node.type === "decision") {
+                contentHtml += `
+                    <div style="font-size:0.72rem; color:#B45309; font-weight:900; letter-spacing:1px; margin-bottom:6px;">DECISION HUB ${isReviewMode ? ' (歷程複盤)' : ''}</div>
+                    <h2 style="margin:0 0 14px 0; font-size:1.25rem; font-weight:900; color:#B45309;">${node.title}</h2>
+                    <p style="font-weight:700; background:#FFFBEB; padding:12px; border-left:4px solid #F59E0B; border-radius:4px; line-height:1.5;">${node.question}</p>
+                `;
+                if (!isReviewMode) {
+                    // 大廳選項原位去重
+                    let remainingOpts = node.options.filter(opt => !passedNodesList.includes(opt.target));
+                    let randomizedOptions = shuffleArray(remainingOpts);
+                    
+                    contentHtml += `<div style="margin-top:15px;">`;
+                    randomizedOptions.forEach(opt => {
+                        contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${nodeId}', '${opt.target}')"><b>決策分流：</b> ${opt.text}</button>`;
+                    });
+                    contentHtml += `</div>`;
+                }
+            } else if (node.type === "quiz") {
+                contentHtml += `
+                    <div style="font-size:0.72rem; color:#1D4ED8; font-weight:900; letter-spacing:1px; margin-bottom:6px;">TACTICAL QUIZ ${isReviewMode ? ' (歷程複盤)' : ''}</div>
+                    <h2 style="margin:0 0 14px 0; font-size:1.25rem; font-weight:900; color:#1D4ED8;">${node.title}</h2>
+                    <p style="font-weight:700; margin-bottom:15px; line-height:1.5;">${node.question}</p>
+                `;
+                if (!isReviewMode) {
+                    let randomizedQuizOpts = shuffleArray(node.options);
+                    contentHtml += `<div id="quiz-options-zone">`;
+                    randomizedQuizOpts.forEach(opt => {
+                        contentHtml += `<button class="nordic-option-btn" onclick="executeSubmitQuiz('${nodeId}', '${opt.target || ''}')">${opt.text}</button>`;
+                    });
+                    contentHtml += `</div>`;
+                }
+            } else if (node.type.startsWith("end_") || (!node.nextNodes || node.nextNodes.length === 0)) {
+                let endColor = "#D97706"; 
+                if (node.type === "end_win") {
+                    endColor = "#15803D"; 
+                } else if (node.id.includes("FAIL") || node.id.includes("WARN")) {
+                    endColor = "#B91C1C"; 
+                }
+                
+                contentHtml += `
+                    <div style="font-size:0.72rem; color:${endColor}; font-weight:900; letter-spacing:1px; margin-bottom:6px;">SCENARIO ENDING ${isReviewMode ? ' (歷程複盤)' : ''}</div>
+                    <h2 style="margin:0 0 14px 0; font-size:1.3rem; font-weight:900; color:${endColor};">${node.title}</h2>
+                    <div style="background:#FAF8F5; padding:14px; border-radius:6px; border:1px solid var(--nordic-border); margin-bottom:15px;">${node.text}</div>
+                `;
+
+                if (node.type === "end_win") {
+                    if (!isReviewMode) {
+                        contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
                 } else {
-                    compiledHtml = `<div style="line-height: 1.6; font-size: 0.88rem;">${targetedText || ""}</div>`;
+                    if (!isReviewMode) {
+                        let actionArea = `<div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">`;
+                        let hasAddedSection = false;
+
+                        // 1. 同層思維切換
+                        const parentDecision = findParentDecisionNode(nodeId);
+                        let siblingOpts = [];
+                        if (parentDecision && parentDecision.options) {
+                            siblingOpts = parentDecision.options.filter(opt => !passedNodesList.includes(opt.target) && opt.target !== nodeId);
+                        }
+                        if (siblingOpts.length > 0) {
+                            hasAddedSection = true;
+                            actionArea += `<p style="font-weight:900; color:#1E3A8A; margin-bottom:10px;">🔄 觀測另一種思維結尾：同情境尚有未探測的分支</p>`;
+                            let randomizedSiblings = shuffleArray(siblingOpts);
+                            randomizedSiblings.forEach(opt => {
+                                actionArea += `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>同層切換：</b> ${opt.text}</button>`;
+                            });
+                        }
+
+                        // 2. 回到大廳開新宇宙 (剛性鎖定主分流大廳)
+                        let globalRemainingOptions = [];
+                        let mainDecisionNodeId = Object.keys(tree).find(k => k.includes("DECISION") && !k.includes("T8"));
+                        if (mainDecisionNodeId) {
+                            let mainDecisionNode = tree[mainDecisionNodeId];
+                            if (mainDecisionNode && mainDecisionNode.options) {
+                                mainDecisionNode.options.forEach(opt => {
+                                    if (!passedNodesList.includes(opt.target) && !siblingOpts.some(s => s.target === opt.target)) {
+                                        globalRemainingOptions.push({
+                                            parentId: mainDecisionNode.id,
+                                            target: opt.target,
+                                            text: opt.text
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                        if (globalRemainingOptions.length > 0) {
+                            if (hasAddedSection) actionArea += `<div style="margin: 15px 0; border-bottom: 1px solid #E2E8F0;"></div>`;
+                            actionArea += `<p style="font-weight:900; color:#D97706; margin-bottom:10px;">📋 繼續完成其餘支線：回到大廳選擇尚未通關的領域</p>`;
+                            let randomizedGlobalRetry = shuffleArray(globalRemainingOptions);
+                            randomizedGlobalRetry.forEach(opt => {
+                                actionArea += `<button class="nordic-option-btn" onclick="executeSelectBranch('${opt.parentId}', '${opt.target}')"><b>回到大廳開闢新宇宙：</b> ${opt.text}</button>`;
+                            });
+                            hasAddedSection = true;
+                        }
+
+                        // 3. 前往大考結案大門
+                        let mainWinGateId = Object.keys(tree).find(k => k.includes("WIN-GATE") || tree[k].type === "win_gate");
+                        if (mainWinGateId && nodeId !== mainWinGateId) {
+                            if (hasAddedSection) actionArea += `<div style="margin: 15px 0; border-bottom: 1px solid #E2E8F0;"></div>`;
+                            actionArea += `
+                                <p style="font-weight:900; color:#15803D; margin-bottom:10px;">🚩 結案盤查：前往最終資格審查大考</p>
+                                <button class="nordic-action-btn" style="background:#15803D;" onclick="executeSelectBranch('${nodeId}', '${mainWinGateId}')">➔ 前往結案大門</button>
+                            `;
+                            hasAddedSection = true;
+                        }
+
+                        actionArea += `</div>`;
+                        if (hasAddedSection) contentHtml += actionArea;
+                    }
                 }
-                document.getElementById('lesson-content').innerHTML = compiledHtml;
-
-                course.subPages.forEach((_, sIdx) => { 
-                    dotsBar.innerHTML += `<div class="slider-dot ${sIdx===pIdx?'active':''}" onclick="exitExamToPage(${sIdx})"></div>`; 
-                }); 
-                dotsBar.innerHTML += `<div class="slider-dot exam-dot" onclick="enterExamMode()">⚔️</div>`;
             }
+
+            contentHtml += `</div>`;
+            inspector.innerHTML = contentHtml;
         }
 
-        function enterExamMode() { 
-            examActive = true; 
-            examCurrentQ = 0; 
-            examScoreCount = 0; 
-            loadCourseState(activeCourseIdx, 0); 
-        }
-
-        function runExamEngine() {
-            const course = window.codexCourseEngineData[activeCourseIdx]; 
-            if (examCurrentQ >= 3) { 
-                settleExamPayload(); 
-                return; 
-            }
-            const qData = course.examVault[examCurrentQ]; 
-            document.getElementById('current-chapter-id').innerText = "EXAM MODE"; 
-            document.getElementById('current-chapter-name').innerText = "隨機能力考核大考"; 
-            document.getElementById('exam-counter').innerText = `${examCurrentQ + 1} / 3`; 
-            document.getElementById('exam-progress').style.width = `${(examCurrentQ / 3) * 100}%`; 
-            document.getElementById('exam-question-text').innerText = `${examCurrentQ + 1}. ${qData.q}`;
+        window.executePassNode = function(nodeId) {
+            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
             
-            const container = document.getElementById('exam-options-container'); 
-            container.innerHTML = qData.o.map((opt, idx) => `<div class="option-card" onclick="submitAnswer(${idx})">${opt}</div>`).join('');
-        }
+            const nodeData = window.tpmSandboxScriptTree[nodeId];
+            if (nodeData && nodeData.nextNodes) {
+                nodeData.nextNodes.forEach(nxt => { 
+                    if (!unlockedNodesList.includes(nxt)) unlockedNodesList.push(nxt); 
+                });
+            }
+            saveSandboxProgress();
+            if (nodeData.nextNodes && nodeData.nextNodes.length > 0) {
+                activeFrontierNodeId = currentlySelectedNodeId = nodeData.nextNodes[0];
+                inspectNodeDetail(currentlySelectedNodeId);
+            }
+            renderNordicSandboxMap();
 
-        function submitAnswer(idx) { 
-            const course = window.codexCourseEngineData[activeCourseIdx]; 
-            if (idx === course.examVault[examCurrentQ].a) { examScoreCount++; } 
-            examCurrentQ++; 
-            runExamEngine(); 
-        }
-        
-        function settleExamPayload() {
-            examActive = false; 
-            const course = window.codexCourseEngineData[activeCourseIdx];
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => { scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' }); }, 50);
+            }
+        };
 
-            // 🎯 👑 剛性防火牆：上傳前極限攔截未登入學員
+        window.executeSelectBranch = function(nodeId, targetNodeId) {
+            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
+            if (!passedNodesList.includes(targetNodeId)) passedNodesList.push(targetNodeId); 
+            if (!unlockedNodesList.includes(targetNodeId)) unlockedNodesList.push(targetNodeId);
+            
+            saveSandboxProgress();
+            activeFrontierNodeId = currentlySelectedNodeId = targetNodeId;
+            inspectNodeDetail(currentlySelectedNodeId);
+            renderNordicSandboxMap();
+
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => { scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' }); }, 50);
+            }
+        };
+
+        window.executeSubmitQuiz = function(nodeId, targetNodeId) {
+            const zone = document.getElementById('quiz-options-zone');
+            const node = window.tpmSandboxScriptTree[nodeId];
+            if (!zone || !node) return;
+
+            let isCorrect = (targetNodeId === "WIN-NODE-CONQUER" || targetNodeId === "T14-PASS-4" || targetNodeId === "T7-A-WIN-FINAL" || targetNodeId === "T-WIN");
+            zone.innerHTML = `
+                <div style="margin-top:10px; padding:14px; background:${isCorrect ? '#F0FDF4':'#FEF2F2'}; border-radius:6px; border:1px solid ${isCorrect?'#BBF7D0':'#FCA5A5'}; font-size:0.85rem; line-height:1.5;">
+                    <div style="font-weight:900; font-size:0.95rem; color:${isCorrect?'#16A34A':'#DC2626'}; margin-bottom:4px;">${isCorrect ? '🏆 記錄送出！':'💥 判斷錯誤！'}</div>
+                    <div>${node.explanation || '驗證完畢，請推進流程。'}</div>
+                </div>
+                <button class="nordic-action-btn" onclick="executePassQuizNode('${nodeId}', '${targetNodeId}')">➔ 繼續前進</button>
+            `;
+        };
+
+        window.executePassQuizNode = function(nodeId, targetNodeId) {
+            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
+            
+            let finalTarget = targetNodeId;
+            if (!finalTarget || finalTarget === "undefined") {
+                finalTarget = window.tpmSandboxScriptTree[nodeId].nextNodes[0];
+            }
+
+            if (!passedNodesList.includes(finalTarget)) passedNodesList.push(finalTarget); 
+            if (!unlockedNodesList.includes(finalTarget)) unlockedNodesList.push(finalTarget);
+            saveSandboxProgress();
+            
+            activeFrontierNodeId = currentlySelectedNodeId = finalTarget;
+            inspectNodeDetail(currentlySelectedNodeId);
+            renderNordicSandboxMap();
+
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => { scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' }); }, 50);
+            }
+        };
+
+        window.executeSettleHandbookUnit = function(isWin) {
+            if (!isWin) return;
             const checkLiveEmail = localStorage.getItem('tpm-user-current-email');
             if (!checkLiveEmail || checkLiveEmail.trim() === "") {
                 alert("❌ 偵測到未登入身分！請先返回首頁完成企業 Email 認證，否則公會將拒絕保存您的寶典進度與 GAS 戰績。");
@@ -826,68 +1383,39 @@
                 return;
             }
 
-            const storageKey = "L1-A" + course.courseId.split('-')[1];
+            const storageKey = "L1-A" + activePackUnitId.split('-')[1];
+            localStorage.setItem(`codex-${storageKey}-clear`, 'true');
             
-            let finalStatus = "";
-            if (examScoreCount < 2) {
-                alert("💥 失敗重考");
-                finalStatus = "失敗重考";
-                localStorage.setItem(`codex-${storageKey}-clear`, 'false');
-                localStorage.setItem(`talent-${storageKey}-grade`, '失敗重考');
-            } else {
-                alert("🏆 通過");
-                finalStatus = "通過";
-                localStorage.setItem(`codex-${storageKey}-clear`, 'true');
-                localStorage.setItem(`talent-${storageKey}-grade`, '通過');
-            }
-
-            const cleanId = course.courseId.replace("L", "").trim();
-            const currentRegistry = globalSubUnitRegistry.find(function(u) { return u.subUnitId === cleanId; });
-            
-            let resolvedType = "Beginner Codex";
-            if (currentRegistry && currentRegistry.type === 'handbook') { resolvedType = "Handbook Course"; }
-
             try {
                 const finalPushUrl = GLOBAL_GAS_URL + 
                     "?action=push" +
-                    "&courseId=" + encodeURIComponent(course.courseId) + 
-                    "&status=" + encodeURIComponent(finalStatus);
-                
+                    "&courseId=" + encodeURIComponent("CDX-" + activePackUnitId) + 
+                    "&status=" + encodeURIComponent("通過");
                 window.open(finalPushUrl, '_blank', 'width=500,height=400,scrollbars=no,resizable=no');
-                
             } catch(e) {
-                console.log("獨立正向航線擊發異常:", e);
+                console.error("GAS 擊發流產:", e);
             }
-
             exitToDashboardMenu();
-        }
+        };
 
-        // ========================================================================
-        // 👑 換裝定位點 2: 全域多階層頭銜連鎖同步大腦 👑
-        // ========================================================================
         (function() {
             const PILOT_EMAIL = localStorage.getItem('tpm-user-current-email') || "";
-
             function computeLocalUserRankTitle() {
                 if (!PILOT_EMAIL || PILOT_EMAIL.trim() === "") return { text: "首頁登入", isLogged: false };
-
                 let nameStr = "Daniel Shih";
                 const emailLower = PILOT_EMAIL.toLowerCase().trim();
                 if (emailLower !== "danielcwshih@fih-foxconn.com") {
-                    nameStr = emailLower.split('@')[0].replace(/[\._\-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    nameStr = emailLower.split('@')[0].replace(/[\._\-]/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
                 }
-
                 const beginnerKeys = ['codex-L1-A1-clear', 'codex-L1-A2-clear', 'codex-L1-A3-clear', 'codex-L1-A4-clear', 'codex-L2-A1-clear', 'codex-L3-A1-clear'];
-                const isAllBeginnerCleared = beginnerKeys.every(k => localStorage.getItem(k) === 'true');
-
+                const isAllBeginnerCleared = beginnerKeys.every(function(k) { return localStorage.getItem(k) === 'true'; });
                 const adventureKeys = ['handbook-L1-A1-clear', 'handbook-L1-A2-clear'];
-                const isAllAdventureCleared = adventureKeys.every(k => localStorage.getItem(k) === 'true');
-
-                if (isAllBeginnerCleared && isAllAdventureCleared) return { text: `👤 統籌者 : ${nameStr}`, isLogged: true };
-                if (isAllBeginnerCleared) return { text: `👤 冒險者 : ${nameStr}`, isLogged: true };
-                return { text: `👤 初心者 : ${nameStr}`, isLogged: true };
+                const isAllAdventureCleared = adventureKeys.every(function(k) { return localStorage.getItem(k) === 'true'; });
+                
+                if (isAllBeginnerCleared && isAllAdventureCleared) return { text: "👤 統籌者 : " + nameStr, isLogged: true };
+                if (isAllBeginnerCleared) return { text: "👤 冒險者 : " + nameStr, isLogged: true };
+                return { text: "👤 初心者 : " + nameStr, isLogged: true };
             }
-
             const originalOnload = window.onload;
             window.onload = function() {
                 if (originalOnload) originalOnload();
