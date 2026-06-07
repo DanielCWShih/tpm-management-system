@@ -6,7 +6,7 @@
     <title>職能手冊大廳 | System TPM Handbook Hub</title>
     <style>
         :root {
-            /* 👑 外襯粗獷主義核心色盤 */
+            /* 👑 外襯粗獷主義核心色盤 (100% 對齊寶典大廳與總部) */
             --bg-color: #FEF9E7;
             --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
@@ -575,13 +575,8 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
+        // 👑 全域虛擬動態佈局大盤
         let nodeLayoutCoordinates = {};
-        let selectedActiveLevelNum = 1; 
-        let unlockedNodesList = []; 
-        let passedNodesList = []; 
-        let activeFrontierNodeId = null;     
-        let currentlySelectedNodeId = null;  
-        let activePackUnitId = null;
 
         // ========================================================================
         // 👑 萬能幾何分流大腦：終極審查節點全自動強制置底與中央定錨 (漏斗收斂)
@@ -594,6 +589,7 @@
             let normalTierBuckets = {};
             let finalNodes = []; 
 
+            // 1. 拆分常規與最終結案卡片
             Object.keys(tree).forEach(nodeId => {
                 let isFinalGate = nodeId.includes("WIN-GATE") || nodeId.includes("WIN-FINAL") || tree[nodeId].type === "win_gate" || tree[nodeId].type === "end_win";
                 
@@ -621,6 +617,7 @@
 
             let maxNormalTier = 0;
 
+            // 2. 常規網格等距分配
             Object.keys(normalTierBuckets).forEach(tierStr => {
                 const tierNum = parseInt(tierStr, 10);
                 if (tierNum > maxNormalTier) maxNormalTier = tierNum;
@@ -652,6 +649,7 @@
                 });
             });
 
+            // 3. 終局大一統：WIN-GATE 剛性全自動置底中央
             finalNodes.sort((a, b) => a.id.localeCompare(b.id));
             finalNodes.forEach((node, idx) => {
                 let tierNum = maxNormalTier + 1 + idx; 
@@ -856,14 +854,6 @@
             renderNordicSandboxMap();
             inspectNodeDetail(currentlySelectedNodeId);
 
-            const scrollStage = document.getElementById('map-scroll-stage');
-            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
-            if (scrollStage && activeCard) {
-                setTimeout(() => {
-                    scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' });
-                }, 50);
-            }
-
             window.onresize = () => {
                 calculateDynamicCosmicTopology();
                 renderNordicSandboxMap();
@@ -899,7 +889,7 @@
         }
 
         // ========================================================================
-        // 👑 拓撲地圖繪製艙 (全自動連接大考終點)
+        // 👑 拓撲地圖繪製艙 (修復連線過濾條件，消滅錯亂的幽靈斜線)
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -927,7 +917,6 @@
                 }
             });
 
-            // 🚀 👑 剛性防線 2：找出大一統的 WIN-GATE，準備全域連接
             let mainWinGateId = Object.keys(tree).find(k => k.includes("WIN-GATE") || tree[k].type === "win_gate");
 
             // 繪製連線
@@ -940,9 +929,9 @@
                 if (srcNode.nextNodes) branchTargets = branchTargets.concat(srcNode.nextNodes);
                 if (srcNode.options) srcNode.options.forEach(opt => { if (opt.target) branchTargets.push(opt.target); });
 
-                // 🚀 👑 剛性防線 2-2：只要你是 END 節點，不管你有沒有寫 nextNodes，系統強制拉一條線到 WIN-GATE，形成全景漏斗
-                let isEndNode = srcId.includes("END") && !srcId.includes("WIN");
-                if (isEndNode && mainWinGateId && !branchTargets.includes(mainWinGateId)) {
+                // 🚀 👑 剛性防線 3：只有「終端節點 (沒有 nextNode 且沒有 options 的死胡同)」才會拉線前往 WIN-GATE，確保畫布純淨
+                let isTerminalNode = (!srcNode.nextNodes || srcNode.nextNodes.length === 0) && (!srcNode.options || srcNode.options.length === 0) && !srcId.includes("WIN");
+                if (isTerminalNode && mainWinGateId && !branchTargets.includes(mainWinGateId)) {
                     branchTargets.push(mainWinGateId);
                 }
 
@@ -951,7 +940,7 @@
                     if (!tarPos) return;
                     if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
 
-                    // 🚀 👑 剛性防線 1：確保只有向下的因果線才被繪製，徹底絕殺跨層大斷層長線
+                    // 🚀 👑 剛性防線 1：確保只有向下的因果線才被繪製，徹底絕殺跨層大斷層幽靈長線
                     if (tarPos.y < srcPos.y) {
                         return;
                     }
@@ -1007,6 +996,7 @@
                 }
                 card.innerText = displayName;
 
+                // END 節點黃金化防誤判，唯有 FAIL/WARN 染紅卡
                 const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN");
 
                 if (isUnitCleared) {
@@ -1050,7 +1040,7 @@
         }
 
         // ========================================================================
-        // 👑 右側戰術儀控制中樞 (同層思維切換與去重大廳防線)
+        // 👑 右側戰術儀控制中樞 (去重過濾大廳、全自動進度條盤查、三段式導航漏斗)
         // ========================================================================
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
@@ -1058,6 +1048,7 @@
             const tree = window.tpmSandboxScriptTree;
             if (!inspector || !node) return;
 
+            // 解除 ReviewMode 唯讀鎖死。只要節點解鎖且下一步沒走過，就具備前進主權！
             let isReviewMode = true;
             if (nodeId === activeFrontierNodeId) {
                 isReviewMode = false;
@@ -1166,11 +1157,11 @@
                     contentHtml += `</div>`;
                 }
             } else if (node.type.startsWith("end_") || (!node.nextNodes || node.nextNodes.length === 0)) {
-                let endColor = "#D97706"; 
+                let endColor = "#D97706"; // 黃金通航色
                 if (node.type === "end_win") {
                     endColor = "#15803D"; 
                 } else if (node.id.includes("FAIL") || node.id.includes("WARN")) {
-                    endColor = "#B91C1C"; 
+                    endColor = "#B91C1C"; // 雷區染紅
                 }
                 
                 contentHtml += `
@@ -1185,57 +1176,64 @@
                     }
                 } else {
                     if (!isReviewMode) {
-                        // 🚀 👑 核心防線 3：優先盤查同層思維切換 (Sibling Endings)
+                        let actionArea = `<div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">`;
+                        let hasAddedSection = false;
+
+                        // 1. 🚀 同層思維切換 (Sibling)
                         const parentDecision = findParentDecisionNode(nodeId);
-                        let hasSiblingOpts = false;
-
+                        let siblingOpts = [];
                         if (parentDecision && parentDecision.options) {
-                            let remainingSiblings = parentDecision.options.filter(opt => !passedNodesList.includes(opt.target) && opt.target !== nodeId);
-                            if (remainingSiblings.length > 0) {
-                                hasSiblingOpts = true;
-                                let randomizedSiblings = shuffleArray(remainingSiblings);
-                                contentHtml += `
-                                    <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
-                                        <p style="font-weight:900; color:#1E3A8A; margin-bottom:10px;">🔄 觀測另一種思維結尾：同情境尚有未探測的分支</p>
-                                `;
-                                randomizedSiblings.forEach(opt => {
-                                    contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>同層切換：</b> ${opt.text}</button>`;
-                                });
-                                contentHtml += `</div>`;
-                            }
+                            siblingOpts = parentDecision.options.filter(opt => !passedNodesList.includes(opt.target) && opt.target !== nodeId);
+                        }
+                        if (siblingOpts.length > 0) {
+                            hasAddedSection = true;
+                            actionArea += `<p style="font-weight:900; color:#1E3A8A; margin-bottom:10px;">🔄 觀測另一種思維結尾：同情境尚有未探測的分支</p>`;
+                            let randomizedSiblings = shuffleArray(siblingOpts);
+                            randomizedSiblings.forEach(opt => {
+                                actionArea += `<button class="nordic-option-btn" onclick="executeSelectBranch('${parentDecision.id}', '${opt.target}')"><b>同層切換：</b> ${opt.text}</button>`;
+                            });
                         }
 
-                        // 如果同層選項都走完了，才開放跳轉回大廳
-                        if (!hasSiblingOpts) {
-                            let globalRemainingOptions = [];
-                            let mainDecisionNodeId = Object.keys(tree).find(k => k.includes("DECISION"));
-                            if (mainDecisionNodeId) {
-                                let mainDecisionNode = tree[mainDecisionNodeId];
-                                if (mainDecisionNode && mainDecisionNode.options) {
-                                    mainDecisionNode.options.forEach(opt => {
-                                        if (!passedNodesList.includes(opt.target)) {
-                                            globalRemainingOptions.push({
-                                                parentId: mainDecisionNode.id,
-                                                target: opt.target,
-                                                text: opt.text
-                                            });
-                                        }
-                                    });
-                                }
-                            }
-
-                            if (globalRemainingOptions.length > 0) {
-                                let randomizedGlobalRetry = shuffleArray(globalRemainingOptions);
-                                contentHtml += `
-                                    <div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">
-                                        <p style="font-weight:900; color:#D97706; margin-bottom:10px;">📋 繼續完成其餘支線：請回到大廳選擇尚未通關的領域進度：</p>
-                                `;
-                                randomizedGlobalRetry.forEach(opt => {
-                                    contentHtml += `<button class="nordic-option-btn" onclick="executeSelectBranch('${opt.parentId}', '${opt.target}')"><b>回到大廳開闢新宇宙：</b> ${opt.text}</button>`;
+                        // 2. 🚀 回到大廳開新宇宙 (Lobby) 剛性鎖死只抓 T2
+                        let globalRemainingOptions = [];
+                        let mainDecisionNodeId = Object.keys(tree).find(k => k.includes("DECISION") && !k.includes("T8")); // 精準過濾出主大廳
+                        if (mainDecisionNodeId) {
+                            let mainDecisionNode = tree[mainDecisionNodeId];
+                            if (mainDecisionNode && mainDecisionNode.options) {
+                                mainDecisionNode.options.forEach(opt => {
+                                    if (!passedNodesList.includes(opt.target) && !siblingOpts.some(s => s.target === opt.target)) {
+                                        globalRemainingOptions.push({
+                                            parentId: mainDecisionNode.id,
+                                            target: opt.target,
+                                            text: opt.text
+                                        });
+                                    }
                                 });
-                                contentHtml += `</div>`;
                             }
                         }
+                        if (globalRemainingOptions.length > 0) {
+                            if (hasAddedSection) actionArea += `<div style="margin: 15px 0; border-bottom: 1px solid #E2E8F0;"></div>`;
+                            actionArea += `<p style="font-weight:900; color:#D97706; margin-bottom:10px;">📋 繼續完成其餘支線：回到大廳選擇尚未通關的領域</p>`;
+                            let randomizedGlobalRetry = shuffleArray(globalRemainingOptions);
+                            randomizedGlobalRetry.forEach(opt => {
+                                actionArea += `<button class="nordic-option-btn" onclick="executeSelectBranch('${opt.parentId}', '${opt.target}')"><b>回到大廳開闢新宇宙：</b> ${opt.text}</button>`;
+                            });
+                            hasAddedSection = true;
+                        }
+
+                        // 3. 🚀 前往結案大門 (WIN-GATE)
+                        let mainWinGateId = Object.keys(tree).find(k => k.includes("WIN-GATE") || tree[k].type === "win_gate");
+                        if (mainWinGateId && nodeId !== mainWinGateId) {
+                            if (hasAddedSection) actionArea += `<div style="margin: 15px 0; border-bottom: 1px solid #E2E8F0;"></div>`;
+                            actionArea += `
+                                <p style="font-weight:900; color:#15803D; margin-bottom:10px;">🚩 結案盤查：前往最終資格審查大考</p>
+                                <button class="nordic-action-btn" style="background:#15803D;" onclick="executeSelectBranch('${nodeId}', '${mainWinGateId}')">➔ 前往結案大門</button>
+                            `;
+                            hasAddedSection = true;
+                        }
+
+                        actionArea += `</div>`;
+                        if (hasAddedSection) contentHtml += actionArea;
                     }
                 }
             }
@@ -1244,16 +1242,14 @@
             inspector.innerHTML = contentHtml;
         }
 
+        // 🚀 👑 核心防線 4：強制將 TargetNode 寫入 passedNodesList 確保去重完美運作！
         window.executePassNode = function(nodeId) {
-            if (!passedNodesList.includes(nodeId)) {
-                passedNodesList.push(nodeId);
-            }
+            if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
+            
             const nodeData = window.tpmSandboxScriptTree[nodeId];
             if (nodeData && nodeData.nextNodes) {
                 nodeData.nextNodes.forEach(nxt => { 
-                    if (!unlockedNodesList.includes(nxt)) {
-                        unlockedNodesList.push(nxt); 
-                    }
+                    if (!unlockedNodesList.includes(nxt)) unlockedNodesList.push(nxt); 
                 });
             }
             saveSandboxProgress();
@@ -1262,16 +1258,29 @@
                 inspectNodeDetail(currentlySelectedNodeId);
             }
             renderNordicSandboxMap();
+            
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => { scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' }); }, 50);
+            }
         };
 
         window.executeSelectBranch = function(nodeId, targetNodeId) {
             if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
+            if (!passedNodesList.includes(targetNodeId)) passedNodesList.push(targetNodeId); // 關鍵腳印修復！
             if (!unlockedNodesList.includes(targetNodeId)) unlockedNodesList.push(targetNodeId);
             
             saveSandboxProgress();
             activeFrontierNodeId = currentlySelectedNodeId = targetNodeId;
             inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
+            
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => { scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' }); }, 50);
+            }
         };
 
         window.executeSubmitQuiz = function(nodeId, targetNodeId) {
@@ -1308,12 +1317,19 @@
                 finalTarget = window.tpmSandboxScriptTree[nodeId].nextNodes[0];
             }
 
+            if (!passedNodesList.includes(finalTarget)) passedNodesList.push(finalTarget); // 關鍵腳印修復！
             if (!unlockedNodesList.includes(finalTarget)) unlockedNodesList.push(finalTarget);
             saveSandboxProgress();
             
             activeFrontierNodeId = currentlySelectedNodeId = finalTarget;
             inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
+            
+            const scrollStage = document.getElementById('map-scroll-stage');
+            const activeCard = document.getElementById(`card-${activeFrontierNodeId}`);
+            if (scrollStage && activeCard) {
+                setTimeout(() => { scrollStage.scrollTo({ top: activeCard.offsetTop - (scrollStage.clientHeight / 2), behavior: 'smooth' }); }, 50);
+            }
         };
 
         window.executeSettleHandbookUnit = function(isWin) {
