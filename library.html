@@ -6,6 +6,7 @@
     <title>知識圖書館 | System TPM Library Hub</title>
     <style>
         :root {
+            /* 👑 外襯粗獷主義核心色盤 (100% 對齊手冊與總部大廳) */
             --bg-color: #FEF9E7;
             --sidebar-cream: #FDF2D0;
             --card-white: #FFFFFF;
@@ -18,6 +19,10 @@
             --color-active-gold: #FDE047;
             --color-fail: #DC2626;
             --color-locked-gray: #E2E8F0;
+            
+            /* 🎨 內襯北歐極簡沙盒地圖色盤 */
+            --nordic-bg: #FAFAFA;
+            --nordic-border: #E7E5E4;
         }
 
         html, body {
@@ -35,6 +40,7 @@
             box-sizing: border-box;
         }
 
+        /* 👑 剛性頂部全域控制導航列 */
         .tactical-navbar {
             width: 100vw;
             height: 85px;
@@ -128,9 +134,10 @@
             overflow: hidden;
         }
 
+        /* ⚖️ 剛性對齊：左側選單欄寬度固定 262px (與手冊一致) */
         .sidebar-panel {
             display: flex;
-            width: 350px;
+            width: 262px;
             background-color: var(--sidebar-cream);
             border-right: 4px solid var(--border-heavy);
             padding: 25px 18px;
@@ -222,6 +229,7 @@
             box-shadow: 1px 1px 0px var(--border-heavy) !important;
         }
 
+        /* 中央主觀測工作區 - 自適應寬度延伸 */
         .content-panel {
             flex: 1;
             height: 100%;
@@ -255,13 +263,13 @@
             gap: 24px;
         }
 
-        /* ─── ⚖️ 左右雙軌戰術分流觀測大盤 ─── */
+        /* 🚀 👑 重新優化：自適應寬度流動網格，徹底填滿反人類留白 */
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden; 
             display: grid;
-            grid-template-columns: repeat(6, 1fr); 
+            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); 
             grid-auto-rows: min-content;
             gap: 12px;
             padding: 10px 14px 14px 10px; 
@@ -272,7 +280,7 @@
             background: #FFFFFF;
             border: 2px solid var(--border-heavy);
             border-radius: 6px;
-            padding: 12px 6px;
+            padding: 12px 10px;
             color: var(--text-main);
             cursor: pointer;
             box-shadow: 2px 2px 0px var(--border-heavy);
@@ -299,8 +307,9 @@
             box-shadow: 1px 1px 0px var(--border-heavy) !important;
         }
 
+        /* ⚖️ 剛性對齊：右側觀測儀固定寬度 380px */
         .fixed-inspector-panel {
-            width: 460px;
+            width: 380px;
             border: 4px solid var(--border-heavy);
             background: #FFFDF2;
             border-radius: 12px;
@@ -321,6 +330,139 @@
             font-weight: 800;
             font-size: 1.1rem;
             line-height: 1.6;
+        }
+
+        .nordic-action-btn {
+            background: var(--text-main);
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 0.85rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            box-shadow: 3px 3px 0px #475569;
+            transition: all 0.1s;
+        }
+
+        .nordic-action-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--text-main);
+        }
+
+        /* 👑 🚀 全景時空天梯大浮窗劇院 (Full-screen Overlay Modal) */
+        .modal-overlay-chamber {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vw;
+            background-color: rgba(26, 26, 26, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 5000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .modal-brutalist-box {
+            width: 100%;
+            max-width: 1100px;
+            height: 85vh;
+            background-color: var(--bg-color);
+            border: 4px solid var(--border-heavy);
+            border-radius: 12px;
+            box-shadow: 10px 10px 0px var(--border-heavy);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: popIn 0.2s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.96); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header-bar {
+            background-color: var(--sidebar-cream);
+            border-bottom: 4px solid var(--border-heavy);
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .modal-close-x {
+            background: var(--card-white);
+            border: 2px solid var(--border-heavy);
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 2px 0px var(--border-heavy);
+        }
+
+        /* 👑 橫向時空步進天梯天棚 */
+        .horizontal-stepper-roof {
+            background: #FFFFFF;
+            border-bottom: 2px dashed var(--border-heavy);
+            padding: 15px 24px;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            overflow-x: auto;
+            flex-shrink: 0;
+            align-items: center;
+        }
+
+        .step-node-badge {
+            background: #F1F5F9;
+            border: 2px solid var(--border-heavy);
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 2px 2px 0px #CBD5E1;
+            transition: all 0.1s;
+        }
+
+        .step-node-badge:hover {
+            background: var(--sidebar-cream);
+        }
+
+        .step-node-badge.active-step {
+            background: var(--color-active-gold) !important;
+            box-shadow: 1px 1px 0px var(--border-heavy) !important;
+            transform: translate(1px, 1px);
+        }
+
+        .step-arrow-divider {
+            color: #94A3B8;
+            font-weight: 900;
+            user-select: none;
+        }
+
+        .modal-reading-chamber {
+            flex: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+            background: #FFFFFF;
+            line-height: 1.7;
+            font-size: 0.95rem;
         }
 
         @keyframes fadeInBox {
@@ -392,8 +534,21 @@
         </main>
     </div>
 
+    <div class="modal-overlay-chamber" id="theater-modal">
+        <div class="modal-brutalist-box">
+            <div class="modal-header-bar">
+                <div>
+                    <span id="modal-branch-tag" style="font-family: monospace; font-weight: 900; background: #1A1A1A; color:#FFF; padding:2px 6px; border-radius:4px; font-size:0.75rem; margin-right:8px;">1-1</span>
+                    <strong id="modal-branch-title" style="font-size: 1.1rem; font-weight: 900;">支線全景通讀艙</strong>
+                </div>
+                <button class="modal-close-x" onclick="closeTheaterTheater()">✕</button>
+            </div>
+            <div class="horizontal-stepper-roof" id="modal-stepper-track"></div>
+            <div class="modal-reading-chamber" id="modal-reader-viewport"></div>
+        </div>
+    </div>
+
     <script>
-        // 🎯 核心載入名冊：依據您的架構升級，獨立擴展辭典名冊也在此處進行全自動聯鎖註冊！
         const libraryLevelRegistry = [
             { 
                 category: 'beginner', 
@@ -429,7 +584,6 @@
                 files: [
                     'handbook_data_course/handbook_data_1-1.js',
                     'handbook_data_course/handbook_data_1-2.js',
-                    // 🎯 擴展解耦辭典線路熱加載
                     'library_data/dict_ext_handbook_1-2.js'
                 ]
             }
@@ -500,7 +654,7 @@
 
             const personalGrid = document.createElement('div');
             personalGrid.style.display = 'grid';
-            personalGrid.style.gridTemplateColumns = 'repeat(7, 1fr)';
+            personalGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(130px, 1fr))';
             personalGrid.style.gap = '15px';
             personalGrid.style.width = '100%';
             personalGrid.style.padding = '6px';
@@ -535,7 +689,7 @@
 
                 const grid = document.createElement('div');
                 grid.style.display = 'grid';
-                grid.style.gridTemplateColumns = 'repeat(7, 1fr)'; 
+                grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(130px, 1fr))'; 
                 grid.style.gap = '15px';
                 grid.style.width = '100%';
                 grid.style.marginBottom = '20px';
@@ -562,7 +716,6 @@
             });
         }
 
-        // 👑 優化過濾器：剛性洗淨 ⚡、⚠️、🏆 等劇本亂碼符號
         function getCleanTermName(name) {
             let clean = (name || '').replace(/🔑|關鍵詞：|關鍵詞:|增補：|增補:|⚡|⚠️|🏆|💥|🎨|📝|👤/g, '').trim();
             let engMatch = clean.match(/^([A-Za-z0-9\s\-]+)/);
@@ -663,7 +816,6 @@
             }
         };
 
-        // 👑 核心加載大腦：完美熔斷反洩題裝甲
         function singleScriptFetchEngine(filePath) {
             return new Promise((resolve) => {
                 const script = document.createElement('script');
@@ -683,11 +835,9 @@
                     const isHandbook = filePath.includes('handbook') || filePath.includes('dict_ext_handbook');
                     const unitLabel = `Level ${unitId}`;
 
-                    // 🎯 👑 反洩題熔斷閥：盤查學員地端該單元通關鐵印 👑
                     const storageKey = isHandbook ? `handbook-L1-A${unitId.split('-')[1]}-clear` : `codex-L1-A${unitId.split('-')[1]}-clear`;
                     const isUnitCleared = localStorage.getItem(storageKey) === 'true';
 
-                    // 1. 常規線性課文解析良率
                     combined.forEach(course => {
                         if (course.subPages) {
                             course.subPages.forEach(page => {
@@ -721,10 +871,8 @@
                         }
                     });
 
-                    // 2. 🎯 沙盒圖形地圖自動解包雷達（只在通關後解密，絕不洩題！）
                     if (window.tpmSandboxScriptTree && Object.keys(window.tpmSandboxScriptTree).length > 0) {
                         if (isUnitCleared) {
-                            // 🌟 只有通關才解鎖劇本詞條回放
                             Object.keys(window.tpmSandboxScriptTree).forEach(nodeId => {
                                 const node = window.tpmSandboxScriptTree[nodeId];
                                 if (node.title && (node.text || node.question)) {
@@ -741,10 +889,9 @@
                                 }
                             });
                         }
-                        window.tpmSandboxScriptTree = null; // 原位清除，封鎖漏氣
+                        window.tpmSandboxScriptTree = null; 
                     }
 
-                    // 3. 🎯 獨立擴展辭典接口（只在通關後釋放，杜絕劇透）
                     if (window.tpmStandaloneKeywords && window.tpmStandaloneKeywords.length > 0) {
                         if (isUnitCleared) {
                             window.tpmStandaloneKeywords.forEach(kw => {
@@ -795,7 +942,7 @@
             
             if (window.aggregatedTermsPool.length === 0) {
                 list.innerHTML = `
-                    <div style="grid-column: span 6; border:2px dashed var(--border-heavy); background:#FFF; padding:30px; text-align:center; border-radius:6px; font-weight:900; color:var(--text-secondary); width:100%; margin-top:20px;">
+                    <div style="grid-column: 1 / -1; border:2px dashed var(--border-heavy); background:#FFF; padding:30px; text-align:center; border-radius:6px; font-weight:900; color:var(--text-secondary); width:100%; margin-top:20px;">
                         🔒 該單元文獻仍處於戰爭迷霧中，請完成首頁大考解鎖文獻 🔒
                     </div>`;
                 return;
@@ -842,6 +989,8 @@
                     <div style="line-height: 1.7; font-size: 0.88rem; overflow-y: auto; flex: 1; padding-right: 4px; color: var(--text-main);">
                         ${term.text}
                     </div>
+
+                    <button class="nordic-action-btn" onclick="openTheaterTheater()">🔍 展開全景時空步進通讀</button>
                 </div>
             `;
         }
@@ -878,6 +1027,75 @@
                 renderLexiconList();
             }
         };
+
+        // ========================================================================
+        // 👑 🚀 橫向時空天梯步進大浮窗控制中心 (100% 展開不閹割)
+        // ========================================================================
+        function openTheaterTheater() {
+            if (window.aggregatedTermsPool.length === 0) return;
+
+            const currentUnitLabel = window.currentlyViewedTerm?.sourceLabel || "Level 1-1";
+            document.getElementById('modal-branch-tag').innerText = currentUnitLabel;
+            document.getElementById('modal-branch-title').innerText = "平行宇宙時空步進文獻艙";
+
+            const track = document.getElementById('modal-stepper-track');
+            track.innerHTML = '';
+
+            // 抓取當前載入單元內的所有詞條作為步進節點
+            window.aggregatedTermsPool.forEach((node, idx) => {
+                const badge = document.createElement('div');
+                badge.className = 'step-node-badge';
+                badge.id = `step-badge-${idx}`;
+                badge.innerText = getCleanTermName(node.name);
+                badge.onclick = () => { triggerChamberReadingNode(idx); };
+
+                track.appendChild(badge);
+
+                if (idx < window.aggregatedTermsPool.length - 1) {
+                    const arrow = document.createElement('span');
+                    arrow.className = 'step-arrow-divider';
+                    arrow.innerText = '➔';
+                    track.appendChild(arrow);
+                }
+            });
+
+            // 預設將視窗定位至學員當前點選的詞條
+            if (activeTermIdx > -1) {
+                triggerChamberReadingNode(activeTermIdx);
+            } else if (window.aggregatedTermsPool.length > 0) {
+                triggerChamberReadingNode(0);
+            }
+
+            document.getElementById('theater-modal').style.display = 'flex';
+        }
+
+        function triggerChamberReadingNode(poolIdx) {
+            document.querySelectorAll('.step-node-badge').forEach(b => b.classList.remove('active-step'));
+            const activeBadge = document.getElementById(`step-badge-${poolIdx}`);
+            if (activeBadge) {
+                activeBadge.classList.add('active-step');
+            }
+
+            const nodeData = window.aggregatedTermsPool[poolIdx];
+            const viewer = document.getElementById('modal-reader-viewport');
+            
+            if (nodeData && viewer) {
+                viewer.innerHTML = `
+                    <div style="animation: fadeInBox 0.15s ease-out;">
+                        <span style="font-family:monospace; font-weight:900; color:var(--text-secondary); font-size:0.8rem;">[時空節點: ${nodeData.sourceLabel || '大辭典'}]</span>
+                        <h2 style="margin:6px 0 20px 0; font-weight:900; font-size:1.5rem; color:var(--text-main);">${nodeData.name}</h2>
+                        <div style="border-top:1px solid #E2E8F0; padding-top:15px; color: var(--text-main);">
+                            ${nodeData.text}
+                        </div>
+                    </div>
+                `;
+                viewer.scrollTop = 0; 
+            }
+        }
+
+        function closeTheaterTheater() {
+            document.getElementById('theater-modal').style.display = 'none';
+        }
 
         function exitToDashboard() {
             const menuHall = document.getElementById('dashboard-menu-hall');
