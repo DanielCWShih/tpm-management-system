@@ -1,344 +1,455 @@
-/* ========================================================================
-REVISION HISTORY / VERSION LOG
-========================================================================
-2026-06-02 V7.95-HOTFIX: 👑 全域 4 分法網格暨 Page 2 多重顯示 Bug 剛性絕殺版。
-1. 絕殺 BUG：修正第 2 頁 CMF 面板行內樣式遺漏 display: 的打字錯誤（style="none;" ➔ style="display:none;"），徹底封死初始多重顯示缺陷。
-2. 全域視覺對位：Page 2、Page 3、Page 4 所有 Keywords 網格剛性對齊 repeat(4, 1fr) 寬度拓撲，絕不拉伸。
-3. 題庫滿血擴充：examVault 內建 12 道硬核實戰考題（各領域 4 題），維持雙層動態隨機洗牌選項演算法。
-========================================================================
-*/
+/**
+ ========================================================================
+ FILE: beginner_codex_course/course_data_1-1.js
+ VERSION: 2026-06-07 V16.50-COSMIC-THEATER
+ DESCRIPTION: 👑 初心者文獻大辭典 1-1 黑鷹專案：試產火線攻防戰全景教材
+ TITLE: 1-1: 代工廠產業頂層世界觀（四維立體視角矩陣）
+ ========================================================================
+ */
 
-// 👑 全自動現地註冊：全域防崩潰雙層動態切換大腦 👑
-(function() {
-    window.tpmSwitchMainTab = function(blockScope, activeIdx, totalCount) {
-        for (let i = 0; i < totalCount; i++) {
-            const panel = document.getElementById(`tpm-main-panel-${blockScope}-${i}`);
-            const btn = document.getElementById(`tpm-main-btn-${blockScope}-${i}`);
-            if (panel) panel.style.display = (i === activeIdx) ? 'block' : 'none';
-            if (btn) {
-                if (i === activeIdx) {
-                    btn.style.background = '#FDE047';
-                    btn.style.transform = 'translate(2px, 2px)';
-                    btn.style.boxShadow = '1px 1px 0px #1A1A1A';
-                } else {
-                    btn.style.background = '#FFFFFF';
-                    btn.style.transform = 'none';
-                    btn.style.boxShadow = '3px 3px 0px #1A1A1A';
-                }
-            }
-        }
-    };
-
-    window.tpmSwitchSubKwd = function(blockScope, panelIdx, kwdIdx, fullName, definition) {
-        document.querySelectorAll(`.kbtn-${blockScope}-${panelIdx}`).forEach(btn => {
-            btn.style.background = '#FFFFFF';
-            btn.style.transform = 'none';
-            btn.style.boxShadow = '2px 2px 0px #1A1A1A';
-        });
-        const activeBtn = document.getElementById(`kbtn-${blockScope}-${panelIdx}-${kwdIdx}`);
-        if (activeBtn) {
-            activeBtn.style.background = '#FDE047';
-            activeBtn.style.transform = 'translate(1px, 1px)';
-            activeBtn.style.boxShadow = '1px 1px 0px #1A1A1A';
-        }
-        const titleEl = document.getElementById(`ktxt-title-${blockScope}-${panelIdx}`);
-        const descEl = document.getElementById(`ktxt-desc-${blockScope}-${panelIdx}`);
-        if (titleEl) titleEl.innerHTML = `<b>全稱：</b>${fullName}`;
-        if (descEl) descEl.innerHTML = `<b>意思：</b>${definition}`;
-    };
-})();
-
-window.codexCourseEngineData = [
-    {
-        courseId: "L1-1", 
-        menuTitle: "1-1: 基本世界觀與三方賽局",
-        subPages: [
-            // ==========================================
-            // PAGE 1: 獨立全景導航地圖
-            // ==========================================
-            {
-                title: "1. 單元總覽 (1-1 智慧型手機代工廠三方賽局戰術全景圖)",
-                text: `
-                    <div style="width:100%; border:2px solid #1A1A1A; border-radius:8px; overflow:hidden; box-shadow:3px 3px 0px #1A1A1A; background:#FFF; margin-bottom:15px;">
-                        <img src="beginner_codex_assets/overview_1-1.png" alt="1-1單元全景圖" style="width:100%; height:auto; display:block;" onerror="this.src='https://placehold.co/1200x220/1A1A1A/FFFFFF?text=1-1+Brand+R-D+Process+Map+Overview'">
-                    </div>
-                    <div style="background:#FFFDF2; border:2px solid #1A1A1A; border-radius:6px; padding:16px; box-shadow:2px 2px 0px #1A1A1A; font-size:0.88rem; font-weight:700; line-height:1.6; color:#1A1A1A;">
-                        📌 <strong>新手導航指引：</strong>智慧型手機的硬體專案開發是一場極其殘酷的「三方賽局」。在本單元中，你將跨越客戶端、供應商端、與代工廠端三大核心領域。請點擊底部頁碼前進至 Page 2，開始解鎖研發端的實戰關鍵字。
-                    </div>
-                `
-            },
-            // ==========================================
-            // PAGE 2: 客戶研發端 (Brand R&D)
-            // ==========================================
-            {
-                title: "2. 客戶研發端 (Brand R&D - 主導產品規格與美學定義)",
-                text: `
-                    <div style="display:flex; gap:12px; margin-bottom:15px; border-bottom:3px solid #1A1A1A; padding-bottom:12px; width:100%;">
-                        <div id="tpm-main-btn-brand-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A; transform:translate(2px,2px);" onclick="window.tpmSwitchMainTab('brand', 0, 4)">PRD (產品規格)</div>
-                        <div id="tpm-main-btn-brand-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('brand', 1, 4)">ID (外觀美學)</div>
-                        <div id="tpm-main-btn-brand-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('brand', 2, 4)">CMF (材質工藝)</div>
-                        <div id="tpm-main-btn-brand-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('brand', 3, 4)">Clearance (零件間距)</div>
-                    </div>
-
-                    <div id="tpm-main-panel-brand-0" style="display:block; width:100%;">
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">主導全球市場與競品技術調研，定義硬體規格，發佈產品規格需求書（PRD）。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">追求極致的硬體功能參數，用技術專利護城河拉高市售機台之品牌溢價。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">期待代工廠（EMS）產線能 100% 完美復刻複雜結構，不接受任何組裝公差導致的妥協。</div></div>
-                        </div>
-                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
-                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords (點擊下方卡片直接原位顯影解鎖)</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-brand-0" id="kbtn-brand-0-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 0, 0, 'Product Requirement Document (產品規格需求書)', '定義新手機功能、規格與零件配置的最高法規。TPM 必須在開模前清查 CMF 技術文件是否具備產線現有流水線的量產能力，在出圖前剛性攔截幻想規格。')">PRD</div>
-                                <div class="kbtn-brand-0" id="kbtn-brand-0-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 0, 1, 'Design for Manufacturing (可製造性設計)', '在產品設計初期，由代工廠製造工程師評估該結構是否符合流水線的大規模量產複製工藝。用來提前抓出外殼拔模角不足等致命模具設計瑕疵。')">DFM</div>
-                                <div class="kbtn-brand-0" id="kbtn-brand-0-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 0, 2, 'Specification Freeze (技術規格剛性凍結)', '專案跨入特定試產里程碑（如PVT）時，下發剛性禁令鎖死所有設計參數，不允許研發工程師隨意微調尺寸，以便工廠固化 SOP 與夾具排產。')">Freeze</div>
-                                <div class="kbtn-brand-0" id="kbtn-brand-0-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 0, 3, 'Acceptable Quality Level (驗收抽樣合格標準)', '品質檢驗時買賣雙方商定的最高可接受瑕疵概率。IQC 團隊嚴格以此指標在廠門口進行進料抽驗，一旦不良率超標則整批物料剛性拒收退貨。')">AQL</div>
-                            </div>
-                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:4px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-brand-0"><b>全稱：</b>Product Requirement Document (產品規格需求書)</div>
-                                <div id="ktxt-desc-brand-0" style="margin-top:4px; color:#475569;"><b>意思：</b>定義新手機功能、規格與零件配置的最高法規。TPM 必須在開模前清查 CMF 技術文件是否具備產線現有流水線的量產能力，在出圖前剛性攔截幻想規格。</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="tpm-main-panel-brand-1" style="display:none; width:100%;">
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">設計產品外部巨觀美學線條，包含手機中框弧度、按鍵回彈段落觸感與後置鏡頭火山突起視覺比例。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">打造兼具手感與無懈可擊的極簡外部視覺，建立消費者在凡間實體零售店的黃金第一印象。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">機器表面必須達到物理零刮傷，消滅任何因塑膠注塑模具頂出工藝而產生任何微觀收縮痕。</div></div>
-                        </div>
-                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
-                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-brand-1" id="kbtn-brand-1-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 1, 0, 'Draft Angle (鋼模脫模拔模角)', '在五金或塑膠殼體垂直外觀表面保留的微小物理斜度（通常為 0.5~2 度）。若無此角度，模具在大量生產頂出時會將機器外殼刮傷。')">Draft Angle</div>
-                                <div class="kbtn-brand-1" id="kbtn-brand-1-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 1, 1, 'Sink Mark (結構冷卻收縮痕)', '當結構內部局部肉厚過厚時，塑料冷卻收縮會將外表面拉出一個微小的肉眼可見凹坑，嚴重汙染並破壞設計質感。')">Sink Mark</div>
-                                <div class="kbtn-brand-1" id="kbtn-brand-1-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 1, 2, 'Mold Texture (模具表面咬花工藝)', '利用化學蝕刻或雷射在模具鋼材表面做出微觀沙粒、皮紋或幾何紋理，賦予成型後的塑料或金屬外殼霧面手感。')">Texture</div>
-                                <div class="kbtn-brand-1" id="kbtn-brand-1-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 1, 3, 'Parting Line (分模接縫線)', '前後鋼模閉合接觸時在產品外殼表面留下的物理接縫線。ID 與 TPM 的戰術防線在於將此線隱蔽在視覺死角，防止毛邊刮手。')">Parting Line</div>
-                            </div>
-                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-brand-1"><b>全稱：</b>Draft Angle (鋼模脫模拔模角)</div>
-                                <div id="ktxt-desc-brand-1" style="margin-top:4px; color:#475569;"><b>意思：</b>在五金或塑膠殼體垂直外觀表面保留的微小物理斜度（通常為 0.5~2 度）。若無此角度，模具在大量生產頂出時會將機器外表面生生刮傷。</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="tpm-main-panel-brand-2" style="display:none; width:100%;">
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Color, Material, Finishing。主導產品外觀視覺色彩調配、物理物料材質挑選、與金屬表面陽極氧化拋光等製程細節。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">利用高光 C 角、特殊微觀霧面無視覺紋理，打造產品無懈可擊的高級金屬與玻璃物理手感。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">工廠量產大流水線大批量產出時，各批次材料外觀色差（Delta E）剛性控制在客戶品保規定的極限標準線內。</div></div>
-                        </div>
-                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
-                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-brand-2" id="kbtn-brand-2-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 2, 0, 'Limit Sample (黃金品質外觀限度樣本)', '開線生產前，由客戶 ID、品保與工廠共同對「可接受的微小表面缺陷」簽字封樣，鎖死唯一的判退界線。')">Limit Sample</div>
-                                <div class="kbtn-brand-2" id="kbtn-brand-2-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 2, 1, 'Delta E (幾何色彩偏移色差值)', '使用工業色差儀量測產品外殼色彩偏離度的客觀數學指標。手機大廠一般剛性規定 Delta E 必須小於 1.0。')">Delta E</div>
-                                <div class="kbtn-brand-2" id="kbtn-brand-2-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 2, 2, 'Anodization (金屬陽極氧化處理)', '利用電化學工藝在鋁合金外殼表面生成一層堅硬、耐磨、耐腐蝕且具備高貴色彩的防護氧化皮層。')">Anodization</div>
-                                <div class="kbtn-brand-2" id="kbtn-brand-2-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 2, 3, 'PVD Coating (物理氣相沉積真空鍍膜)', '在高度真空腔體內將特定金屬靶材汽化並沉積附著在不鏽鋼表面，形成高硬度、鏡面質感的防刮美學外衣。')">PVD</div>
-                            </div>
-                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-brand-2"><b>全稱：</b>Limit Sample (黃金品質外觀限度樣本)</div>
-                                <div id="ktxt-desc-brand-2" style="margin-top:4px; color:#475569;"><b>意思：</b>開線生產前，由客戶 ID、品保與工廠共同對「可接受的微小表面缺陷」簽字封樣，鎖死唯一的判退界線。</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="tpm-main-panel-brand-3" style="display:none; width:100%;">
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">在 3D CAD 工程環境內精密審查並計算內部主板電子元件、電池與外部金屬外殼殼體間的 3D 避讓間距。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">保留足夠的公差疊加安全緩衝帶，防範機器受凡間外力撞擊形變時，內部晶片當場被外殼硬擠壓短路毀損。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">將 Clearance 間距死守在標準 0.3mm 綠燈水位，絕不允許結構 ME 為了盲目迎合極致超薄而跨越安全界限。</div></div>
-                        </div>
-                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
-                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-brand-3" id="kbtn-brand-3-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 3, 0, 'Tolerance Stack-up (公差數學疊加模擬)', '多零件拼裝時微觀尺寸負公差累積會導致避讓失效。TPM 必須主導結構發動極限疊加分析，提前清空物理設計雷區。')">Stack-up</div>
-                                <div class="kbtn-brand-3" id="kbtn-brand-3-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 3, 1, 'Process Capability Index (加工精準度製程能力指數)', '衡量工廠機台切削尺寸集中受控精準度的數據。Cpk 高於 1.33 代表品質極度穩定，若工廠 Cpk 太差則安全間距必須放大。')">Cpk</div>
-                                <div class="kbtn-brand-3" id="kbtn-brand-3-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 3, 2, 'Physical Interference (物理結構干涉空間重疊)', '指在 3D 工程模擬中零件空間發生不合理重疊重合。干涉機率必須在開模前 100% 剛性清零。')">Interference</div>
-                                <div class="kbtn-brand-3" id="kbtn-brand-3-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('brand', 3, 3, 'FPC Bending Radius (排線軟板安全彎折半徑)', '內部軟性電路板或射頻排線彎折時允許的物理最小半徑。低於安全半徑會導致內部銅箔在拉速受力時發生折斷。')">Bending</div>
-                            </div>
-                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-brand-3"><b>全稱：</b>Tolerance Stack-up (公差數學疊加模擬)</div>
-                                <div id="ktxt-desc-brand-3" style="margin-top:4px; color:#475569;"><b>意思：</b>多零件拼裝時微觀尺寸負公差累積會導致避讓失效。TPM 必須主導結構發動極限疊加分析，提前清空物理設計雷區。</div>
-                            </div>
-                        </div>
-                    </div>
-                `
-            },
-            // ==========================================
-            // PAGE 3: 零件供應商端 (Vendors)
-            // ==========================================
-            {
-                title: "3. 零件供應商端 (Vendors - 掌控高精元件交期與原物料進料檢驗品質)",
-                text: `
-                    <div style="display:flex; gap:12px; margin-bottom:15px; border-bottom:3px solid #1A1A1A; padding-bottom:12px; width:100%;">
-                        <div id="tpm-main-btn-vendor-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A; transform:translate(2px,2px);" onclick="window.tpmSwitchMainTab('vendor', 0, 4)">Lead Time (物料交期)</div>
-                        <div id="tpm-main-btn-vendor-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('vendor', 1, 4)">OQC (出廠檢驗)</div>
-                        <div id="tpm-main-btn-vendor-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('vendor', 2, 4)">Second Source (備援料)</div>
-                        <div id="tpm-main-btn-vendor-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('vendor', 3, 4)">IQC (進料品保)</div>
-                    </div>
-
-                    <div id="tpm-main-panel-vendor-0" style="display:block; width:100%;">
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">掌控從工廠正式下達採購單（PO），到該稀缺戰術原物料元件實際送抵工廠倉庫入庫的物流總交期。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">物理壓縮物料交期對專案時程的卡死，確保各試產階段開線當天現場 100% 有實物料可以上線。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">向專案經理交割無料期偏位的排產預測，將 LT 超過 12 週的稀缺晶片風險提早發動代償認證。</div></div>
-                        </div>
-                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
-                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords (點擊下方卡片直接原位顯影解鎖)</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-vendor-0" id="kbtn-vendor-0-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 0, 0, 'Forecast (排產產能預測水準)', '工廠需提早 3~6 個月提供給零件廠商的滾動產能需求預估表，方便晶圓原廠提前排產鎖死晶圓產能，防止交期崩塌。')">Forecast</div>
-                                <div class="kbtn-vendor-0" id="kbtn-vendor-0-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 0, 1, 'Buffer Stock (安全庫存水位)', '為應對惡劣物流延誤或大流水線上爆發突發拋料損耗缺陷，硬核囤積在製造廠無塵倉庫內的物料儲備。')">Buffer Stock</div>
-                                <div class="kbtn-vendor-0" id="kbtn-vendor-0-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 0, 2, 'Dual Sourcing (多源採購單配比)', '量產 MP 階段通常按照 7:3 比例將同功能零件單拆分發給兩家具備資質的供應商，逼迫兩者拼搶直通率與產速。')">Dual Sourcing</div>
-                            </div>
-                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-vendor-0"><b>全稱：</b>Forecast (排產產能預測水準)</div>
-                                <div id="ktxt-desc-vendor-0" style="margin-top:4px; color:#475569;"><b>意思：</b>工廠需提早 3~6 個月提供給零件廠商的滾動產能需求預估表，方便晶圓原廠提前排產鎖死晶圓產能，防止交期崩塌。</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="tpm-main-panel-vendor-1" style="display:none; width:100%;">
-                        <div style="background:#FFFDF2; border:2px solid #1A1A1A; padding:15px; border-radius:6px; font-weight:700; font-size:0.88rem; line-height:1.6; color:#1A1A1A;">
-                            <b>OQC 出廠檢驗：</b>Outgoing Quality Control。原物料供應商在貨物出廠發貨前，由原廠質量實驗室實施的最後成品品質抽樣核檢，隨貨附帶實測物理外觀與電性特徵報告，嚴防缺陷原件流入跨境供應物流鏈。
-                        </div>
-                    </div>
-                    
-                    <div id="tpm-main-panel-vendor-2" style="display:none; width:100%;"><div style="background:#FFFDF2; border:2px solid #1A1A1A; padding:15px; border-radius:6px;"><b>Second Source 戰術：</b>引進二線零件廠破除技術壟斷。在 DVT 里程碑前順利通過高低溫可靠性複審，確保隨時現地代償。</div></div>
-                    
-                    <div id="tpm-main-panel-vendor-3" style="display:none; width:100%;">
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">⚙️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">由我們代工廠/EMS廠端主導把關，運用精密二次元 OMM 或三次元機台，對所有送抵工廠倉庫的晶片與結構件進行實體抽樣量測。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">強行攔截因原廠漏檢或跨境物流震動混入的缺陷原件。確保進料抽驗的手法與治具，與線體後段的功能測站 100% 剛性同步。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">徹底封死因兩端測試方法不對位引發的漏檢盲區，拒缺陷零件於組裝線之外，確保線體絕不發生集體流產癱瘓。</div></div>
-                        </div>
-                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
-                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords (點擊下方卡片直接原位顯影解鎖)</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-vendor-3" id="kbtn-vendor-3-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 3, 0, 'Dimensional Tolerance (尺寸合規基準)', '運用精密二次元 OMM 或三次元機台抽向量測進料結構件，確認實體物理尺寸精確落於標準圖面公差範圍內，杜絕因形變引發後續防水結構幾何崩潰。')">尺寸合規基準</div>
-                                <div class="kbtn-vendor-3" id="kbtn-vendor-3-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 3, 1, 'Test Methodology Synchronization (測站方法同步)', '工廠 IQC 抽驗物料所套用的量測手法、電路硬體治具與軟體測試演算法，必須與生產線後段的功能測試站（FCT）保持 100% 剛性同步，徹底封死因方法不對位引發的漏檢盲區。')">測站方法同步</div>
-                                <div class="kbtn-vendor-3" id="kbtn-vendor-3-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('vendor', 3, 2, 'Golden Sample Alignment (黃金樣機對位指標)', '經品牌研發與品質端雙重簽核封樣、各項電性與物理參數皆最接近名義值的標準硬體標本，用以定期比對並校準 IQC 與線上檢驗機台。')">黃金樣機對位</div>
-                            </div>
-                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-vendor-3"><b>全稱：</b>Dimensional Tolerance (尺寸合規基準)</div>
-                                <div id="ktxt-desc-vendor-3" style="margin-top:4px; color:#475569;"><b>意思：</b>運用精密二次元 OMM 或三次元機台抽向量測進料結構件，確認實體物理尺寸精確落於標準圖面公差範圍內，杜絕因形變引發後續防水結構幾何崩潰。</div>
-                            </div>
-                        </div>
-                    </div>
-                `
-            },
-            // ==========================================
-            // PAGE 4: 代工製造廠端 (EMS Factory)
-            // ==========================================
-            {
-                title: "4. 代工製造廠端 (EMS Factory - 大大量產拼裝、產速與直通良率防護)",
-                text: `
-                    <div style="width:100%; display:flex; gap:12px; margin-bottom:15px; border-bottom:3px solid #1A1A1A; padding-bottom:12px;">
-                        <div id="tpm-main-btn-ems-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A; transform:translate(2px,2px);" onclick="window.tpmSwitchMainTab('ems', 0, 4)">FPY (Final Pass Yield) 直通率</div>
-                        <div id="tpm-main-btn-ems-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('ems', 1, 4)">UPH (每小時產速)</div>
-                        <div id="tpm-main-btn-ems-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('ems', 2, 4)">WIP (製品積壓)</div>
-                        <div id="tpm-main-btn-ems-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px 20px; font-weight:900; font-size:0.9rem; cursor:pointer; box-shadow:3px 3px 0px #1A1A1A;" onclick="window.tpmSwitchMainTab('ems', 3, 4)">Line Balance (線平衡)</div>
-                    </div>
-
-                    <div id="tpm-main-panel-ems-0" style="display:block; width:100%;">
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Final Pass Yield。精算產品在流水線上，不經歷 any 二次手動重工修補焊接，一次性順暢通過所有測站全檢下線的真實物理概率。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">真實暴露大流水線製程治具健康度，硬核阻絕經歷過重工熱應力手工重工損傷的機台流入最終發貨彩盒。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">撕開偽良率外衣。專案出關評審剛性鐵律：『不斬最終入庫合格率，只斬大流水線首檢直通率！』。</div></div>
-                        </div>
-                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
-                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-ems-0" id="kbtn-ems-0-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 0, 'First Pass (首檢直通)', '指產品在生產線上第一次通過測站全檢的良率。不接受任何二次重工、微調探針或重新插拔，是暴露線體製程缺陷與治具穩定度的最真實指標。')">First Pass</div>
-                                <div class="kbtn-ems-0" id="kbtn-ems-0-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 1, 'Retest Pass (複測通過)', '首次測試不合格後，經由作業員重新清理探針或重新置位後再次測試通過。雖然最終判定為良品，但潛藏軟體邊界或微觀接觸不良風險。')">Retest Pass</div>
-                                <div class="kbtn-ems-0" id="kbtn-ems-0-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 2, 'Final Fail (最終不良)', '經歷標準複測流程後依然無法通過測試，必須被剛性剔除出主流水線，分流至維修站進行實體解剖與晶片更換的報廢品。')">Final Fail</div>
-                                <div class="kbtn-ems-0" id="kbtn-ems-0-3" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 0, 3, 'Failure Description (不良現象敘述)', '測試機台自動產出的錯誤代碼（Error Code）或測試員登錄的實體外觀缺陷特徵。是維修工程師發動精準追溯與 DFM 逆向修正的數據聖經。')">Failure Description</div>
-                            </div>
-                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-ems-0"><b>全稱：</b>First Pass (首檢直通)</div>
-                                <div id="ktxt-desc-ems-0" style="margin-top:4px; color:#475569;"><b>意思：</b>指產品在生產線上第一次通過測站全檢的良率。不接受 any 二次重工、微調探針或重新插拔，是暴露線體製程缺陷與治具穩定度的最真實指標。</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="tpm-main-panel-ems-1" style="display:none; width:100%;">
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Units Per Hour。每小時穩定吐出的成品下線總量，精算並動態追蹤主流水線的即時產速指標。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">平攤工廠固定人工與夾具折舊成本，確保專案生產毛利，按時滿足全球客戶的發貨交期。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">線體拉速達到標竿 UPH（如 240pcs/hr），無 any 積壓堵塞，打通流暢的生產拉速。</div></div>
-                        </div>
-                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
-                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-ems-1" id="kbtn-ems-1-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 1, 0, 'Line Down (停線標準)', '當大流水線特定測站連續發生 3 台相同 Error Code（Top Defect），或直通率暴跌破觸發界限時，發動剛性斷電停線機制。不允許帶病生產，直到 TPM 與 PE/QA 排除黃金首件。')">Line Down</div>
-                            </div>
-                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-ems-1"><b>全稱：</b>Line Down (停線標準)</div>
-                                <div id="ktxt-desc-ems-1" style="margin-top:4px; color:#475569;"><b>意思：</b>當大流水線特定測站連續發生 3 台相同 Error Code（Top Defect），或直通率暴跌破觸發界限時，發動剛性斷電停線機制。不允許帶病生產，直到 TPM 與 PE/QA 排除黃金首件。</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="tpm-main-panel-ems-2" style="display:none; width:100%;">
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🛠️ 1. 會做什麼</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">Work In Process。滯留在流水線各工位、測試夾具間或維修排隊區的製品積壓總量動態盤點。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">🎯 2. 目的</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">嚴防製品在線體形成堰塞湖，壓死工廠資金周轉，同時預防大量缺陷零件隱瞞堆積。</div></div>
-                            <div style="background:#FFF; border:2px solid #1A1A1A; border-radius:6px; padding:12px; box-shadow:2px 2px 0px #1A1A1A;"><div style="font-size:0.75rem; font-weight:900; color:#475569; border-bottom:1px dashed #1A1A1A; padding-bottom:4px; margin-bottom:6px;">👁️ 3. 期望結果</div><div style="font-size:0.82rem; font-weight:700; line-height:1.4; color:#1A1A1A;">各製程段製品水位極低且流動流暢，結關試產前發動大清洗（WIP Clearing）回歸零堆積。</div></div>
-                        </div>
-                        <div style="margin-top:15px; border:2px solid #1A1A1A; border-radius:8px; padding:16px; background:#FFF; box-shadow:4px 4px 0px #1A1A1A;">
-                            <div style="font-weight:900; font-size:0.85rem; color:#1A1A1A; margin-bottom:10px;">📋 關鍵詞 / Keywords</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
-                                <div class="kbtn-ems-2" id="kbtn-ems-2-0" style="background:#FDE047; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:1px 1px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 0, 'Production WIP (產線製品積壓)', '正常在主流水線上流動、組裝或等待測試的製品。必須設定嚴格的水位上限，嚴防工位平衡崩潰引發集體堆料。')">Production WIP</div>
-                                <div class="kbtn-ems-2" id="kbtn-vendor-2-1" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 1, 'FA WIP (故障分析製品)', '已被測站踢出、滯留在失效分析（Failure Analysis）或重工室等待解剖與更換晶片的製品。是專案 Debug 與追蹤 Top Defect 的黃金數據源。')">FA WIP</div>
-                                <div class="kbtn-ems-2" id="kbtn-vendor-2-2" style="background:#FFFFFF; border:2px solid #1A1A1A; border-radius:6px; padding:10px; text-align:center; font-weight:900; font-size:0.82rem; cursor:pointer; box-shadow:2px 2px 0px #1A1A1A;" onclick="window.tpmSwitchSubKwd('ems', 2, 2, 'Buffer (半成品緩衝製品蓄水池)', '若此製程製品需要投入到下一個總成產品中（例如中框總成投入總裝線），必須建立剛性安全 Buffer 水位，防止前段設備跳機直接引發後段集體無料斷線停線。')">Buffer</div>
-                            </div>
-                            <div style="background:#FFFDF2; border:1.5px solid #1A1A1A; border-radius:6px; padding:12px; font-size:0.82rem; font-weight:700; line-height:1.5; color:#1A1A1A;">
-                                <div id="ktxt-title-ems-2"><b>全稱：</b>Production WIP (產線製品積壓)</div>
-                                <div id="ktxt-desc-ems-2" style="margin-top:4px; color:#475569;"><b>意思：</b>正常在主流水線上流動、組裝 or 等待測試的製品。必須設定嚴格的水位上限，嚴防工位平衡崩潰引發集體堆料。</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="tpm-main-panel-ems-3" style="display:none; width:100%;"><div style="background:#FFFDF2; border:2px solid #1A1A1A; padding:15px; border-radius:6px;"><b>Line Balance 線平衡：</b>全流水線平衡率剛性死守 85% 以上。消除最慢瓶頸工位，打通流暢的生產拉速。</div></div>
-                `
-            }
-        ],
-        examVault: [
-            { q: "在產品開發初期，品牌端（Brand）發布用以定義新產品核心功能、目標售價與規格的最高指導法規文件是？", o: ["PRD 產品規格需求書", "DFM 可製造性設計文件", "AVL 核准供應商清單"], a: 0 },
-            { q: "為了防止五金或塑膠殼體在大量生產成型頂出時表面被生生刮傷，模具或結構設計必須預留何種微小物理斜度？", o: ["Sink Mark 收縮痕", "Draft Angle 脫模拔模角", "Parting Line 分模線"], a: 1 },
-            { q: "使用工業色差儀量測產品外殼色彩偏離度的客觀指標為 Delta E，手機大廠通常剛性規定大量產成品的色差範圍應為？", o: ["ΔE 剛性小於 1.0", "ΔE 剛性小於 3.0", "ΔE 剛性小於 5.0"], a: 0 },
-            { q: "當多零件拼裝時微觀尺寸負公差累積會導致內部避讓失效，TPM 必須主導結構 ME 工程師發動何種數學模擬分析？", o: ["Cpk 製程能力分析", "Tolerance Stack-up 公差鏈疊加模擬", "Interference 實體重疊干涉"], a: 1 },
-            { q: "元件供應商（Vendor）需要提早 3~6 個月向晶圓原廠提前排產並鎖死產能，其依據的核心供應鏈文件是？", o: ["Demand Forecast 排產產能預測", "Buffer Stock 安全庫存", "AVL 名冊"], a: 0 },
-            { q: "物料在離開原廠大門、污染跨國供應物流鏈前實施的最後成品品質抽樣核檢流程稱為？", o: ["IQC 進料品保", "OQC 出廠檢驗", "BOM 變更凍結"], a: 1 },
-            { q: "為了破除一線元件供應商的技術壟斷與價格控制，在 NPI 流程中引進二線零件廠的防禦策略被稱為？", o: ["Dual Sourcing 雙源採購", "Second Source 備援料認證", "AVL 准入名冊"], a: 1 },
-            { q: "為了徹底封死工廠前端的進料漏檢與誤判盲區，代工廠 IQC 端的量測手法與治具必須與後段測站達成？", o: ["100% 剛性同步化", "完全獨立分開處理", "由供應商隨機決定"], a: 0 },
-            { q: "產品在生產線上『第一次』順暢通過所有測站全檢下線，未經歷 any 在線二次手工修補銲接的真實物理概率稱為？", o: ["First Pass (首檢直通良率)", "Retest Pass (複測通過率)", "Final Fail (最終不良率)"], a: 0 },
-            { q: "當大流水線特定測站連續發生 3 台相同 Error Code（Top Defect），或直通率暴跌破觸發底線時，工廠應發動何種剛性機制？", o: ["Line Down (停線標準) 強制斷電", "WIP Clearing 製品清零大清洗", "Cycle Time 作業時間微調"], a: 1 },
-            { q: "已被測站踢出、滯留在失效分析（Failure Analysis）或維修室等待解剖與更換晶圓晶片的製品積壓，在工廠端屬於？", o: ["Production WIP", "FA WIP", "Buffer 緩衝製品"], a: 1 },
-            { q: "當前製程半成品需要投入到下一個總成產品中，為了防止前段設備跳機直接引發後段集體無料停線，必須剛性建立？", o: ["Production WIP 水位上限", "FA WIP 報廢區", "Buffer 安全緩衝製品庫存"], a: 2 }
+window.tpmSandboxScriptTree = {
+    // ─── T0: 👑 總部大廳世界觀導讀 ───
+    "T0-START": {
+        id: "T0-START",
+        type: "decision",
+        title: "⚡ 黑鷹專案：試產火線攻防戰大廳",
+        question: "【核心危機】NPI 試產階段，高壓防水外殼氣密測試良率全面暴跌 35%！請選擇一個利害關係人視角切入，通盤解包代工廠產業鏈的底層邏輯與利益拉鋸：",
+        options: [
+            { text: "【客戶支線 Customer】掌握生殺大權的「產品需求者」", target: "C1", cosmicTag: "1A : 客戶宇宙" },
+            { text: "【廠商支線 Vendor】利潤拉鋸的「供貨物料商」", target: "V1", cosmicTag: "1B : 廠商宇宙" },
+            { text: "【工廠支線 OEM Factory】吞吐巨量產能的「生產實體」", target: "F1", cosmicTag: "1C : 工廠宇宙" },
+            { text: "【技術支線 System TPM】掌控全局資訊的「跨部門協調官」", target: "T1", cosmicTag: "1D : TPM 宇宙" }
         ]
-    }
-];
+    },
 
-// 👑 雙層隨機亂序引擎
-(function() {
-    if (!window.codexCourseEngineData || window.codexCourseEngineData.length === 0) return;
-    const vault = window.codexCourseEngineData[0].examVault;
-    
-    for (let i = 0; i < vault.length; i++) {
-        let qItem = vault[i];
-        let correctText = qItem.o[qItem.a]; 
-        for (let s = qItem.o.length - 1; s > 0; s--) {
-            const r = Math.floor(Math.random() * (s + 1));
-            [qItem.o[s], qItem.o[r]] = [qItem.o[r], qItem.o[s]];
-        }
-        qItem.a = qItem.o.indexOf(correctText);
-    }
+    // ========================================================================
+    // 🌐 支線一：客戶 (Customer) ➔ 掌握生殺大權的「產品需求者」
+    // ========================================================================
+    "C1": {
+        id: "C1",
+        type: "decision",
+        title: "情境 C1：動態 Data 異常監控",
+        question: "美國品牌商總部透過自動化系統，監控到中壢廠區回傳的氣密 Data 數據產生高頻飄移、變異超標。身為客戶窗口，你的直覺反應是？",
+        options: [
+            { text: "立刻擊發高階告警（Escalation）給代工廠副總，啟動最高行政加壓", target: "C2", cosmicTag: "1A : 客戶宇宙" },
+            { text: "保持彈性，私下發 Teams 給代工廠的 System TPM，要求其在 12 小時內自查回報", target: "C3", cosmicTag: "1A : 客戶宇宙" }
+        ]
+    },
+    "C2": {
+        id: "C2",
+        type: "story",
+        title: "情境 C2：戰情室行政加壓",
+        text: `<h3>📍 頂層加壓：啟動高階會戰</h3>
+               <p>高階告警瞬間驚動雙方高層。你下令代工廠製造本部在半小時內開立緊急戰情室（War Room），全量清算製程變異。此決策將跨界逼迫工廠線體進行全面盤查。</p>`,
+        nextNodes: ["F5"] // 跨界連通工廠支線會議
+    },
+    "C3": {
+        id: "C3",
+        type: "decision",
+        title: "情境 C3：規格放寬博弈（Spec Relaxation）",
+        question: "代工廠回報：『因外部廠商公差疊加，請求客戶放寬防水溝槽深度合約規格以拯救良率。』你是否同意暫時放寬红線？",
+        options: [
+            { text: "剛性拒絕！堅守合約原設計，要求代工廠自行消化製程變異", target: "C4", cosmicTag: "1A : 客戶宇宙" },
+            { text: "有條件考慮，要求代工廠 System TPM 提交無懈可擊的 8D 數據報告再行審核", target: "T3", cosmicTag: "1A : 客戶宇宙" }
+        ]
+    },
+    "C4": {
+        id: "C4",
+        type: "story",
+        title: "情境 C4：第三方稽核突襲（Audit Strike）",
+        text: `<h3>📍 突擊檢查：封鎖製造投機心理</h3>
+               <p>你懷疑代工廠為了趕進度有偷偷放行（Bypass）不良品的嫌疑。你秘密派遣駐廠稽核員（On-site Auditor），攜帶校正儀器突襲總裝流水線，展開現場點檢。</p>`,
+        nextNodes: ["C5"]
+    },
+    "C5": {
+        id: "C5",
+        type: "decision",
+        title: "情境 C5：抓包 Bypass 路由違規",
+        question: "駐廠稽核員在現場當場抓包：生管 PC 正試圖手動跳過測試站路由刷產量！身為客戶，你的商務鐵腕是？",
+        options: [
+            { text: "零容忍！當場扣留碼頭 1,500 台成品並拒絕簽收，直接啟動商務懲罰", target: "C-FAIL", cosmicTag: "1A : 客戶宇宙" },
+            { text: "發出最後通牒，限時 System TPM 在 1 小時內出具全量隔離計畫與防火牆報告", target: "T4", cosmicTag: "1A : 客戶宇宙" }
+        ]
+    },
+    "C6": {
+        id: "C6",
+        type: "story",
+        title: "情境 C6：跨國多語系資訊過載",
+        text: `<h3>📍 時空轟炸：多方利害關係人會戰</h3>
+               <p>半夜 11 點，美國總部、台灣接口與印度軟體團隊發出高密度多方郵件。各路數據相互衝突，你必須在資訊過載的混沌狀態中，重新釐清產線停工造成的空倉損失。</p>`,
+        nextNodes: ["C7"]
+    },
+    "C7": {
+        id: "C7",
+        type: "decision",
+        title: "情境 C7：商務空倉罰款談判",
+        question: "代工廠因氣密大範圍失效被迫停線，導致海關報關卡車面臨空倉放空。你決定？",
+        options: [
+            { text: "啟動合約剛性罰款條款，按照停線小時對代工廠計罰，捍衛 Time-to-Market 死線", target: "C8", cosmicTag: "1A : 客戶宇宙" },
+            { text: "同意寬限、暫緩計罰，但要求代工廠必須保證下一批次打件具備 100% 受控良率", target: "F8", cosmicTag: "1A : 客戶宇宙" }
+        ]
+    },
+    "C8": {
+        id: "C8",
+        type: "story",
+        title: "情境 C8：備援方案啟動（Dual Sourcing）",
+        text: `<h3>📍 產能分流：防範單一線體流產風險</h3>
+               <p>鑑於代工廠試產進度停擺，你啟動備援方案（Dual Sourcing），評估將該機種 30% 的利潤訂單直接轉給第二供應商。此時，System TPM 傳來了最新的製程動態。</p>`,
+        nextNodes: ["C9"]
+    },
+    "C9": {
+        id: "C9",
+        type: "decision",
+        title: "情境 C9：live CpK 遠端審查",
+        question: "代工廠 System TPM 傳來現場實時數據報告，出具 live CpK 品質兵器特徵。你審查後的決議是？",
+        options: [
+            { text: "數據仍有灰色地帶，無法 100% 釋疑，駁回變更，維持停線隔離狀態", target: "C10", cosmicTag: "1A : 客戶宇宙" },
+            { text: "認可 $CpK = 1.55 > 1.33$ 的數理鐵證，品質完全受控，簽發工程特許令放行出貨", target: "C-WIN", cosmicTag: "1A : 客戶宇宙" }
+        ]
+    },
+    "C10": {
+        id: "C10",
+        type: "story",
+        title: "情境 C10：產品延期宣告",
+        text: `<h3>📍 商務流產：死線全面失守</h3>
+               <p>產線未能在死線前交出合規成品。客戶被迫向全球市場宣告年度旗艦產品延期發布，商務大盤遭受重創，直接導向合約熔斷僵局。</p>`,
+        nextNodes: ["C-FAIL"]
+    },
+    "C-WIN": {
+        id: "C-WIN",
+        type: "end_win",
+        title: "🏆 結局 C-WIN：戰略級解決方案夥伴",
+        text: `<h3>✅ 完美的數據破局力：大盤長青</h3>
+               <p>你站在客戶視角，高度認可了代工廠 System TPM 用實時 $CpK$ 數據破案的專業實力。雙方不僅跨越了品質危機，更焊裝了最牢固的信任鏈。該廠區被正式列為未來三年的黃金首選線體！</p>`
+    },
+    "C-FAIL": {
+        id: "C-FAIL",
+        type: "end_fail",
+        title: "💥 結局 C-FAIL：合約熔斷與黑名單",
+        text: `<h3>❌ 商務降維打擊：信任防線崩潰</h3>
+               <p>因代工廠在氣密測試上數據造假、 Skip 路由被現場抓包，你判定該工廠具備重大誠信漏洞。客戶全面終止合作合約，啟動高額商務索賠，並將其列入供應鏈黑名單，產線大盤徹底熔斷。</p>`
+    },
 
-    for (let i = vault.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [vault[i], vault[j]] = [vault[j], vault[i]];
+    // ========================================================================
+    // 🌐 支線二：廠商 (Vendor) ➔ 利潤拉鋸的「供貨物料商」
+    // ========================================================================
+    "V1": {
+        id: "V1",
+        type: "decision",
+        title: "情境 V1：刀具磨損與槽深超標",
+        question: "外殼 CNC 加工廠長發現，因刀具磨損，最新批次的外殼防水槽深實際值來到 0.94mm（已壓在藍圖上限極限）。為了控制開模與出貨成本，你的直覺決定是？",
+        options: [
+            { text: "命令品保進行『數據美化』，全數偽裝成 0.90mm 黃金中心值瞞天過海出貨", target: "V2", cosmicTag: "1B : 廠商宇宙" },
+            { text: "誠實以對，主動向代工廠 System TPM 承認製程變異，申請臨時放行路由（SWR）", target: "V3", cosmicTag: "1B : 廠商宇宙" }
+        ]
+    },
+    "V2": {
+        id: "V2",
+        type: "story",
+        title: "情境 V2：掩蓋報告引發良率雪崩",
+        text: `<h3>📍 變異擴大：紙面合格引發實體災難</h3>
+               <p>你美化數據後的瑕疵零件流入了總裝流水線。由於極端尺寸鏈相撞，引發 FATP 站防水氣密測試集體大流產，測試站警報全面熔斷。此舉將連鎖導通 TPM 的治理解包雷達。</p>`,
+        nextNodes: ["T2"]
+    },
+    "V3": {
+        id: "V3",
+        type: "decision",
+        title: "情境 V3：成本轉嫁拉鋸戰",
+        question: "代工廠 System TPM 攜帶 Worst-Case 數理公式上門清算，要求廠商吸收重做料件費用與卡車停工損失。你的政治博弈回應是？",
+        options: [
+            { text: "強硬拒絕！堅稱零件單獨量測均在合約藍圖公差內，威脅退出產線、拒絕供貨", target: "V4", cosmicTag: "1B : 廠商宇宙" },
+            { text: "態度轉向軟化，詢問是否有現場物理補償（如加裝墊片）的低成本製程變更機會", target: "V5", cosmicTag: "1B : 廠商宇宙" }
+        ]
+    },
+    "V4": {
+        id: "V4",
+        type: "story",
+        title: "情境 V4：責任界定踢皮球（Ball Game）",
+        text: `<h3>📍 責任轉嫁：把皮球踢回研發端</h3>
+               <p>你發出正式官方抗議信，堅稱零件完全符合字面藍圖，指責是代工廠研發（R&D）當初的主機板打件尺寸堆疊（Stack-up）預留不足吃掉容差。此舉引發跨部門車間內耗會議爆發。</p>`,
+        nextNodes: ["F5"]
+    },
+    "V5": {
+        id: "V5",
+        type: "story",
+        title: "情境 V5：產能挪配與排單危機",
+        text: `<h3>📍 產能反制：供應鏈的無情拉鋸</h3>
+               <p>因槽深變異爭議未決，你為了保住自身稼動率，私下將 CNC 產能優先挪配給其餘客戶，導致代工廠中壢廠區面臨嚴重的斷料停線危機。</p>`,
+        nextNodes: ["V6"]
+    },
+    "V6": {
+        id: "V6",
+        type: "story",
+        title: "情境 V6：特採需求提出（Concession）",
+        text: `<h3>📍 特許申請：試圖讓變異物料合法化</h3>
+               <p>迫於出貨死線，你正式向代工廠品保部門提交 **工程特採特許申請（Concession / Waiver）**，試圖強行讓這批 0.94mm 的瑕疵物料上線，壓力直接轉嫁給 System TPM 。</p>`,
+        nextNodes: ["T8"]
+    },
+    "V7": {
+        id: "V7",
+        type: "decision",
+        title: "情境 V7：協同物理補償驗證",
+        question: "代工廠 System TPM 提出火線救援方案：利用雷射切割出 0.04mm 精密不銹鋼墊片（Shim）沉底補償間隙。身為廠商代表，你的態度是？",
+        options: [
+            { text: "拒絕配合！認為手工加裝墊片太過複雜，會破壞外殼實體幾何結構", target: "V9", cosmicTag: "1B : 廠商宇宙" },
+            { text: "全面配合！自願出資購買不銹鋼墊片，並派駐技術工至現場蹲點協助組裝", target: "V8", cosmicTag: "1B : 廠商宇宙" }
+        ]
+    },
+    "V8": {
+        id: "V8",
+        type: "story",
+        title: "情境 V8：二級供應商（Tier-2）原物料短缺",
+        text: `<h3>📍 鏈條斷裂：次級供應鏈拋料危機</h3>
+               <p>正當你準備全面配合時，你下游的二級橡膠廠爆發原材料混料事故，導致新批次的防水膠條拋料率偏高，空運時程面臨流產風險，逼近終局審查。</p>`,
+        nextNodes: ["V9"]
+    },
+    "V9": {
+        id: "V9",
+        type: "story",
+        title: "情境 V9：live CpK 數據反證",
+        text: `<h3>📍 數理制裁：技術防線的剛性顯影</h3>
+               <p>代工廠 System TPM 在現場直接拉出即時數據，利用 live CpK 品質統計兵器向你反證：加裝墊片後結構壓縮率穩定受控在 21%，用科學塞住所有踢皮球的空間。</p>`,
+        nextNodes: ["V10"]
+    },
+    "V10": {
+        id: "V10",
+        type: "story",
+        title: "情境 V10：供應鏈終局審查",
+        text: `<h3>📍 年度評鑑：決定廠商生死存亡</h3>
+               <p>代工廠品質本部與採購高層召開年度大會，針對此次黑鷹專案的材料變異、數據操守與協作態度進行最終因果清算。</p>`,
+        nextNodes: ["V-WIN"]
+    },
+    "V-WIN": {
+        id: "V-WIN",
+        type: "end_win",
+        title: "🏆 結局 V-WIN：共同研發緊密防線勳章",
+        text: `<h3>✅ 榮譽通航：被納入代工廠核心夥伴圈</h3>
+               <p>你選擇了誠實與協同配合。透過與 System TPM 緊密進行 Shim 物理補償，成功消化了 4M1E 製造端變異。廠商不僅免除賠償，更被正式納入代工廠的核心協同研發信任圈，大盤長青！</p>`
+    },
+    "V-FAIL": {
+        id: "V-FAIL",
+        type: "end_fail",
+        title: "💥 結局 V-FAIL：供應鏈除名與商譽破產",
+        text: `<h3>❌ 熔斷除名：欺瞞的最高代價</h3>
+               <p>美化數據、蓄意欺瞞的真相被 System TPM 用 Data 數據現場揪出。代工廠採購本部對你發動無限期停權制裁，沒收全量開模補貼並扣留貨款，廠商商譽徹底破產，踢出供應鏈大盤。</p>`
+    },
+
+    // ========================================================================
+    // 🌐 支線三：代工廠 (OEM Factory) ➔ 吞吐巨量產能的「生產實體」
+    // ========================================================================
+    "F1": {
+        id: "F1",
+        type: "decision",
+        title: "情境 F1：氣密測試全面熔斷",
+        question: "FATP 總裝線防水氣密測試不良率暴增至 35%！報關卡車再過 3 小時就要封櫃出發， Daniel 部長正死盯著 SFC 進度。身為現場生管主管，你的應變直覺是？",
+        options: [
+            { text: "瞞天過海！在 SFC 後台強行 Skip（跳過）測試路由，先刷出貨產量填滿卡車", target: "F2", cosmicTag: "1C : 工廠宇宙" },
+            { text: "消極停工！全線 200 名作業員 OP 原地待命等對策，今日出貨大盤指標直接掛零", target: "F3", cosmicTag: "1C : 工廠宇宙" },
+            { text: "火線加工！命令作業員在防水槽內手動補塗一圈 RTV 密封膠，試圖矇混過機台測試", target: "F4", cosmicTag: "1C : 工廠宇宙" }
+        ]
+    },
+    "F2": {
+        id: "F2",
+        type: "story",
+        title: "情境 F2：Skip 路由流出災難",
+        text: `<h3>📍 投機流產：灰色呆料大溢出</h3>
+               <p>你貪圖出貨指標而私自 Skip 路由。這批未經完整檢驗的機器剛裝上貨櫃，半路即被客戶的第三方駐廠稽核員下線攔截、開箱盤查，引發嚴重的合規性海關死線賽局。</p>`,
+        nextNodes: ["C5"]
+    },
+    "F3": {
+        id: "F3",
+        type: "story",
+        title: "情境 F3：消極停線投訴風暴",
+        text: `<h3>📍 組織孤島：引爆跨部門內耗大戰</h3>
+               <p>線體產能指標全面掛零。製造廠長與生管 PC 當場跳腳，聯合起草紅頭郵件向高層聯名投訴技術團隊：『 缺乏現場跨部門溝通痛點的能力，導致工廠稼動率大面積流產！』</p>`,
+        nextNodes: ["F5"]
+    },
+    "F4": {
+        id: "F4",
+        type: "story",
+        title: "情境 F4：二次加工溢膠污染",
+        text: `<h3>📍 製程破壞：二次手動點膠災難</h3>
+               <p>壓合機全速砸下。槽內手動塗抹的 RTV 密封膠受到非標準化擠壓，發生大面積**向內溢膠污染**，直接腐蝕了前段的 FPC 軟電路板與螢幕模組，導致機器當場集體黑屏報廢，直導流產結局。</p>`,
+        nextNodes: ["F-FAIL"]
+    },
+    "F5": {
+        id: "F5",
+        type: "story",
+        title: "情境 F5：車間線頭內耗會議",
+        text: `<h3>📍 會議政治：扯皮與科學的十字路口</h3>
+               <p>工廠小會議室內。生管 PC 拍桌催進度，製程工程師 PE 推諉是材料變異。這個巨量吞吐產能的實體正陷入嚴重的內耗扯皮中，急需 System TPM 介入收攏決策。</p>`,
+        nextNodes: ["T6"]
+    },
+    "F6": {
+        id: "F6",
+        type: "story",
+        title: "情境 F6：白夜班交接資訊斷層",
+        text: `<h3>📍 人員變異：交接班資訊隔離漏洞</h3>
+               <p>白夜班線長交接時缺乏標準化對齊（Poka-Yoke），導致 300 件尚未經過隔離確認的缺陷外殼，與正常合格物料在線體發生防混料控制失效，流入產線。</p>`,
+        nextNodes: ["F7"]
+    },
+    "F7": {
+        id: "F7",
+        type: "story",
+        title: "情境 F7：200 名全新技術員過載",
+        text: `<h3>📍 複雜度流產：現場 OP 的作業盲區</h3>
+               <p>製造線長向你發出強烈抗議：『 現場 200 名作業員 OP 多為剛進廠的輪班白紙新人！手工塞 0.04mm 的微型墊片動作太過複雜，拋料率極高，UPH 直接腰斬！』</p>`,
+        nextNodes: ["T7"]
+    },
+    "F8": {
+        id: "F8",
+        type: "decision",
+        title: "情境 F8：SFC 路由臨時凍結",
+        question: "System TPM 為了落實批量隔離，在 SFC 自動化後台強行鎖死了前道打件工序的放行路由。身為渴望產量的工廠主管，你的動作是？",
+        options: [
+            { text: "服從數位管控，全面停下可疑混料批次，配合技術團隊進行分選", target: "F9", cosmicTag: "1C : 工廠宇宙" },
+            { text: "心存僥倖，試圖找熟悉的 IT 軟體工程師硬撬後台、強行解鎖路由繼續刷產量", target: "F-FAIL", cosmicTag: "1C : 工廠宇宙" }
+        ]
+    },
+    "F9": {
+        id: "F9",
+        type: "story",
+        title: "情境 F9：品保信賴度閘門攔截",
+        text: `<h3>📍 合規卡關：品保的剛性紅線攔截</h3>
+               <p>品質稽核（QA）處長降臨車間，以『加裝手工墊片未經過完整的 48 小時落摔與鹽霧信賴度驗證』為由，宣布啟動合規性免責手續，封鎖倉庫，Hold 住 1,500 台成品不准報關。</p>`,
+        nextNodes: ["F10"]
+    },
+    "F10": {
+        id: "F10",
+        type: "story",
+        title: "情境 F10：Waiver 特許令生死時速",
+        text: `<h3>📍 結案倒數：死線前的最後掙扎</h3>
+               <p>距離報關卡車出發只剩最後半小時。生管、線長與 200 名作業員死死盯著條碼列印機與系統後台，焦急等待著最終的特採放行放行鋼印編碼。</p>`,
+        nextNodes: ["F-WIN"]
+    },
+    "F-WIN": {
+        id: "F-WIN",
+        type: "end_win",
+        title: "🏆 結局 F-WIN：精益自治示範線體",
+        text: `<h3>✅ 完美的製程消化力：通航放行</h3>
+               <p>在 System TPM 導入的 5 分鐘短影音微課協助下，現場 200 名白紙 OP 在 10 分鐘內全數完成手部動作快速認證！拋料率歸零，線體 UPH 指標滿血復甦，直通良率飆回 99.9% 完美出貨！</p>`
+    },
+    "F-FAIL": {
+        id: "F-FAIL",
+        type: "end_fail",
+        title: "💥 結局 F-FAIL：全線懲處與連連坐清洗",
+        text: `<h3>❌ 千萬級報廢：投機放行的代價</h3>
+               <p>因私自篡改參數、手動強行點膠污染，或找 IT 硬撬後台路由，導致產線爆發大規模螢幕黑屏故障。千萬級材料全數損壞報廢！Foxconn 製造本部高層發出懲處令，工廠現場主管集體連坐免職。</p>`
+    },
+
+    // ========================================================================
+    // 🌐 支線四：System TPM (System TPM) ➔ 跨部門協調官
+    // ========================================================================
+    "T1": {
+        id: "T1",
+        type: "decision",
+        title: "情境 T1：頂層防線戰報起草",
+        question: "清晨開線遭遇氣密良率暴跌 35% 驚悚災難，多方內耗扯皮。 Daniel 部長剛性要求你在 20 分鐘內出具首份技術戰報。手無寸鐵的你，第一步的戰術決斷是？",
+        options: [
+            { text: "當傳話筒。直接複製貼上各部門的扯皮推諉，回覆高層：『正在積極排查，預計下週出具 8D 報告。』", target: "T-FAIL", cosmicTag: "1D : TPM 宇宙" },
+            { text: "切入 Data Log。啟動 4M1E 框架分析，就地抓取 20 套問題零件奔向實驗室解包實體幾何公差。", target: "T2", cosmicTag: "1D : TPM 宇宙" }
+        ]
+    },
+    "T2": {
+        id: "T2",
+        type: "decision",
+        title: "情境 T2：MIL 異常物料系統隔離",
+        question: "生管 PC 在你耳邊瘋狂施壓，要求你睜一隻眼閉一隻眼，口頭放行這批機器以應付出貨大盤。你決定？",
+        options: [
+            { text: "軟腳妥協。同意生管要求，進行局部降速，偷偷 Skip SFC 路由放行批量。", target: "T-FAIL", cosmicTag: "1D : TPM 宇宙" },
+            { text: "守住底線！拒絕投機放行，當場登入 MIL 異常系統按下【LOCK】，數位鎖定 500 台問題物料。", target: "T3", cosmicTag: "1D : TPM 宇宙" }
+        ]
+    },
+    "T3": {
+        id: "T3",
+        type: "decision",
+        title: "情境 T3：Worst-Case 最壞情況疊加分析",
+        question: "外部廠商代表拿出 Excel 進料報告甩鍋：『我們的溝槽槽深 0.94mm 完全在合約藍圖公差內！』此時你的數理反擊武器是？",
+        options: [
+            { text: "妥協讓步。同意現場 PE 工程師微調測試機台的氣密壓力參數，設法遷就零件變異。", target: "T-FAIL", cosmicTag: "1D : TPM 宇宙" },
+            { text: "數理制裁！當場在白板推導 Worst-Case 公式，算出極端尺寸鏈相撞下實體壓縮率僅剩 14.54%（跌破 15% 剛性紅線），用科學鐵證封死甩鍋空間。", target: "T4", cosmicTag: "1D : TPM 宇宙" }
+        ]
+    },
+    "T4": {
+        id: "T4",
+        type: "decision",
+        title: "情境 T4：戰術背包工具合成",
+        question: "重新排產的新膠條明天才到，出貨死線只剩 2 小時，全線大盤停擺。你決定啟動哪一組戰術背包進行物理救線？",
+        options: [
+            { text: "合成工具：[5W1H 腦力激盪] + [車間手動補塗一圈 RTV 密封膠]", target: "F4", cosmicTag: "1D : TPM 宇宙" },
+            { text: "合成工具：[Worst-Case 尺寸堆疊] + [0.04mm 精密不銹鋼墊片 (Shim)] 沉底補償，將槽深剛性拉回黃金中心，壓縮率回彈至 21.05% 受控防線。", target: "T5", cosmicTag: "1D : TPM 宇宙" }
+        ]
+    },
+    "T5": {
+        id: "T5",
+        type: "decision",
+        title: "情境 T5：開會話術與政經收攏",
+        question: "製造車間廠長在會場抗議：加裝不銹鋼墊片會嚴重拉長單台 Takt Time（生產節拍）、衝擊工廠 UPH 指標。此時你的談判控場手段是？",
+        options: [
+            { text: "行政對立。與廠長在會議室爆發口頭吵架，指責對方缺乏品質合規意識，強行命令其配合。", target: "F3", cosmicTag: "1D : TPM 宇宙" },
+            { text: "政經收攏。將材料變異特徵化為直方圖，塞住物料商之口；同時現場精算數據，提出跨部門 OEE 損失折抵方案，主導跨部門簽字背書。", target: "T6", cosmicTag: "1D : TPM 宇宙" }
+        ]
+    },
+    "T6": {
+        id: "T6",
+        type: "decision",
+        title: "情境 T6：隱性知識轉化與微課化開發",
+        question: "製造線長抱怨：現場 200 名全新輪換技術員 OP 全是白紙新人，半小時內根本學不會塞微型墊片的精密動作，拋料率極高。你的解決方案是？",
+        options: [
+            { text: "強制宣讀。印發 50 頁的死硬工程 SOP 說明書，下令線長召集全體線員現地罰站、大聲宣讀。", target: "F7", cosmicTag: "1D : TPM 宇宙" },
+            { text: "數位微課。敏捷運用數位工具，將資深師傅的手部黃金微動作進行精煉萃取，錄製成 5 分鐘短影音微課，於離線模擬產線實施動態快速認證上崗。", target: "T7", cosmicTag: "1D : TPM 宇宙" }
+        ]
+    },
+    "T7": {
+        id: "T7",
+        type: "decision",
+        title: "情境 T7：SWR / SWM 臨時路由變更",
+        question: "手工墊片組裝機器送入站體，但後台 SFC 系統跳出警報：『偵測到非標準化工序』，當場鎖死標籤列印機、拒絕放行。你的突圍動作是？",
+        options: [
+            { text: "行政違規。私下協調線體 IT 工程師在後台篡改權限，硬撬系統，強行解鎖路由列印標籤。", target: "T-FAIL", cosmicTag: "1D : TPM 宇宙" },
+            { text: "合規變更。火線在後台開闢 SWR（特殊工序變更放行）路由，剛性定錨直接責任代碼（EE與PE），將變更參數固化寫入中央數據庫。", target: "T8", cosmicTag: "1D : TPM 宇宙" }
+        ]
+    },
+    "T8": {
+        id: "T8",
+        type: "decision",
+        title: "情境 T8：live CpK 數據統計兵器",
+        question: "品保處長肉身攔截倉庫大門：『未經 48 小時常規信賴度落摔測試，這 1,500 台成品誰都不准出貨！』面對程序性死鎖，你的終極武器是？",
+        options: [
+            { text: "行政吵架。加入生管與製造團隊，與品保處長進行無數據支撐的行政口頭吵架施壓。", target: "T8", cosmicTag: "1D : TPM 宇宙" }, // 死鎖定格，原位重試
+            { text: "統計兵器！保持絕對冷靜，現場調取前 50 台放行成品的 Data Log，拉出直方圖，向 QA 出具 live CpK = 1.55 > 1.33 的數理鐵證，證明製程高度受控。", target: "T9", cosmicTag: "1D : TPM 宇宙" }
+        ]
+    },
+    "T9": {
+        id: "T9",
+        type: "decision",
+        title: "情境 T9：全英文 Waiver 特許令起草",
+        question: "卡車剩最後 30 分鐘就要駛離，海外客戶高層隨時在盯放行編碼。你要在最短時間內導通法律與商務免責，最終的簽核動作是？",
+        options: [
+            { text: "消極等待。放棄死線抵抗，任由報關卡車空車駛離，等待明天 24 小時常規驗證跑完流程。", target: "C10", cosmicTag: "1D : TPM 宇宙" },
+            { text: "特許 Pipeline！火線起草全英文 Waiver（工程緊急特採特許令），將 live CpK 數據作為法律免責鐵證嵌入，連鎖擊發特許自動化簽核管線。", target: "T10", cosmicTag: "1D : TPM 宇宙" }
+        ]
+    },
+    "T10": {
+        id: "T10",
+        type: "story",
+        title: "情境 T10：終局審查大門",
+        text: `<h3>📍 特許簽字：迎接最終放行鋼印</h3>
+               <p>你用無懈可擊的 8D 技術戰報與 Waver 報告，打動了冷靜盤查的最高決策層。 Daniel 部長的手指停留在最終放行核准（APPROVED）的電子鋼印按鈕上。這套黑鷹專案的跨宇宙演進，即將迎來最終章。</p>`,
+        nextNodes: ["T-WIN"]
+    },
+    "T-WIN": {
+        id: "T-WIN",
+        type: "end_win",
+        title: "🏆 結局 T-WIN：最高電子鋼印放行 — 首席統籌指揮官黃金勳章",
+        text: `<h3>✅ 100% 完璧通關：一戰封神</h3>
+               <p>大滿貫通關！Daniel 部長在最高主管系統後台，為你剛性按下了 APPROVED 金牌鋼印！特採灰色狀態瞬間轉為合法的綠燈通航！倉庫大門全面開啟，貨卡在最後 15 分鐘轟鳴出發，直奔港口！線體良率完璧固化在 99.5%，大盤長青！</p>`
+    },
+    "T-FAIL": {
+        id: "T-FAIL",
+        type: "end_fail",
+        title: "💥 結局 T-FAIL：降維打擊 — 撤銷主導權與時空重修",
+        text: `<h3>❌ 技術盲區熔斷：職能試煉流產</h3>
+               <p>因中途任何一次灰色行政妥協或數據欺瞞，導致零件在海外市場爆發毀滅性漏水客退，商譽損失千萬。製造本部高層震怒，撤銷你的專案主導權。你的權限永久鎖死，強制退回主線分流大廳重新洗牌！</p>`
     }
-    
-    window.codexCourseEngineData[0].examVault = vault.slice(0, 3);
-})();
+};
