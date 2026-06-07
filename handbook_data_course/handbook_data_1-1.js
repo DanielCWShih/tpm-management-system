@@ -1,9 +1,10 @@
 /**
  ========================================================================
  FILE: handbook_data_course/handbook_data_1-1.js
- VERSION: 2026-06-06 V14.50-COSMIC-ASYMMETRIC
- DESCRIPTION: 👑 系統 TPM 冒險者手冊 1-1 多分流、非對稱、多結局精精熟學習劇本
+ VERSION: 2026-06-07 V16.30-METADATA-TAG
+ DESCRIPTION: 👑 系統 TPM 冒險者手冊 1-1 多分流、非對稱、多結局精熟學習劇本
  TITLE: 1-1: 系統 TPM 職能運作實戰手冊（多情境因果脈絡矩陣）
+ UPDATE: 於 T2-DECISION 全面導入 cosmicTag 剛性元數據標籤，確保圖書館大腦精準抓取極簡宇宙真名（如 1A : TechOps Playbook）。
  ========================================================================
  */
 
@@ -15,7 +16,7 @@ window.tpmSandboxScriptTree = {
         title: "📚 系統 TPM 核心職能大綱盤點",
         text: `<h3>🎯 戰術定位：研發公差與製造變異的最高翻譯官</h3>
                <p>歡迎進入 System TPM（系統工程技術專案經理）職能矩陣。身為技術專案最高指揮官，你並非普通追時程的行政小 PM。你的骨子裡必須兼具<b>「硬體研發的理論公差」</b>與<b>「製造車間 4M1E 實體變異」</b>的解包判讀能力。</p>
-               <p>在長達 15 層的非對稱實實戰 Campaign 中，你將面臨會議政治、良率排查、DOE 驗證與臨時突發任務的瘋狂轟炸。本系統全面啟動精熟考核：<b>你必須開拓並收集齊其餘所有實戰支線的『END』印記，最高黃金主線的唯一『WIN』結案閘門才會放行通航！</b></p>
+               <p>在長達 15 層的非對稱實戰 Campaign 中，你將面臨會議政治、良率排查、DOE 驗證與臨時突發任務的瘋狂轟炸。本系統全面啟動精熟考核：<b>你必須開拓並收集齊其餘所有實戰支線的『END』印記，最高黃金主線的唯一『WIN』結案閘門才會放行通航！</b></p>
                <p>通讀最高防線大綱後，我們點擊按鈕，切入每日開線決策戰場。</p>`,
         nextNodes: ["T1-START"]
     },
@@ -31,18 +32,18 @@ window.tpmSandboxScriptTree = {
         nextNodes: ["T2-DECISION"]
     },
 
-    // ─── T2: 五大情境全量分流樞紐 ───
+    // ─── T2: 五大情境全量分流樞紐 (🚀 導入 cosmicTag 剛性標籤) ───
     "T2-DECISION": {
         id: "T2-DECISION",
         type: "decision",
         title: "⚡ 抉擇點：多情境戰術分流大廳",
-        question: "請根據你當前的精精熟學習歷程，選擇一個核心戰術模組切入開線（注意：通關唯一 WIN 必須集齊其餘所有實戰支線的 END 足跡）：",
+        question: "請根據你當前的精熟學習歷程，選擇一個核心戰術模組切入開線（注意：通關唯一 WIN 必須集齊其餘所有實戰支線的 END 足跡）：",
         options: [
-            { text: "【延伸主線 A - 準備】進入 System TPM 頂層防線，維護 TechOps Playbook 總表", target: "T3-A-PLAYBOOK" },
-            { text: "【日常支線 B - 會議】步行至產線前段，參與製造車間線頭會議與早晚會更新", target: "T3-B-MEETING" },
-            { text: "【日常支線 C - 良率】直擊 FATP 測試站，啟動每日良率追蹤與不良項目 FA 排查", target: "T3-C-YIELD" },
-            { text: "【日常支線 D - DOE】對位 APPROVED 實驗計劃，進行 DOE 資源分配與狀態修正", target: "T3-D-DOE" },
-            { text: "【日常支線 5 - 臨時】應對 Daniel 部長臨時突發交辦工作與自由自由延伸任務", target: "T3-E-ADHOC" }
+            { text: "【延伸主線 A - 準備】進入 System TPM 頂層防線，維護 TechOps Playbook 總表", target: "T3-A-PLAYBOOK", cosmicTag: "1A : TechOps Playbook" },
+            { text: "【日常支線 B - 會議】步行至產線前段，參與製造車間線頭會議與早晚會更新", target: "T3-B-MEETING", cosmicTag: "1B : 會議" },
+            { text: "【日常支線 C - 良率】直擊 FATP 測試站，啟動每日良率追蹤與不良項目 FA 排查", target: "T3-C-YIELD", cosmicTag: "1C : 良率" },
+            { text: "【日常支線 D - DOE】對位 APPROVED 實驗計劃，進行 DOE 資源分配與狀態修正", target: "T3-D-DOE", cosmicTag: "1D : DOE" },
+            { text: "【日常支線 5 - 臨時】應對 Daniel 部長臨時突發交辦工作與自由延伸任務", target: "T3-E-ADHOC", cosmicTag: "1E : 臨時任務" }
         ]
     },
 
@@ -63,7 +64,7 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "主線 A：瀏覽項目與公差定錨",
         text: `<h3>📈 數據盤點：核對當前新機種工程特徵</h3>
-               <p>你精密瀏覽著 Playbook 的核心條目，將今天 OMM（二次次元量測機）回報的最新溝槽幾何數據與歷史容差進行定錨比對。</p>
+               <p>你精密瀏覽著 Playbook 的核心條目，將今天 OMM（二次元量測機）回報的最新溝槽幾何數據與歷史容差進行定錨比對。</p>
                <p>透過高階查閱，你發現當前新產品的結構極限壓縮率已經逼近 15% 的紅色工藝警報線。你必須在總表中完成這筆剛性動態更新。</p>`,
         nextNodes: ["T5-A-UPDATE"]
     },
@@ -80,13 +81,13 @@ window.tpmSandboxScriptTree = {
         id: "T6-A-WIN-GATE",
         type: "quiz",
         title: "👑 最高統籌指揮官：結案資格審查大考",
-        question: "【最高精熟門閥】系統正在強制盤查你的 Local 快取經歷。請問你是否已經將日常支線 B (會議)、C (良率結案/AD-HOC)、D (DOE修正)、5 (臨時任務) 的所有『END』勳章探測收集完畢？",
+        question: "【最高精熟門閥】系統正在強制盤查你的 Local 快取經歷。請問你是否已經將日常支線 B (會議)、C (良率結案/AD-HOC)、D (DOE修正)、E (臨時任務) 的所有『END』勳章探測收集完畢？",
         options: [
             { text: "❌ 尚未解鎖其餘所有日常實戰支線。我自願遵循教學原則，不抄短路，老老實實點擊歷史分流點 T2 重新開線補考！", target: "T2-DECISION" },
             { text: "🏆 鐵證如山！我已在歷史軌跡中點亮『會議記錄結案』、『良率結案與AD-HOC』、『DOE修正』、『臨時突發』全量印記。我請求導通最高黃金主航線！", target: "T7-A-WIN-FINAL" }
         ],
         explanation: `<h3>🎯 總部點檢官硬核提醒：</h3>
-                      <p>真正優秀的 System TPM 拒絕投機賽通關！本單元採取<b>精精熟學習鎖定</b>，如果你在未解鎖其餘 4 條支線的情況下僥倖點選了第二個選項，雖然代碼不會熔斷，但你在品質操守上已產生了行政呆料。請誠實回溯 T2 走完全量日常 Campaign！</p>`,
+                      <p>真正優秀的 System TPM 拒絕投機通關！本單元採取<b>精熟學習鎖定</b>，如果你在未解鎖其餘 4 條支線的情況下僥倖點選了第二個選項，雖然代碼不會熔斷，但你在品質操守上已產生了行政呆料。請誠實回溯 T2 走完全量日常 Campaign！</p>`,
         nextNodes: ["T7-A-WIN-FINAL"]
     },
     "T7-A-WIN-FINAL": {
@@ -124,7 +125,7 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "支線 B：早/晚會會議物料準備",
         text: `<h3>📑 戰報起草：用數據定錨責任主權</h3>
-               <p>距离下午的 Daniel 部長剛性試產報告會只剩 2 小時。你開始起草早/晚會報告，將 4M1E 點檢特徵化為洗鍊的圖表，杜絕跨部門踢皮球的空間。</p>`,
+               <p>距離下午的 Daniel 部長剛性試產報告會只剩 2 小時。你開始起草早/晚會報告，將 4M1E 點檢特徵化為洗鍊的圖表，杜絕跨部門踢皮球的空間。</p>`,
         nextNodes: ["T6-B-REPORT"]
     },
     "T6-B-REPORT": {
@@ -145,7 +146,7 @@ window.tpmSandboxScriptTree = {
     },
     "T8-B-END": {
         id: "T8-B-END",
-        type: "end_fail", // V14.35 狀態機自動識別 end_fail 為結局點，並固化淡紅連線
+        type: "end_fail", 
         title: "🛑 支線 B 完航：做會議記錄總結與脈絡結案",
         text: `<h3>📝 歷程固化：解鎖【會議政治協調官】印記</h3>
                <p>你精準敲下鍵盤，完成完美的會議記錄總結（Minutes of Meeting），發送給全體公會高層與 Daniel 部長。這份記錄字字扣緊因果責任，將模糊的產線扯皮固化為清晰的剛性辦理項（Action Item）。</p>
@@ -288,7 +289,7 @@ window.tpmSandboxScriptTree = {
     },
 
     // ========================================================================
-    // 支線 5 (E)：臨時宇宙（橫向極右翼）➔ 獨立完航結局
+    // 支線 E：臨時宇宙（橫向極右翼）➔ 獨立完航結局
     // ========================================================================
     "T3-E-ADHOC": {
         id: "T3-E-ADHOC",
