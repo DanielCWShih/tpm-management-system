@@ -1,9 +1,10 @@
 /**
  ========================================================================
  FILE: handbook_data_course/handbook_data_1-2.js
- VERSION: 2026-06-05 V14.10-T0-UPGRADE
+ VERSION: 2026-06-07 V16.40-COSMIC-TAG
  DESCRIPTION: 👑 系統 TPM 冒險者手冊 1-2 獨立 15 層縱向天梯劇本物料（防水結構滿血版）
  TITLE: 1-2: 防水結構 Worst-Case 模擬與幾何流產盲區
+ UPDATE: 全面導入 cosmicTag 剛性元數據標籤，確保圖書館大腦精準抓取極簡宇宙真名（如 2A : 妥協放行）。
  ========================================================================
  */
 
@@ -33,16 +34,16 @@ window.tpmSandboxScriptTree = {
         nextNodes: ["T2-DECISION-1"]
     },
 
-    // ─── T2: 第一層決策路口 ───
+    // ─── T2: 第一層決策路口 (🚀 導入 cosmicTag 剛性標籤) ───
     "T2-DECISION-1": {
         id: "T2-DECISION-1",
         type: "decision",
         title: "⚡ 抉擇點：生管的剛性出貨施壓",
         question: "此時身為線體最高 System TPM 負責人，面對 PC 的政治施壓，你的下一個戰術動作是？",
         options: [
-            { text: "同意生管PC，為了主管的出貨指標，在 SFC 後台按下 Skip 路由強行放行", target: "T3-FAIL-1" },
-            { text: "剛性回絕 PC，現場怒拍桌子大吵，堅決不放行，讓全線體立刻停工死磕", target: "T3-WARN-1" },
-            { text: "嫌疑實體幾何流產，拒絕投機，下線抓取「實體外殼與膠條特徵」數據進行二次次元對位", target: "T3-PASS-1" }
+            { text: "同意生管PC，為了主管的出貨指標，在 SFC 後台按下 Skip 路由強行放行", target: "T3-FAIL-1", cosmicTag: "2A : 妥協放行" },
+            { text: "剛性回絕 PC，現場怒拍桌子大吵，堅決不放行，讓全線體立刻停工死磕", target: "T3-WARN-1", cosmicTag: "2B : 現場衝突" },
+            { text: "嫌疑實體幾何流產，拒絕投機，下線抓取「實體外殼與膠條特徵」數據進行二次次元對位", target: "T3-PASS-1", cosmicTag: "2C : OMM 幾何排查" }
         ]
     },
 
@@ -102,16 +103,16 @@ window.tpmSandboxScriptTree = {
         nextNodes: ["T6-DECISION-2"]
     },
 
-    // ─── T6: 第二層決策路口 ───
+    // ─── T6: 第二層決策路口 (🚀 導入 cosmicTag 剛性標籤) ───
     "T6-DECISION-2": {
         id: "T6-DECISION-2",
         type: "decision",
         title: "⚡ 抉擇點：極限公差鏈的責任對位",
         question: "前殼 CNC 廠工程師跳出來自白：『 我們的槽深 0.94mm 完全在合約圖面公差內！是你們當初 R&D 電路板打件高度（Stack-up）預留不夠，壓合外殼才吃掉容差！』此時你決定？",
         options: [
-            { text: "聽信前殼廠，要求打件站（SMT）立刻更改爐後參數，強行把主機板零件打得更低更平", target: "T7-FAIL-2" },
-            { text: "召集 R&D 團隊，要求硬體設計師今天內立刻更改公差圖面（ECN），縮小前殼公差範圍", target: "T7-WARN-2" },
-            { text: "拒絕盲從，要求雙方工程師共同建立「Worst-Case 最壞情況極限尺寸堆疊模擬」", target: "T7-PASS-2" }
+            { text: "聽信前殼廠，要求打件站（SMT）立刻更改爐後參數，強行把主機板零件打得更低更平", target: "T7-FAIL-2", cosmicTag: "2D : 盲改參數" },
+            { text: "召集 R&D 團隊，要求硬體設計師今天內立刻更改公差圖面（ECN），縮小前殼公差範圍", target: "T7-WARN-2", cosmicTag: "2E : 供應鏈熔斷" },
+            { text: "拒絕盲從，要求雙方工程師共同建立「Worst-Case 最壞情況極限尺寸堆疊模擬」", target: "T7-PASS-2", cosmicTag: "2F : Worst-Case 模型" }
         ]
     },
 
@@ -170,16 +171,16 @@ window.tpmSandboxScriptTree = {
         nextNodes: ["T10-DECISION-3"]
     },
 
-    // ─── T10: 第三層決策路口 ───
+    // ─── T10: 第三層決策路口 (🚀 導入 cosmicTag 剛性標籤) ───
     "T10-DECISION-3": {
         id: "T10-DECISION-3",
         type: "decision",
         title: "⚡ 抉擇點：死線危機與二次點膠賽局",
         question: "距離出貨死線剩 4 小時，加粗膠條明天才到。生管 PC 在現場跳腳催促：『 沒時間等晶片跟物料了！直接叫線員在 O-Ring 外圍手動補塗上一圈「二次防水密封膠條 RTV」，直接刷產量蓋過去！』你決定？",
         options: [
-            { text: "聽從生管，在槽內加塗二次密封膠（RTV），用外部點膠強行蓋過氣密測試", target: "T11-FAIL-3" },
-            { text: "剛性回絕，無視出貨指標，強行封鎖體線無限期停機，直到明天加粗膠條進廠", target: "T11-WARN-3" },
-            { text: "啟動應急變更機制，主導現場 PE 製作臨時「精密機械預壓縮不銹鋼墊片（Shim）」，剛性補償物理間隙", target: "T11-PASS-3" }
+            { text: "聽從生管，在槽內加塗二次密封膠（RTV），用外部點膠強行蓋過氣密測試", target: "T11-FAIL-3", cosmicTag: "2G : 投機點膠" },
+            { text: "剛性回絕，無視出貨指標，強行封鎖體線無限期停機，直到明天加粗膠條進廠", target: "T11-WARN-3", cosmicTag: "2H : 消極停線" },
+            { text: "啟動應急變更機制，主導現場 PE 製作臨時「精密機械預壓縮不銹鋼墊片（Shim）」，剛性補償物理間隙", target: "T11-PASS-3", cosmicTag: "2I : Shim 物理補償" }
         ]
     },
 
@@ -223,16 +224,16 @@ window.tpmSandboxScriptTree = {
         nextNodes: ["T13-QUIZ-4"]
     },
 
-    // ─── T13: 第四層最終大考路口 ───
+    // ─── T13: 第四層最終大考路口 (🚀 導入 cosmicTag 剛性標籤) ───
     "T13-QUIZ-4": {
         id: "T13-QUIZ-4",
         type: "quiz",
         title: "Process Change 與特採合規流程",
         question: "面對品質稽核 QA 的程序性剛性攔截，以及迫在眉睫的卡車報關死線，要合法放行這 1,500 台特採機器且確保 0% 的客退風險，身為最高統籌 System TPM，你的正確簽核動作是？",
         options: [
-            { text: "A. 聯合生管與 PM，集體在現場對 QA 進行口頭施壓，要求他們睜一隻眼閉一隻眼放行", target: "T13-QUIZ-4" },
-            { text: "B. 關閉電腦，當場放棄抵抗，等待明天 24 小時常規驗證跑完再說，放任卡車空車駛離", target: "T13-QUIZ-4" },
-            { text: "C. 動態調閱 FAMS 的 CpK（製程能力指數）即時數據，證明 SWR 補丁導入後品質穩定受控，並當場起草「工程緊急特採特許令（Gating waiver）」，連鎖擊發 Daniel 部長的最高主管剛性簽字防線", target: "T14-PASS-4" }
+            { text: "A. 聯合生管與 PM，集體在現場對 QA 進行口頭施壓，要求他們睜一隻眼閉一隻眼放行", target: "T13-QUIZ-4", cosmicTag: "2J : 程序誤判" },
+            { text: "B. 關閉電腦，當場放棄抵抗，等待明天 24 小時常規驗證跑完再說，放任卡車空車駛離", target: "T13-QUIZ-4", cosmicTag: "2K : 消極流產" },
+            { text: "C. 動態調閱 FAMS 的 CpK（製程能力指數）即時數據，證明 SWR 補丁導入後品質穩定受控，並當場起草「工程緊急特採特許令（Gating waiver）」，連鎖擊發 Daniel 部長的最高主管剛性簽字防線", target: "T14-PASS-4", cosmicTag: "2L : 特許放行" }
         ],
         explanation: `<h3>🎯 執行官大腦詳解：</h3>
                       <p>正解為 <b>C</b>！工廠是一個極度講求程序與合規性的世界。口頭爭吵與消極放棄都是流產盲區。只有透過實時的 CpK 數據證明製程能力指數 <b>> 1.33（完美受控狀態）</b>，並打出緊急特採特許令（Waiver），依循正軌在 30 分鐘內連鎖擊發 Daniel 部長的最高主管權限背書簽字，才能在法律與商務紅線上 100% 剛性免責、完璧放行！</p>`,
