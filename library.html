@@ -259,7 +259,7 @@
             gap: 24px;
         }
 
-        /* 🚀 自適應寬度流動網格 */
+        /* 🚀 👑 重新優化：自適應寬度流動網格 */
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
@@ -898,7 +898,7 @@
             }
         };
 
-        // 👑 核心加載大腦：雙軌解析 (防死鎖與真名還原)
+        // 👑 核心加載大腦：雙軌解析 (引入 cosmicTag 剛性元數據)
         function singleScriptFetchEngine(filePath, catId) {
             return new Promise((resolve) => {
                 const script = document.createElement('script');
@@ -984,7 +984,7 @@
                             function collectNodes(currentNodeId, currentBranchLabel, visited) {
                                 if (!currentNodeId || !tree[currentNodeId] || visited.has(currentNodeId)) return;
                                 
-                                // 🚀 👑 剛性過濾：剔除 WIN 關卡，保持支線純淨
+                                // 🚀 👑 剛性過濾：支線打包時，剔除 WIN 關卡，保持支線純淨
                                 if (currentNodeId.includes("WIN")) return;
 
                                 visited.add(currentNodeId);
@@ -1003,33 +1003,44 @@
                                     node.options.forEach(opt => {
                                         let branchKey = opt.target;
                                         
-                                        // 🚀 👑 標籤極簡化降噪：抓取關鍵字並還原為 1A : 準備
-                                        let rawBranchName = opt.text.match(/【(.*?)】/);
+                                        // 🚀 👑 Metadata Tag 優先抓取：如果劇本有寫 cosmicTag，無條件採用！若無則啟動向後相容校正網
+                                        let finalDisplayTitle = "";
                                         let pureTag = "";
-                                        let cleanTopicName = "";
-                                        
-                                        if (rawBranchName) {
-                                            let letterMatch = rawBranchName[1].match(/[A-E]/);
-                                            pureTag = letterMatch ? `${unitId.split('-')[0]}${letterMatch[0]}` : branchKey; 
-                                            // 擷取 "-" 後面的中文關鍵字，如 "準備"
-                                            let topicParts = rawBranchName[1].split('-');
-                                            if (topicParts.length > 1) {
-                                                cleanTopicName = topicParts[topicParts.length - 1].trim();
+
+                                        if (opt.cosmicTag) {
+                                            finalDisplayTitle = opt.cosmicTag;
+                                            pureTag = finalDisplayTitle.split(':')[0].trim();
+                                        } else {
+                                            let rawBranchName = opt.text.match(/【(.*?)】/);
+                                            let cleanTopicName = "";
+                                            
+                                            if (rawBranchName) {
+                                                let letterMatch = rawBranchName[1].match(/[A-E]/);
+                                                pureTag = letterMatch ? `${unitId.split('-')[0]}${letterMatch[0]}` : branchKey; 
+                                                // 🚀 👑 向後相容：處理舊版 "日常支線 5 - 臨時" 抓瞎變成 T3-E-ADHOC 的問題
+                                                if (branchKey === "T3-E-ADHOC") pureTag = "1E";
+
+                                                let topicParts = rawBranchName[1].split('-');
+                                                if (topicParts.length > 1) {
+                                                    cleanTopicName = topicParts[topicParts.length - 1].trim();
+                                                    // 相容舊版名稱
+                                                    if (cleanTopicName === "臨時") cleanTopicName = "臨時任務";
+                                                } else {
+                                                    cleanTopicName = pureTag;
+                                                }
                                             } else {
+                                                pureTag = branchKey;
+                                                if (branchKey === "T3-E-ADHOC") pureTag = "1E";
                                                 cleanTopicName = pureTag;
                                             }
-                                        } else {
-                                            pureTag = branchKey;
-                                            cleanTopicName = pureTag;
+                                            finalDisplayTitle = `${pureTag} : ${cleanTopicName}`;
                                         }
-
-                                        let finalDisplayTitle = `${pureTag} : ${cleanTopicName}`;
 
                                         if (!branchClusters[branchKey]) {
                                             branchClusters[branchKey] = {
                                                 id: `${unitId}-${branchKey.split('-')[1] || branchKey}`,
                                                 tag: pureTag,
-                                                title: finalDisplayTitle, // 剛性賦予極簡名稱
+                                                title: finalDisplayTitle, // 剛性賦予極簡真名
                                                 nodes: [...basePath],
                                                 sourceLabel: `${unitLabel} 沙盒`
                                             };
@@ -1156,6 +1167,7 @@
                         <div class="card-cosmic-title">${term.title}</div>
                     `;
                 } else {
+                    // 常規 Beginner 詞條樣式
                     row.className = `lexicon-term-row ${idx === activeTermIdx ? 'active-term' : ''}`;
                     row.style.minHeight = '75px';
                     let cleanName = getCleanTermName(term.name);
@@ -1262,7 +1274,7 @@
         };
 
         // ========================================================================
-        // 👑 🚀 橫向時空天梯步進大浮窗控制中心 (極簡化語意標籤)
+        // 👑 🚀 橫向時空天梯步進大浮窗控制中心 (天梯極簡語意)
         // ========================================================================
         let currentChamberActiveIdx = 0;
 
