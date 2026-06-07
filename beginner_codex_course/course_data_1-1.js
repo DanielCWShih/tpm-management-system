@@ -1,9 +1,10 @@
 /**
  ========================================================================
  FILE: beginner_codex_course/course_data_1-1.js
- VERSION: 2026-06-07 V16.50-CODEX-THEATER
+ VERSION: 2026-06-07 V16.60-ANONYMOUS-SAFE
  DESCRIPTION: 👑 初心者寶典文獻大辭典 1-1 黑鷹專案：試產火線攻防戰全景教材
- TITLE: 1-1: 代工廠產業頂層世界觀（四維幾何立體瀑布矩陣版）
+ TITLE: 1-1: 代工廠產業頂層世界觀（去特徵化數據安全大一統版）
+ UPDATE: 全面將 Daniel / Daniel 部長熔斷替換為 H部長，將特定代工廠代號清洗為「公司」。
  ========================================================================
  */
 
@@ -25,12 +26,12 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "08:00 試產線測試良率雪崩危機",
         text: `<h3>🚨 突發災難：高壓氣密失效值飆升 35%</h3>
-               <p>中壢廠區防水旗艦機型的總裝測試站內，紅色警報頻閃。因不明幾何變數相撞，氣密良率全面大暴跌！海外客戶副總裁、地端零件供應商、工廠生管 PC 與廠長正陷入瘋狂的相互扯皮與政治施壓中。</p>
+               <p>廠區防水旗艦機型的總裝測試站內，紅色警報頻閃。因不明幾何變數相撞，氣密良率全面大暴跌！海外客戶副總裁、地端零件供應商、工廠生管 PC 與廠長正陷入瘋狂的相互扯皮與政治施壓中。</p>
                <p>蝴蝶效應已經被觸發，每一個角色的決策都將導向完全不同的時空命運。請進入決策大廳，挑選你想要首先解包的利害關係人主權視角！</p>`,
         nextNodes: ["T2-DECISION"]
     },
 
-    // ─── T2: 四大宇宙利害關係人分流大廳 (🚀 導入 cosmicTag 剛性標籤) ───
+    // ─── T2: 四大宇宙利害關係人分流大廳 ───
     "T2-DECISION": {
         id: "T2-DECISION",
         type: "decision",
@@ -51,7 +52,7 @@ window.tpmSandboxScriptTree = {
         id: "T3-C1",
         type: "decision",
         title: "情境 C1：動態 Data 異常監控",
-        question: "歐美 Tier-1 客戶品牌總部透過自動化監控系統，察覺到中壢廠區回傳的氣密測試 Data 數據開始異常飘移。身為掌握生殺大權的品牌需求者，你的直覺決策是？",
+        question: "歐美 Tier-1 客戶品牌總部透過自動化監控系統，察覺到廠區回傳的氣密測試 Data 數據開始異常推移。身為掌握生殺大權的品牌需求者，你的直覺決策是？",
         options: [
             { text: "立刻擊發高階告警（Escalation）向代工廠高層進行商務施壓", target: "T4-C2", cosmicTag: "1A : 客戶宇宙" },
             { text: "給予技術自查窗口，私下發 Teams 給 System TPM，給予 12 小時自查期", target: "T4-C3", cosmicTag: "1A : 客戶宇宙" }
@@ -62,8 +63,8 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 C2：戰情室行政加壓",
         text: `<h3>📍 戰情室合流：全面啟動高層清算</h3>
-               <p>高階告警瞬間驚動代工廠高層。你剛性要求台達製造本部在半小時內開立緊急戰情室（War Room），這將跨界逼迫工廠端主管全面下線進行製程盤查。</p>`,
-        nextNodes: ["T5-F5"] // 跨界連通工廠支線會戰
+               <p>高階告警瞬間驚動代工廠高層。你剛性要求製造本部在半小時內開立緊急戰情室（War Room），這將跨界逼迫工廠端主管全面下線進行製程盤查。</p>`,
+        nextNodes: ["T5-F5"] 
     },
     "T4-C3": {
         id: "T4-C3",
@@ -87,7 +88,7 @@ window.tpmSandboxScriptTree = {
         id: "T6-C5",
         type: "decision",
         title: "情境 C5：抓包 Bypass 路由違規",
-        question: "駐廠稽核員在現場抓到現行：工廠生管 PC 正意圖強行 Bypass（跳過）測試路由刷產量！你的商務鐵腕是？",
+        question: "駐廠稽核員在現場當場抓包：工廠生管 PC 正意圖強行 Bypass（跳過）測試路由刷產量！你的商務鐵腕是？",
         options: [
             { text: "零容忍！當場扣留碼頭出貨區 1,500 台成品，拒絕簽收並啟動商務合約索賠條款", target: "T14-C-FAIL", cosmicTag: "1A : 客戶宇宙" },
             { text: "對 System TPM 下達最後通牒，限時 1 小時出具全量隔離計畫與防火牆報告", target: "T6-T4", cosmicTag: "1A : 客戶宇宙" }
@@ -115,8 +116,8 @@ window.tpmSandboxScriptTree = {
         id: "T9-C8",
         type: "story",
         title: "情境 C8：備援方案啟動（Dual Sourcing）",
-        text: `<h3>📍 訂單分流：客戶的無情商務筹碼</h3>
-               <p>評估中壢廠區產能全面流產的風險，你著手啟動雙源供應商計畫（Dual Sourcing），考慮將常規 30% 的訂單直接割讓給第二供應商。此時，技術窗口上傳了最新技術鐵證。</p>`,
+        text: `<h3>📍 訂單分流：客戶的無情商務籌碼</h3>
+               <p>評估廠區產能全面流產的風險，你著手啟動雙源供應商計畫（Dual Sourcing），考慮將常規 30% 的訂單直接割讓給第二供應商。此時，技術窗口上傳了最新技術鐵證。</p>`,
         nextNodes: ["T10-C9"]
     },
     "T10-C9": {
@@ -133,7 +134,7 @@ window.tpmSandboxScriptTree = {
         id: "T11-C10",
         type: "story",
         title: "情境 C10：產品延期宣告",
-        text: `<h3>📍 戰略流產：死線全面崩潰</h3>
+        text: `<h3>📍 商務流產：死線全面崩潰</h3>
                <p>因代工廠遲遲交不出合規成品，客戶被迫向全球市場宣告產品延期，品牌商譽大面積熔斷。</p>`,
         nextNodes: ["T14-C-FAIL"]
     },
@@ -145,9 +146,9 @@ window.tpmSandboxScriptTree = {
         id: "T3-V1",
         type: "decision",
         title: "情境 V1：刀具磨損與槽深超標",
-        question: "負責加工外殼的 CNC 供應商廠長自白：因刀具磨損，最新批次的外殼槽深實際值來到 0.94mm（壓在藍圖上限極限）。為了避免被扣款重做，你的決定是？",
+        question: "負責加工外殼的 CNC 供應商廠長自白：因刀具磨損，最新批次的外殼防水槽深實際值來到 0.94mm（已壓在藍圖上限極限）。為了避免被扣款重做，你的決定 es？",
         options: [
-            { text: "命令品保『美化』檢驗報告，全數偽裝成 0.90mm 黃金中心值瞞天過海出貨", target: "T4-V2", cosmicTag: "1B : 廠商宇宙" },
+            { text: "命令品保進行『數據美化』，全數偽裝成 0.90mm 黃金中心值瞞天過海出貨", target: "T4-V2", cosmicTag: "1B : 廠商宇宙" },
             { text: "坦白從寬，主動向代工廠 System TPM 報備製程變異，申請臨時放行路由（SWR）", target: "T4-V3", cosmicTag: "1B : 廠商宇宙" }
         ]
     },
@@ -156,20 +157,20 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 V2：掩蓋報告引發良率雪崩",
         text: `<h3>📍 掩蓋真相：紙面合格下的蝴蝶效應</h3>
-               <p>你美化數據後的瑕疵外殼流入總裝流水線，因極端尺寸鏈相撞，引發 FATP 站防水測試良率全面大雪崩！此舉將直接導通 TPM 的異常物料鎖定雷達。</p>`,
+               <p>你美化數據後的瑕疵外殼流入了總裝流水線，因極端尺寸鏈相撞，引發 FATP 站防水測試良率全面大雪崩！此舉將直接導通 TPM 的異常物料鎖定雷達。</p>`,
         nextNodes: ["T4-T2"]
     },
     "T4-V3": {
         id: "T4-V3",
         type: "decision",
         title: "情境 V3：成本轉嫁拉鋸戰",
-        question: "代工廠 System TPM 攜帶 Worst-Case 公式上門追責，要求廠商吸收全量呆料重做費用與卡車放空損失。你的利潤保衛戰策略是？",
+        question: "代工廠 System TPM 攜帶 Worst-Case 公式上門追責，要求廠商吸收全量呆料重做費用與卡車停工損失。你的利潤保衛戰策略是？",
         options: [
             { text: "死硬抗衡！堅稱零件字面數據完全在合格公差內，責任全是別人的，威脅撤線停供", target: "T5-V4", cosmicTag: "1B : 廠商宇宙" },
             { text: "心虛低頭，主動詢問現場是否有低成本的物理補償（如手工加墊片）製程變更機會", target: "T5-V5", cosmicTag: "1B : 廠商宇宙" }
         ]
     },
-    "V4": { // 舊 ID 修正為相容節點
+    "V4": { 
         id: "V4",
         nextNodes: ["T5-V4"]
     },
@@ -177,7 +178,7 @@ window.tpmSandboxScriptTree = {
         id: "T5-V4",
         type: "story",
         title: "情境 V4：責任界定踢皮球（Ball Game）",
-        text: `<h3>📍 互踢皮球：踢回研發端尺寸疊加不足</h3>
+        text: `<h3>📍 責任轉嫁：把皮球踢回研發端</h3>
                <p>你發出官方抗議信，踢皮球指責是代工廠研發（R&D）當初主機板打件高度尺寸堆疊（Stack-up）預留容差不足，引發跨部門會議政治內耗。</p>`,
         nextNodes: ["T5-F5"]
     },
@@ -186,7 +187,7 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 V5：產能挪配與排單危機",
         text: `<h3>📍 產能反制：供應鏈的商業博弈</h3>
-               <p>因尺寸爭議未決，你私下將核心 CNC 產能優先調配給其餘客戶，導致代工廠中壢廠區陷入嚴重的斷料卡關停線危機。</p>`,
+               <p>因尺寸爭議未決，你私下將核心 CNC 產能優先調配給其餘客戶，導致公司廠區陷入嚴重的斷料卡關停線危機。</p>`,
         nextNodes: ["T6-V6"]
     },
     "T6-V6": {
@@ -194,17 +195,17 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 V6：特採需求提出（Concession）",
         text: `<h3>📍 灰色特採：試圖強行變更合規紅線</h3>
-               <p>迫於死線，你正式向代工廠品保部門提交工程特採特許申請（Concession），試圖用行政手段強行讓 0.94mm 的瑕疵物料放行上線，壓力逼近 System TPM。</p>`,
+               <p>迫於死線，你正式向代工廠品保部門提交 **工程特採特許申請（Concession / Waiver）**，試圖用行政手段強行讓 0.94mm 的瑕疵物料上線，壓力直接轉嫁給 System TPM。</p>`,
         nextNodes: ["T10-T8"]
     },
     "T7-V7": {
         id: "T7-V7",
         type: "decision",
         title: "情境 V7：協同物理補償驗證",
-        question: "代工廠 System TPM 提出火線微創對策：加裝 0.04mm 精密不銹鋼墊片（Shim）補償凹槽間隙。身為廠商代表，你的態度是？",
+        question: "代工廠 System TPM 提出火線微創對策：加裝 0.04mm 精密不銹鋼墊片（Shim）沉底補償凹槽間隙。身為廠商代表，你的態度是？",
         options: [
             { text: "拒絕配合！認為手工塞墊片太過繁瑣，會破壞零件原有幾何流動結構", target: "T9-V9", cosmicTag: "1B : 廠商宇宙" },
-            { text: "全面配合！自願出資採購墊片物料，並派技術工至代工廠現地蹲點協助組裝", target: "T8-V8", cosmicTag: "1B : 廠商宇宙" }
+            { text: "全面配合！自願出資採購墊片物料，並派駐技術工至現場蹲點協助組裝", target: "T8-V8", cosmicTag: "1B : 廠商宇宙" }
         ]
     },
     "T8-V8": {
@@ -220,7 +221,7 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 V9：live CpK 數據反證",
         text: `<h3>📍 數理清算：用科學鐵證終結扯皮</h3>
-               <p>代工廠 System TPM 用品質統計兵器向你反證：加裝墊片後製程能力指數完美大於 1.33，用科學封死你所有踢皮球與狡辯的空間。</p>`,
+               <p>代工廠 System TPM 在現場直接拉出即時數據，利用 live CpK 品質統計兵器向你反證：加裝墊片後製程能力指數完美大於 1.33，用科學封死你所有踢皮球與狡辯的空間。</p>`,
         nextNodes: ["T10-V10"]
     },
     "T10-V10": {
@@ -228,7 +229,7 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 V10：供應鏈終局審查",
         text: `<h3>📍 年度評鑑：因果責任的剛性清算</h3>
-               <p>代工廠採購高層召開年度大會，針對此次材料變異的誠信操守與協作態度進行最終審查，決定廠商存亡。</p>`,
+               <p>代工廠品質本部與採購高層召開年度大會，針對此次黑鷹專案的材料變異、數據操守與協作態度進行最終因果清算，決定廠商存亡。</p>`,
         nextNodes: ["T14-V-WIN"]
     },
 
@@ -239,7 +240,7 @@ window.tpmSandboxScriptTree = {
         id: "T3-F1",
         type: "decision",
         title: "情境 F1：氣密測試全面熔斷",
-        question: "FATP 總裝站防水氣密測試不良率暴增至 35%！海關報關卡車再過 3 小時就要開走， Daniel 部長死盯進度。身為承擔吞吐產能指標的工廠生管，你的應變是？",
+        question: "FATP 總裝站防水氣密測試不良率暴增至 35%！海關報關卡車再過 3 小時就要開走， H部長正死盯進度。身為承擔吞吐產能指標的工廠生管，你的應變是？",
         options: [
             { text: "投機刷產量！在 SFC 後台強行 Skip（跳過）測試路由，先填滿卡車再說", target: "T4-F2", cosmicTag: "1C : 工廠宇宙" },
             { text: "消極停工！全線 200 名作業員 OP 原地待命，今日出貨大盤指標直接掛零", target: "T4-F3", cosmicTag: "1C : 工廠宇宙" },
@@ -251,7 +252,7 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 F2：Skip 路由流出災難",
         text: `<h3>📍 瞞天過海被抓包：灰色呆料外洩</h3>
-               <p>你私自 Skip 路由放行了帶病機器。這批貨剛移到倉庫碼頭，隨即被客戶的驻廠稽核員突襲攔截、開箱盤查，引發嚴重的誠信危機。</p>`,
+               <p>你私自 Skip 路由放行了帶病機器。這批貨剛移到倉庫碼頭，隨即被客戶的駐廠稽核員突襲攔截、開箱盤查，引發嚴重的誠信危機。</p>`,
         nextNodes: ["T6-C5"]
     },
     "T4-F3": {
@@ -259,7 +260,7 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 F3：消極停線投訴風暴",
         text: `<h3>📍 組織孤島：引爆線體營運內耗</h3>
-               <p>線體指標掛零。製造廠長與生管 PC 當場跳腳，聯合起草紅頭郵件向高層聯名投訴技術窗口：『 缺乏線體對齊痛點的能力，導致工廠稼動率大面積流產！』</p>`,
+               <p>線體指標掛零。製造廠長與生管 PC 當場跳腳，聯合起草紅頭郵件向高層聯名投訴技術團隊：『 缺乏線體對齊痛點的能力，導致工廠稼動率大面積流產！』</p>`,
         nextNodes: ["T5-F5"]
     },
     "T4-F4": {
@@ -300,7 +301,7 @@ window.tpmSandboxScriptTree = {
         title: "情境 F8：SFC 路由臨時凍結",
         question: "System TPM 為了落實批量隔離，在 SFC 自動化後台鎖死了前道工序的放行路由。身為極度渴望產量的工廠生管，你的決斷是？",
         options: [
-            { text: "遵循數位管控，全面停下可疑混料批次，配合技術團隊現地分選項目", target: "T9-F9", cosmicTag: "1C : 工廠宇宙" },
+            { text: "遵循數位管控，全面停下可疑混料批次，配合技術團隊進行分選", target: "T9-F9", cosmicTag: "1C : 工廠宇宙" },
             { text: "心存僥倖，試圖找熟識的 IT 工程師硬撬後台、強行解鎖路由繼續刷產量", target: "T14-F-FAIL", cosmicTag: "1C : 工廠宇宙" }
         ]
     },
@@ -317,7 +318,7 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 F10：Waiver 特許令生死時速",
         text: `<h3>📍 結案倒數：死線前的最後掙扎</h3>
-               <p>距離報關卡車出發只剩最後半小時。生管、線長與 200 名作業員死死盯著條碼列印機與系統後台，焦急等待著最終的特採放行放行鋼印編碼。</p>`,
+               <p>距離報關卡車出發只剩最後半小時。生管、線長與 200 名作業員死死盯著條碼列印機與系統後台，焦急等待著最終的特採放行鋼印編碼。</p>`,
         nextNodes: ["T14-F-WIN"]
     },
 
@@ -328,7 +329,7 @@ window.tpmSandboxScriptTree = {
         id: "T3-T1",
         type: "decision",
         title: "情境 T1：頂層防線戰報起草",
-        question: "清晨遭遇氣密良率暴跌 35% 驚悚災難，多方內耗扯皮。 Daniel 部長剛性要求你在 20 分鐘內出具首份技術戰報。手無寸鐵的你，第一步的戰術決斷是？",
+        question: "清晨開線遭遇氣密良率暴跌 35% 驚悚災難，多方內耗扯皮。 H部長剛性要求你在 20 分鐘內出具首份技術戰報。手無寸鐵的你，第一步的戰術決斷是？",
         options: [
             { text: "當傳話筒。直接複製貼上各部門的扯皮推諉，回覆高層：『正在積極排查，預計下週出具 8D 報告。』", target: "T14-T-FAIL", cosmicTag: "1D : TPM 宇宙" },
             { text: "切入 Data Log。啟動 4M1E 框架分析，就地抓取 20 套問題零件奔向實驗室解包實體幾何公差。", target: "T4-T2", cosmicTag: "1D : TPM 宇宙" }
@@ -348,7 +349,7 @@ window.tpmSandboxScriptTree = {
         id: "T5-T3",
         type: "decision",
         title: "情境 T3：Worst-Case 最壞情況疊加分析",
-        question: "外部廠商代表拿出 Excel 進料報告甩鍋：『我們的溝槽槽深 0.94mm 完全在合約藍圖公差內！』此時你的數理反擊武器是？",
+        question: "外部廠商代表拿出 Excel進料報告甩鍋：『我們的溝槽槽深 0.94mm 完全在合約藍圖公差內！』此時你的數理反擊武器是？",
         options: [
             { text: "妥協讓步。同意現場 PE 工程師微調測試機台的氣密壓力參數，設法遷就零件變異。", target: "T14-T-FAIL", cosmicTag: "1D : TPM 宇宙" },
             { text: "數理制跨。當場在白板推導 Worst-Case 公式，算出極端尺寸鏈相撞下實體壓縮率僅剩 14.54%（跌破 15% 剛性紅線），用科學鐵證封死甩鍋空間。", target: "T6-T4", cosmicTag: "1D : TPM 宇宙" }
@@ -378,7 +379,7 @@ window.tpmSandboxScriptTree = {
         id: "T8-T6",
         type: "decision",
         title: "情境 T6：隱性知識轉化與微課化開發",
-        question: "製造線長抱怨：現場 200 名全新輪班技術員 OP 全是白紙新人，半小時內根本學不會塞微型墊片的精密動作，拋料率極高。你的解決方案是？",
+        question: "製造線長抱怨：現場 200名全新輪班技術員 OP 全是白紙新人，半小時內根本學不會塞微型墊片的精密動作，拋料率極高。你的解決方案是？",
         options: [
             { text: "強制宣讀。印發 50 頁的死硬工程 SOP 說明書，下令線長召集全體線員現地罰站、大聲宣讀。", target: "T7-F7", cosmicTag: "1D : TPM 宇宙" },
             { text: "數位微課。敏捷運用數位工具，將資深師傅的手部黃金微動作進行精煉萃取，錄製成 5 分鐘短影音微課，於離線模擬產線實施動態快速認證上崗。", target: "T9-T7", cosmicTag: "1D : TPM 宇宙" }
@@ -419,7 +420,7 @@ window.tpmSandboxScriptTree = {
         type: "story",
         title: "情境 T10：終局審查大門",
         text: `<h3>📍 特許簽字：迎接最終放行鋼印</h3>
-               <p>你用無懈可擊的 8D 技術戰報與 Waver 報告，打動了冷靜盤查的最高決策層。 Daniel 部長的手指停留在最終放行核准（APPROVED）的電子鋼印按鈕上。這套黑鷹專案的跨宇宙演進，即將迎來最終章。</p>`,
+               <p>你用無懈可擊的 8D 技術戰報與 Waver 報告，打動了冷靜盤查的最高決策層。 H部長的手指停留在最終放行核准（APPROVED）的電子鋼印按鈕上。這套黑鷹專案的跨宇宙演進，即將迎來最終章。</p>`,
         nextNodes: ["T14-T-WIN"]
     },
 
@@ -430,11 +431,11 @@ window.tpmSandboxScriptTree = {
     "T14-C-FAIL": { id: "T14-C-FAIL", type: "end_fail", title: "💥 結局 C-FAIL：合約熔斷與黑名單", text: `<h3>❌ 商務降維打擊：信任防線崩潰</h3><p>因 Bypass 路由被現場抓包，客戶判定工廠具備誠信漏洞，全面終止合作合約，啟動高額商務索賠。請回溯重新洗牌！</p>` },
     
     "T14-V-WIN": { id: "T14-V-WIN", type: "end_win", title: "🏆 結局 V-WIN：共同研發緊密防線勳章", text: `<h3>✅ 榮譽通航：被納入代工廠核心夥伴圈</h3><p>廠商與 System TPM 緊密進行 Shim 物理補償，成功消化了 4M1E 製造端變異。被正式納入核心協同研發信任圈，大盤長青！</p>` },
-    "T14-V-FAIL": { id: "T14-V-FAIL", type: "end_fail", title: "💥 結局 V-FAIL：供應鏈除名與商譽破產", text: `<h3>❌ 審查熔斷：欺瞞的最高代價</h3><p>數據造假被 TPM 用數據鐵證現場獲取。代工廠採購本部發動無限期停權制責，全面逐出大盤！</p>` },
+    "T14-V-FAIL": { id: "T14-V-FAIL", type: "end_fail", title: "💥 結局 V-FAIL：供應鏈除名與商譽破產", text: `<h3>❌ 審查熔斷：欺瞞的最高代價</h3><p>數據造假被 TPM 用數據鐵證現場獲取。公司採購本部發動無限期停權制責，全面逐出大盤！</p>` },
 
     "T14-F-WIN": { id: "T14-F-WIN", type: "end_win", title: "🏆 結局 F-WIN：精益自治示範線體", text: `<h3>✅ 完美的製程消化力：通航放行</h3><p>在 5 分鐘短影音微課協助下，現場白紙 OP 快速完成認證上崗！拋料率歸零，線體 UPH 指標滿血復甦，直通良率完美通航！</p>` },
-    "T14-F-FAIL": { id: "T14-F-FAIL", type: "end_fail", title: "💥 結局 F-FAIL：全線懲處與連坐清洗", text: `<h3>❌ 千萬級報廢：投機放行的代價</h3><p>因盲改測試參數或系統硬撬，導致千萬級成品全數損壞報廢，製造本部現場主管集體連坐免職。請回溯時空！</p>` },
+    "T14-F-FAIL": { id: "T14-F-FAIL", type: "end_fail", title: "💥 結局 F-FAIL：全線懲處與連坐清洗", text: `<h3>❌ 千萬級報廢：投機放行的代價</h3><p>因盲改測試參數或系統硬撬，導致千萬級成品全數損壞報廢，公司製造本部高層震怒，現場主管集體連坐檢討。請回溯時空！</p>` },
 
-    "T14-T-WIN": { id: "T14-T-WIN", type: "end_win", title: "🏆 結局 T-WIN：首席統籌指揮官黃金勳章", text: `<h3>✅ 100% 完璧通關：一戰封神</h3><p>大滿貫通關！Daniel 部長在最高主管系統後台按下 APPROVED 金牌鋼印！特採放行通航！貨卡順利通關，線體良率完璧固化！</p>` },
+    "T14-T-WIN": { id: "T14-T-WIN", type: "end_win", title: "🏆 結局 T-WIN：首席統籌指揮官黃金勳章", text: `<h3>✅ 100% 完璧通關：一戰封神</h3><p>大滿貫通關！H部長在最高主管系統後台按下 APPROVED 金牌鋼印！特採放行通航！貨卡順利通關，線體良率完璧固化！</p>` },
     "T14-T-FAIL": { id: "T14-T-FAIL", type: "end_fail", title: "💥 結局 T-FAIL: 降維打擊 — 撤銷主導權與時空重修", text: `<h3>❌ 技術盲區熔斷：專案流產</h3><p>因灰色行政妥協或數據欺瞞，導致海外市場爆發毀滅性漏水客退。專案主導權遭撤銷，強制退回主線分流大廳重新洗牌！</p>` }
 };
