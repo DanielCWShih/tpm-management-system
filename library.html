@@ -130,7 +130,7 @@
             overflow: hidden;
         }
 
-        /* ⚖️ 剛性對齊：左側選單欄寬度固定 262px (與手冊一致) */
+        /* ⚖️ 剛性對齊：左側選單欄寬度固定 262px */
         .sidebar-panel {
             display: flex;
             width: 262px;
@@ -251,15 +251,7 @@
             padding: 15px 20px 40px 15px; 
         }
 
-        .document-canvas {
-            flex: 1;
-            overflow: hidden;
-            display: flex;
-            flex-direction: row;
-            gap: 24px;
-        }
-
-        /* 🚀 👑 重新優化：自適應寬度流動網格，徹底填滿反人類留白 */
+        /* 🚀 👑 重新優化：自適應寬度流動網格 */
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
@@ -483,14 +475,59 @@
             user-select: none;
         }
 
+        /* 閱讀艙與底部導航欄 */
         .modal-reading-chamber {
             flex: 1;
-            padding: 40px 60px;
+            padding: 40px 60px 20px 60px;
             overflow-y: auto;
             background: #FFFFFF;
             line-height: 1.7;
             font-size: 1rem;
             color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reading-content-wrapper {
+            flex: 1;
+        }
+
+        .theater-nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            margin-top: 30px;
+            border-top: 2px dashed #CBD5E1;
+            flex-shrink: 0;
+        }
+
+        .theater-nav-btn {
+            background: #FFFFFF;
+            border: 2px solid var(--border-heavy);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: var(--text-main);
+            box-shadow: 2px 2px 0px var(--border-heavy);
+            transition: all 0.1s;
+        }
+
+        .theater-nav-btn:hover {
+            background: var(--sidebar-cream);
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+        }
+
+        .theater-nav-btn:disabled {
+            background: #F1F5F9;
+            color: #94A3B8;
+            border-color: #CBD5E1;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
         }
 
         @keyframes fadeInBox {
@@ -566,13 +603,20 @@
         <div class="modal-brutalist-box">
             <div class="modal-header-bar">
                 <div>
-                    <span id="modal-branch-tag" style="font-family: monospace; font-weight: 900; background: #1A1A1A; color:#FFF; padding:4px 8px; border-radius:4px; font-size:0.85rem; margin-right:12px;">1-1</span>
+                    <span id="modal-branch-tag" style="font-family: monospace; font-weight: 900; background: #1A1A1A; color:#FFF; padding:4px 8px; border-radius:4px; font-size:0.85rem; margin-right:12px;">1A</span>
                     <strong id="modal-branch-title" style="font-size: 1.25rem; font-weight: 900;">支線全景通讀艙</strong>
                 </div>
                 <button class="modal-close-x" onclick="closeTheaterTheater()">✕</button>
             </div>
             <div class="horizontal-stepper-roof" id="modal-stepper-track"></div>
-            <div class="modal-reading-chamber" id="modal-reader-viewport"></div>
+            
+            <div class="modal-reading-chamber" id="modal-reader-viewport">
+                <div class="reading-content-wrapper" id="modal-reader-content"></div>
+                <div class="theater-nav-footer">
+                    <button class="theater-nav-btn" id="theater-prev-btn">⬅ 上一關</button>
+                    <button class="theater-nav-btn" id="theater-next-btn">下一關 ➡</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -840,7 +884,7 @@
             if (inspector) {
                 inspector.innerHTML = `
                     <div class="inspector-placeholder">
-                        🎯 收藏庫載入完成<br>請點擊左側單詞查看詳細技術文獻
+                        🎯 收藏庫載入完成<br>請點擊左側卡片查看詳細技術文獻
                     </div>
                 `;
             }
@@ -931,15 +975,19 @@
 
                             let basePath = []; 
 
-                            // 🚀 👑 核心防死鎖大腦
+                            // 🚀 👑 核心防死鎖大腦：傳入 globalVisitedIds 紀錄全域走過的節點
                             function collectNodes(currentNodeId, currentBranchLabel, visited) {
                                 if (!currentNodeId || !tree[currentNodeId] || visited.has(currentNodeId)) return;
+                                
+                                // 🚀 👑 剛性過濾：支線打包時，剔除 WIN 關卡，保持支線純淨度
+                                if (currentNodeId.includes("WIN")) return;
+
                                 visited.add(currentNodeId);
 
                                 const node = tree[currentNodeId];
                                 const nodeObj = {
                                     id: currentNodeId,
-                                    name: getCleanTermName(node.title || nodeId),
+                                    name: node.name || getCleanTermName(node.title || nodeId), // 優先使用 name 屬性
                                     title: node.title,
                                     text: node.text || node.question || "無說明文本"
                                 };
@@ -950,17 +998,28 @@
                                     
                                     node.options.forEach(opt => {
                                         let branchKey = opt.target;
-                                        let branchName = opt.text.match(/【(.*?)】/);
-                                        branchName = branchName ? branchName[1] : opt.text;
                                         
-                                        branchClusters[branchKey] = {
-                                            id: `${unitId}-${branchKey.split('-')[1] || branchKey}`,
-                                            tag: branchName,
-                                            title: `${branchName} 完整宇宙劇情線`,
-                                            nodes: [...basePath], // 繼承 T0, T1, T2 腳印
-                                            sourceLabel: `${unitLabel} 沙盒`
-                                        };
+                                        // 🚀 👑 標籤極簡化降噪：將 "延伸主線 A" 洗練為 "1A"
+                                        let rawBranchName = opt.text.match(/【(.*?)】/);
+                                        let pureTag = "";
+                                        if (rawBranchName) {
+                                            let letterMatch = rawBranchName[1].match(/[A-E]/);
+                                            pureTag = letterMatch ? `${unitId.split('-')[0]}${letterMatch[0]}` : branchKey; // e.g., 1A, 1B
+                                        } else {
+                                            pureTag = branchKey;
+                                        }
+
+                                        if (!branchClusters[branchKey]) {
+                                            branchClusters[branchKey] = {
+                                                id: `${unitId}-${branchKey.split('-')[1] || branchKey}`,
+                                                tag: pureTag,
+                                                title: `${pureTag} : 完整宇宙劇情線`,
+                                                nodes: [...basePath], // 繼承 T0, T1, T2 腳印
+                                                sourceLabel: `${unitLabel} 沙盒`
+                                            };
+                                        }
                                         
+                                        // 繼承全域腳印往下探尋
                                         collectNodes(opt.target, branchKey, new Set(visited));
                                     });
                                     return;
@@ -978,11 +1037,9 @@
                                 // 往下探查
                                 let targets = [];
                                 if (node.nextNodes) targets = targets.concat(node.nextNodes);
-                                if (node.options) {
-                                    node.options.forEach(o => {
-                                        if (o.target) targets.push(o.target);
-                                    });
-                                }
+                                if (node.options && node.type !== "decision") node.options.forEach(o => {
+                                    if (o.target) targets.push(o.target);
+                                });
 
                                 targets.forEach(targetId => {
                                     let srcY = tempYDict[currentNodeId] || 0;
@@ -994,11 +1051,21 @@
                                 });
                             }
 
+                            // 啟動探測，初始傳入空的 Set 作為 globalVisitedIds
                             collectNodes("T0-INTRO", null, new Set());
                             if (basePath.length === 0) collectNodes("T1-START", null, new Set()); 
 
                             Object.keys(branchClusters).forEach(key => {
                                 let cluster = branchClusters[key];
+                                let uniqueNodes = [];
+                                let seenIds = new Set();
+                                cluster.nodes.forEach(n => {
+                                    if (!seenIds.has(n.id)) {
+                                        seenIds.add(n.id);
+                                        uniqueNodes.push(n);
+                                    }
+                                });
+                                cluster.nodes = uniqueNodes;
                                 cluster.isCosmicBranch = true; 
                                 window.aggregatedTermsPool.push(cluster);
                             });
@@ -1187,6 +1254,8 @@
         // ========================================================================
         // 👑 🚀 橫向時空天梯步進大浮窗控制中心 (滿版置中)
         // ========================================================================
+        let currentChamberActiveIdx = 0;
+
         function openTheaterTheater() {
             const term = window.currentlyViewedTerm;
             if (!term || !term.isCosmicBranch) return;
@@ -1198,13 +1267,23 @@
             track.innerHTML = '';
 
             currentChamberNodesList = term.nodes;
+            currentChamberActiveIdx = 0;
 
             // 部署橫向時空天梯 Stepper
             currentChamberNodesList.forEach((node, idx) => {
                 const badge = document.createElement('div');
                 badge.className = 'step-node-badge';
                 badge.id = `step-badge-${idx}`;
-                badge.innerText = `${node.id.split('-')[0]}: ${node.name}`; 
+                
+                // 🚀 👑 Stepper 顯示真名：呼叫節點的 name 屬性，若無則擷取 title
+                let stepName = node.name;
+                if (!stepName || stepName === "無說明文本") {
+                     stepName = node.title ? getCleanTermName(node.title).substring(0, 8) : node.id;
+                }
+                
+                let tierPrefix = node.id.split('-')[0]; // 提取 T0, T1...
+                badge.innerText = `${tierPrefix}: ${stepName}`; 
+                
                 badge.onclick = () => { triggerChamberReadingNode(idx); };
 
                 track.appendChild(badge);
@@ -1225,14 +1304,18 @@
         }
 
         function triggerChamberReadingNode(poolIdx) {
+            currentChamberActiveIdx = poolIdx;
+            
             document.querySelectorAll('.step-node-badge').forEach(b => b.classList.remove('active-step'));
             const activeBadge = document.getElementById(`step-badge-${poolIdx}`);
             if (activeBadge) {
                 activeBadge.classList.add('active-step');
+                // 自動滾動天梯讓當前節點可見
+                activeBadge.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
 
             const nodeData = currentChamberNodesList[poolIdx];
-            const viewer = document.getElementById('modal-reader-viewport');
+            const viewer = document.getElementById('modal-reader-content');
             
             if (nodeData && viewer) {
                 viewer.innerHTML = `
@@ -1244,8 +1327,24 @@
                         </div>
                     </div>
                 `;
-                viewer.scrollTop = 0; 
             }
+
+            // 🚀 👑 劇院無縫雙向導航腳註 (Next/Prev Buttons)
+            const prevBtn = document.getElementById('theater-prev-btn');
+            const nextBtn = document.getElementById('theater-next-btn');
+            
+            if (prevBtn) {
+                prevBtn.disabled = (poolIdx === 0);
+                prevBtn.onclick = () => { if (poolIdx > 0) triggerChamberReadingNode(poolIdx - 1); };
+            }
+            if (nextBtn) {
+                nextBtn.disabled = (poolIdx === currentChamberNodesList.length - 1);
+                nextBtn.onclick = () => { if (poolIdx < currentChamberNodesList.length - 1) triggerChamberReadingNode(poolIdx + 1); };
+            }
+
+            // 閱讀艙置頂
+            const viewport = document.getElementById('modal-reader-viewport');
+            if (viewport) viewport.scrollTop = 0; 
         }
 
         function closeTheaterTheater() {
