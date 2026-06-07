@@ -251,7 +251,15 @@
             padding: 15px 20px 40px 15px; 
         }
 
-        /* 🚀 👑 重新優化：自適應寬度流動網格 */
+        .document-canvas {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+        }
+
+        /* 🚀 自適應寬度流動網格 */
         .lexicon-index-column {
             flex: 1;
             overflow-y: auto;
@@ -363,7 +371,7 @@
             box-shadow: 4px 4px 0px var(--text-main);
         }
 
-        /* 👑 🚀 全景時空天梯大浮窗劇院 (Full-screen Overlay Modal) */
+        /* 👑 🚀 全景時空天梯大浮窗劇院 */
         .modal-overlay-chamber {
             position: fixed;
             top: 0;
@@ -382,7 +390,7 @@
         .modal-brutalist-box {
             width: 100%;
             max-width: 1200px;
-            height: 90vh; /* 近乎滿版 */
+            height: 90vh; 
             background-color: var(--bg-color);
             border: 4px solid var(--border-heavy);
             border-radius: 12px;
@@ -475,7 +483,7 @@
             user-select: none;
         }
 
-        /* 閱讀艙與底部導航欄 */
+        /* 閱讀艙與底部雙向導航欄 */
         .modal-reading-chamber {
             flex: 1;
             padding: 40px 60px 20px 60px;
@@ -890,7 +898,7 @@
             }
         };
 
-        // 👑 核心加載大腦：雙軌解析 (防遞迴死鎖裝甲)
+        // 👑 核心加載大腦：雙軌解析 (防死鎖與真名還原)
         function singleScriptFetchEngine(filePath, catId) {
             return new Promise((resolve) => {
                 const script = document.createElement('script');
@@ -928,7 +936,7 @@
                                     }
                                     
                                     if (page.text) {
-                                        const regex = /tpmSwitchSubKwd\s*\(\s*[^,]+\s*,\s*[^,]+\s*,\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]+)['"]/g;
+                                        const regex = /tpmSwitchSubKwd\s*\(\s*[^,]+\s*,\s*[^,]+\s*,\s*[^,]+\s*,\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]+)['"]/g;
                                         let matchKwd;
                                         while ((matchKwd = regex.exec(page.text)) !== null) {
                                             const termName = matchKwd[1];
@@ -949,13 +957,12 @@
                         });
                     }
 
-                    // 2. 🎯 Handbook 模式：沙盒地圖「支線打包」解析器 (防無限遞迴暨深層全量提取)
+                    // 2. 🎯 Handbook 模式：沙盒地圖「支線打包」解析器
                     if (window.tpmSandboxScriptTree && Object.keys(window.tpmSandboxScriptTree).length > 0 && catId === 'handbook') {
                         if (isUnitCleared) {
                             const tree = window.tpmSandboxScriptTree;
                             let branchClusters = {};
                             
-                            // 🚀 👑 建立 Y 軸高度字典，確保 100% 只往下探勘
                             let tempYDict = {};
                             Object.keys(tree).forEach(nodeId => {
                                 let tierNum = 0;
@@ -966,7 +973,6 @@
                                     if (nodeId.includes("START")) tierNum = 1;
                                     else if (nodeId.includes("DECISION")) tierNum = 2;
                                 }
-                                // 👑 終局高程霸權：結局節點給予最高 Y 軸，保證能被抓取
                                 if (nodeId.includes("END") || nodeId.includes("FAIL") || nodeId.includes("WARN") || nodeId.includes("WIN") || tree[nodeId].type.includes("end")) {
                                     tierNum = 999; 
                                 }
@@ -975,11 +981,10 @@
 
                             let basePath = []; 
 
-                            // 🚀 👑 核心防死鎖大腦：傳入 globalVisitedIds 紀錄全域走過的節點
                             function collectNodes(currentNodeId, currentBranchLabel, visited) {
                                 if (!currentNodeId || !tree[currentNodeId] || visited.has(currentNodeId)) return;
                                 
-                                // 🚀 👑 剛性過濾：支線打包時，剔除 WIN 關卡，保持支線純淨度
+                                // 🚀 👑 剛性過濾：剔除 WIN 關卡，保持支線純淨
                                 if (currentNodeId.includes("WIN")) return;
 
                                 visited.add(currentNodeId);
@@ -987,45 +992,54 @@
                                 const node = tree[currentNodeId];
                                 const nodeObj = {
                                     id: currentNodeId,
-                                    name: node.name || getCleanTermName(node.title || nodeId), // 優先使用 name 屬性
+                                    name: node.name || getCleanTermName(node.title || nodeId), 
                                     title: node.title,
                                     text: node.text || node.question || "無說明文本"
                                 };
 
-                                // 遇到大廳，生出所有平行宇宙！
                                 if (node.type === "decision" && currentNodeId.includes("DECISION") && !currentBranchLabel) {
                                     basePath.push(nodeObj);
                                     
                                     node.options.forEach(opt => {
                                         let branchKey = opt.target;
                                         
-                                        // 🚀 👑 標籤極簡化降噪：將 "延伸主線 A" 洗練為 "1A"
+                                        // 🚀 👑 標籤極簡化降噪：抓取關鍵字並還原為 1A : 準備
                                         let rawBranchName = opt.text.match(/【(.*?)】/);
                                         let pureTag = "";
+                                        let cleanTopicName = "";
+                                        
                                         if (rawBranchName) {
                                             let letterMatch = rawBranchName[1].match(/[A-E]/);
-                                            pureTag = letterMatch ? `${unitId.split('-')[0]}${letterMatch[0]}` : branchKey; // e.g., 1A, 1B
+                                            pureTag = letterMatch ? `${unitId.split('-')[0]}${letterMatch[0]}` : branchKey; 
+                                            // 擷取 "-" 後面的中文關鍵字，如 "準備"
+                                            let topicParts = rawBranchName[1].split('-');
+                                            if (topicParts.length > 1) {
+                                                cleanTopicName = topicParts[topicParts.length - 1].trim();
+                                            } else {
+                                                cleanTopicName = pureTag;
+                                            }
                                         } else {
                                             pureTag = branchKey;
+                                            cleanTopicName = pureTag;
                                         }
+
+                                        let finalDisplayTitle = `${pureTag} : ${cleanTopicName}`;
 
                                         if (!branchClusters[branchKey]) {
                                             branchClusters[branchKey] = {
                                                 id: `${unitId}-${branchKey.split('-')[1] || branchKey}`,
                                                 tag: pureTag,
-                                                title: `${pureTag} : 完整宇宙劇情線`,
-                                                nodes: [...basePath], // 繼承 T0, T1, T2 腳印
+                                                title: finalDisplayTitle, // 剛性賦予極簡名稱
+                                                nodes: [...basePath],
                                                 sourceLabel: `${unitLabel} 沙盒`
                                             };
                                         }
                                         
-                                        // 繼承全域腳印往下探尋
                                         collectNodes(opt.target, branchKey, new Set(visited));
                                     });
                                     return;
                                 }
 
-                                // 存入對應的分支陣列
                                 if (currentBranchLabel && branchClusters[currentBranchLabel]) {
                                     if (!branchClusters[currentBranchLabel].nodes.some(n => n.id === currentNodeId)) {
                                         branchClusters[currentBranchLabel].nodes.push(nodeObj);
@@ -1034,7 +1048,6 @@
                                     basePath.push(nodeObj);
                                 }
 
-                                // 往下探查
                                 let targets = [];
                                 if (node.nextNodes) targets = targets.concat(node.nextNodes);
                                 if (node.options && node.type !== "decision") node.options.forEach(o => {
@@ -1051,7 +1064,6 @@
                                 });
                             }
 
-                            // 啟動探測，初始傳入空的 Set 作為 globalVisitedIds
                             collectNodes("T0-INTRO", null, new Set());
                             if (basePath.length === 0) collectNodes("T1-START", null, new Set()); 
 
@@ -1144,7 +1156,6 @@
                         <div class="card-cosmic-title">${term.title}</div>
                     `;
                 } else {
-                    // 常規 Beginner 詞條樣式
                     row.className = `lexicon-term-row ${idx === activeTermIdx ? 'active-term' : ''}`;
                     row.style.minHeight = '75px';
                     let cleanName = getCleanTermName(term.name);
@@ -1197,7 +1208,6 @@
                     </div>
                 `;
             } else {
-                // 常規詞條版面
                 inspector.innerHTML = `
                     <div style="display: flex; flex-direction: column; height: 100%; width: 100%; animation: fadeInBox 0.15s ease-out;">
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--border-heavy); padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0; width: 100%;">
@@ -1252,7 +1262,7 @@
         };
 
         // ========================================================================
-        // 👑 🚀 橫向時空天梯步進大浮窗控制中心 (滿版置中)
+        // 👑 🚀 橫向時空天梯步進大浮窗控制中心 (極簡化語意標籤)
         // ========================================================================
         let currentChamberActiveIdx = 0;
 
@@ -1269,26 +1279,29 @@
             currentChamberNodesList = term.nodes;
             currentChamberActiveIdx = 0;
 
-            // 部署橫向時空天梯 Stepper
+            const totalNodes = currentChamberNodesList.length;
+
             currentChamberNodesList.forEach((node, idx) => {
                 const badge = document.createElement('div');
                 badge.className = 'step-node-badge';
                 badge.id = `step-badge-${idx}`;
                 
-                // 🚀 👑 Stepper 顯示真名：呼叫節點的 name 屬性，若無則擷取 title
-                let stepName = node.name;
-                if (!stepName || stepName === "無說明文本") {
-                     stepName = node.title ? getCleanTermName(node.title).substring(0, 8) : node.id;
+                // 🚀 👑 極簡降噪：天梯語意統一化
+                let stepLabel = "";
+                if (idx === 0) {
+                    stepLabel = "🚀 開始";
+                } else if (idx === totalNodes - 1) {
+                    stepLabel = "🏁 完結";
+                } else {
+                    stepLabel = `情境 ${idx}`;
                 }
-                
-                let tierPrefix = node.id.split('-')[0]; // 提取 T0, T1...
-                badge.innerText = `${tierPrefix}: ${stepName}`; 
-                
+
+                badge.innerText = stepLabel; 
                 badge.onclick = () => { triggerChamberReadingNode(idx); };
 
                 track.appendChild(badge);
 
-                if (idx < currentChamberNodesList.length - 1) {
+                if (idx < totalNodes - 1) {
                     const arrow = document.createElement('span');
                     arrow.className = 'step-arrow-divider';
                     arrow.innerText = '➔';
@@ -1296,7 +1309,7 @@
                 }
             });
 
-            if (currentChamberNodesList.length > 0) {
+            if (totalNodes > 0) {
                 triggerChamberReadingNode(0);
             }
 
@@ -1310,7 +1323,6 @@
             const activeBadge = document.getElementById(`step-badge-${poolIdx}`);
             if (activeBadge) {
                 activeBadge.classList.add('active-step');
-                // 自動滾動天梯讓當前節點可見
                 activeBadge.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
 
@@ -1342,7 +1354,6 @@
                 nextBtn.onclick = () => { if (poolIdx < currentChamberNodesList.length - 1) triggerChamberReadingNode(poolIdx + 1); };
             }
 
-            // 閱讀艙置頂
             const viewport = document.getElementById('modal-reader-viewport');
             if (viewport) viewport.scrollTop = 0; 
         }
