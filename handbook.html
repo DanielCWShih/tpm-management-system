@@ -583,87 +583,58 @@
             { num: 7, name: 'LEVEL 7', label: '待開發' }
         ];
 
+        // 👑 全域虛擬動態佈局大盤
         let nodeLayoutCoordinates = {};
 
         // ========================================================================
-        // 👑 DFS 深度優先拓撲排序大腦 (絕殺版面坍塌與重疊)
+        // 👑 萬能幾何分流大腦：終極審查節點全自動強制置底與中央定錨
         // ========================================================================
         function calculateDynamicCosmicTopology() {
             const tree = window.tpmSandboxScriptTree;
             if (!tree) return;
 
             nodeLayoutCoordinates = {};
-            let nodeTiers = {}; 
-
-            // 1. DFS 尋標器：精準判定深度
-            function calculateDepths(nodeId, depth, visited) {
-                if (!nodeId || !tree[nodeId]) return;
-                if (visited.has(nodeId)) return; // 遇到迴圈即刻熔斷
-
-                if ((nodeTiers[nodeId] || 0) < depth) {
-                    nodeTiers[nodeId] = depth;
-                }
-
-                let newVisited = new Set(visited);
-                newVisited.add(nodeId);
-
-                let children = [];
-                if (tree[nodeId].nextNodes) children.push(...tree[nodeId].nextNodes);
-                if (tree[nodeId].options) children.push(...tree[nodeId].options.map(o => o.target));
-
-                children.forEach(child => calculateDepths(child, depth + 1, newVisited));
-            }
-
-            // 自動尋找無人指向的源頭 (T0-INTRO 等)
-            let incomingCounts = {};
-            Object.keys(tree).forEach(k => incomingCounts[k] = 0);
-            Object.keys(tree).forEach(k => {
-                let children = [];
-                if (tree[k].nextNodes) children.push(...tree[k].nextNodes);
-                if (tree[k].options) children.push(...tree[k].options.map(o => o.target));
-                children.forEach(c => { if (incomingCounts[c] !== undefined) incomingCounts[c]++; });
-            });
-            
-            let roots = Object.keys(incomingCounts).filter(k => incomingCounts[k] === 0);
-            if (roots.length === 0) roots = [Object.keys(tree)[0]]; 
-
-            // 啟動 DFS 測繪
-            roots.forEach(r => calculateDepths(r, 0, new Set()));
-
-            // 2. 終端沉積霸權：強行將 END 與 WIN 節點壓入最底層
-            let maxDepth = Math.max(...Object.values(nodeTiers));
-            Object.keys(tree).forEach(k => {
-                let isEnd = k.includes("END") || k.includes("FAIL") || k.includes("WARN") || (tree[k].type && tree[k].type.includes("end"));
-                let isWin = k.includes("WIN") || tree[k].type === "end_win";
-                
-                if (isWin) {
-                    nodeTiers[k] = maxDepth + 2; // WIN 絕對最底層
-                } else if (isEnd) {
-                    nodeTiers[k] = maxDepth + 1; // END 倒數第二層
-                }
-            });
-
-            // 3. 網格等距分配
             let normalTierBuckets = {};
-            Object.keys(nodeTiers).forEach(nodeId => {
-                let tierNum = nodeTiers[nodeId];
-                if (!normalTierBuckets[tierNum]) normalTierBuckets[tierNum] = [];
-                normalTierBuckets[tierNum].push({ id: nodeId, rawNode: tree[nodeId] });
+            let finalNodes = []; 
+
+            // 1. 拆分常規與最終結案卡片
+            Object.keys(tree).forEach(nodeId => {
+                let isFinalGate = nodeId.includes("WIN-GATE") || nodeId.includes("WIN-FINAL") || tree[nodeId].type === "win_gate" || tree[nodeId].type === "end_win";
+                
+                if (isFinalGate) {
+                    finalNodes.push({ id: nodeId, rawNode: tree[nodeId] });
+                } else {
+                    let tierNum = 0;
+                    const match = nodeId.match(/^T(\d+)/);
+                    if (match) {
+                        tierNum = parseInt(match[1], 10);
+                    } else {
+                        if (nodeId.includes("START")) tierNum = 1;
+                        else if (nodeId.includes("DECISION")) tierNum = 2;
+                        else if (nodeId.includes("FAIL") || nodeId.includes("WARN") || nodeId.includes("STACKUP")) tierNum = 3;
+                        else if (nodeId.includes("CONQUER") || nodeId.includes("WIN")) tierNum = 4;
+                    }
+                    if (!normalTierBuckets[tierNum]) normalTierBuckets[tierNum] = [];
+                    normalTierBuckets[tierNum].push({ id: nodeId, rawNode: tree[nodeId] });
+                }
             });
 
             const lockField = document.getElementById('map-lock-field');
             let containerWidth = 720;
             if (lockField) containerWidth = lockField.clientWidth;
 
+            let maxNormalTier = 0;
+
+            // 2. 常規網格等距分配
             Object.keys(normalTierBuckets).forEach(tierStr => {
                 const tierNum = parseInt(tierStr, 10);
+                if (tierNum > maxNormalTier) maxNormalTier = tierNum;
+
                 let nodes = normalTierBuckets[tierNum];
-                
-                // 照字母排序確保渲染穩定
                 nodes.sort((a, b) => a.id.localeCompare(b.id));
 
                 const count = nodes.length;
-                const yCoord = tierNum * 140 + 60; 
+                const yCoord = tierNum * 130 + 60; 
 
                 nodes.forEach((node, idx) => {
                     let xCoord = containerWidth / 2; 
@@ -685,7 +656,38 @@
                     };
                 });
             });
+
+            // 3. 終局大一統：WIN-GATE 剛性全自動置底中央
+            finalNodes.sort((a, b) => a.id.localeCompare(b.id));
+            finalNodes.forEach((node, idx) => {
+                let tierNum = maxNormalTier + 1 + idx; 
+                let yCoord = tierNum * 130 + 60;
+                let xCoord = containerWidth / 2; 
+                
+                let cleanName = node.rawNode.title || node.id;
+                if (cleanName.includes("：")) cleanName = cleanName.split("：")[1];
+                else if (cleanName.includes(":")) cleanName = cleanName.split(":")[1];
+                cleanName = cleanName.replace(/[📚🛑🏆⚡⚠️💥📍🎯]/g, "").trim();
+
+                nodeLayoutCoordinates[node.id] = {
+                    x: Math.round(xCoord),
+                    y: yCoord,
+                    name: cleanName
+                };
+            });
         }
+
+        let selectedActiveLevelNum = 1; 
+        let unlockedNodesList = []; 
+        let passedNodesList = []; 
+        let activeFrontierNodeId = null;     
+        let currentlySelectedNodeId = null;  
+        let activePackUnitId = null;
+
+        window.onload = () => {
+            renderGlobalTreeStructure();
+            routeController();
+        };
 
         function renderGlobalTreeStructure() {
             const root = document.getElementById('global-tree-root'); 
@@ -807,12 +809,6 @@
             document.head.appendChild(script);
         }
 
-        let unlockedNodesList = []; 
-        let passedNodesList = []; 
-        let activeFrontierNodeId = null;     
-        let currentlySelectedNodeId = null;  
-        let activePackUnitId = null;
-
         function initSandboxEngine() {
             if (!activePackUnitId) return; 
             document.getElementById('current-chapter-id').innerText = `HANDBOOK / UNIT ${activePackUnitId}`; 
@@ -915,7 +911,7 @@
         }
 
         // ========================================================================
-        // 👑 拓撲地圖繪製艙 (全自動濾除幽靈逆向線)
+        // 👑 拓撲地圖繪製艙 (全自動連接大考終點，消除幽靈貫穿連線)
         // ========================================================================
         function renderNordicSandboxMap() {
             const nodesContainer = document.getElementById('map-nodes-container');
@@ -955,6 +951,7 @@
                 if (srcNode.nextNodes) branchTargets = branchTargets.concat(srcNode.nextNodes);
                 if (srcNode.options) srcNode.options.forEach(opt => { if (opt.target) branchTargets.push(opt.target); });
 
+                // 🚀 👑 剛性防線 3：只有「完全沒有下一步 (無 options/nextNodes)」的真正死胡同，才會拉線前往 WIN-GATE，徹底消除半路貫穿的斜線！
                 let isTerminalNode = (!srcNode.nextNodes || srcNode.nextNodes.length === 0) && (!srcNode.options || srcNode.options.length === 0) && !srcId.includes("WIN");
                 if (isTerminalNode && mainWinGateId && !branchTargets.includes(mainWinGateId)) {
                     branchTargets.push(mainWinGateId);
@@ -965,8 +962,8 @@
                     if (!tarPos) return;
                     if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
 
-                    // 🚀 👑 SVG 防亂飛裝甲：嚴格切斷所有往回跳的逆向線 (如從 T14 點大廳)
-                    if (tarPos.y <= srcPos.y) {
+                    // 確保只有向下的因果線才被繪製
+                    if (tarPos.y < srcPos.y) {
                         return;
                     }
 
@@ -1028,19 +1025,19 @@
                 if (isUnitCleared) {
                     if (tree[nodeId] && tree[nodeId].type === "end_win") card.classList.add('passed');
                     else if (isFailNode) card.classList.add('fail-node');
-                    else if (isEndNode) card.classList.add('end-node-clear'); 
+                    else if (isEndNode) card.classList.add('end-node-clear'); // 通航綠
                     else card.classList.add('passed');
                     
                     if (nodeId === activeFrontierNodeId) card.classList.add('active-target');
                 } else {
                     if (isPassed) {
                         if (isFailNode) card.classList.add('fail-node');
-                        else if (isEndNode) card.classList.add('end-node-clear'); 
+                        else if (isEndNode) card.classList.add('end-node-clear'); // 通航綠
                         else card.classList.add('passed');
                     } else if (isFailNode && isUnlocked) {
                         card.classList.add('fail-node');
                     } else if (isEndNode && isUnlocked) {
-                        card.classList.add('end-node-clear'); 
+                        card.classList.add('end-node-clear'); // 通航綠
                     } else {
                         if (nodeId === activeFrontierNodeId) card.classList.add('active-target');
                         else if (!isUnlocked && !isPassed) card.classList.add('locked');
@@ -1072,7 +1069,7 @@
         }
 
         // ========================================================================
-        // 👑 右側戰術儀控制中樞
+        // 👑 右側戰術儀控制中樞 (三段式 END 導航漏斗)
         // ========================================================================
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
@@ -1189,7 +1186,7 @@
                 }
             } else if (node.type.startsWith("end_") || (!node.nextNodes || node.nextNodes.length === 0)) {
                 let endColor = "#D97706"; 
-                if (node.type === "end_win" || node.id.includes("WIN")) {
+                if (node.type === "end_win") {
                     endColor = "#15803D"; 
                 } else if (node.id.includes("FAIL") || node.id.includes("WARN")) {
                     endColor = "#B91C1C"; 
@@ -1201,7 +1198,7 @@
                     <div style="background:#FAF8F5; padding:14px; border-radius:6px; border:1px solid var(--nordic-border); margin-bottom:15px;">${node.text}</div>
                 `;
 
-                if (node.type === "end_win" || node.id.includes("WIN")) {
+                if (node.type === "end_win") {
                     if (!isReviewMode) {
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleHandbookUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
@@ -1210,7 +1207,7 @@
                         let actionArea = `<div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">`;
                         let hasAddedSection = false;
 
-                        // 1. 🚀 同層思維切換 
+                        // 1. 🚀 同層思維切換 (Sibling)
                         const parentDecision = findParentDecisionNode(nodeId);
                         let siblingOpts = [];
                         if (parentDecision && parentDecision.options) {
@@ -1225,9 +1222,9 @@
                             });
                         }
 
-                        // 2. 🚀 回到大廳開新宇宙 
+                        // 2. 🚀 回到大廳開新宇宙 (Lobby) 
                         let globalRemainingOptions = [];
-                        let mainDecisionNodeId = Object.keys(tree).find(k => k.includes("DECISION") && !k.includes("T8") && !k.includes("DECISION-2") && !k.includes("DECISION-3")); 
+                        let mainDecisionNodeId = Object.keys(tree).find(k => k.includes("DECISION") && !k.includes("T8")); // 精準過濾出主大廳
                         if (mainDecisionNodeId) {
                             let mainDecisionNode = tree[mainDecisionNodeId];
                             if (mainDecisionNode && mainDecisionNode.options) {
@@ -1273,6 +1270,7 @@
             inspector.innerHTML = contentHtml;
         }
 
+        // 🚀 👑 強制將 TargetNode 寫入 passedNodesList 確保去重完美運作！
         window.executePassNode = function(nodeId) {
             if (!passedNodesList.includes(nodeId)) passedNodesList.push(nodeId);
             
