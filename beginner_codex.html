@@ -90,6 +90,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 4px;
+            transition: all 0.1s;
         }
 
         .lang-btn-core.active {
@@ -594,7 +595,6 @@
     <script>
         const GLOBAL_GAS_URL = "https://script.google.com/a/macros/fih-foxconn.com/s/AKfycbydOQ2Iyk8wVABxUDWJchx1eiCN4Hc_Fg226uJAkLS0wIpsWty-ewDwxQPG3dGSDv3pFQ/exec";
 
-        // 👑 剛性指向 codex 教材清單
         const globalSubUnitRegistry = [
             { type: 'codex', levelNum: 1, subUnitId: '1-1', title: '1-1: 基本世界觀與三方賽局', file: 'beginner_codex_course/course_data_1-1.js' },
             { type: 'codex', levelNum: 1, subUnitId: '1-2', title: '1-2: 硬體生命週期與 NPI 交付', file: 'beginner_codex_course/course_data_1-2.js' },
@@ -627,19 +627,18 @@
         };
 
         // ========================================================================
-        // 👑 鐵血修復：DFS 深度優先拓撲排序大腦 (絕殺 C/V/F ID 錯亂與 T0 重疊)
+        // 👑 DFS 深度優先拓撲排序大腦 (絕殺版面坍塌與重疊)
         // ========================================================================
         function calculateDynamicCosmicTopology() {
             const tree = window.tpmSandboxScriptTree;
             if (!tree) return;
 
             nodeLayoutCoordinates = {};
-            let nodeTiers = {}; // 紀錄每個節點的深度
+            let nodeTiers = {}; 
 
-            // 1. DFS 尋標器：走訪因果線，精準判定深度
             function calculateDepths(nodeId, depth, visited) {
                 if (!nodeId || !tree[nodeId]) return;
-                if (visited.has(nodeId)) return; // 遇到迴圈即刻熔斷
+                if (visited.has(nodeId)) return; 
 
                 if ((nodeTiers[nodeId] || 0) < depth) {
                     nodeTiers[nodeId] = depth;
@@ -655,7 +654,6 @@
                 children.forEach(child => calculateDepths(child, depth + 1, newVisited));
             }
 
-            // 自動尋找無人指向的源頭 (如 T0-INTRO, T0-START)
             let incomingCounts = {};
             Object.keys(tree).forEach(k => incomingCounts[k] = 0);
             Object.keys(tree).forEach(k => {
@@ -666,25 +664,22 @@
             });
             
             let roots = Object.keys(incomingCounts).filter(k => incomingCounts[k] === 0);
-            if (roots.length === 0) roots = [Object.keys(tree)[0]]; // 備用防線
+            if (roots.length === 0) roots = [Object.keys(tree)[0]]; 
 
-            // 啟動 DFS 測繪
             roots.forEach(r => calculateDepths(r, 0, new Set()));
 
-            // 2. 終端沉積霸權：強行將 END 與 WIN 節點壓入最底層
             let maxDepth = Math.max(...Object.values(nodeTiers));
             Object.keys(tree).forEach(k => {
                 let isEnd = k.includes("END") || k.includes("FAIL") || k.includes("WARN") || (tree[k].type && tree[k].type.includes("end"));
                 let isWin = k.includes("WIN") || tree[k].type === "end_win";
                 
                 if (isWin) {
-                    nodeTiers[k] = maxDepth + 2; // WIN 絕對最底層
+                    nodeTiers[k] = maxDepth + 2; 
                 } else if (isEnd) {
-                    nodeTiers[k] = maxDepth + 1; // END 倒數第二層
+                    nodeTiers[k] = maxDepth + 1; 
                 }
             });
 
-            // 3. 網格等距分配
             let normalTierBuckets = {};
             Object.keys(nodeTiers).forEach(nodeId => {
                 let tierNum = nodeTiers[nodeId];
@@ -700,11 +695,10 @@
                 const tierNum = parseInt(tierStr, 10);
                 let nodes = normalTierBuckets[tierNum];
                 
-                // 照字母排序確保渲染穩定
                 nodes.sort((a, b) => a.id.localeCompare(b.id));
 
                 const count = nodes.length;
-                const yCoord = tierNum * 140 + 60; // 縱向拉開距離
+                const yCoord = tierNum * 140 + 60; 
 
                 nodes.forEach((node, idx) => {
                     let xCoord = containerWidth / 2; 
@@ -753,7 +747,10 @@
 
         function toggleMenuSection(id) { 
             const el = document.getElementById(id); 
-            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none'; 
+            if (el) {
+                if (el.style.display === 'none') el.style.display = 'flex';
+                else el.style.display = 'none';
+            }
         }
 
         function routeController(directType, directC) {
@@ -850,7 +847,7 @@
             document.getElementById('current-chapter-id').innerText = `CODEX / UNIT ${activePackUnitId}`; 
             document.getElementById('current-chapter-name').innerText = globalSubUnitRegistry.find(u => u.subUnitId === activePackUnitId).title;
 
-            // Codex 專屬儲存路徑
+            // 👑 Codex 專屬記憶體防線
             const savedPassed = localStorage.getItem(`tpm-codex-sandbox-passed-${activePackUnitId}`);
             const savedUnlocked = localStorage.getItem(`tpm-codex-sandbox-unlocked-${activePackUnitId}`);
             
@@ -992,7 +989,7 @@
                     if (!tarPos) return;
                     if (!activeVisibleNodesSet.has(srcId) || !activeVisibleNodesSet.has(tarId)) return;
 
-                    // 🚀 👑 SVG 防亂飛裝甲：嚴格切斷所有往回跳的逆向線 (如從 T14 點大廳)
+                    // 🚀 👑 SVG 防亂飛裝甲：嚴格切斷所有往回跳的逆向線
                     if (tarPos.y <= srcPos.y) {
                         return;
                     }
@@ -1048,14 +1045,14 @@
                 }
                 card.innerText = displayName;
 
-                // 🚀 👑 END 視覺大一統：正常完航的 END 卡片呈現清爽的淺綠色！
-                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN");
-                const isEndNode = nodeId.includes("END") || (tree[nodeId] && (tree[nodeId].type === "end_warn" || tree[nodeId].type === "end_fail"));
+                // 🚀 👑 END 視覺大一統：正常完航的 END 卡片呈現清爽淺綠色
+                const isFailNode = nodeId.includes("FAIL") || nodeId.includes("WARN") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
+                const isEndNode = nodeId.includes("END") || (tree[nodeId] && (tree[nodeId].type === "end_fail" || tree[nodeId].type === "end_warn"));
 
                 if (isUnitCleared) {
-                    if (tree[nodeId] && tree[nodeId].type === "end_win") card.classList.add('passed');
+                    if (tree[nodeId] && tree[nodeId].type === "end_win" || nodeId.includes("WIN")) card.classList.add('passed');
                     else if (isFailNode) card.classList.add('fail-node');
-                    else if (isEndNode) card.classList.add('end-node-clear'); // 通航綠
+                    else if (isEndNode) card.classList.add('end-node-clear'); 
                     else card.classList.add('passed');
                     
                     if (nodeId === activeFrontierNodeId) card.classList.add('active-target');
@@ -1099,7 +1096,7 @@
         }
 
         // ========================================================================
-        // 👑 右側戰術儀控制中樞
+        // 👑 右側戰術儀控制中樞 (🚀 加入動態躍遷選項修復)
         // ========================================================================
         function inspectNodeDetail(nodeId) {
             const inspector = document.getElementById('sandbox-inspector');
@@ -1126,10 +1123,11 @@
                 if (!hasMovedForward) isReviewMode = false;
             }
 
-            let isWinGate = nodeId.includes("WIN-GATE") || node.type === "win_gate";
+            let isWinGate = nodeId.includes("WIN-GATE") || node.type === "win_gate" || node.type === "quiz"; // 將大考也視為 Gate 攔截
             let contentHtml = `<div class="inspector-scroll-box" style="animation: fadeInNode 0.12s ease-out;">`;
 
-            if (isWinGate) {
+            // 🚀 大考結案閘門的動態渲染
+            if (isWinGate && (nodeId.includes("GATE") || nodeId.includes("WIN") || node.title.includes("審查"))) {
                 let endNodeIds = Object.keys(tree).filter(k => tree[k].type === "end_fail" || tree[k].type === "end_warn" || (k.includes("END") && k !== nodeId));
                 let requiredEndIds = endNodeIds.filter(id => id !== nodeId);
                 
@@ -1139,6 +1137,10 @@
 
                 let winTargetId = "T15-WIN"; 
                 if (node.nextNodes && node.nextNodes.length > 0) winTargetId = node.nextNodes[0];
+                if (node.options && node.options.length > 0) {
+                    let winOpt = node.options.find(o => o.target.includes("WIN"));
+                    if(winOpt) winTargetId = winOpt.target;
+                }
 
                 contentHtml += `
                     <div style="font-size:0.72rem; color:#1D4ED8; font-weight:900; letter-spacing:1px; margin-bottom:6px;">FINAL GATE ${isReviewMode ? ' (歷程複盤)' : ''}</div>
@@ -1148,7 +1150,7 @@
                         <div class="gate-progress-container">
                             <div class="gate-progress-fill" style="width:${totalCount > 0 ? (unlockedCount / totalCount) * 100 : 100}%; background-color:${isAllUnlocked ? '#10B981' : '#3B82F6'};"></div>
                         </div>
-                        <div style="font-size:0.85rem; font-weight:800; color:#1E3A8A; text-align:right;">探測進度: ${unlockedCount} / ${totalCount} 個日常結局</div>
+                        <div style="font-size:0.85rem; font-weight:800; color:#1E3A8A; text-align:right;">探測進度: ${unlockedCount} / ${totalCount} 個情境結局</div>
                     </div>
                 `;
 
@@ -1162,15 +1164,41 @@
                             <button class="nordic-action-btn" style="background:#15803D;" onclick="executePassQuizNode('${nodeId}', '${winTargetId}')">🏆 啟動終極通關大門</button>
                         `;
                     } else {
-                        contentHtml += `
-                            <div style="margin-top:10px; padding:14px; background:#FEF2F2; border-radius:6px; border:1px solid #FCA5A5; font-size:0.85rem; line-height:1.5; margin-bottom:15px;">
-                                <div style="font-weight:900; font-size:0.95rem; color:#DC2626; margin-bottom:4px;">🔒 權限鎖定：尚有未探測盲區</div>
-                                <div>你還有 <b>${totalCount - unlockedCount}</b> 個分支日常結局尚未解鎖，無法進行最終資格審查。</div>
-                            </div>
-                        `;
-                        let mainDecisionNodeId = Object.keys(tree).find(k => k.includes("DECISION"));
+                        // 🚀 👑 修復：WIN-GATE 鎖定時，直接動態生成剩餘的時空躍遷選項！
+                        let mainDecisionNodeId = Object.keys(tree).find(k => tree[k].type === "decision" && (k.includes("DECISION") || k.includes("T2")));
                         if (mainDecisionNodeId) {
-                            contentHtml += `<button class="nordic-option-btn" style="border-color:#D97706; color:#D97706;" onclick="executeSelectBranch('${nodeId}', '${mainDecisionNodeId}')"><b>時空回溯：</b> 回到主線分流大廳</button>`;
+                            let mainDecisionNode = tree[mainDecisionNodeId];
+                            let remainingOpts = [];
+                            if (mainDecisionNode && mainDecisionNode.options) {
+                                mainDecisionNode.options.forEach(opt => {
+                                    if (!passedNodesList.includes(opt.target) && !opt.target.includes("WIN") && !opt.target.includes("T1")) {
+                                        remainingOpts.push({
+                                            parentId: mainDecisionNode.id,
+                                            target: opt.target,
+                                            text: opt.text
+                                        });
+                                    }
+                                });
+                            }
+
+                            contentHtml += `
+                                <div style="margin-top:10px; padding:14px; background:#FEF2F2; border-radius:6px; border:1px solid #FCA5A5; font-size:0.85rem; line-height:1.5; margin-bottom:15px;">
+                                    <div style="font-weight:900; font-size:0.95rem; color:#DC2626; margin-bottom:4px;">🔒 權限鎖定：尚有未探測盲區</div>
+                                    <div>你還有 <b>${totalCount - unlockedCount}</b> 個分支日常結局尚未解鎖，無法進行最終資格審查。</div>
+                                </div>
+                            `;
+
+                            if (remainingOpts.length > 0) {
+                                contentHtml += `<div style="margin-top:20px; padding-top:16px; border-top:2px dashed var(--border-heavy);">`;
+                                contentHtml += `<p style="font-weight:900; color:#D97706; margin-bottom:10px;">📋 權限不足：請先完成以下未通關的領域</p>`;
+                                let randomizedOpts = shuffleArray(remainingOpts);
+                                randomizedOpts.forEach(opt => {
+                                    contentHtml += `<button class="nordic-option-btn" style="border-color:#D97706; color:#D97706;" onclick="executeSelectBranch('${opt.parentId}', '${opt.target}')"><b>時空躍遷：</b> ${opt.text}</button>`;
+                                });
+                                contentHtml += `</div>`;
+                            } else {
+                                contentHtml += `<button class="nordic-option-btn" style="border-color:#D97706; color:#D97706;" onclick="executeSelectBranch('${nodeId}', '${mainDecisionNodeId}')"><b>時空回溯：</b> 回到主線分流大廳</button>`;
+                            }
                         }
                     }
                 }
@@ -1200,23 +1228,9 @@
                     });
                     contentHtml += `</div>`;
                 }
-            } else if (node.type === "quiz") {
-                contentHtml += `
-                    <div style="font-size:0.72rem; color:#1D4ED8; font-weight:900; letter-spacing:1px; margin-bottom:6px;">TACTICAL QUIZ ${isReviewMode ? ' (歷程複盤)' : ''}</div>
-                    <h2 style="margin:0 0 14px 0; font-size:1.25rem; font-weight:900; color:#1D4ED8;">${node.title}</h2>
-                    <p style="font-weight:700; margin-bottom:15px; line-height:1.5;">${node.question}</p>
-                `;
-                if (!isReviewMode) {
-                    let randomizedQuizOpts = shuffleArray(node.options);
-                    contentHtml += `<div id="quiz-options-zone">`;
-                    randomizedQuizOpts.forEach(opt => {
-                        contentHtml += `<button class="nordic-option-btn" onclick="executeSubmitQuiz('${nodeId}', '${opt.target || ''}')">${opt.text}</button>`;
-                    });
-                    contentHtml += `</div>`;
-                }
             } else if (node.type.startsWith("end_") || (!node.nextNodes || node.nextNodes.length === 0)) {
                 let endColor = "#D97706"; 
-                if (node.type === "end_win") {
+                if (node.type === "end_win" || node.id.includes("WIN")) {
                     endColor = "#15803D"; 
                 } else if (node.id.includes("FAIL") || node.id.includes("WARN")) {
                     endColor = "#B91C1C"; 
@@ -1228,7 +1242,7 @@
                     <div style="background:#FAF8F5; padding:14px; border-radius:6px; border:1px solid var(--nordic-border); margin-bottom:15px;">${node.text}</div>
                 `;
 
-                if (node.type === "end_win") {
+                if (node.type === "end_win" || node.id.includes("WIN")) {
                     if (!isReviewMode) {
                         contentHtml += `<button class="nordic-action-btn" style="background:${endColor};" onclick="executeSettleCodexUnit(true)">🏆 記錄戰績並上傳 GAS</button>`;
                     }
@@ -1254,7 +1268,7 @@
 
                         // 2. 回到大廳開新宇宙 
                         let globalRemainingOptions = [];
-                        let mainDecisionNodeId = Object.keys(tree).find(k => k.includes("DECISION") && !k.includes("T8"));
+                        let mainDecisionNodeId = Object.keys(tree).find(k => tree[k].type === "decision" && (k.includes("DECISION") || k.includes("T2"))); 
                         if (mainDecisionNodeId) {
                             let mainDecisionNode = tree[mainDecisionNodeId];
                             if (mainDecisionNode && mainDecisionNode.options) {
@@ -1271,11 +1285,22 @@
                         }
                         if (globalRemainingOptions.length > 0) {
                             if (hasAddedSection) actionArea += `<div style="margin: 15px 0; border-bottom: 1px solid #E2E8F0;"></div>`;
-                            actionArea += `<p style="font-weight:900; color:#D97706; margin-bottom:10px;">📋 繼續完成其餘支線：回到大廳選擇尚未通關的領域</p>`;
+                            actionArea += `<p style="font-weight:900; color:#D97706; margin-bottom:10px;">📋 繼續完成其餘支線：點擊切換尚未通關的領域</p>`;
                             let randomizedGlobalRetry = shuffleArray(globalRemainingOptions);
                             randomizedGlobalRetry.forEach(opt => {
-                                actionArea += `<button class="nordic-option-btn" onclick="executeSelectBranch('${opt.parentId}', '${opt.target}')"><b>回到大廳開闢新宇宙：</b> ${opt.text}</button>`;
+                                actionArea += `<button class="nordic-option-btn" onclick="executeSelectBranch('${opt.parentId}', '${opt.target}')"><b>時空躍遷：</b> ${opt.text}</button>`;
                             });
+                            hasAddedSection = true;
+                        }
+
+                        // 3. 🚀 前往結案大門 (WIN-GATE)
+                        let mainWinGateId = Object.keys(tree).find(k => k.includes("WIN-GATE") || tree[k].type === "win_gate" || (k.includes("WIN") && tree[k].type==="quiz"));
+                        if (mainWinGateId && nodeId !== mainWinGateId) {
+                            if (hasAddedSection) actionArea += `<div style="margin: 15px 0; border-bottom: 1px solid #E2E8F0;"></div>`;
+                            actionArea += `
+                                <p style="font-weight:900; color:#15803D; margin-bottom:10px;">🚩 結案盤查：前往最終資格審查大考</p>
+                                <button class="nordic-action-btn" style="background:#15803D;" onclick="executeSelectBranch('${nodeId}', '${mainWinGateId}')">➔ 前往結案大門</button>
+                            `;
                             hasAddedSection = true;
                         }
 
@@ -1315,32 +1340,6 @@
             activeFrontierNodeId = currentlySelectedNodeId = targetNodeId;
             inspectNodeDetail(currentlySelectedNodeId);
             renderNordicSandboxMap();
-        };
-
-        window.executeSubmitQuiz = function(nodeId, targetNodeId) {
-            const zone = document.getElementById('quiz-options-zone');
-            const node = window.tpmSandboxScriptTree[nodeId];
-            if (!zone || !node) return;
-
-            let isCorrect = false;
-            let targetNode = targetNodeId;
-            
-            if (!targetNode && node.options) {
-                const rawEvent = window.event?.target?.innerText || "";
-                const foundOpt = node.options.find(o => rawEvent.includes(o.text));
-                isCorrect = foundOpt ? foundOpt.isCorrect : false;
-                targetNode = node.nextNodes ? node.nextNodes[0] : "WIN-NODE-CONQUER";
-            } else {
-                isCorrect = true; 
-            }
-
-            zone.innerHTML = `
-                <div style="margin-top:10px; padding:14px; background:${isCorrect ? '#F0FDF4':'#FEF2F2'}; border-radius:6px; border:1px solid ${isCorrect?'#BBF7D0':'#FCA5A5'}; font-size:0.85rem; line-height:1.5;">
-                    <div style="font-weight:900; font-size:0.95rem; color:${isCorrect?'#16A34A':'#DC2626'}; margin-bottom:4px;">${isCorrect ? '🏆 記錄送出！':'💥 判斷錯誤！'}</div>
-                    <div>${node.explanation || '驗證完畢，請推進流程。'}</div>
-                </div>
-                <button class="nordic-action-btn" onclick="executePassQuizNode('${nodeId}', '${targetNode}')">➔ 繼續前進</button>
-            `;
         };
 
         window.executePassQuizNode = function(nodeId, targetNodeId) {
